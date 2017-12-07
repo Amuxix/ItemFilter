@@ -1,6 +1,6 @@
 package me.amuxix.conditions
 
-import me.amuxix.{Default, Named, Operator, ValueEquals}
+import me.amuxix._
 
 /**
   * Created by Amuxix on 03/03/2017.
@@ -11,17 +11,12 @@ object Magic extends R
 object Rare extends R
 object Unique extends R
 
-object Rarity extends Default[Rarity] {
+object Rarity {
+  implicit def tuple22Rarity(tuple: (Operator, R)): Rarity = Rarity(tuple._1, tuple._2)
   def apply(quality: R): Rarity = new Rarity(quality)
-
-  /** *
-    * This specifies a default value of the T type, it doesn't really matter what it's value is as
-    * will only compared by reference
-    */
-  override val default = Rarity(">=", Normal)
 }
 
-case class Rarity(op: Operator, r: R) extends BaseCondition with ValueEquals {
+case class Rarity(op: Operator, rarity: R) extends Writable {
   def this(r: R) = this("=", r)
-  override def print: String = s"Rarity ${op.print}${r.name}"
+  override def print: String = s"Rarity ${op.print}${rarity.name}"
 }

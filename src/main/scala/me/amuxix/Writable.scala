@@ -1,11 +1,17 @@
 package me.amuxix
 
+import me.amuxix.actions.Size
+
 abstract class Writable {
   protected def print: String
-  def equals(o: Writable): Boolean
 
-  final def write(default: Writable): Option[String] = default match {
-    case _ if this equals default => None
+  /*final def write(default: Writable): Option[String] = default match {
+    case _ if this == default => None
+    case _ => Some(this.print)
+  }*/
+
+  final def write: Option[String] = this match {
+    case _: Size if this.asInstanceOf[Size].size == Size.default => None
     case _ => Some(this.print)
   }
 }

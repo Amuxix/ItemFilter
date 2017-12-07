@@ -1,19 +1,16 @@
 package me.amuxix.conditions
 
 import me.amuxix.Writable.addQuotesIfMultiWorded
-import me.amuxix.{Default, InvalidArgument, RefEquals}
+import me.amuxix.{InvalidArgument, Writable}
 
 /**
   * Created by Amuxix on 03/03/2017.
   */
-object BaseType extends Default[BaseType] {
-  def apply(base: String): BaseType = new BaseType(base)
-
-  override val default = BaseType("")
+object BaseType {
+  implicit def string2BaseType(string: String*): BaseType = BaseType(string:_*)
 }
 
-case class BaseType(bases: Seq[String]) extends BaseCondition with RefEquals {
-  def this(base: String) = this(Seq(base))
+case class BaseType(bases: String*) extends Writable {
   if (bases.contains("")) throw new InvalidArgument
 
   override def print: String = s"BaseType ${bases.map(addQuotesIfMultiWorded).mkString(" ")}"

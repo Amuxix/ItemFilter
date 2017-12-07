@@ -1,20 +1,20 @@
 package me.amuxix.conditions
 
-import me.amuxix.{Default, InvalidArgument, RefEquals}
+import me.amuxix.{InvalidArgument, Operator, Writable}
 
 /**
   * Created by Amuxix on 03/03/2017.
   */
 
-object LinkedSockets extends Default[LinkedSockets] {
-  /** *
-    * This specifies a default value of the T type, it doesn't really matter what it's value is as
-    * will only compared by reference
-    */
-  override val default = new LinkedSockets(0)
+object LinkedSockets {
+  implicit def tuple22LinkedSockets(tuple: (Operator, Int)): LinkedSockets = LinkedSockets(tuple._1, tuple._2)
+  implicit def int2LinkedSockets(int: Int): LinkedSockets = LinkedSockets(int)
+
+  def apply(links: Int): LinkedSockets = new LinkedSockets(links)
 }
 
-case class LinkedSockets(links: Int) extends BaseCondition with RefEquals {
+case class LinkedSockets(op: Operator, links: Int) extends Writable {
+  def this(links: Int) = this("=", links)
   if (links < 0 || links > 6) throw new InvalidArgument
 
   override def print: String = s"LinkedSockets $links"
