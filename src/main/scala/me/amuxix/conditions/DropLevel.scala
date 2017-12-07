@@ -5,12 +5,11 @@ import me.amuxix._
 /**
   * Created by Amuxix on 03/03/2017.
   */
-object DropLevel extends Default[DropLevel] {
+object DropLevel {
+  implicit def tuple22DropLevel(tuple: (Operator, Int)): DropLevel = DropLevel(tuple._1, tuple._2)
   def apply(level: Int): DropLevel = new DropLevel(level)
-
-  override val default = DropLevel(">=", 0)
 }
-case class DropLevel(op: Operator, level: Int) extends BaseCondition with ValueEquals {
+case class DropLevel(op: Operator, level: Int) extends Writable {
   if (level < 0 || level > 100) throw new InvalidArgument
   def this(level: Int) = this("=", level)
 

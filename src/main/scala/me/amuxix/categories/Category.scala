@@ -1,7 +1,10 @@
 package me.amuxix.categories
 
-import me.amuxix.FilterLevel
+import me.amuxix.{Block, FilterLevel}
 
 abstract class Category {
-  def createCategory(filterLevel: FilterLevel): Unit
+  def categoryBlocks(filterLevel: FilterLevel): Seq[Block]
+  def writeCategory(filterLevel: FilterLevel): String = {
+    categoryBlocks(filterLevel).map(_.write).mkString("\n")
+  }
 }

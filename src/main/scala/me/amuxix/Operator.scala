@@ -1,7 +1,7 @@
 package me.amuxix
 
 sealed abstract class Operator(protected[Operator] val text: String = "") {
-  val print: String = this match {
+  def print: String = this match {
     case Greater | GreaterOrEqual | Lesser | LesserOrEqual => this.text + " "
     case _ => ""
   }
