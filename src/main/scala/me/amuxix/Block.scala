@@ -5,6 +5,7 @@ import me.amuxix.conditions.Condition
 
 object Block {
   def apply(condition: Condition, action: Action): Block = new Block(condition, action, true)
+  def apply(condition: Condition): Block = new Block(condition, Action(), true)
 }
 
 case class Block(condition: Condition, action: Action, show: Boolean) {

@@ -6,7 +6,7 @@ import me.amuxix._
   * Created by Amuxix on 03/03/2017.
   */
 sealed class R extends Named
-object Normal extends R
+object White extends R
 object Magic extends R
 object Rare extends R
 object Unique extends R
