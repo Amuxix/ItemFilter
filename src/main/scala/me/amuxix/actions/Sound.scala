@@ -12,6 +12,8 @@ object Sound {
   def apply(soundNumber: Int): Sound = new Sound(soundNumber)
 
   val myths = Sound(5, 300)
+  val sixLinks = Sound(9, 300)
+  val gems = Sound(4, 100)
 
 }
 sealed case class Sound(soundNumber: Int, volume: Int) extends Writable {
