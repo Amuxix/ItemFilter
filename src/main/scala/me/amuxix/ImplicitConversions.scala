@@ -27,6 +27,7 @@ trait ImplicitConversions {
   implicit def tuple22OptionQuality(tuple: (String, Int)): Option[Quality] = Some(Quality(tuple._1, tuple._2))
   implicit def tuple22OptionRarity(tuple: (Operator, R)): Option[Rarity] = Some(Rarity(tuple._1, tuple._2))
   implicit def tuple22OptionRarity(tuple: (String, R)): Option[Rarity] = Some(Rarity(tuple._1, tuple._2))
+  implicit def r2OptionRarity(r: R): Option[Rarity] = Some(Rarity(r))
   implicit def tuple22OptionSockets(tuple: (Operator, Int)): Option[Sockets] = Some(Sockets(tuple._1, tuple._2))
   implicit def tuple22OptionSockets(tuple: (String, Int)): Option[Sockets] = Some(Sockets(tuple._1, tuple._2))
   implicit def int2OptionSockets(sockets: Int): Option[Sockets] = Some(Sockets(sockets))
