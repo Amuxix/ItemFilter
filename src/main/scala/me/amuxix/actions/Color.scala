@@ -13,6 +13,8 @@ object Color {
   val black = Color(0, 0, 0)
   val white = Color(255, 255, 255)
   val red = Color(255, 0, 0)
+  val darkRed = Color(150, 0, 0)
+  val teal = Color(27, 162, 155)
 }
 
 sealed case class Color(r: Int, g: Int, b: Int, a: Int) {
