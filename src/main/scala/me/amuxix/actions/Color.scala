@@ -10,6 +10,8 @@ object Color {
 
   def apply(r: Int, g: Int, b: Int): Color = new Color(r, g, b)
 
+  val unique = Color(175, 96, 37)
+
   val black = Color(0, 0, 0)
   val white = Color(255, 255, 255)
   val red = Color(255, 0, 0)
@@ -25,6 +27,8 @@ object Color {
   val lightYellow = Color(255, 255, 119)
   val goodYellow = Color(255, 255, 0)
   val blue = Color(27, 66, 130)
+  val divinationBlue = Color(14, 186, 255)
+  val darkerDivinationBlue = Color(0, 155, 218)
 }
 
 sealed case class Color(r: Int, g: Int, b: Int, a: Int) {

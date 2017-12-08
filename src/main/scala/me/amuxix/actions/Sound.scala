@@ -15,10 +15,12 @@ object Sound {
   val epic = Sound(8, 200)
   val rare = Sound(6, 200)
   val sixLinks = Sound(9, 300)
-  val gems = Sound(4, 100)
-  val t2Currency = Sound(10, 100)
+  val gems = Sound(4)
+  val t2Currency = Sound(10)
   val t3Currency: Sound = rare.quieter
-  val pieces = Sound(8, 100)
+  val pieces = Sound(8)
+  val maps = Sound(1, 200)
+  val divCards = Sound(7)
 
 }
 sealed case class Sound(soundNumber: Int, volume: Int) extends Writable {
