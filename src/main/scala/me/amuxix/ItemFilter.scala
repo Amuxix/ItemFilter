@@ -1,20 +1,9 @@
 package me.amuxix
 
-import me.amuxix.actions.{Action, Color}
-import me.amuxix.conditions.Condition
-
 object ItemFilter extends ImplicitConversions {
-  val yellow = Color(255, 255, 0)
-  val white = Color(255, 255, 255)
 
   def main(args: Array[String]): Unit = {
-    val condition = Condition(
-      base = "One Handed Sword",
-      `class` = "Batata",
-      height = 25,
-    )
-    val block = Block(condition, Action(size = 40), show = true)
-    println(block.write)
+
   }
 
   /*/**

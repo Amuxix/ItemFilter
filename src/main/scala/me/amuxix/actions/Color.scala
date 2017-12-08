@@ -10,6 +10,8 @@ object Color {
 
   def apply(r: Int, g: Int, b: Int): Color = new Color(r, g, b)
 
+  val transparent = Color(0, 0, 0, 0)
+
   val unique = Color(175, 96, 37)
 
   val black = Color(0, 0, 0)
