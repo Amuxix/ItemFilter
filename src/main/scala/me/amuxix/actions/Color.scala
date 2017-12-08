@@ -15,6 +15,16 @@ object Color {
   val red = Color(255, 0, 0)
   val darkRed = Color(150, 0, 0)
   val teal = Color(27, 162, 155)
+  val essence = Color(198, 255, 30)
+  val darkerEssence = Color(174, 234, 0)
+  val slimeGreen = Color(198, 255, 30)
+  val pink = Color(208, 32, 144)
+  val purple = Color(111, 0, 240)
+  val legacyBlue = Color(0, 60, 210)
+  val lightGreen = Color(50, 255, 50, 200)
+  val lightYellow = Color(255, 255, 119)
+  val goodYellow = Color(255, 255, 0)
+  val blue = Color(27, 66, 130)
 }
 
 sealed case class Color(r: Int, g: Int, b: Int, a: Int) {
