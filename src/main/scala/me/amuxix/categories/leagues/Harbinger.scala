@@ -9,7 +9,7 @@ class Harbinger extends Category {
   val t0 = Block(Condition(base = "Mirror Shard", `class` = "Currency"), Action(size = 45, sound = Sound.myths, border = Color.black, text = Color.black, background = Color.lightGreen))
   val t1 = Block(
     Condition(base = Seq("Orb of Annulment", "Orb of Binding", "Orb of Horizons", "Harbinger's Orb", "Engineer's Orb", "Ancient Orb", "Exalted Shard"), `class` = "Currency"),
-    Action(size = 45, sound = Sound.t1Currency, border = Color.black, text = Color.black, background = Color.lightYellow)
+    Action(size = 45, sound = Sound.rare, border = Color.black, text = Color.black, background = Color.lightYellow)
   )
   val t2 = Block(
     Condition(base = Seq("Annulment Shard", "Binding Shard", "Horizon Shard", "Harbinger's Shard", "Engineer's Shard", "Ancient Shard"), `class` = "Currency"),
