@@ -11,8 +11,8 @@ object Chromatic extends Category {
   val large = Block(Condition(socketGroup = "RGB"))
 
   override def categoryBlocks(filterLevel: FilterLevel): Seq[Block] = filterLevel match {
-    case Reduced => Seq()
-    case Normal => Seq(smallArmor, smallWeapon, medium, large.hidden)
-    case Leveling => Seq(smallArmor, smallWeapon, medium.hidden, large.hidden)
+    case Reduced => Seq(smallArmor.hidden, smallWeapon.hidden, medium.hidden, large.hidden)
+    case Normal => Seq(smallArmor, smallWeapon, medium.hidden, large.hidden)
+    case Racing => Seq(smallArmor, smallWeapon, medium, large.hidden)
   }
 }
