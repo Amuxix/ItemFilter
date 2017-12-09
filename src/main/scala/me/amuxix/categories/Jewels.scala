@@ -4,7 +4,7 @@ import me.amuxix.actions.Action
 import me.amuxix.conditions.{Condition, Rare}
 import me.amuxix.{Block, FilterLevel}
 
-class Jewels extends Category {
+object Jewels extends Category {
   val rare = Block(Condition(`class`= "Jewel", rarity = Rare), Action(size = 40))
   val rest = Block(Condition(`class`= "Jewel"), Action(size = 35))
 

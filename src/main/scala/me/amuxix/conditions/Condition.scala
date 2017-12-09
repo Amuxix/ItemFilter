@@ -2,7 +2,7 @@ package me.amuxix.conditions
 
 import me.amuxix.Writable
 
-object Condition {
+/*object Condition {
   def apply(cenas: Writable*): Condition = {
     var baseType = Option.empty[BaseType]
     var `class` = Option.empty[ItemClass]
@@ -40,7 +40,7 @@ object Condition {
     }
     Condition(baseType)
   }
-}
+}*/
 
 case class Condition(base: Option[BaseType] = None,
                      `class`: Option[ItemClass] = None,

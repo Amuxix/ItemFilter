@@ -3,18 +3,15 @@ package me.amuxix.categories
 import me.amuxix.actions.Action
 import me.amuxix.actions.Color._
 import me.amuxix.actions.Sound.maps
-import me.amuxix.categories.Maps._
 import me.amuxix.conditions.{Condition, Unique}
 import me.amuxix.{Block, FilterLevel}
 
 
-object Maps {
+object Maps extends Category {
   val redMapsMinDropLevel = 79
   val yellowMapsMinDropLevel = 74
   val whiteMapsMinDropLevel = 58
-}
 
-class Maps extends Category {
   private val mapCondition = (level: Int) => Condition(`class` = "Maps", dropLevel = (">=", level))
   private val uniqueMapCondition = (level: Int) => Condition(`class` = "Maps", dropLevel = (">=", level), rarity = Unique)
 

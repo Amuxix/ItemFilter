@@ -25,7 +25,7 @@ object Sound {
 }
 sealed case class Sound(soundNumber: Int, volume: Int) extends Writable {
   def this(soundNumber: Int) = this(soundNumber, 100)
-  if (soundNumber < 0 || soundNumber > 9 || volume < 0 || volume > 300) throw new InvalidArgument
+  if (soundNumber < 0 || soundNumber > 12 || volume < 0 || volume > 300) throw new InvalidArgument
 
   def setVolume(volume: Int): Sound = Sound(this.soundNumber, volume)
 

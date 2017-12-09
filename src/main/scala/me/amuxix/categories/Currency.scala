@@ -4,7 +4,7 @@ import me.amuxix._
 import me.amuxix.actions.{Action, Color, Sound}
 import me.amuxix.conditions.Condition
 
-class Currency extends Category {
+object Currency extends Category {
   val t0MissingSound: Sound => Action = (sound: Sound) => Action(size = 45, sound = sound, background = Color.lightGreen, text = Color.black, border = Color.black)
   val t1MissingSound: Sound => Action = (sound: Sound) => Action(size = 45, sound = sound, background = Color.black, text = Color.goodYellow, border = Color.goodYellow)
 

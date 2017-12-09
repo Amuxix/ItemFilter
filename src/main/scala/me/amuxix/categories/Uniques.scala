@@ -6,7 +6,7 @@ import me.amuxix.actions.Sound._
 import me.amuxix.conditions.{Condition, Unique}
 import me.amuxix.{Block, FilterLevel}
 
-class Uniques extends Category {
+object Uniques extends Category {
   val tabula = Block(
     Condition(base = "Simple Robe", rarity = Unique, socketGroup = "WWWWWW"),
     Action(size = 45, sound = epic, background = unique, text = black)

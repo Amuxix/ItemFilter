@@ -1,34 +1,15 @@
 package me.amuxix
 
-object ItemFilter extends ImplicitConversions {
+import me.amuxix.categories._
+import me.amuxix.categories.leagues._
+import me.amuxix.categories.recipes.{Chisel, Chromatic}
 
+object ItemFilter {
   def main(args: Array[String]): Unit = {
-
+    val a = Seq(
+      Myths, General, Gems, Essence, Talisman, Breach, Legacy, Harbinger, Currency, Maps,
+      Uniques, Jewels, DivinationCards, Atlas, Chisel, Chromatic, Flasks, LastCall
+    ).map(_.writeCategory(Normal))
+    println(a.mkString("", "\n", "\nHide"))
   }
-
-  /*/**
-    * Write a block for item filter
-    * @param show Is this a block to show items or to hide?
-    * @param conditions Conditions this block uses
-    * @param actions Actions this block performs
-    * @return
-    */
-  def block(show: Boolean, conditions: Seq[BaseCondition], actions: Seq[BaseAction]): String = {
-    if (show) {
-      "Show"
-    } else {
-      "Hide"
-    } + "\n" + conditions.map(_.toString + "\n") + actions.map(_.toString + "\n")
-  }
-
-  def block(conditions: Seq[BaseCondition], actions: Seq[BaseAction]): String = block(show = true, conditions, actions)
-
-  def separator(text: String): String = {
-    val equals = "=" * ((117 - text.length) / 2)
-    s"$equals $text $equals"
-  }
-  private val itemFilter = {
-    separator("Fishing Rods")
-    block(Seq[BaseCondition](FishingRods), Seq(FontSize(45), Sound(5, 300), BorderColor(yellow), TextColor(yellow)))
-  }*/
 }
