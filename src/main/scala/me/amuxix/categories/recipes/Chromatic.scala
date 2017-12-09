@@ -4,7 +4,7 @@ import me.amuxix._
 import me.amuxix.categories.Category
 import me.amuxix.conditions.Condition
 
-class Chromatic extends Category {
+object Chromatic extends Category {
   val smallArmor = Block(Condition(socketGroup = "RGB", height = 2, width = 2))
   val smallWeapon = Block(Condition(socketGroup = "RGB", height = 3, width = 1))
   val medium = Block(Condition(socketGroup = "RGB", height = ("<=", 3), width = ("<=", 2)))

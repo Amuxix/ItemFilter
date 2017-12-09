@@ -6,7 +6,7 @@ import me.amuxix.actions.Sound._
 import me.amuxix.conditions.Condition
 import me.amuxix.{Block, FilterLevel}
 
-class DivinationCards extends Category {
+object DivinationCards extends Category {
   val t0 = Block(
     Condition(
       base = Seq("House of Mirrors", "The Doctor", "The Fiend", "Mawr Blaidd", "The Last One Standing", "The Offering", "The Spark and the Flame", "The Immortal", "The Ethereal", "Hunter's Reward", "Abandoned Wealth", "Bowyer's Dream", "The Celestial Justicar", "The Queen", "The Polymath", "Wealth and Power", "The Vast", "The Enlightened", "The Brittle Emperor", "The King's Heart", "Pride Before the Fall", "The Artist", "The Hunger"),

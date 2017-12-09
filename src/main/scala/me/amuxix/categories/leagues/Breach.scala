@@ -5,7 +5,7 @@ import me.amuxix.categories.Category
 import me.amuxix.conditions.Condition
 import me.amuxix.{Block, FilterLevel}
 
-class Breach extends Category {
+object Breach extends Category {
   val action = Action(size = 45, border = Color.darkRed, background = Color.black, text = Color.purple)
 
   val blessing = Condition(base = "Blessing of")

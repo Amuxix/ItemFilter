@@ -5,7 +5,7 @@ import me.amuxix.categories.Category
 import me.amuxix.conditions.Condition
 import me.amuxix.{Block, FilterLevel, Reduced}
 
-class Harbinger extends Category {
+object Harbinger extends Category {
   val t0 = Block(Condition(base = "Mirror Shard", `class` = "Currency"), Action(size = 45, sound = Sound.myths, border = Color.black, text = Color.black, background = Color.lightGreen))
   val t1 = Block(
     Condition(base = Seq("Orb of Annulment", "Orb of Binding", "Orb of Horizons", "Harbinger's Orb", "Engineer's Orb", "Ancient Orb", "Exalted Shard"), `class` = "Currency"),

@@ -4,7 +4,7 @@ import me.amuxix.actions.{Action, Color, Sound}
 import me.amuxix.conditions.Condition
 import me.amuxix.{Block, FilterLevel}
 
-class Gems extends Category {
+object Gems extends Category {
   val vaalGems = Block(Condition(base = "Vaal", `class`= "Gem"), Action(size = 40, text = Color.red, border = Color.red))
 
   val valuable = Block(

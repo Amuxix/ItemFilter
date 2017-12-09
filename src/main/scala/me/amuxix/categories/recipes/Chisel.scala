@@ -4,7 +4,7 @@ import me.amuxix.categories.Category
 import me.amuxix.conditions.{Condition, Magic, White}
 import me.amuxix.{Block, FilterLevel, Reduced}
 
-class Chisel extends Category {
+object Chisel extends Category {
   val done = Block(Condition(base = Seq("Gavel", "Rock Breaker", "Stone Hammer"), quality = 20))
   val magic = Block(Condition(base = Seq("Gavel", "Rock Breaker", "Stone Hammer"), rarity = (">=", Magic), quality = 16))
   val white = Block(Condition(base = Seq("Gavel", "Rock Breaker", "Stone Hammer"), rarity = White, quality = 16))

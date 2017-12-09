@@ -5,7 +5,7 @@ import me.amuxix.categories.Category
 import me.amuxix.conditions.Condition
 import me.amuxix.{Block, FilterLevel}
 
-class Essence extends Category {
+object Essence extends Category {
   val top = Block(
     Condition(base = Seq("Deafening Essence", "Essence of Hysteria", "Essence of Insanity", "Essence of Horror", "Essence of Delirium"), `class` = "Currency"),
     Action(size = 45, border = Color.black, background = Color.essence, text = Color.black)

@@ -4,7 +4,7 @@ import me.amuxix.actions.{Action, Color, Sound}
 import me.amuxix.conditions.Condition
 import me.amuxix.{Block, FilterLevel}
 
-class Myths extends Category {
+object Myths extends Category {
   val bigAction = Action(size = 45, sound = Sound.myths, border = Color.red, background = Color.white, text = Color.red)
 
   val albinoRhoaFeather = Condition(base = "Albino Rhoa Feather")
