@@ -1,0 +1,40 @@
+package me.amuxix.items
+
+sealed abstract class LifeFlask(dropLevel: Int) extends Item(dropLevel, "Life Flasks")
+
+object SmallLifeFlask extends LifeFlask(1)
+object MediumLifeFlask extends LifeFlask(3)
+object LargeLifeFlask extends LifeFlask(6)
+object GreaterLifeFlask extends LifeFlask(12)
+object GrandLifeFlask extends LifeFlask(18)
+object GiantLifeFlask extends LifeFlask(24)
+object ColossalLifeFlask extends LifeFlask(30)
+object SacredLifeFlask extends LifeFlask(36)
+object HallowedLifeFlask extends LifeFlask(42)
+object SanctifiedLifeFlask extends LifeFlask(50)
+object DivineLifeFlask extends LifeFlask(60)
+object EternalLifeFlask extends LifeFlask(65)
+
+sealed abstract class ManaFlask(dropLevel: Int) extends Item(dropLevel, "Mana Flasks")
+
+object SmallManaFlask extends ManaFlask(1)
+object MediumManaFlask extends ManaFlask(3)
+object LargeManaFlask extends ManaFlask(6)
+object GreaterManaFlask extends ManaFlask(12)
+object GrandManaFlask extends ManaFlask(18)
+object GiantManaFlask extends ManaFlask(24)
+object ColossalManaFlask extends ManaFlask(30)
+object SacredManaFlask extends ManaFlask(36)
+object HallowedManaFlask extends ManaFlask(42)
+object SanctifiedManaFlask extends ManaFlask(50)
+object DivineManaFlask extends ManaFlask(60)
+object EternalManaFlask extends ManaFlask(65)
+
+sealed abstract class HybridFlask(dropLevel: Int) extends Item(dropLevel, "Hybrid Flasks")
+
+object SmallHybridFlask extends HybridFlask(10)
+object MediumHybridFlask extends HybridFlask(20)
+object LargeHybridFlask extends HybridFlask(30)
+object ColossalHybridFlask extends HybridFlask(40)
+object SacredHybridFlask extends HybridFlask(50)
+object HallowedHybridFlask extends HybridFlask(60)
