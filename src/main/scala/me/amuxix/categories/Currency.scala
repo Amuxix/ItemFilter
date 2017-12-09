@@ -19,7 +19,7 @@ object Currency extends Category {
   val regal = Block(Condition(base = "Regal Orb", `class` = "Currency"), t0MissingSound(Sound.rare))
   val vaal = Block(Condition(base = "Vaal Orb", `class` = "Currency"), t0MissingSound(Sound.rare))
   val fusing = Block(Condition(base = "Orb of Fusing", `class` = "Currency"), t0MissingSound(Sound.rare))
-  val remainingT1 = Block(Condition(base = Seq("Silver Coin", "Orb of Regret", "Gemcutter's Prism", "Cartographer's Sextant", "Divine Vessel"), `class` = "Currency"), t0MissingSound(Sound.rare.quieter))
+  val remainingT1 = Block(Condition(base = Seq("Silver Coin", "Orb of Regret", "Gemcutter's Prism", "Cartographer's Sextant", "Divine Vessel", "Stacked Deck"), `class` = "Currency"), t0MissingSound(Sound.rare.quieter))
   val t1: Seq[Block] = Seq(chaos, regal, vaal, fusing, remainingT1)
 
   val t2 = Block(
@@ -49,6 +49,6 @@ object Currency extends Category {
   override def categoryBlocks(filterLevel: FilterLevel): Seq[Block] = filterLevel match {
     case Reduced => t0 ++ t1 ++ Seq(t2, t3.hidden, t4.hidden)
     case Normal => t0 ++ t1 ++ Seq(t2, t3, t4.hidden)
-    case Leveling => t0 ++ t1 ++ Seq(t2, t3, t4)
+    case Racing => t0 ++ t1 ++ Seq(t2, t3, t4)
   }
 }

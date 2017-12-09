@@ -19,7 +19,7 @@ abstract class SetRecipe(minItemLevel: Int, color: Color) extends Category {
   )
 
   override def categoryBlocks(filterLevel: FilterLevel): Seq[Block] = filterLevel match {
-    case Reduced => Seq(accessories)
+    case Reduced => Seq(weapons.hidden, armor.hidden, accessories)
     case _ => Seq(weapons, armor, accessories)
   }
 }
