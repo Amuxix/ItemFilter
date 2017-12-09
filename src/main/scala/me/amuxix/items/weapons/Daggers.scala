@@ -1,0 +1,31 @@
+package me.amuxix.items.weapons
+
+import me.amuxix.items.Item
+
+sealed abstract class Dagger(dropLevel: Int) extends Item(dropLevel, "Dagger")
+
+object GlassShank extends Dagger(1)
+object SkinningKnife extends Dagger(5)
+object CarvingKnife extends Dagger(10)
+object Stiletto extends Dagger(15)
+object BootKnife extends Dagger(20)
+object CopperKris extends Dagger(24)
+object Skean extends Dagger(28)
+object ImpDagger extends Dagger(32)
+object FlayingKnife extends Dagger(35)
+object ProngDagger extends Dagger(36)
+object ButcherKnife extends Dagger(38)
+object Poignard extends Dagger(41)
+object BootBlade extends Dagger(44)
+object GoldenKris extends Dagger(47)
+object RoyalSkean extends Dagger(50)
+object FiendDagger extends Dagger(53)
+object Trisula extends Dagger(55)
+object GuttingKnife extends Dagger(56)
+object SlaughterKnife extends Dagger(58)
+object Ambusher extends Dagger(60)
+object EzomyteDagger extends Dagger(62)
+object PlatinumKris extends Dagger(64)
+object ImperialSkean extends Dagger(66)
+object DemonDagger extends Dagger(68)
+object Sai extends Dagger(70)

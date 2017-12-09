@@ -1,0 +1,31 @@
+package me.amuxix.items.weapons
+
+import me.amuxix.items.Item
+
+sealed abstract class Bow(dropLevel: Int) extends Item(dropLevel, "Bow")
+
+object CrudeBow extends Bow(1)
+object ShortBow extends Bow(5)
+object LongBow extends Bow(9)
+object CompositeBow extends Bow(14)
+object RecurveBow extends Bow(18)
+object BoneBow extends Bow(23)
+object RoyalBow extends Bow(28)
+object DeathBow extends Bow(32)
+object GroveBow extends Bow(35)
+object ReflexBow extends Bow(36)
+object DecurveBow extends Bow(38)
+object CompoundBow extends Bow(41)
+object SniperBow extends Bow(44)
+object IvoryBow extends Bow(47)
+object HighbornBow extends Bow(50)
+object DecimationBow extends Bow(53)
+object ThicketBow extends Bow(56)
+object SteelwoodBow extends Bow(57)
+object CitadelBow extends Bow(58)
+object RangerBow extends Bow(60)
+object AssassinBow extends Bow(62)
+object SpineBow extends Bow(64)
+object ImperialBow extends Bow(66)
+object HarbingerBow extends Bow(68)
+object MarakethBow extends Bow(71)
