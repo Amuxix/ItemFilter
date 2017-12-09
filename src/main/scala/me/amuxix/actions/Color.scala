@@ -1,6 +1,7 @@
 package me.amuxix.actions
 
 import me.amuxix.InvalidArgument
+import me.amuxix.actions.Color.{darknessFactor, lightenFactor}
 
 /**
   * Created by Amuxix on 03/03/2017.
@@ -19,18 +20,19 @@ object Color {
   val red = Color(255, 0, 0)
   val darkRed = Color(150, 0, 0)
   val teal = Color(27, 162, 155)
-  val essence = Color(198, 255, 30)
-  val darkerEssence = Color(174, 234, 0)
   val slimeGreen = Color(198, 255, 30)
   val pink = Color(208, 32, 144)
   val purple = Color(111, 0, 240)
   val legacyBlue = Color(0, 60, 210)
   val lightGreen = Color(50, 255, 50, 200)
-  val lightYellow = Color(255, 255, 119)
   val goodYellow = Color(255, 255, 0)
   val blue = Color(27, 66, 130)
   val divinationBlue = Color(14, 186, 255)
-  val darkerDivinationBlue = Color(0, 155, 218)
+  val chaosBlue = Color(0, 64, 255)
+  val regalPurple = Color(82, 0, 155)
+
+  private val darknessFactor = .15f
+  private val lightenFactor = .5f
 }
 
 sealed case class Color(r: Int, g: Int, b: Int, a: Int) {
@@ -41,6 +43,13 @@ sealed case class Color(r: Int, g: Int, b: Int, a: Int) {
       throw new InvalidArgument
     }
   }
+
+  private def darken(color: Int): Int = Math.round(color * (1 - darknessFactor))
+  private def lighten(color: Int): Int = Math.round(color + ((255 - color) * lightenFactor))
+
+  def darken: Color = Color(darken(r), darken(g), darken(b), a)
+  def lighten: Color = Color(lighten(r), lighten(g), lighten(b), a)
+
 
   override def toString: String = s"$r $g $b${if (a < 255) " " + a else ""}"
 }

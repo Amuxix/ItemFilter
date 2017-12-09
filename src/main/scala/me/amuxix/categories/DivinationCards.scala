@@ -29,7 +29,7 @@ object DivinationCards extends Category {
     Action(
       size = 40,
       sound = epic.quieter,
-      background = darkerDivinationBlue,
+      background = divinationBlue.darken,
       text = black,
       border = black,
     )
