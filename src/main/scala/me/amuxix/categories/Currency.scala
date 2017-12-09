@@ -27,7 +27,7 @@ object Currency extends Category {
       base = Seq("Blessed Orb", "Cartographer's Chisel", "Glassblower's Bauble", "Orb of Alchemy", "Orb of Chance", "Orb of Scouring", "Jeweller's Orb", "Perandus Coin"),
       `class` = "Currency",
     ),
-    Action(size = 45, sound = Sound.rare.quieter, background = Color.black, text = Color.lightYellow, border = Color.lightYellow)
+    Action(size = 45, sound = Sound.rare.quieter, background = Color.black, text = Color.goodYellow.lighten, border = Color.goodYellow.lighten)
   )
 
   val t3 = Block(
@@ -35,7 +35,7 @@ object Currency extends Category {
       base = Seq("Armourer's Scrap", "Blacksmith's Whetstone", "Chromatic Orb", "Orb of Alteration", "Orb of Augmentation", "Orb of Transmutation"),
       `class` = "Currency",
     ),
-    Action(size = 45, background = Color.black, text = Color.lightYellow, border = Color.lightYellow)
+    Action(size = 45, background = Color.black, text = Color.goodYellow.lighten, border = Color.goodYellow.lighten)
   )
 
   val t4 = Block(
@@ -43,7 +43,7 @@ object Currency extends Category {
       base = Seq("Portal Scroll", "Scroll of Wisdom", "Alchemy Shard", "Alteration Shard", "Scroll Fragment", "Transmutation Shard"),
       `class` = "Currency",
     ),
-    Action(size = 40, background = Color.black, text = Color.lightYellow)
+    Action(size = 40, background = Color.black, text = Color.goodYellow.lighten)
   )
 
   override def categoryBlocks(filterLevel: FilterLevel): Seq[Block] = filterLevel match {
