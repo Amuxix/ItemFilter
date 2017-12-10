@@ -19,7 +19,7 @@ abstract case class Item(dropLevel: Int, `class`: ItemClass, minDropBuffer: Int 
   val blocksOfBestItemsForZoneLevel: Block = Block(
     Condition(
       base = Some(this.baseType),
-      itemLevel = if (this.dropLevel > 70) None else Some(ItemLevel("<=", minDropBuffer max this.dropLevel / 10)),
+      itemLevel = if (this.dropLevel > 70) None else Some(ItemLevel("<=", this.dropLevel + minDropBuffer max this.dropLevel / 10)),
       rarity = Rare
     ),
     Action(
