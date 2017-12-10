@@ -5,11 +5,11 @@ import me.amuxix._
 /**
   * Created by Amuxix on 03/03/2017.
   */
-sealed class R extends Named
-object White extends R
-object Magic extends R
-object Rare extends R
-object Unique extends R
+sealed class R(val name: String)
+object White extends R("Normal")
+object Magic extends R("Magic")
+object Rare extends R("Rare")
+object Unique extends R("Unique")
 
 object Rarity {
   implicit def tuple22Rarity(tuple: (Operator, R)): Rarity = Rarity(tuple._1, tuple._2)

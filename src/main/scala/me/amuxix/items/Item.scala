@@ -1,24 +1,52 @@
 package me.amuxix.items
 
-import me.amuxix.Named
-import me.amuxix.conditions.{BaseType, DropLevel, ItemClass}
+import me.amuxix.actions.Action
+import me.amuxix.actions.Color.{darkRed, goodYellow}
+import me.amuxix.conditions._
 import me.amuxix.items.accessories._
 import me.amuxix.items.armour._
 import me.amuxix.items.weapons._
+import me.amuxix.{Block, ImplicitConversions, Named}
 
-abstract case class Item(dropLevel: DropLevel, `class`: ItemClass) extends Named {
-  def this(dropLevel: Int, `class`: String) = this(DropLevel(dropLevel), ItemClass(`class`))
+abstract case class Item(dropLevel: Int, `class`: ItemClass, minDropBuffer: Int = 5) extends Named with ImplicitConversions {
+  def this(dropLevel: Int, `class`: String, minDropBuffer: Int) = this(dropLevel, ItemClass(`class`), minDropBuffer)
+  def this(dropLevel: Int, `class`: String) = this(dropLevel, ItemClass(`class`))
 
-  val baseType: BaseType = BaseType(name.replaceAll("([a-z])([A-Z])", "$1 $2"))
+  val bestModsDropLevel: Int = 84
 
-  //def block()
+  def baseType: BaseType = BaseType(name.replaceAll("([a-z])([A-Z])", "$1 $2"))
+
+  val blocksOfBestItemsForZoneLevel: Block = Block(
+    Condition(
+      base = Some(this.baseType),
+      itemLevel = if (this.dropLevel > 70) None else Some(ItemLevel("<=", minDropBuffer max this.dropLevel / 10)),
+      rarity = Rare
+    ),
+    Action(
+      textColor = goodYellow,
+      borderColor = goodYellow
+    )
+  )
 }
 
-abstract class Armour(dropLevel: Int, `class`: String) extends Item(dropLevel, `class`)
+sealed trait BestBaseBlocks extends ImplicitConversions {
+  this: Item =>
+  val rare: Block = Block(
+    Condition(base = Some(this.baseType), itemLevel = (">=", this.bestModsDropLevel), rarity = Rare),
+    Action(textColor = goodYellow, backgroundColor = darkRed, borderColor = goodYellow)
+  )
+  val craftting: Block = Block(
+    Condition(base = Some(this.baseType), itemLevel = (">=", this.bestModsDropLevel), rarity = ("<", Rare))
+  ).hidden
+}
 
-abstract class Weapon(dropLevel: Int, `class`: String) extends Item(dropLevel, `class`)
+abstract class Armour(dropLevel: Int, `class`: String) extends Item(dropLevel, `class`) with BestBaseBlocks
 
-abstract class Accessories(dropLevel: Int, `class`: String) extends Item(dropLevel, `class`)
+abstract class Weapon(dropLevel: Int, `class`: String) extends Item(dropLevel, `class`) with BestBaseBlocks {
+  override val bestModsDropLevel: Int = 83
+}
+
+abstract class Accessory(dropLevel: Int, `class`: String) extends Item(dropLevel, `class`)
 
 object Item {
   val oneHandedAxes: Seq[OneHandedAxe] = Seq(RustedHatchet, JadeHatchet, BoardingAxe, Cleaver, BroadAxe, ArmingAxe, DecorativeAxe, SpectralAxe, EtchedHatchet, JasperAxe, Tomahawk, WristChopper, WarAxe, ChestSplitter, CeremonialAxe, WraithAxe, EngravedHatchet, KaruiAxe, SiegeAxe, ReaverAxe, ButcherAxe, VaalHatchet, RoyalAxe, InfernalAxe, RunicHatchet)
@@ -34,9 +62,7 @@ object Item {
   val twoHandedSwords: Seq[TwoHandedSword] = Seq(CorrodedBlade, Longsword, BastardSword, TwoHandedSword, EtchedGreatsword, OrnateSword, SpectralSword, CurvedBlade, ButcherSword, FootmanSword, HighlandBlade, EngravedGreatsword, TigerSword, WraithSword, LitheBlade, HeadmansSword, ReaverSword, EzomyteBlade, VaalGreatsword, LionSword, InfernalSword, ExquisiteBlade)
   val thrustingOneHandedSword: Seq[ThrustingOneHandedSword] = Seq(RustedSpike, WhaleboneRapier, BatteredFoil, BasketRapier, JaggedFoil, AntiqueRapier, ElegantFoil, ThornRapier, Smallsword, WyrmboneRapier, BurnishedFoil, Estoc, SerratedFoil, PrimevalRapier, FancyFoil, ApexRapier, CourtesanSword, DragonboneRapier, TemperedFoil, Pecoraro, SpiraledFoil, VaalRapier, JewelledFoil, HarpyRapier, DragoonSword)
   val wands: Seq[Wand] = Seq(DriftwoodWand, GoatsHorn, CarvedWand, QuartzWand, SpiraledWand, SageWand, PaganWand, FaunsHorn, EngravedWand, CrystalWand, SerpentWand, OmenWand, HeathenWand, DemonsHorn, ImbuedWand, OpalWand, TornadoWand, ProphecyWand, ProfaneWand)
-
   val weapons: Seq[Seq[Weapon]] = Seq(oneHandedAxes, twoHandedAxes, bows, claws, daggers, oneHandedMaces, sceptres, staves, oneHandedSword, twoHandedSwords, thrustingOneHandedSword, wands)
-
 
   val armourBodyArmours: Seq[BodyArmour] = Seq(PlateVest, Chestplate, CopperPlate, WarPlate, FullPlate, ArenaPlate, LordlyPlate, BronzePlate, BattlePlate, SunPlate, ColosseumPlate, MajesticPlate, GoldenPlate, CrusaderPlate, AstralPlate, GladiatorPlate, GloriousPlate)
   val evasionBodyArmours: Seq[BodyArmour] = Seq(ShabbyJerkin, StrappedLeather, BuckskinTunic, WildLeather, FullLeather, SunLeather, ThiefsGarb, EelskinTunic, FrontierLeather, GloriousLeather, CoronalLeather, CutthroatsGarb, SharkskinTunic, DestinyLeather, ExquisiteLeather, ZodiacLeather, AssassinsGarb)
@@ -50,8 +76,8 @@ object Item {
   val evasionBoots: Seq[Boots] = Seq(RawhideBoots, GoathideBoots, DeerskinBoots, NubuckBoots, EelskinBoots, SharkskinBoots, ShagreenBoots, StealthBoots, SlinkBoots)
   val energyShieldBoots: Seq[Boots] = Seq(WoolShoes, VelvetSlippers, SilkSlippers, ScholarBoots, SatinSlippers, SamiteSlippers, ConjurerBoots, ArcanistSlippers, SorcererBoots)
   val armourEvasionBoots: Seq[Boots] = Seq(LeatherscaleBoots, IronscaleBoots, BronzescaleBoots, SteelscaleBoots, SerpentscaleBoots, WyrmscaleBoots, HydrascaleBoots, DragonscaleBoots, TwoTonedBoots)
-  val armourEnergyShieldBoots: Seq[Boots] = Seq(ChainBoots, RingmailBoots, MeshBoots, RivetedBoots, ZealotBoots, SoldierBoots, LegionBoots, CrusaderBoots, TwoTonedBoots2)
-  val evasionEnergyShieldBoots: Seq[Boots] = Seq(WrappedBoots, StrappedBoots, ClaspedBoots, ShackledBoots, TrapperBoots, AmbushBoots, CarnalBoots, AssassinsBoots, MurderBoots, TwoTonedBoots3)
+  val armourEnergyShieldBoots: Seq[Boots] = Seq(ChainBoots, RingmailBoots, MeshBoots, RivetedBoots, ZealotBoots, SoldierBoots, LegionBoots, CrusaderBoots)
+  val evasionEnergyShieldBoots: Seq[Boots] = Seq(WrappedBoots, StrappedBoots, ClaspedBoots, ShackledBoots, TrapperBoots, AmbushBoots, CarnalBoots, AssassinsBoots, MurderBoots)
   val boots: Seq[Seq[Boots]] = Seq(armourBoots, evasionBoots, energyShieldBoots, armourEvasionBoots, armourEnergyShieldBoots, evasionEnergyShieldBoots)
 
   val armourGloves: Seq[Gloves] = Seq(IronGauntlets, PlatedGauntlets, BronzeGauntlets, SteelGauntlets, AntiqueGauntlets, AncientGauntlets, GoliathGauntlets, VaalGauntlets, TitanGauntlets, SpikedGloves)
@@ -78,23 +104,24 @@ object Item {
   val evasionEnergyShieldShields: Seq[Shield] = Seq(SpikedBundle, DriftwoodSpikedShield, AlloyedSpikedShield, BurnishedSpikedShield, OrnateSpikedShield, RedwoodSpikedShield, CompoundSpikedShield, PolishedSpikedShield, SovereignSpikedShield, AlderSpikedShield, EzomyteSpikedShield, MirroredSpikedShield, SupremeSpikedShield)
   val shields: Seq[Seq[Shield]] = Seq(armourShields, evasionShields, energyShieldShields, armourEvasionShields, armourEnergyShieldShields, evasionEnergyShieldShields)
 
+  val quivers: Seq[Quiver] = Seq(TwoPointArrowQuiver, SerratedArrowQuiver, SharktoothArrowQuiver, BluntArrowQuiver, FireArrowQuiver, BroadheadArrowQuiver, PenetratingArrowQuiver, SpikePointArrowQuiver)
+
   val armours: Seq[Seq[Armour]] = bodyArmours ++ boots ++ gloves ++ helmets ++ shields
 
 
   val lifeFlasks: Seq[LifeFlask] = Seq(SmallLifeFlask, MediumLifeFlask, LargeLifeFlask, GreaterLifeFlask, GrandLifeFlask, GiantLifeFlask, ColossalLifeFlask, SacredLifeFlask, HallowedLifeFlask, SanctifiedLifeFlask, DivineLifeFlask, EternalLifeFlask)
   val manaFlasks: Seq[ManaFlask] = Seq(SmallManaFlask, MediumManaFlask, LargeManaFlask, GreaterManaFlask, GrandManaFlask, GiantManaFlask, ColossalManaFlask, SacredManaFlask, HallowedManaFlask, SanctifiedManaFlask, DivineManaFlask, EternalManaFlask)
   val hybridFlasks: Seq[HybridFlask] = Seq(SmallHybridFlask, MediumHybridFlask, LargeHybridFlask, ColossalHybridFlask, SacredHybridFlask, HallowedHybridFlask)
+  val flasks: Seq[Seq[Flask]] = Seq(lifeFlasks, manaFlasks, hybridFlasks)
+
   val utilityFlasks: Seq[UtilityFlask] = Seq(QuicksilverFlask, BismuthFlask, StibniteFlask, AmethystFlask, RubyFlask, SapphireFlask, TopazFlask, SilverFlask, AquamarineFlask, GraniteFlask, JadeFlask, QuartzFlask, SulphurFlask, BasaltFlask, DiamondFlask)
 
-  val flasks: Seq[Seq[Flask]] = Seq(lifeFlasks, manaFlasks, hybridFlasks, utilityFlasks)
-
-  val quivers: Seq[Quiver] = Seq(TwoPointArrowQuiver, SerratedArrowQuiver, SharktoothArrowQuiver, BluntArrowQuiver, FireArrowQuiver, BroadheadArrowQuiver, PenetratingArrowQuiver, SpikePointArrowQuiver)
   val amulets: Seq[Amulet] = Seq(CoralAmulet, PauaAmulet, AmberAmulet, JadeAmulet, LapisAmulet, GoldAmulet, AgateAmulet, CitrineAmulet, TurquoiseAmulet, OnyxAmulet, MarbleAmulet, BluePearlAmulet)
   val rings: Seq[Ring] = Seq(CoralRing, IronRing, PauaRing, UnsetRing, SapphireRing, TopazRing, RubyRing, DiamondRing, GoldRing, MoonstoneRing, TwoStoneRing, AmethystRing, PrismaticRing, OpalRing, SteelRing)
   val belts: Seq[Belt] = Seq(ChainBelt, RusticSash, StygianVise, HeavyBelt, LeatherBelt, ClothBelt, StuddedBelt, VanguardBelt, CrystalBelt)
 
-  val accessories: Seq[Accessories] = (amulets ++ rings ++ belts).flatten
+  val accessories: Seq[Accessory] = amulets ++ rings ++ belts
 
-  val bestEquipment: Seq[Item] = (weapons ++ armours).flatMap(_.takeRight(2)) ++ Seq (SpikePointArrowQuiver, BroadheadArrowQuiver)
+  val bestEquipment: Seq[Item with BestBaseBlocks] = (weapons ++ armours).flatMap(_.takeRight(2)) ++ Seq(SpikePointArrowQuiver, BroadheadArrowQuiver)
   val allEquipment: Seq[Item] = (weapons ++ armours).flatten
 }

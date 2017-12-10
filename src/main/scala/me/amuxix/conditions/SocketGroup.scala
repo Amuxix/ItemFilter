@@ -12,5 +12,5 @@ object SocketGroup {
 case class SocketGroup(group: String) extends Writable {
   if (group.contains("[^RBGW ]")) throw new InvalidArgument
 
-  override def print: String = s"Socket $group"
+  override def print: String = s"SocketGroup $group"
 }

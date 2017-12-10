@@ -32,50 +32,50 @@ object WildLeather extends BodyArmour(dropLevel = 25)
 object FullLeather extends BodyArmour(dropLevel = 28)
 object SunLeather extends BodyArmour(dropLevel = 32)
 object ThiefsGarb extends BodyArmour(dropLevel = 35) {
-  override val baseType: BaseType = BaseType("Thief's Garb")
+  override def baseType: BaseType = BaseType("Thief's Garb")
 }
 object EelskinTunic extends BodyArmour(dropLevel = 37)
 object FrontierLeather extends BodyArmour(dropLevel = 41)
 object GloriousLeather extends BodyArmour(dropLevel = 45)
 object CoronalLeather extends BodyArmour(dropLevel = 49)
 object CutthroatsGarb extends BodyArmour(dropLevel = 53) {
-  override val baseType: BaseType = BaseType("Cutthroat's Garb")
+  override def baseType: BaseType = BaseType("Cutthroat's Garb")
 }
 object SharkskinTunic extends BodyArmour(dropLevel = 56)
 object DestinyLeather extends BodyArmour(dropLevel = 59)
 object ExquisiteLeather extends BodyArmour(dropLevel = 62)
 object ZodiacLeather extends BodyArmour(dropLevel = 65)
 object AssassinsGarb extends BodyArmour(dropLevel = 68) {
-  override val baseType: BaseType = BaseType("Assassin's Garb")
+  override def baseType: BaseType = BaseType("Assassin's Garb")
 }
 
 //ES
 object SimpleRobe extends BodyArmour(dropLevel = 3)
 object SilkenVest extends BodyArmour(dropLevel = 11)
 object ScholarsRobe extends BodyArmour(dropLevel = 18) {
-  override val baseType: BaseType = BaseType("Scholar's Robe")
+  override def baseType: BaseType = BaseType("Scholar's Robe")
 }
 object SilkenGarb extends BodyArmour(dropLevel = 25)
 object MagesVestment extends BodyArmour(dropLevel = 28) {
-  override val baseType: BaseType = BaseType("Mage's Vestment")
+  override def baseType: BaseType = BaseType("Mage's Vestment")
 }
 object SilkRobe extends BodyArmour(dropLevel = 32)
 object CabalistRegalia extends BodyArmour(dropLevel = 35)
 object SagesRobe extends BodyArmour(dropLevel = 37) {
-  override val baseType: BaseType = BaseType("Sage's Robe")
+  override def baseType: BaseType = BaseType("Sage's Robe")
 }
 object SilkenWrap extends BodyArmour(dropLevel = 41)
 object ConjurersVestment extends BodyArmour(dropLevel = 45) {
-  override val baseType: BaseType = BaseType("Conjurer's Vestment")
+  override def baseType: BaseType = BaseType("Conjurer's Vestment")
 }
 object SpidersilkRobe extends BodyArmour(dropLevel = 49)
 object DestroyerRegalia extends BodyArmour(dropLevel = 53)
 object SavantsRobe extends BodyArmour(dropLevel = 56) {
-  override val baseType: BaseType = BaseType("Savant's Robe")
+  override def baseType: BaseType = BaseType("Savant's Robe")
 }
 object NecromancerSilks extends BodyArmour(dropLevel = 59)
 object OccultistsVestment extends BodyArmour(dropLevel = 62) {
-  override val baseType: BaseType = BaseType("Occultist's Vestment")
+  override def baseType: BaseType = BaseType("Occultist's Vestment")
 }
 object WidowsilkRobe extends BodyArmour(dropLevel = 65)
 object VaalRegalia extends BodyArmour(dropLevel = 68)
@@ -87,21 +87,21 @@ object ScaleDoublet extends BodyArmour(dropLevel = 17)
 object InfantryBrigandine extends BodyArmour(dropLevel = 21)
 object FullScaleArmour extends BodyArmour(dropLevel = 28)
 object SoldiersBrigandine extends BodyArmour(dropLevel = 32) {
-  override val baseType: BaseType = BaseType("Soldier's Brigandine")
+  override def baseType: BaseType = BaseType("Soldier's Brigandine")
 }
 object FieldLamellar extends BodyArmour(dropLevel = 35)
 object WyrmscaleDoublet extends BodyArmour(dropLevel = 38)
 object HussarBrigandine extends BodyArmour(dropLevel = 42)
 object FullWyrmscale extends BodyArmour(dropLevel = 46)
 object CommandersBrigandine extends BodyArmour(dropLevel = 50) {
-  override val baseType: BaseType = BaseType("Commander's Brigandine")
+  override def baseType: BaseType = BaseType("Commander's Brigandine")
 }
 object BattleLamellar extends BodyArmour(dropLevel = 54)
 object DragonscaleDoublet extends BodyArmour(dropLevel = 57)
 object DesertBrigandine extends BodyArmour(dropLevel = 60)
 object FullDragonscale extends BodyArmour(dropLevel = 63)
 object GeneralsBrigandine extends BodyArmour(dropLevel = 66) {
-  override val baseType: BaseType = BaseType("General's Brigandine")
+  override def baseType: BaseType = BaseType("General's Brigandine")
 }
 object TriumphantLamellar extends BodyArmour(dropLevel = 69)
 
@@ -122,7 +122,7 @@ object LoricatedRingmail extends BodyArmour(dropLevel = 58)
 object ConquestChainmail extends BodyArmour(dropLevel = 61)
 object ElegantRingmail extends BodyArmour(dropLevel = 64)
 object SaintsHauberk extends BodyArmour(dropLevel = 67) {
-  override val baseType: BaseType = BaseType("Saint's Hauberk")
+  override def baseType: BaseType = BaseType("Saint's Hauberk")
 }
 object SaintlyChainmail extends BodyArmour(dropLevel = 70)
 

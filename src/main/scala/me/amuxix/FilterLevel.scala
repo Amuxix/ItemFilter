@@ -1,6 +1,6 @@
 package me.amuxix
 
-sealed abstract class FilterLevel(prefix: String)
+sealed abstract case class FilterLevel(suffix: String)
 
 object Racing extends FilterLevel("Leveling")
 object Reduced extends FilterLevel("Reduced")

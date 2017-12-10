@@ -1,27 +1,32 @@
 package me.amuxix.categories
 
+import me.amuxix._
 import me.amuxix.actions.{Action, Color, Sound}
 import me.amuxix.conditions.Condition
-import me.amuxix.{Block, FilterLevel}
 
 object Gems extends Category {
-  val vaalGems = Block(Condition(base = "Vaal", `class`= "Gem"), Action(size = 40, text = Color.red, border = Color.red))
+  val vaalGems = Block(Condition(base = "Vaal", `class`= "Gem"), Action(size = 40, textColor = Color.red, borderColor = Color.red))
 
   val valuable = Block(
-    Condition(base = Seq("Empower", "Item Quantity", "Block Chance Reduction", "Enhance", "Added Chaos Damage", "Enlighten", "Detonate Mines", "Portal", "Vaal Breach", "Vaal Haste", "Vaal Discipline")),
-    Action(size = 40, sound = Sound.gems, border = Color.teal, background = Color.black)
+    Condition(base = Seq("Empower", "Item Quantity", "Block Chance Reduction", "Enhance", "Added Chaos Damage", "Enlighten", "Detonate Mines", "Portal", "Vaal Breach", "Vaal Haste", "Vaal Discipline"), `class` = "Gem"),
+    Action(size = 40, sound = Sound.gems, borderColor = Color.teal, backgroundColor = Color.black)
   )
-
 
   val highQuality = Block(
     Condition(`class` = "Gem", quality = (">=", 16)),
-    Action(size = 40, sound = Sound.gems, border = Color.teal, background = Color.darkRed)
+    Action(size = 40, sound = Sound.gems, borderColor = Color.teal, backgroundColor = Color.darkRed)
   )
 
   val lowQuality = Block(
     Condition(`class` = "Gem", quality = (">=", 0)),
-    Action(size = 40, border = Color.teal, background = Color.black)
+    Action(size = 40, borderColor = Color.teal, backgroundColor = Color.black)
   )
 
-  override def categoryBlocks(filterLevel: FilterLevel) = Seq(vaalGems, valuable, highQuality, lowQuality)
+  val all = Block(Condition(`class` = "Gem"), Action(borderColor = Color.teal, backgroundColor = Color.black))
+
+  override def categoryBlocks(filterLevel: FilterLevel): Seq[Block] = filterLevel match {
+    case Reduced => Seq(vaalGems, valuable, highQuality, lowQuality.hidden, all.hidden)
+    case Normal => Seq(vaalGems, valuable, highQuality, lowQuality, all.hidden)
+    case Racing => Seq(vaalGems, valuable, highQuality, lowQuality, all)
+  }
 }

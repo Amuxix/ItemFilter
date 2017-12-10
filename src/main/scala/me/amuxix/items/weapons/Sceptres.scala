@@ -24,7 +24,7 @@ object AbyssalSceptre extends Sceptre(dropLevel = 53)
 object StagSceptre extends Sceptre(dropLevel = 55)
 object KaruiSceptre extends Sceptre(dropLevel = 56)
 object TyrantsSekhem extends Sceptre(dropLevel = 58) {
-  override val baseType: BaseType = BaseType("Tyrant's Sekhem")
+  override def baseType: BaseType = BaseType("Tyrant's Sekhem")
 }
 object OpalSceptre extends Sceptre(dropLevel = 60)
 object PlatinumSceptre extends Sceptre(dropLevel = 62)

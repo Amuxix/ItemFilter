@@ -7,8 +7,8 @@ import me.amuxix.Writable
   */
 case class Action(size: Option[Size] = Some(Size.default),
                   sound: Option[Sound] = None,
-                  border: Option[Border] = None,
-                  background: Option[Background] = None,
-                  text: Option[Text] = None) {
-  val actions: Seq[Writable] = Seq(size, sound, border, background, text).collect{ case Some(writable) => writable}
+                  borderColor: Option[BorderColor] = None,
+                  backgroundColor: Option[BackgroundColor] = None,
+                  textColor: Option[TextColor] = None) {
+  val actions: Seq[Writable] = Seq(size, sound, borderColor, backgroundColor, textColor).collect{ case Some(writable) => writable}
 }

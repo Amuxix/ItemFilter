@@ -9,7 +9,7 @@ object NailedFist extends Claw(dropLevel = 3)
 object SharktoothClaw extends Claw(dropLevel = 7)
 object Awl extends Claw(dropLevel = 12)
 object CatsPaw extends Claw(dropLevel = 17) {
-  override val baseType: BaseType = BaseType("Cat's Paw")
+  override def baseType: BaseType = BaseType("Cat's Paw")
 }
 object Blinder extends Claw(dropLevel = 22)
 object TimewornClaw extends Claw(dropLevel = 26)
@@ -19,7 +19,7 @@ object DoubleClaw extends Claw(dropLevel = 36)
 object ThresherClaw extends Claw(dropLevel = 37)
 object Gouger extends Claw(dropLevel = 40)
 object TigersPaw extends Claw(dropLevel = 43) {
-  override val baseType: BaseType = BaseType("Tiger's Paw")
+  override def baseType: BaseType = BaseType("Tiger's Paw")
 }
 object GutRipper extends Claw(dropLevel = 46)
 object PrehistoricClaw extends Claw(dropLevel = 49)
@@ -29,7 +29,7 @@ object TwinClaw extends Claw(dropLevel = 57)
 object GreatWhiteClaw extends Claw(dropLevel = 58)
 object ThroatStabber extends Claw(dropLevel = 60)
 object HellionsPaw extends Claw(dropLevel = 62) {
-  override val baseType: BaseType = BaseType("Hellion's Paw")
+  override def baseType: BaseType = BaseType("Hellion's Paw")
 }
 object EyeGouger extends Claw(dropLevel = 64)
 object VaalClaw extends Claw(dropLevel = 66)

@@ -1,9 +1,9 @@
 package me.amuxix.items.accessories
 
 import me.amuxix.conditions.BaseType
-import me.amuxix.items.Accessories
+import me.amuxix.items.Accessory
 
-sealed abstract class Ring(dropLevel: Int) extends Accessories(dropLevel, "Ring")
+sealed abstract class Ring(dropLevel: Int) extends Accessory(dropLevel, "Ring")
 
 object CoralRing extends Ring(dropLevel = 1)
 object IronRing extends Ring(dropLevel = 1)
@@ -16,7 +16,7 @@ object DiamondRing extends Ring(dropLevel = 20)
 object GoldRing extends Ring(dropLevel = 20)
 object MoonstoneRing extends Ring(dropLevel = 20)
 object TwoStoneRing extends Ring(dropLevel = 20) {
-  override val baseType: BaseType = BaseType("Two-Stone Ring")
+  override def baseType: BaseType = BaseType("Two-Stone Ring")
 }
 object AmethystRing extends Ring(dropLevel = 30)
 object PrismaticRing extends Ring(dropLevel = 30)

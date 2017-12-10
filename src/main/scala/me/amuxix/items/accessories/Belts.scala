@@ -1,8 +1,8 @@
 package me.amuxix.items.accessories
 
-import me.amuxix.items.Accessories
+import me.amuxix.items.Accessory
 
-sealed abstract class Belt(dropLevel: Int) extends Accessories(dropLevel, "Belt")
+sealed abstract class Belt(dropLevel: Int) extends Accessory(dropLevel, "Belt")
 
 object ChainBelt extends Belt(dropLevel = 1)
 object RusticSash extends Belt(dropLevel = 1)

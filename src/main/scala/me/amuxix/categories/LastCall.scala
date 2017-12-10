@@ -6,8 +6,8 @@ import me.amuxix.conditions.{Condition, Magic, White}
 import me.amuxix.{Block, FilterLevel}
 
 object LastCall extends Category {
-  val currencyAndMaps = Block(Condition(`class` = Seq("Currency", "Maps")), Action(text = white, background = white, border = white))
-  val hidden = Action(size = 18, background = transparent, border = transparent)
+  val currencyAndMaps = Block(Condition(`class` = Seq("Currency", "Maps")), Action(textColor = white, backgroundColor = white, borderColor = white))
+  val hidden = Action(size = 18, backgroundColor = transparent, borderColor = transparent, textColor = transparent)
   val hideWhites: Block = Block(
     Condition(
       `class` = Seq("Flasks", "Gloves", "Boots", "Body Armours", "Helmets", "Rings", "Belts", "Amulets", "Claws", "Daggers", "Wands", "Swords", "Bows", "Staves", "Axes", "Maces", "Quivers", "Shields", "Sceptres"),

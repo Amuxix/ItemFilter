@@ -69,6 +69,6 @@ object TrapperMitts extends Gloves(dropLevel = 36)
 object AmbushMitts extends Gloves(dropLevel = 45)
 object CarnalMitts extends Gloves(dropLevel = 50)
 object AssassinsMitts extends Gloves(dropLevel = 58) {
-  override val baseType: BaseType = BaseType("Assassin's Mitts")
+  override def baseType: BaseType = BaseType("Assassin's Mitts")
 }
 object MurderMitts extends Gloves(dropLevel = 67)

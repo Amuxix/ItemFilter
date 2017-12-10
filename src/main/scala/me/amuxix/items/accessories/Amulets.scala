@@ -1,8 +1,8 @@
 package me.amuxix.items.accessories
 
-import me.amuxix.items.Accessories
+import me.amuxix.items.Accessory
 
-sealed abstract class Amulet(dropLevel: Int) extends Accessories(dropLevel, "Amulet")
+sealed abstract class Amulet(dropLevel: Int) extends Accessory(dropLevel, "Amulet")
 
 object CoralAmulet extends Amulet(dropLevel = 1)
 object PauaAmulet extends Amulet(dropLevel = 1)
