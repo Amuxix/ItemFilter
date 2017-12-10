@@ -21,6 +21,6 @@ object Operator {
 object Equals extends Operator("=")
 object Greater extends Operator(">")
 object GreaterOrEqual extends Operator(">=")
-object Lesser extends Operator("<=")
+object Lesser extends Operator("<")
 object LesserOrEqual extends Operator("<=")
 object Nothing extends Operator
