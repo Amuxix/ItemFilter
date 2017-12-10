@@ -18,7 +18,7 @@ object Gems extends Category {
   )
 
   val lowQuality = Block(
-    Condition(`class` = "Gem", quality = (">=", 0)),
+    Condition(`class` = "Gem", quality = (">", 0)),
     Action(size = 40, borderColor = Color.teal, backgroundColor = Color.black)
   )
 

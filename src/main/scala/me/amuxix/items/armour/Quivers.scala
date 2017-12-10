@@ -1,5 +1,6 @@
 package me.amuxix.items.armour
 
+import me.amuxix.Block
 import me.amuxix.conditions.BaseType
 import me.amuxix.items.Armour
 
@@ -12,8 +13,23 @@ object SerratedArrowQuiver extends Quiver(dropLevel = 5)
 object SharktoothArrowQuiver extends Quiver(dropLevel = 10)
 object BluntArrowQuiver extends Quiver(dropLevel = 16)
 object FireArrowQuiver extends Quiver(dropLevel = 22)
-object BroadheadArrowQuiver extends Quiver(dropLevel = 28)
+object BroadheadArrowQuiver extends Quiver(dropLevel = 28) {
+  override def blocksOfBestItemsForZoneLevel: Block = {
+    val superBlock = super.blocksOfBestItemsForZoneLevel
+    superBlock.copy(
+      condition = superBlock.condition.copy(itemLevel = None),
+      action = superBlock.action.copy()
+    )
+  }
+}
 object PenetratingArrowQuiver extends Quiver(dropLevel = 36)
 object SpikePointArrowQuiver extends Quiver(dropLevel = 45) {
   override def baseType: BaseType = BaseType("Spike-Point Arrow Quiver")
+  override def blocksOfBestItemsForZoneLevel: Block = {
+    val superBlock = super.blocksOfBestItemsForZoneLevel
+    superBlock.copy(
+      condition = superBlock.condition.copy(itemLevel = None),
+      action = superBlock.action.copy()
+    )
+  }
 }

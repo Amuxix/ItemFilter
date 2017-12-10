@@ -12,19 +12,28 @@ abstract case class Item(dropLevel: Int, `class`: ItemClass, minDropBuffer: Int 
   def this(dropLevel: Int, `class`: String, minDropBuffer: Int) = this(dropLevel, ItemClass(`class`), minDropBuffer)
   def this(dropLevel: Int, `class`: String) = this(dropLevel, ItemClass(`class`))
 
-  val bestModsDropLevel: Int = 84
+  def bestModsDropLevel: Int = 84
 
   def baseType: BaseType = BaseType(name.replaceAll("([a-z])([A-Z])", "$1 $2"))
 
-  val blocksOfBestItemsForZoneLevel: Block = Block(
-    Condition(
-      base = Some(this.baseType),
-      itemLevel = if (this.dropLevel > 70) None else Some(ItemLevel("<=", this.dropLevel + minDropBuffer max this.dropLevel / 10)),
-      rarity = Rare
-    ),
+  def closeToZoneLevel(howClose: ItemLevel): Condition = Condition(
+    base = Some(this.baseType),
+    itemLevel = if (this.dropLevel > 70) None else Some(howClose),
+    rarity = Rare
+  )
+
+  def blocksOfBestItemsForZoneLevel: Block = Block(
+    closeToZoneLevel(ItemLevel("<=", this.dropLevel + minDropBuffer max this.dropLevel / 10)),
     Action(
       textColor = goodYellow,
       borderColor = goodYellow
+    )
+  )
+
+  def blocksOfGoodItemsForZoneLevel: Block = Block(
+    closeToZoneLevel(ItemLevel("<=", this.dropLevel + 20)),
+    Action(
+      size = 25
     )
   )
 }
@@ -43,10 +52,10 @@ sealed trait BestBaseBlocks extends ImplicitConversions {
 abstract class Armour(dropLevel: Int, `class`: String) extends Item(dropLevel, `class`) with BestBaseBlocks
 
 abstract class Weapon(dropLevel: Int, `class`: String) extends Item(dropLevel, `class`) with BestBaseBlocks {
-  override val bestModsDropLevel: Int = 83
+  override def bestModsDropLevel: Int = 83
 }
 
-abstract class Accessory(dropLevel: Int, `class`: String) extends Item(dropLevel, `class`)
+abstract class Accessory(dropLevel: Int, `class`: String) extends Item(dropLevel, `class`) with BestBaseBlocks
 
 object Item {
   val oneHandedAxes: Seq[OneHandedAxe] = Seq(RustedHatchet, JadeHatchet, BoardingAxe, Cleaver, BroadAxe, ArmingAxe, DecorativeAxe, SpectralAxe, EtchedHatchet, JasperAxe, Tomahawk, WristChopper, WarAxe, ChestSplitter, CeremonialAxe, WraithAxe, EngravedHatchet, KaruiAxe, SiegeAxe, ReaverAxe, ButcherAxe, VaalHatchet, RoyalAxe, InfernalAxe, RunicHatchet)
@@ -122,6 +131,6 @@ object Item {
 
   val accessories: Seq[Accessory] = amulets ++ rings ++ belts
 
-  val bestEquipment: Seq[Item with BestBaseBlocks] = (weapons ++ armours).flatMap(_.takeRight(2)) ++ Seq(SpikePointArrowQuiver, BroadheadArrowQuiver)
-  val allEquipment: Seq[Item] = (weapons ++ armours).flatten
+  val bestEquipment: Seq[Item with BestBaseBlocks] = (weapons ++ armours).flatMap(_.takeRight(2)) ++ Seq(SpikePointArrowQuiver, BroadheadArrowQuiver).sortBy(_.dropLevel)(implicitly[Ordering[Int]].reverse)
+  val allEquipment: Seq[Item] = (weapons ++ armours).flatten.sortBy(_.dropLevel)(implicitly[Ordering[Int]].reverse)
 }

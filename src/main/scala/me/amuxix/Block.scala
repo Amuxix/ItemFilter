@@ -18,8 +18,8 @@ case class Block(condition: Condition, action: Action, show: Boolean) extends Me
   def hidden: Block = Block(condition, action, show = false)
 
   override def canMerge(other: Block): Boolean = {
-    condition.canMerge(other.condition) && action == other.action && show == other.show
+    (condition canMerge other.condition) && action == other.action && show == other.show
   }
 
-  override def merge(other: Block) = Block(condition.merge(other.condition), action, show)
+  override def merge(other: Block) = Block(condition merge other.condition, action, show)
 }

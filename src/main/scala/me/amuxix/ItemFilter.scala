@@ -23,8 +23,12 @@ object ItemFilter {
     val filterFile = new PrintWriter(new File(poeFolder + "Amuxix's" + filterLevel.suffix + ".filter"))
     //val strings: Seq[String] = categories.map(_.writeCategory(filterLevel))
     //filterFile.write(strings.mkString("", "\n", "\nHide"))
-    val strings: String = Mergeable.merge(categories.flatMap(c => Mergeable.merge(c.categoryBlocks(filterLevel)))).map(_.write).mkString("", "\n", "\nHide")
-    filterFile.write(strings)
+
+    val blocks = categories.flatMap { c =>
+      val categoryBlocks = c.categoryBlocks(filterLevel)
+      Mergeable.merge(categoryBlocks)
+    }
+    filterFile.write(blocks.map(_.write).mkString("", "\n", "\n"))
     filterFile.close()
   }
 }

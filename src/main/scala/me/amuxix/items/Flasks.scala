@@ -1,6 +1,17 @@
 package me.amuxix.items
 
-sealed abstract class Flask(dropLevel: Int, `class`: String, minDropBuffer: Int = 5) extends Item(dropLevel, `class` + " Flasks", minDropBuffer)
+import me.amuxix.Block
+import me.amuxix.actions.Action
+
+sealed abstract class Flask(dropLevel: Int, `class`: String, minDropBuffer: Int = 5) extends Item(dropLevel, `class` + " Flasks", minDropBuffer) {
+  override def blocksOfBestItemsForZoneLevel: Block = {
+    val superBlock = super.blocksOfBestItemsForZoneLevel
+    superBlock.copy(
+      condition = superBlock.condition.copy(rarity = None),
+      action = Action()
+    )
+  }
+}
 
 sealed abstract class LifeFlask(dropLevel: Int) extends Flask(dropLevel, "Life", minDropBuffer = 10)
 

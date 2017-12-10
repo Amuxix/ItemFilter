@@ -15,11 +15,11 @@ object Currency extends Category {
   val masterSextant = Block(Condition(base = "Master Cartographer's Sextant", `class` = "Currency"), t0MissingSound(Sound.epic))
   val t0: Seq[Block] = Seq(eternal, mirror, exalt, divine, masterSextant)
 
-  val chaos = Block(Condition(base = "Chaos Orb", `class` = "Currency"), t0MissingSound(Sound.rare))
-  val regal = Block(Condition(base = "Regal Orb", `class` = "Currency"), t0MissingSound(Sound.rare))
-  val vaal = Block(Condition(base = "Vaal Orb", `class` = "Currency"), t0MissingSound(Sound.rare))
-  val fusing = Block(Condition(base = "Orb of Fusing", `class` = "Currency"), t0MissingSound(Sound.rare))
-  val remainingT1 = Block(Condition(base = Seq("Silver Coin", "Orb of Regret", "Gemcutter's Prism", "Cartographer's Sextant", "Divine Vessel", "Stacked Deck"), `class` = "Currency"), t0MissingSound(Sound.rare.quieter))
+  val chaos = Block(Condition(base = "Chaos Orb", `class` = "Currency"), t1MissingSound(Sound.rare))
+  val regal = Block(Condition(base = "Regal Orb", `class` = "Currency"), t1MissingSound(Sound.rare))
+  val vaal = Block(Condition(base = "Vaal Orb", `class` = "Currency"), t1MissingSound(Sound.rare))
+  val fusing = Block(Condition(base = "Orb of Fusing", `class` = "Currency"), t1MissingSound(Sound.rare))
+  val remainingT1 = Block(Condition(base = Seq("Silver Coin", "Orb of Regret", "Gemcutter's Prism", "Cartographer's Sextant", "Divine Vessel", "Stacked Deck"), `class` = "Currency"), t1MissingSound(Sound.rare.quieter))
   val t1: Seq[Block] = Seq(chaos, regal, vaal, fusing, remainingT1)
 
   val t2 = Block(
