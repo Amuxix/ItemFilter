@@ -1,6 +1,5 @@
 package me.amuxix.conditions
 
-import me.amuxix.Writable.addQuotesIfMultiWorded
 import me.amuxix.{InvalidArgument, Writable}
 
 
@@ -10,5 +9,5 @@ object ItemClass {
 
 case class ItemClass(`class`: String*) extends Writable {
   if (`class`.contains("")) throw new InvalidArgument
-  override def print: String = s"Class ${`class`.map(addQuotesIfMultiWorded).mkString(" ")}"
+  override def print: String = s"Class ${`class`.mkString("\"", "\" \"", "\"")}"
 }

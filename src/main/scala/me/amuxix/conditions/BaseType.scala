@@ -1,6 +1,5 @@
 package me.amuxix.conditions
 
-import me.amuxix.Writable.addQuotesIfMultiWorded
 import me.amuxix.{InvalidArgument, Writable}
 
 /**
@@ -13,5 +12,5 @@ object BaseType {
 case class BaseType(bases: String*) extends Writable {
   if (bases.contains("")) throw new InvalidArgument
 
-  override def print: String = s"BaseType ${bases.map(addQuotesIfMultiWorded).mkString(" ")}"
+  override def print: String = s"BaseType ${bases.mkString("\"", "\" \"", "\"")}"
 }
