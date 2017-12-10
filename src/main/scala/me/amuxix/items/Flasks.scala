@@ -1,8 +1,8 @@
 package me.amuxix.items
 
-sealed abstract class Flask(dropLevel: Int, `class`: String) extends Item(dropLevel, `class` + " Flasks")
+sealed abstract class Flask(dropLevel: Int, `class`: String, minDropBuffer: Int = 5) extends Item(dropLevel, `class` + " Flasks", minDropBuffer)
 
-sealed abstract class LifeFlask(dropLevel: Int) extends Flask(dropLevel, "Life")
+sealed abstract class LifeFlask(dropLevel: Int) extends Flask(dropLevel, "Life", minDropBuffer = 10)
 
 object SmallLifeFlask extends LifeFlask(dropLevel = 1)
 object MediumLifeFlask extends LifeFlask(dropLevel = 3)
@@ -17,7 +17,7 @@ object SanctifiedLifeFlask extends LifeFlask(dropLevel = 50)
 object DivineLifeFlask extends LifeFlask(dropLevel = 60)
 object EternalLifeFlask extends LifeFlask(dropLevel = 65)
 
-sealed abstract class ManaFlask(dropLevel: Int) extends Flask(dropLevel, "Mana")
+sealed abstract class ManaFlask(dropLevel: Int) extends Flask(dropLevel, "Mana", minDropBuffer = 7)
 
 object SmallManaFlask extends ManaFlask(dropLevel = 1)
 object MediumManaFlask extends ManaFlask(dropLevel = 3)

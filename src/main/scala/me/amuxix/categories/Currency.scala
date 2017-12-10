@@ -5,8 +5,8 @@ import me.amuxix.actions.{Action, Color, Sound}
 import me.amuxix.conditions.Condition
 
 object Currency extends Category {
-  val t0MissingSound: Sound => Action = (sound: Sound) => Action(size = 45, sound = sound, background = Color.lightGreen, text = Color.black, border = Color.black)
-  val t1MissingSound: Sound => Action = (sound: Sound) => Action(size = 45, sound = sound, background = Color.black, text = Color.goodYellow, border = Color.goodYellow)
+  val t0MissingSound: Sound => Action = (sound: Sound) => Action(size = 45, sound = sound, backgroundColor = Color.lightGreen, textColor = Color.black, borderColor = Color.black)
+  val t1MissingSound: Sound => Action = (sound: Sound) => Action(size = 45, sound = sound, backgroundColor = Color.black, textColor = Color.goodYellow, borderColor = Color.goodYellow)
 
   val eternal = Block(Condition(base = "Eternal Orb", `class` = "Currency"), t0MissingSound(Sound.myths))
   val mirror = Block(Condition(base = "Mirror of Kalandra", `class` = "Currency"), t0MissingSound(Sound.myths))
@@ -27,7 +27,7 @@ object Currency extends Category {
       base = Seq("Blessed Orb", "Cartographer's Chisel", "Glassblower's Bauble", "Orb of Alchemy", "Orb of Chance", "Orb of Scouring", "Jeweller's Orb", "Perandus Coin"),
       `class` = "Currency",
     ),
-    Action(size = 45, sound = Sound.rare.quieter, background = Color.black, text = Color.goodYellow.lighten, border = Color.goodYellow.lighten)
+    Action(size = 45, sound = Sound.rare.quieter, backgroundColor = Color.black, textColor = Color.goodYellow.lighten, borderColor = Color.goodYellow.lighten)
   )
 
   val t3 = Block(
@@ -35,20 +35,36 @@ object Currency extends Category {
       base = Seq("Armourer's Scrap", "Blacksmith's Whetstone", "Chromatic Orb", "Orb of Alteration", "Orb of Augmentation", "Orb of Transmutation"),
       `class` = "Currency",
     ),
-    Action(size = 45, background = Color.black, text = Color.goodYellow.lighten, border = Color.goodYellow.lighten)
+    Action(size = 45, backgroundColor = Color.black, textColor = Color.goodYellow.lighten, borderColor = Color.goodYellow.lighten)
   )
 
-  val t4 = Block(
+  val portal = Block(
     Condition(
-      base = Seq("Portal Scroll", "Scroll of Wisdom", "Alchemy Shard", "Alteration Shard", "Scroll Fragment", "Transmutation Shard"),
+      base = "Portal Scroll",
       `class` = "Currency",
     ),
-    Action(size = 40, background = Color.black, text = Color.goodYellow.lighten)
+    Action(size = 40, backgroundColor = Color.black, textColor = Color.goodYellow.lighten)
+  )
+
+  val wisdom = Block(
+    Condition(
+      base = "Scroll of Wisdom",
+      `class` = "Currency",
+    ),
+    Action(size = 40, backgroundColor = Color.black, textColor = Color.goodYellow.lighten)
+  )
+
+  val shards = Block(
+    Condition(
+      base = Seq("Alchemy Shard", "Alteration Shard", "Scroll Fragment", "Transmutation Shard"),
+      `class` = "Currency",
+    ),
+    Action(size = 40, backgroundColor = Color.black, textColor = Color.goodYellow.lighten)
   )
 
   override def categoryBlocks(filterLevel: FilterLevel): Seq[Block] = filterLevel match {
-    case Reduced => t0 ++ t1 ++ Seq(t2, t3.hidden, t4.hidden)
-    case Normal => t0 ++ t1 ++ Seq(t2, t3, t4.hidden)
-    case Racing => t0 ++ t1 ++ Seq(t2, t3, t4)
+    case Reduced => t0 ++ t1 ++ Seq(t2, t3.hidden, portal.hidden, wisdom.hidden, shards.hidden)
+    case Normal => t0 ++ t1 ++ Seq(t2, t3, portal, wisdom.hidden, shards.hidden)
+    case Racing => t0 ++ t1 ++ Seq(t2, t3, portal, wisdom, shards)
   }
 }

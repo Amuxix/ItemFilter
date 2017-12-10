@@ -17,55 +17,55 @@ object Maps extends Category {
 
   val uniqueRed = Block(
     uniqueMapCondition(redMapsMinDropLevel),
-    Action(size = 45, sound = maps.louder, border = unique)
+    Action(size = 45, sound = maps.louder, borderColor = unique)
   )
 
   val uniqueYellow = Block(
     uniqueMapCondition(yellowMapsMinDropLevel),
-    Action(size = 40, sound = maps, border = unique)
+    Action(size = 40, sound = maps, borderColor = unique)
   )
 
   val uniqueWhite = Block(
     uniqueMapCondition(whiteMapsMinDropLevel),
-    Action(sound = maps.quieter, border = unique)
+    Action(sound = maps.quieter, borderColor = unique)
   )
 
   val redMaps = Block(
     mapCondition(redMapsMinDropLevel),
-    Action(size = 45, border = red, sound = maps.louder)
+    Action(size = 45, borderColor = red, sound = maps.louder)
   )
 
   val yellowMaps = Block(
-    mapCondition(redMapsMinDropLevel),
-    Action(size = 40, border = goodYellow, sound = maps)
+    mapCondition(yellowMapsMinDropLevel),
+    Action(size = 40, borderColor = goodYellow, sound = maps)
   )
 
   val whiteMaps = Block(
-    mapCondition(redMapsMinDropLevel),
-    Action(border = white, sound = maps.quieter)
+    mapCondition(whiteMapsMinDropLevel),
+    Action(borderColor = white, sound = maps.quieter)
   )
 
   val t0Fragments = Block(
     Condition(base = Seq("Fragment of the Phoenix", "Fragment of the Hydra", "Mortal Ignorance", "Mortal Hope"),
     `class` = "Map Fragments"),
-    Action(border = darkRed, background = white, text = darkRed)
+    Action(borderColor = darkRed, backgroundColor = white, textColor = darkRed)
   )
 
   val t1Fragments = Block(
     Condition(base = Seq("Yriel's Key", "Sacrifice at Midnight", "Mortal Rage", "Volkuur's Key", "Fragment of the Chimera", "Fragment of the Minotaur", "Inya's Key"),
       `class` = "Map Fragments"),
-    Action(border = darkRed, text = darkRed)
+    Action(borderColor = darkRed, textColor = darkRed)
   )
 
   val t2Fragments = Block(
     Condition(base = Seq("Eber's Key", "Mortal Grief", "Sacrifice at Noon", "Sacrifice at Dawn", "Sacrifice at Dusk"),
       `class` = "Map Fragments"),
-    Action(border = black, text = darkRed)
+    Action(borderColor = black, textColor = darkRed)
   )
 
   val misc = Block(
     Condition(`class` = "Misc Map Items"),
-    Action(background = white, text = black)
+    Action(backgroundColor = white, textColor = black)
   )
 
   override def categoryBlocks(filterLevel: FilterLevel) = Seq(uniqueRed, uniqueYellow, uniqueWhite, redMaps, yellowMaps, whiteMaps, t0Fragments, t1Fragments, t2Fragments, misc)

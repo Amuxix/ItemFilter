@@ -53,7 +53,7 @@ object FencerHelm extends Helmet(dropLevel = 43)
 object LacqueredHelmet extends Helmet(dropLevel = 51)
 object FlutedBascinet extends Helmet(dropLevel = 58)
 object PigFacedBascinet extends Helmet(dropLevel = 63) {
-  override val baseType: BaseType = BaseType("Pig-Faced Bascinet")
+  override def baseType: BaseType = BaseType("Pig-Faced Bascinet")
 }
 object NightmareBascinet extends Helmet(dropLevel = 67)
 

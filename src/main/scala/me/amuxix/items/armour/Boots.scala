@@ -48,7 +48,7 @@ object WyrmscaleBoots extends Boots(dropLevel = 51)
 object HydrascaleBoots extends Boots(dropLevel = 59)
 object DragonscaleBoots extends Boots(dropLevel = 65)
 object TwoTonedBoots extends Boots(dropLevel = 70) {
-  override val baseType: BaseType = BaseType("Two-Toned Boots")
+  override def baseType: BaseType = BaseType("Two-Toned Boots")
 }
 
 //Armour+ES
@@ -60,9 +60,6 @@ object ZealotBoots extends Boots(dropLevel = 40)
 object SoldierBoots extends Boots(dropLevel = 49)
 object LegionBoots extends Boots(dropLevel = 58)
 object CrusaderBoots extends Boots(dropLevel = 64)
-object TwoTonedBoots2 extends Boots(dropLevel = 70) {
-  override val baseType: BaseType = BaseType("Two-Toned Boots")
-}
 
 //Evasion+ES
 object WrappedBoots extends Boots(dropLevel = 6)
@@ -73,9 +70,6 @@ object TrapperBoots extends Boots(dropLevel = 41)
 object AmbushBoots extends Boots(dropLevel = 47)
 object CarnalBoots extends Boots(dropLevel = 55)
 object AssassinsBoots extends Boots(dropLevel = 63) {
-  override val baseType: BaseType = BaseType("Assassin's Boots")
+  override def baseType: BaseType = BaseType("Assassin's Boots")
 }
 object MurderBoots extends Boots(dropLevel = 69)
-object TwoTonedBoots3 extends Boots(dropLevel = 70) {
-  override val baseType: BaseType = BaseType("Two-Toned Boots")
-}

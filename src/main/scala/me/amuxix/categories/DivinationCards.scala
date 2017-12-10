@@ -15,9 +15,9 @@ object DivinationCards extends Category {
     Action(
       size = 45,
       sound = myths.quieter,
-      background = divinationBlue,
-      text = black,
-      border = black,
+      backgroundColor = divinationBlue,
+      textColor = black,
+      borderColor = black,
     )
   )
 
@@ -29,9 +29,9 @@ object DivinationCards extends Category {
     Action(
       size = 40,
       sound = epic.quieter,
-      background = divinationBlue.darken,
-      text = black,
-      border = black,
+      backgroundColor = divinationBlue.darken,
+      textColor = black,
+      borderColor = black,
     )
   )
 
@@ -43,9 +43,9 @@ object DivinationCards extends Category {
     Action(
       size = 36,
       sound = divCards,
-      background = black,
-      text = divinationBlue,
-      border = divinationBlue,
+      backgroundColor = black,
+      textColor = divinationBlue,
+      borderColor = divinationBlue,
     )
   )
 
@@ -54,8 +54,8 @@ object DivinationCards extends Category {
       `class` = "Divination",
     ),
     Action(
-      background = black,
-      text = divinationBlue,
+      backgroundColor = black,
+      textColor = divinationBlue,
     )
   )
 

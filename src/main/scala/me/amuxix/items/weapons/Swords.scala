@@ -43,7 +43,7 @@ object CorrodedBlade extends TwoHandedSword(dropLevel = 3)
 object Longsword extends TwoHandedSword(dropLevel = 8)
 object BastardSword extends TwoHandedSword(dropLevel = 12)
 object TwoHandedSword extends TwoHandedSword(dropLevel = 17) {
-  override val baseType: BaseType = BaseType("Two-Handed Sword")
+  override def baseType: BaseType = BaseType("Two-Handed Sword")
 }
 object EtchedGreatsword extends TwoHandedSword(dropLevel = 22)
 object OrnateSword extends TwoHandedSword(dropLevel = 27)
@@ -57,7 +57,7 @@ object TigerSword extends TwoHandedSword(dropLevel = 51)
 object WraithSword extends TwoHandedSword(dropLevel = 54)
 object LitheBlade extends TwoHandedSword(dropLevel = 56)
 object HeadmansSword extends TwoHandedSword(dropLevel = 57) {
-  override val baseType: BaseType = BaseType("Headman's Sword")
+  override def baseType: BaseType = BaseType("Headman's Sword")
 }
 object ReaverSword extends TwoHandedSword(dropLevel = 59)
 object EzomyteBlade extends TwoHandedSword(dropLevel = 61)

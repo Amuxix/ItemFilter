@@ -1,15 +1,27 @@
 package me.amuxix
 
+import java.io.{File, PrintWriter}
+import javax.swing.filechooser.FileSystemView
+
 import me.amuxix.categories._
 import me.amuxix.categories.leagues._
 import me.amuxix.categories.recipes._
 
 object ItemFilter {
   def main(args: Array[String]): Unit = {
-    val a = Seq(
-      Myths, General, Gems, Essence, Talisman, Breach, Legacy, Harbinger, Currency, Maps,
-      Uniques, Jewels, DivinationCards, Atlas, Chisel, Chromatic, Regal, Chaos, Flasks, LastCall
-    ).map(_.writeCategory(Normal))
-    println(a.mkString("", "\n", "\nHide"))
+    val poeFolder = FileSystemView.getFileSystemView.getDefaultDirectory.getPath + File.separatorChar + "My Games" + File.separatorChar + "Path of Exile" + File.separatorChar
+
+    val blocks: Seq[Category] = Seq(
+      Myths, General, Gems, Essence, Talisman, Abyss, Breach, Legacy, Harbinger, Currency, Maps,
+      Uniques, Jewels, DivinationCards, Atlas, Chisel, Chromatic, Regal, Chaos, Flasks, Leveling, LastCall
+    )
+
+    Seq(Reduced, Normal, Racing).foreach(createFilterFile(poeFolder, _, blocks))
+  }
+
+  def createFilterFile(poeFolder: String, filterLevel: FilterLevel, categories: Seq[Category]): Unit = {
+    val filterFile = new PrintWriter(new File(poeFolder + "Amuxix's " + filterLevel.suffix + ".new.filter"))
+    filterFile.write(categories.map(_.writeCategory(Normal)).mkString("", "\n", "\nHide"))
+    filterFile.close()
   }
 }

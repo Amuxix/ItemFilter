@@ -9,7 +9,7 @@ import me.amuxix.{Block, FilterLevel}
 object Uniques extends Category {
   val tabula = Block(
     Condition(base = "Simple Robe", rarity = Unique, socketGroup = "WWWWWW"),
-    Action(size = 45, sound = epic, background = unique, text = black)
+    Action(size = 45, sound = epic, backgroundColor = unique, textColor = black)
   )
 
   val t0 = Block(
@@ -20,9 +20,9 @@ object Uniques extends Category {
     Action(
       size = 45,
       sound = myths,
-      background = white,
-      text = unique,
-      border = unique,
+      backgroundColor = white,
+      textColor = unique,
+      borderColor = unique,
     )
   )
 
@@ -34,12 +34,12 @@ object Uniques extends Category {
     Action(
       size = 45,
       sound = epic,
-      background = unique,
-      text = black,
+      backgroundColor = unique,
+      textColor = black,
     )
   )
 
-  val rest = Block(Condition(rarity = Unique), Action(border = unique))
+  val rest = Block(Condition(rarity = Unique), Action(borderColor = unique))
 
   override def categoryBlocks(filterLevel: FilterLevel) = Seq(tabula, t0, t1, rest)
 }

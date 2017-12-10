@@ -6,7 +6,7 @@ import me.amuxix.conditions.Condition
 import me.amuxix.{Block, FilterLevel}
 
 object Legacy extends Category {
-  val leaguestones = Block(Condition(`class` = "Leaguestone"), Action(size = 45, text = Color.black, background = Color.legacyBlue))
+  val leaguestones = Block(Condition(`class` = "Leaguestone"), Action(size = 45, textColor = Color.black, backgroundColor = Color.legacyBlue))
 
   override def categoryBlocks(filterLevel: FilterLevel) = Seq(leaguestones)
 }

@@ -6,10 +6,10 @@ import me.amuxix.conditions.Condition
 import me.amuxix.{Block, FilterLevel}
 
 object Breach extends Category {
-  val action = Action(size = 45, border = Color.darkRed, background = Color.black, text = Color.purple)
+  val action = Action(size = 45, borderColor = Color.darkRed, backgroundColor = Color.black, textColor = Color.purple)
 
   val blessing = Condition(base = "Blessing of")
-  val breachRing = Condition(base = "Breach of")
+  val breachRing = Condition(base = "Breach Ring")
   val splinter = Condition(base = "Splinter of")
 
   override def categoryBlocks(filterLevel: FilterLevel): Seq[Block] = Seq(blessing, breachRing, splinter).map(Block(_, action))
