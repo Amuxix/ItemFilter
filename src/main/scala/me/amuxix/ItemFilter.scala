@@ -20,7 +20,7 @@ object ItemFilter {
   }
 
   def createFilterFile(poeFolder: String, filterLevel: FilterLevel, categories: Seq[Category]): Unit = {
-    val filterFile = new PrintWriter(new File(poeFolder + "Amuxix's " + filterLevel.suffix + ".new.filter"))
+    val filterFile = new PrintWriter(new File(poeFolder + "Amuxix's" + filterLevel.suffix + ".filter"))
     //val strings: Seq[String] = categories.map(_.writeCategory(filterLevel))
     //filterFile.write(strings.mkString("", "\n", "\nHide"))
     val strings: String = Mergeable.merge(categories.flatMap(c => Mergeable.merge(c.categoryBlocks(filterLevel)))).map(_.write).mkString("", "\n", "\nHide")
