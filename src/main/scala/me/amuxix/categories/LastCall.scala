@@ -27,7 +27,8 @@ object LastCall extends Category {
   )
   val hideRest: Block = Block(
     Condition(),
-    Action(backgroundColor = slimeGreen, borderColor = slimeGreen, textColor = slimeGreen)
+    Action(),
+    show = false
   )
 
   override def categoryBlocks(filterLevel: FilterLevel) = Seq(currencyAndMaps, hideWhites, hideMagic, hideRest)
