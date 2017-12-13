@@ -13,7 +13,7 @@ object ItemFilter {
 
     val categories: Seq[Category] = Seq(
       Myths, General, Gems, Essence, Talisman, Abyss, Breach, Legacy, Harbinger, Currency, Maps,
-      Uniques, Jewels, DivinationCards, Atlas, Chisel, Chromatic, Regal, Chaos, Flasks, Leveling, LastCall
+      Uniques, Jewels, DivinationCards, ShaperAndElder, BestBases, Atlas, Chisel, Chromatic, Regal, Chaos, Flasks, Leveling, LastCall
     )
 
     Seq(Reduced, Normal, Racing).foreach(createFilterFile(poeFolder, _, categories))
