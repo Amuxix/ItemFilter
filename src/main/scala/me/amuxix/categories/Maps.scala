@@ -68,5 +68,7 @@ object Maps extends Category {
     Action(backgroundColor = white, textColor = black)
   )
 
-  override def categoryBlocks(filterLevel: FilterLevel) = Seq(uniqueRed, uniqueYellow, uniqueWhite, redMaps, yellowMaps, whiteMaps, t0Fragments, t1Fragments, t2Fragments, misc)
+  val offering = Block(Condition(base = "Offering to the Goddess"))
+
+  override def categoryBlocks(filterLevel: FilterLevel) = Seq(uniqueRed, uniqueYellow, uniqueWhite, redMaps, yellowMaps, whiteMaps, t0Fragments, t1Fragments, t2Fragments, misc, offering)
 }

@@ -18,7 +18,7 @@ abstract case class Item(dropLevel: Int, `class`: ItemClass, minDropBuffer: Int 
 
   def closeToZoneLevel(howClose: ItemLevel): Condition = Condition(
     base = Some(this.baseType),
-    itemLevel = if (this.dropLevel > 60) None else Some(howClose),
+    itemLevel = if (Item.bestEquipment contains this) None else Some(howClose),
     rarity = Rare
   )
 
