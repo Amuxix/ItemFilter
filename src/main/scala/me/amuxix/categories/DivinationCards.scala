@@ -49,6 +49,17 @@ object DivinationCards extends Category {
     )
   )
 
+  val crapTier = Block(
+    Condition(
+      `class` = "Divination",
+      base = Seq("Thunderous Skies", "The Carrion Crow")
+    ),
+    Action(
+      backgroundColor = black,
+      textColor = divinationBlue,
+    )
+  )
+
   val rest = Block(
     Condition(
       `class` = "Divination",

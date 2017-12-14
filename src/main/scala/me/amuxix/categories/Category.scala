@@ -1,10 +1,15 @@
 package me.amuxix.categories
 
-import me.amuxix.{Block, FilterLevel, ImplicitConversions, Mergeable}
+import me.amuxix._
 
-abstract class Category extends ImplicitConversions {
-  def categoryBlocks(filterLevel: FilterLevel): Seq[Block]
+abstract class Category extends ImplicitConversions with Named {
+  protected def categoryBlocks(filterLevel: FilterLevel): Seq[Block]
   def writeCategory(filterLevel: FilterLevel): String = {
-    Mergeable.merge(categoryBlocks(filterLevel)).map(_.write).mkString("\n")
+    separator + Mergeable.merge(categoryBlocks(filterLevel)).map(_.write).mkString("\n")
+  }
+
+  private def separator(): String = {
+    val asterics = "*"  * (59 - name.length / 2)
+    s"#$asterics $name $asterics\n"
   }
 }

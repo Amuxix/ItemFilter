@@ -16,6 +16,7 @@ object Flasks extends Category {
 
   override def categoryBlocks(filterLevel: FilterLevel): Seq[Block] = filterLevel match {
     case Reduced => Seq(glassblowers, mapMagic.hidden, mapWhite.hidden, preMapUtility.hidden, preMap.hidden) ++ resourceFlasks.map(_.hidden)
-    case _ => Seq(glassblowers, mapMagic, mapWhite, preMapUtility, preMap) ++ resourceFlasks
+    case Normal => Seq(glassblowers, mapMagic, mapWhite, preMapUtility, preMap)
+    case Racing => Seq(glassblowers, mapMagic, mapWhite, preMapUtility, preMap) ++ resourceFlasks
   }
 }
