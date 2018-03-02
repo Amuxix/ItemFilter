@@ -12,7 +12,7 @@ object ItemFilter {
     val poeFolder = FileSystemView.getFileSystemView.getDefaultDirectory.getPath + File.separatorChar + "My Games" + File.separatorChar + "Path of Exile" + File.separatorChar
 
     val categories: Seq[Category] = Seq(
-      Myths, General, Gems, Essence, Talisman, Abyss, Breach, Legacy, Harbinger, Currency, Maps,
+      Myths, General, Gems, Essence, Talisman, Beastiary, Abyss, Breach, Legacy, Harbinger, Currency, Maps,
       Uniques, Jewels, DivinationCards, ShaperAndElder, BestBases, Atlas, Leveling, Chisel, Chromatic, TwentyQuality, Regal, Chaos, Flasks, LastCall
     )
 
@@ -20,7 +20,7 @@ object ItemFilter {
   }
 
   def createFilterFile(poeFolder: String, filterLevel: FilterLevel, categories: Seq[Category]): Unit = {
-    val filterFile = new PrintWriter(new File(poeFolder + "Amuxix's" + filterLevel.suffix + ".filter"))
+    val filterFile = new PrintWriter(new File(poeFolder + "Amuxix's" + filterLevel.suffix + " filter.filter"))
     filterFile.write(categories.map(_.writeCategory(filterLevel)).mkString("", "\n", "\n"))
     filterFile.close()
   }

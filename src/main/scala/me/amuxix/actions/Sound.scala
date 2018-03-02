@@ -21,6 +21,7 @@ object Sound {
   val pieces = Sound(8)
   val maps = Sound(1, 200)
   val divCards = Sound(7)
+  val nets = Sound(2)
 
 }
 sealed case class Sound(soundNumber: Int, volume: Int) extends Writable {
