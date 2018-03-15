@@ -31,5 +31,10 @@ object Beastiary extends Category {
     Action(size = 45, sound = Sound.nets.louder, borderColor = Color.black, textColor = Color.black, backgroundColor = Color.nets.lighten)
   )
 
-  override protected def categoryBlocks(filterLevel: FilterLevel): Seq[Block] = Seq(beastiaryOrbs, ropeNet, ironNet, steelNet, thaumaturgicalNet)
+  val necromancyNet = Block(
+    Condition(base = "Necromancy Nets", `class` = "Currency"),
+    Action(size = 45, sound = Sound.nets.louder, borderColor = Color.black, textColor = Color.black, backgroundColor = Color.nets.lighten)
+  )
+
+  override protected def categoryBlocks(filterLevel: FilterLevel): Seq[Block] = Seq(beastiaryOrbs, ropeNet, ironNet, steelNet, thaumaturgicalNet, necromancyNet)
 }
