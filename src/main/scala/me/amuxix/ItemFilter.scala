@@ -10,12 +10,13 @@ import me.amuxix.categories.recipes._
 object ItemFilter {
   def main(args: Array[String]): Unit = {
     val poeFolder = FileSystemView.getFileSystemView.getDefaultDirectory.getPath + File.separatorChar + "My Games" + File.separatorChar + "Path of Exile" + File.separatorChar
+    //val currentDirectory = new java.io.File(".").getCanonicalPath
 
     val categories: Seq[Category] = Seq(
       Myths, General, Gems, Essence, Talisman, Beastiary, Abyss, Breach, Legacy, Harbinger, Currency, Maps,
       Uniques, Jewels, DivinationCards, ShaperAndElder, BestBases, Atlas, Leveling, Chisel, Chromatic, TwentyQuality, Regal, Chaos, Flasks, LastCall
     )
-
+    //println(currentDirectory.toString)
     Seq(Reduced, Normal, Racing).foreach(createFilterFile(poeFolder, _, categories))
   }
 
