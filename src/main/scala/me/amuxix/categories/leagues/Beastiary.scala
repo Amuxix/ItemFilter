@@ -23,7 +23,7 @@ object Beastiary extends Category {
 
   val steelNet = Block(
     Condition(base = "Steel Net", `class` = "Currency"),
-    Action(size = 45, sound = Sound.nets, borderColor = Color.nets.darken, textColor = Color.nets.lighten, backgroundColor = Color.goodYellow.lighten)
+    Action(size = 45, sound = Sound.nets, borderColor = Color.nets.darken, textColor = Color.nets.darken.darken, backgroundColor = Color.goodYellow.lighten)
   )
 
   val thaumaturgicalNet = Block(
