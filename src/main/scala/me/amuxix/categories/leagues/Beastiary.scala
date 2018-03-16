@@ -32,7 +32,7 @@ object Beastiary extends Category {
   )
 
   val necromancyNet = Block(
-    Condition(base = "Necromancy Nets", `class` = "Currency"),
+    Condition(base = "Necromancy Net", `class` = "Currency"),
     Action(size = 45, sound = Sound.nets.louder, borderColor = Color.black, textColor = Color.black, backgroundColor = Color.nets.lighten)
   )
 
