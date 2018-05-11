@@ -1,12 +1,12 @@
 package me.amuxix.items
 
+import me.amuxix._
 import me.amuxix.actions.Action
 import me.amuxix.actions.Color.{darkRed, goodYellow}
 import me.amuxix.conditions._
 import me.amuxix.items.accessories._
 import me.amuxix.items.armour._
 import me.amuxix.items.weapons._
-import me.amuxix.{Block, ImplicitConversions, Named}
 
 abstract case class Item(dropLevel: Int, `class`: ItemClass, minDropBuffer: Int = 5) extends Named with ImplicitConversions {
   def this(dropLevel: Int, `class`: String, minDropBuffer: Int) = this(dropLevel, ItemClass(`class`), minDropBuffer)
@@ -16,21 +16,21 @@ abstract case class Item(dropLevel: Int, `class`: ItemClass, minDropBuffer: Int 
 
   def baseType: BaseType = BaseType(name.replaceAll("([a-z])([A-Z])", "$1 $2"))
 
-  def closeToZoneLevel(howClose: ItemLevel): Condition = Condition(
+  def rareCloseToZoneLevel(howClose: ItemLevel, rarity: Option[Rarity]): Condition = Condition(
     base = Some(this.baseType),
     itemLevel = if (Item.bestEquipment contains this) None else Some(howClose),
-    rarity = Rare
+    rarity = rarity
   )
 
-  def blocksOfBestItemsForZoneLevel: Block = Block(
-    closeToZoneLevel(ItemLevel("<=", this.dropLevel + minDropBuffer max this.dropLevel / 10)),
+  def blocksOfBestItemsForZoneLevel(rarity: Option[Rarity] = Rare) = Block(
+    rareCloseToZoneLevel(ItemLevel("<=", this.dropLevel + minDropBuffer max this.dropLevel / 10), rarity),
     Action(
       textColor = goodYellow,
     )
   )
 
-  def blocksOfGoodItemsForZoneLevel: Block = Block(
-    closeToZoneLevel(ItemLevel("<=", this.dropLevel + 20)),
+  def blocksOfGoodItemsForZoneLevel(rarity: Option[Rarity] = Rare) = Block(
+    rareCloseToZoneLevel(ItemLevel("<=", this.dropLevel + 20), rarity),
     Action(
       size = 25
     )
