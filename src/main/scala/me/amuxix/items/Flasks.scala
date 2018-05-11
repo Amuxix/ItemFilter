@@ -2,10 +2,11 @@ package me.amuxix.items
 
 import me.amuxix.Block
 import me.amuxix.actions.Action
+import me.amuxix.conditions.Rarity
 
 sealed abstract class Flask(dropLevel: Int, `class`: String, minDropBuffer: Int = 5) extends Item(dropLevel, `class` + " Flasks", minDropBuffer) {
-  override def blocksOfBestItemsForZoneLevel: Block = {
-    val superBlock = super.blocksOfBestItemsForZoneLevel
+  override def blocksOfBestItemsForZoneLevel(rarity: Option[Rarity]): Block = {
+    val superBlock = super.blocksOfBestItemsForZoneLevel()
     superBlock.copy(
       condition = superBlock.condition.copy(rarity = None),
       action = Action()

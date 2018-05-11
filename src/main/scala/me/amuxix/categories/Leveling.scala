@@ -26,15 +26,16 @@ object Leveling extends Category {
   val whites = Block(Condition(itemLevel = ("<=", whiteCutoff), rarity = White))
   val magic = Block(Condition(itemLevel = ("<=", magicCutoff), rarity = Magic))
 
-  val bestForZoneLevel: Seq[Block] = allEquipment.map(_.blocksOfBestItemsForZoneLevel)
-  val goodForZoneLevel: Seq[Block] = allEquipment.map(_.blocksOfGoodItemsForZoneLevel)
+  val bestRaresForZoneLevel: Seq[Block] = allEquipment.map(_.blocksOfBestItemsForZoneLevel())
+  val goodRaresForZoneLevel: Seq[Block] = allEquipment.map(_.blocksOfGoodItemsForZoneLevel())
+  val bestWhitesForZoneLevel: Seq[Block] = allEquipment.map(_.blocksOfBestItemsForZoneLevel(White))
   val accessor: Block = Block(
       Condition(`class` = Seq("Amulet", "Ring", "Belt"), rarity = Rare)
     )
 
   override def categoryBlocks(filterLevel: FilterLevel): Seq[Block] = filterLevel match {
-    case Reduced => (bestForZoneLevel ++ goodForZoneLevel).map(_.hidden) :+ accessor.hidden
-    case Normal => bestForZoneLevel ++ goodForZoneLevel.map(_.hidden) :+ accessor
-    case Racing => bestForZoneLevel ++ goodForZoneLevel ++ Seq(accessor, rareFourLinks, fourLinks, threeLinks, belts, magic, whites)
+    case Reduced => (bestRaresForZoneLevel ++ goodRaresForZoneLevel ++ bestWhitesForZoneLevel).map(_.hidden) :+ accessor.hidden
+    case Normal => bestRaresForZoneLevel ++ (goodRaresForZoneLevel ++ bestWhitesForZoneLevel).map(_.hidden) :+ accessor
+    case Racing => bestRaresForZoneLevel ++ goodRaresForZoneLevel ++ Seq(accessor, rareFourLinks, fourLinks, threeLinks, belts, magic, whites) ++ bestWhitesForZoneLevel.map(_.hidden)
   }
 }
