@@ -26,9 +26,9 @@ object Leveling extends Category {
   val whites = Block(Condition(itemLevel = ("<=", whiteCutoff), rarity = White))
   val magic = Block(Condition(itemLevel = ("<=", magicCutoff), rarity = Magic))
 
-  val bestRaresForZoneLevel: Seq[Block] = allEquipment.map(_.blocksOfBestItemsForZoneLevel())
-  val goodRaresForZoneLevel: Seq[Block] = allEquipment.map(_.blocksOfGoodItemsForZoneLevel())
-  val bestWhitesForZoneLevel: Seq[Block] = allEquipment.map(_.blocksOfBestItemsForZoneLevel(White))
+  val bestRaresForZoneLevel: Seq[Block] = allEquipment.map(_.blocksOfBestRaresForZoneLevel())
+  val goodRaresForZoneLevel: Seq[Block] = allEquipment.map(_.blocksOfGoodRaresForZoneLevel())
+  val bestWhitesForZoneLevel: Seq[Block] = allEquipment.map(_.blocksOfBestWhitesForZoneLevel())
   val accessor: Block = Block(
       Condition(`class` = Seq("Amulet", "Ring", "Belt"), rarity = Rare)
     )

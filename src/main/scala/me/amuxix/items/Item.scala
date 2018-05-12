@@ -16,24 +16,28 @@ abstract case class Item(dropLevel: Int, `class`: ItemClass, minDropBuffer: Int 
 
   def baseType: BaseType = BaseType(name.replaceAll("([a-z])([A-Z])", "$1 $2"))
 
-  def rareCloseToZoneLevel(howClose: ItemLevel, rarity: Option[Rarity]): Condition = Condition(
+  def closeToZoneLevel(howClose: ItemLevel, rarity: Option[Rarity] = Rare): Condition = Condition(
     base = Some(this.baseType),
     itemLevel = if (Item.bestEquipment contains this) None else Some(howClose),
     rarity = rarity
   )
 
-  def blocksOfBestItemsForZoneLevel(rarity: Option[Rarity] = Rare) = Block(
-    rareCloseToZoneLevel(ItemLevel("<=", this.dropLevel + minDropBuffer max this.dropLevel / 10), rarity),
+  def blocksOfBestRaresForZoneLevel() = Block(
+    closeToZoneLevel(ItemLevel("<=", this.dropLevel + minDropBuffer max this.dropLevel / 10)),
     Action(
       textColor = goodYellow,
     )
   )
 
-  def blocksOfGoodItemsForZoneLevel(rarity: Option[Rarity] = Rare) = Block(
-    rareCloseToZoneLevel(ItemLevel("<=", this.dropLevel + 20), rarity),
+  def blocksOfGoodRaresForZoneLevel(rarity: Option[Rarity] = Rare) = Block(
+    closeToZoneLevel(ItemLevel("<=", this.dropLevel + 20)),
     Action(
       size = 25
     )
+  )
+
+  def blocksOfBestWhitesForZoneLevel() = Block(
+    closeToZoneLevel(ItemLevel("<=", this.dropLevel + minDropBuffer max this.dropLevel / 10))
   )
 }
 
