@@ -30,7 +30,7 @@ object Leveling extends Category {
   val goodRaresForZoneLevel: Seq[Block] = allEquipment.map(_.blocksOfGoodRaresForZoneLevel())
   val bestWhitesForZoneLevel: Seq[Block] = allEquipment.map(_.blocksOfBestWhitesForZoneLevel())
   val accessor: Block = Block(
-      Condition(`class` = Seq("Amulet", "Ring", "Belt"), rarity = Rare)
+      Condition(`class` = Seq("Amulet", "Ring", "Belt"), rarity = Rare, itemLevel = ("<", 60))
     )
 
   override def categoryBlocks(filterLevel: FilterLevel): Seq[Block] = filterLevel match {

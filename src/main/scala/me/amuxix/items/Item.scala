@@ -37,7 +37,7 @@ abstract case class Item(dropLevel: Int, `class`: ItemClass, minDropBuffer: Int 
   )
 
   def blocksOfBestWhitesForZoneLevel() = Block(
-    closeToZoneLevel(ItemLevel("<=", this.dropLevel + minDropBuffer max this.dropLevel / 10))
+    closeToZoneLevel(ItemLevel("<=", this.dropLevel + minDropBuffer max this.dropLevel / 10), White)
   )
 }
 
