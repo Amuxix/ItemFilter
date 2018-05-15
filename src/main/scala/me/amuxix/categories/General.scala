@@ -1,6 +1,6 @@
 package me.amuxix.categories
 
-import me.amuxix.actions.{Action, Color, Sound}
+import me.amuxix.actions._
 import me.amuxix.conditions.Condition
 import me.amuxix.{Block, FilterLevel}
 
@@ -15,5 +15,10 @@ object General extends Category {
     Action(size = 45, sound = Sound.sixLinks, borderColor = Color.red)
   )
 
-  override def categoryBlocks(filterLevel: FilterLevel) = Seq(quests, sixLinks)
+  val divineVessel = Block(
+    Condition(base = "Divine Vessel"),
+    Action(size = 45, sound = Sound.nets)
+  )
+
+  override def categoryBlocks(filterLevel: FilterLevel) = Seq(quests, sixLinks, divineVessel)
 }
