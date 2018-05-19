@@ -14,7 +14,7 @@ object ItemFilter {
 
     val categories: Seq[Category] = Seq(
       Myths, General, Gems, Essence, Talisman, Beastiary, Abyss, Breach, Legacy, Harbinger, Currency, Maps,
-      Uniques, Jewels, DivinationCards, ShaperAndElder, BestBases, Atlas, Chisel, Regal, Chaos, Chromatic, TwentyQuality, Flasks, Leveling
+      Uniques, Jewels, DivinationCards, ShaperAndElder, BestBases, Atlas, Leveling, Chisel, Regal, Chaos, Chromatic, TwentyQuality, Flasks
     )
     //println(currentDirectory.toString)
     Seq(Reduced, Normal, Racing).foreach(createFilterFile(poeFolder, _, categories))
@@ -23,7 +23,7 @@ object ItemFilter {
   def createFilterFile(poeFolder: String, filterLevel: FilterLevel, categories: Seq[Category]): Unit = {
     val filterFile = new PrintWriter(new File(poeFolder + "Amuxix's" + filterLevel.suffix + " filter.filter"))
     val (shown, hidden) = categories.map(_.partitionHiddenAndShown(filterLevel)).unzip
-    filterFile.write((shown ++ hidden ++ LastCall.blocks(filterLevel).map(_.write)).mkString("", "\n", "\n"))
+    filterFile.write((shown ++ hidden ++ LastCall.write).mkString)
     filterFile.close()
   }
 }
