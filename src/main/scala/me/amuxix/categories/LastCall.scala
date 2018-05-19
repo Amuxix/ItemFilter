@@ -2,7 +2,7 @@ package me.amuxix.categories
 
 import me.amuxix.actions.Action
 import me.amuxix.actions.Color._
-import me.amuxix.conditions.{Condition, Magic, Rare}
+import me.amuxix.conditions._
 import me.amuxix.{Block, FilterLevel}
 
 object LastCall extends Category {
@@ -34,5 +34,9 @@ object LastCall extends Category {
     show = true
   )
 
-  override def categoryBlocks(filterLevel: FilterLevel) = Seq(hideBelowRare, hideRemainingRares, showRest)
+  val blocks = Seq(hideBelowRare, hideRemainingRares, showRest)
+
+  override def categoryBlocks(filterLevel: FilterLevel): Seq[Block] = blocks
+
+  def write: Seq[String] = separator +: blocks.map(_.write)
 }

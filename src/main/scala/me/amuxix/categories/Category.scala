@@ -7,7 +7,7 @@ abstract class Category extends ImplicitConversions with Named {
   def blocks(filterLevel: FilterLevel): Seq[Block] = Mergeable.merge(categoryBlocks(filterLevel))
   def partitionHiddenAndShown(filterLevel: FilterLevel): (String, String) = {
     def addSeparatorAndMakeString(blocks: Seq[Block]) = {
-      separator + blocks.map(_.write).mkString("\n")
+      separator + blocks.map(_.write).mkString("", "\n", "\n")
     }
     blocks(filterLevel).partition(_.show) match {
       case (shown, Seq()) => (addSeparatorAndMakeString(shown), "")
@@ -15,7 +15,7 @@ abstract class Category extends ImplicitConversions with Named {
     }
   }
 
-  private def separator: String = {
+  protected def separator: String = {
     val asterisks = "*"  * (59 - name.length / 2)
     s"#$asterisks $name $asterisks\n"
   }
