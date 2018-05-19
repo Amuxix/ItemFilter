@@ -1,8 +1,8 @@
 package me.amuxix
 
 import java.io.{File, PrintWriter}
-import javax.swing.filechooser.FileSystemView
 
+import javax.swing.filechooser.FileSystemView
 import me.amuxix.categories._
 import me.amuxix.categories.leagues._
 import me.amuxix.categories.recipes._
@@ -14,7 +14,7 @@ object ItemFilter {
 
     val categories: Seq[Category] = Seq(
       Myths, General, Gems, Essence, Talisman, Beastiary, Abyss, Breach, Legacy, Harbinger, Currency, Maps,
-      Uniques, Jewels, DivinationCards, ShaperAndElder, BestBases, Atlas, Leveling, Chisel, Chromatic, TwentyQuality, Regal, Chaos, Flasks, LastCall
+      Uniques, Jewels, DivinationCards, ShaperAndElder, BestBases, Atlas, Chisel, Regal, Chaos, Chromatic, TwentyQuality, Flasks, Leveling
     )
     //println(currentDirectory.toString)
     Seq(Reduced, Normal, Racing).foreach(createFilterFile(poeFolder, _, categories))
@@ -22,7 +22,8 @@ object ItemFilter {
 
   def createFilterFile(poeFolder: String, filterLevel: FilterLevel, categories: Seq[Category]): Unit = {
     val filterFile = new PrintWriter(new File(poeFolder + "Amuxix's" + filterLevel.suffix + " filter.filter"))
-    filterFile.write(categories.map(_.writeCategory(filterLevel)).mkString("", "\n", "\n"))
+    val (shown, hidden) = categories.map(_.partitionHiddenAndShown(filterLevel)).unzip
+    filterFile.write((shown ++ hidden ++ LastCall.blocks(filterLevel).map(_.write)).mkString("", "\n", "\n"))
     filterFile.close()
   }
 }
