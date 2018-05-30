@@ -30,8 +30,8 @@ sealed case class Sound(soundNumber: Int, volume: Int) extends Writable {
 
   def setVolume(volume: Int): Sound = Sound(this.soundNumber, volume)
 
-  def quieter:Sound = Sound(this.soundNumber, volume - 100 max 0)
-  def louder:Sound = Sound(this.soundNumber, volume + 100 min 300)
+  def quieter:Sound = Sound(this.soundNumber, volume / 2 max 0)
+  def louder:Sound = Sound(this.soundNumber, volume * 2 min 300)
 
   override def print: String = s"PlayAlertSound $soundNumber $volume"
 }

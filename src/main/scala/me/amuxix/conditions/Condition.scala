@@ -17,9 +17,10 @@ case class Condition(base: Option[BaseType] = None,
                      corrupted: Option[Corrupted] = None,
                      shapedMap: Option[ShapedMap] = None,
                      shaperItem: Option[ShaperItem] = None,
-                     elderItem: Option[ElderItem] = None) extends Mergeable[Condition] {
+                     elderItem: Option[ElderItem] = None,
+                     gemLevel: Option[GemLevel] = None) extends Mergeable[Condition] {
   val conditions: Seq[Writable] = Seq(base, `class`, dropLevel, itemLevel, quality, rarity, sockets, linkedSockets,
-    socketGroup, height, width, identified, corrupted, shapedMap, shaperItem, elderItem).collect { case Some(writable) => writable }
+    socketGroup, height, width, identified, corrupted, shapedMap, shaperItem, elderItem, gemLevel).collect { case Some(writable) => writable }
 
   override def canMerge(o: Condition): Boolean = {
     (base == o.base || (base.isDefined && o.base.isDefined)) && //Both bases are equal or both are defined
@@ -37,12 +38,13 @@ case class Condition(base: Option[BaseType] = None,
       corrupted == o.corrupted &&
       shapedMap == o.shapedMap &&
       shaperItem == o.shaperItem &&
-      elderItem == o.elderItem
+      elderItem == o.elderItem &&
+      gemLevel == o.gemLevel
   }
 
   override def merge(o: Condition): Condition = {
       val mergedBase = Some(BaseType(base.get.bases ++ o.base.get.bases: _*))
       Condition(mergedBase, `class`, dropLevel, itemLevel, quality, rarity, sockets, linkedSockets, socketGroup,
-        height, width, identified, corrupted, shapedMap, shaperItem, elderItem)
+        height, width, identified, corrupted, shapedMap, shaperItem, elderItem, gemLevel)
   }
 }
