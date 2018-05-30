@@ -47,6 +47,8 @@ trait ImplicitConversions {
   implicit def boolean2OptionShapedMap(boolean: Boolean): Option[ShapedMap] = Some(ShapedMap(boolean))
   implicit def boolean2OptionShaperItem(boolean: Boolean): Option[ShaperItem] = Some(ShaperItem(boolean))
   implicit def boolean2OptionElderItem(boolean: Boolean): Option[ElderItem] = Some(ElderItem(boolean))
+  implicit def tuple22OptionGemLevel(tuple: (Operator, Int)): Option[GemLevel] = Some(GemLevel(tuple._1, tuple._2))
+  implicit def tuple22OptionGemLevel2(tuple: (String, Int)): Option[GemLevel] = Some(GemLevel(tuple._1, tuple._2))
 
   implicit def color2OptionColor(color: Color): Option[Color] = Some(color)
   implicit def sound2OptionSound(sound: Sound): Option[Sound] = Some(sound)

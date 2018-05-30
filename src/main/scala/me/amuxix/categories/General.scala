@@ -20,5 +20,10 @@ object General extends Category {
     Action(size = 45, sound = Sound.nets)
   )
 
-  override def categoryBlocks(filterLevel: FilterLevel) = Seq(quests, sixLinks, divineVessel)
+  val prophecy = Block(
+    Condition(base = "Prophecy"),
+    Action(size = 45, sound = Sound.nets)
+  )
+
+  override def categoryBlocks(filterLevel: FilterLevel) = Seq(quests, sixLinks, divineVessel, prophecy)
 }

@@ -12,6 +12,11 @@ object Gems extends Category {
     Action(size = 40, sound = Sound.gems, borderColor = Color.teal, backgroundColor = Color.black)
   )
 
+  val highLevel = Block(
+    Condition(`class` = "Gem", gemLevel = (">=", 18)),
+    Action(size = 40, sound = Sound.gems, borderColor = Color.teal, backgroundColor = Color.darkRed)
+  )
+
   val highQuality = Block(
     Condition(`class` = "Gem", quality = (">=", 16)),
     Action(size = 40, sound = Sound.gems, borderColor = Color.teal, backgroundColor = Color.darkRed)
@@ -25,8 +30,8 @@ object Gems extends Category {
   val all = Block(Condition(`class` = "Gem"), Action(borderColor = Color.teal, backgroundColor = Color.black))
 
   override def categoryBlocks(filterLevel: FilterLevel): Seq[Block] = filterLevel match {
-    case Reduced => Seq(vaalGems, valuable, highQuality, lowQuality.hidden, all.hidden)
-    case Normal => Seq(vaalGems, valuable, highQuality, lowQuality, all.hidden)
-    case Racing => Seq(vaalGems, valuable, highQuality, lowQuality, all)
+    case Reduced => Seq(vaalGems, valuable, highLevel, highQuality, lowQuality.hidden, all.hidden)
+    case Normal => Seq(vaalGems, valuable, highLevel, highQuality, lowQuality, all.hidden)
+    case Racing => Seq(vaalGems, valuable, highLevel, highQuality, lowQuality, all)
   }
 }
