@@ -32,6 +32,8 @@ object Color {
   val regalPurple = Color(82, 0, 155)
   val shelder = Color(50, 130, 165)
   val nets = Color(239, 143, 16)
+  val incursionGreen = Color(95, 170, 120)
+  val incursionRed = Color(173, 54, 42)
 
   private val darknessFactor = .15f
   private val lightenFactor = .3f

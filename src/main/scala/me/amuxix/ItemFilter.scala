@@ -13,7 +13,7 @@ object ItemFilter {
     //val currentDirectory = new java.io.File(".").getCanonicalPath
 
     val categories: Seq[Category] = Seq(
-      Myths, General, Gems, Essence, Talisman, Beastiary, Abyss, Breach, Legacy, Harbinger, Currency, Maps,
+      Myths, General, Gems, Essence, Talisman, Beastiary, Abyss, Breach, Legacy, Harbinger, Incursion, Currency, Maps,
       Uniques, Jewels, DivinationCards, ShaperAndElder, BestBases, Atlas, Leveling, Chisel, Regal, Chaos, Chromatic, TwentyQuality, Flasks
     )
     //println(currentDirectory.toString)
