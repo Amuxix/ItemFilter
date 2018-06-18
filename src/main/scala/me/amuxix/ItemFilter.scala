@@ -9,8 +9,8 @@ import me.amuxix.categories.recipes._
 
 object ItemFilter {
   def main(args: Array[String]): Unit = {
-    val poeFolder = FileSystemView.getFileSystemView.getDefaultDirectory.getPath + File.separatorChar + "My Games" + File.separatorChar + "Path of Exile" + File.separatorChar
-    //val currentDirectory = new java.io.File(".").getCanonicalPath
+    //val poeFolder = FileSystemView.getFileSystemView.getDefaultDirectory.getPath + File.separatorChar + "My Games" + File.separatorChar + "Path of Exile" + File.separatorChar
+    val poeFolder = new java.io.File(".").getCanonicalPath
 
     val categories: Seq[Category] = Seq(
       Myths, General, Gems, Essence, Talisman, Beastiary, Abyss, Breach, Legacy, Harbinger, Incursion, Currency, Maps,
