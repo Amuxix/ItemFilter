@@ -13,7 +13,7 @@ abstract class Sized extends Category {
 
   final override def categoryBlocks(filterLevel: FilterLevel): Seq[Block] = filterLevel match {
     case Reduced => Seq(smallArmour.hidden, smallWeapon.hidden, medium.hidden, large.hidden)
-    case Normal => Seq(smallArmour, smallWeapon, medium.hidden, large.hidden)
-    case Racing => Seq(smallArmour, smallWeapon, medium, large.hidden)
+    case Normal  => Seq(smallArmour, smallWeapon, medium.hidden, large.hidden)
+    case Racing  => Seq(smallArmour, smallWeapon, medium, large.hidden)
   }
 }

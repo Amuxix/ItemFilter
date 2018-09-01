@@ -32,7 +32,6 @@ object AuricMace extends OneHandedMace(dropLevel = 66)
 object NightmareMace extends OneHandedMace(dropLevel = 68)
 object BehemothMace extends OneHandedMace(dropLevel = 70)
 
-
 sealed abstract class TwoHandedMace(dropLevel: Int) extends Mace(dropLevel, "Two Handed")
 
 object DriftwoodMaul extends TwoHandedMace(dropLevel = 3)

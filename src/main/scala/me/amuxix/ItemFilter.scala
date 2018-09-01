@@ -2,7 +2,7 @@ package me.amuxix
 
 import java.io.{File, PrintWriter}
 
-import javax.swing.filechooser.FileSystemView
+//import javax.swing.filechooser.FileSystemView
 import me.amuxix.categories._
 import me.amuxix.categories.leagues._
 import me.amuxix.categories.recipes._

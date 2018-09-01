@@ -5,7 +5,6 @@ import me.amuxix.{InvalidArgument, Operator, Writable}
 /**
   * Created by Amuxix on 03/03/2017.
   */
-
 object LinkedSockets {
   implicit def tuple22LinkedSockets(tuple: (Operator, Int)): LinkedSockets = LinkedSockets(tuple._1, tuple._2)
   implicit def int2LinkedSockets(int: Int): LinkedSockets = LinkedSockets(int)

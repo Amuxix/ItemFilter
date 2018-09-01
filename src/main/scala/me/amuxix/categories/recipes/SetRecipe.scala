@@ -8,8 +8,7 @@ import me.amuxix._
 
 abstract class SetRecipe(minItemLevel: Int, color: Color) extends Category {
   private val equipmentAction = Action(size = 34, textColor = color, borderColor = color, backgroundColor = black)
-  private val partialCondition = (c: Option[ItemClass], w: Option[Width], h: Option[Height]) =>
-    Condition(`class` = c, width = w, height = h, itemLevel = (">=", minItemLevel), rarity = Rare, identified = false)
+  private val partialCondition = (c: Option[ItemClass], w: Option[Width], h: Option[Height]) => Condition(`class` = c, width = w, height = h, itemLevel = (">=", minItemLevel), rarity = Rare, identified = false)
 
   private val weapons = Block(partialCondition(None, 1, 3), equipmentAction)
   private val smallBows = Block(partialCondition(Seq("Bows"), 2, 3), equipmentAction)
@@ -21,6 +20,6 @@ abstract class SetRecipe(minItemLevel: Int, color: Color) extends Category {
 
   override def categoryBlocks(filterLevel: FilterLevel): Seq[Block] = filterLevel match {
     case Reduced => Seq(accessories, weapons.hidden, smallBows.hidden, armor.hidden)
-    case _ => Seq(accessories, weapons, smallBows, armor)
+    case _       => Seq(accessories, weapons, smallBows, armor)
   }
 }

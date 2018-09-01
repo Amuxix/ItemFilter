@@ -54,6 +54,5 @@ sealed case class Color(r: Int, g: Int, b: Int, a: Int) {
   def darken: Color = Color(darken(r), darken(g), darken(b), a)
   def lighten: Color = Color(lighten(r), lighten(g), lighten(b), a)
 
-
   override def toString: String = s"$r $g $b${if (a < 255) " " + a else ""}"
 }
