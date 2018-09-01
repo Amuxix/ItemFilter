@@ -3,18 +3,18 @@ package me.amuxix
 sealed abstract class Operator(protected[Operator] val text: String = "") {
   def print: String = this match {
     case Greater | GreaterOrEqual | Lesser | LesserOrEqual => this.text + " "
-    case _ => ""
+    case _                                                 => ""
   }
 }
 
 object Operator {
   implicit def string2Operator(op: String): Operator = op match {
-    case Equals.text => Equals
-    case Greater.text => Greater
+    case Equals.text         => Equals
+    case Greater.text        => Greater
     case GreaterOrEqual.text => GreaterOrEqual
-    case Lesser.text => Lesser
-    case LesserOrEqual.text => LesserOrEqual
-    case _ => Nothing
+    case Lesser.text         => Lesser
+    case LesserOrEqual.text  => LesserOrEqual
+    case _                   => Nothing
   }
 }
 

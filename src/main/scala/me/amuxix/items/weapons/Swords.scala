@@ -5,7 +5,6 @@ import me.amuxix.items.Weapon
 
 sealed abstract class Sword(dropLevel: Int, `class`: String) extends Weapon(dropLevel, `class` + " Sword")
 
-
 sealed abstract class OneHandedSword(dropLevel: Int, `class`: String) extends Sword(dropLevel, `class` + "One Handed") {
   def this(dropLevel: Int) = this(dropLevel, "")
 }
@@ -36,7 +35,6 @@ object EternalSword extends OneHandedSword(dropLevel = 66)
 object MidnightBlade extends OneHandedSword(dropLevel = 68)
 object TigerHook extends OneHandedSword(dropLevel = 70)
 
-
 sealed abstract class TwoHandedSword(dropLevel: Int) extends Sword(dropLevel, "Two Handed")
 
 object CorrodedBlade extends TwoHandedSword(dropLevel = 3)
@@ -65,7 +63,6 @@ object VaalGreatsword extends TwoHandedSword(dropLevel = 63)
 object LionSword extends TwoHandedSword(dropLevel = 65)
 object InfernalSword extends TwoHandedSword(dropLevel = 67)
 object ExquisiteBlade extends TwoHandedSword(dropLevel = 70)
-
 
 sealed abstract class ThrustingOneHandedSword(dropLevel: Int) extends Sword(dropLevel, "Thrusting ")
 

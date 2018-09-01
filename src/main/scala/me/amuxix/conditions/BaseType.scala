@@ -6,7 +6,7 @@ import me.amuxix.{InvalidArgument, Writable}
   * Created by Amuxix on 03/03/2017.
   */
 object BaseType {
-  implicit def string2BaseType(string: String*): BaseType = BaseType(string:_*)
+  implicit def string2BaseType(string: String*): BaseType = BaseType(string: _*)
 }
 
 case class BaseType(bases: String*) extends Writable {

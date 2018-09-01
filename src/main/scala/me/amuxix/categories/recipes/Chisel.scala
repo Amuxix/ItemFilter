@@ -11,6 +11,6 @@ object Chisel extends Category {
 
   override def categoryBlocks(filterLevel: FilterLevel): Seq[Block] = filterLevel match {
     case Reduced => Seq(done, magic.hidden, white.hidden)
-    case _ => Seq(done, magic, white)
+    case _       => Seq(done, magic, white)
   }
 }

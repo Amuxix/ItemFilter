@@ -6,8 +6,8 @@ import me.amuxix.conditions._
 trait ImplicitConversions {
   import Operator.string2Operator
   implicit def int2OptionSize(size: Int): Option[Size] = Some(Size(size))
-  implicit def int2OptionSound(sound: Int): Option[Sound] = Some(Sound(sound))
-  implicit def tuple22OptionSound(tuple: (Int, Int)): Option[Sound] = Some(Sound(tuple._1, tuple._2))
+  implicit def int2OptionGameSound(sound: Int): Option[Sound] = Some(GameSound(sound))
+  implicit def tuple22OptionGameSound(tuple: (Int, Int)): Option[Sound] = Some(GameSound(tuple._1, tuple._2))
   implicit def color2OptionBorder(color: Color): Option[BorderColor] = Some(BorderColor(color))
   implicit def tuple32OptionBorder(color: (Int, Int, Int)): Option[BorderColor] = Some(BorderColor(color))
   implicit def color2OptionBackground(color: Color): Option[BackgroundColor] = Some(BackgroundColor(color))
@@ -16,9 +16,9 @@ trait ImplicitConversions {
   implicit def tuple32OptionText(color: (Int, Int, Int)): Option[TextColor] = Some(TextColor(color))
 
   implicit def string2OptionBaseType(string: String): Option[BaseType] = Some(BaseType(string))
-  implicit def string2OptionBaseType2(string: Seq[String]): Option[BaseType] = Some(BaseType(string:_*))
+  implicit def string2OptionBaseType2(string: Seq[String]): Option[BaseType] = Some(BaseType(string: _*))
   implicit def String2OptionItemClass(string: String): Option[ItemClass] = Some(ItemClass(string))
-  implicit def String2OptionItemClass2(string: Seq[String]): Option[ItemClass] = Some(ItemClass(string:_*))
+  implicit def String2OptionItemClass2(string: Seq[String]): Option[ItemClass] = Some(ItemClass(string: _*))
   implicit def tuple22OptionDropLevel(tuple: (Operator, Int)): Option[DropLevel] = Some(DropLevel(tuple._1, tuple._2))
   implicit def tuple22OptionDropLevel2(tuple: (String, Int)): Option[DropLevel] = Some(DropLevel(tuple._1, tuple._2))
   implicit def tuple22OptionItemLevel(tuple: (Operator, Int)): Option[ItemLevel] = Some(ItemLevel(tuple._1, tuple._2))
@@ -52,6 +52,7 @@ trait ImplicitConversions {
 
   implicit def color2OptionColor(color: Color): Option[Color] = Some(color)
   implicit def sound2OptionSound(sound: Sound): Option[Sound] = Some(sound)
-
+  implicit def gameSound2OptionGameSound(sound: GameSound): Option[GameSound] = Some(sound)
+  implicit def customSound2OptionCustomSound(sound: CustomSound): Option[CustomSound] = Some(sound)
 
 }

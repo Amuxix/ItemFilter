@@ -7,6 +7,6 @@ abstract class Writable {
 
   final def write: Option[String] = this match {
     case _: Size if this.asInstanceOf[Size].size == Size.default => None
-    case _ => Some(this.print)
+    case _                                                       => Some(this.print)
   }
 }

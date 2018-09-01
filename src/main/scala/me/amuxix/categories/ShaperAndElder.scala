@@ -29,6 +29,6 @@ object ShaperAndElder extends Category {
 
   override def categoryBlocks(filterLevel: FilterLevel): Seq[Block] = filterLevel match {
     case Reduced => bestShelder ++ Seq(rareShaper.hidden, rareElder.hidden, craftingShaper, craftingElder)
-    case _ => bestShelder ++ Seq(rareShaper, rareElder, craftingShaper, craftingElder)
+    case _       => bestShelder ++ Seq(rareShaper, rareElder, craftingShaper, craftingElder)
   }
 }

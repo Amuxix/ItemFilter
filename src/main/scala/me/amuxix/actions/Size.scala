@@ -12,6 +12,6 @@ object Size {
   val max: Int = 45
 }
 case class Size(size: Int) extends Writable {
-  if(size < Size.min || size > Size.max) throw new InvalidArgument
+  if (size < Size.min || size > Size.max) throw new InvalidArgument
   override def print: String = s"SetFontSize $size"
 }

@@ -2,7 +2,6 @@ package me.amuxix.conditions
 
 import me.amuxix.Writable
 
-
 object ShapedMap {
   implicit def boolean2ShapedMap(boolean: Boolean): ShapedMap = ShapedMap(boolean)
 }
