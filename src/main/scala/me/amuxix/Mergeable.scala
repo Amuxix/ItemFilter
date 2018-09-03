@@ -1,20 +1,15 @@
 package me.amuxix
 
-object Mergeable {
-  def merge[T <: Mergeable[T]](seq: Seq[T]): Seq[T] = seq match {
-    case h :: _ :: _ =>
-      val (mergeable, unmergeable) = seq.partition(h.canMerge)
-      mergeable.reduceLeft(_ merge _) +: merge(unmergeable)
-    case _ => seq
-  }
+import scala.annotation.tailrec
 
-  /*@tailrec def merge[T <: Mergeable[T]](seq: Seq[T], merged: Option[T] = None): Seq[T] =
-    seq match {
-      case h :: _ :: _ =>
-        val (mergeable, unmergeable) = seq.partition(h.canMerge)
-        merge(unmergeable, Some(mergeable.reduceLeft(_ merge _)))
-      case _ => merged.fold(seq)(_ +: seq)
-    }*/
+object Mergeable {
+  @tailrec def merge[T <: Mergeable[T]](unmerged: Seq[T], merged: Seq[T] = Seq.empty): Seq[T] =
+    unmerged match {
+      case h :: t =>
+        val (mergeable, unmergeable) = t.partition(h.canMerge)
+        merge(unmergeable, merged :+ mergeable.foldLeft(h)(_ merge _))
+      case _ => merged
+    }
 }
 
 trait Mergeable[T] {
