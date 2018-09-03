@@ -38,7 +38,7 @@ object Beastiary extends Category {
 
   override protected def categoryBlocks(filterLevel: FilterLevel): Seq[Block] = filterLevel match {
     case Reduced => Seq(beastiaryOrbs, ropeNet, ironNet, steelNet).map(_.hidden) ++ Seq(thaumaturgicalNet, necromancyNet)
-    case Normal => Seq(beastiaryOrbs, ropeNet, ironNet).map(_.hidden) ++ Seq(steelNet, thaumaturgicalNet, necromancyNet)
-    case _ => Seq(beastiaryOrbs, ropeNet, ironNet, steelNet, thaumaturgicalNet, necromancyNet)
+    case Normal  => Seq(beastiaryOrbs, ropeNet, ironNet).map(_.hidden) ++ Seq(steelNet, thaumaturgicalNet, necromancyNet)
+    case _       => Seq(beastiaryOrbs, ropeNet, ironNet, steelNet, thaumaturgicalNet, necromancyNet)
   }
 }

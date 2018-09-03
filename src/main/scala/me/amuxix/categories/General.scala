@@ -6,7 +6,7 @@ import me.amuxix.{Block, FilterLevel}
 
 object General extends Category {
   val quests = Block(
-    Condition(`class` = Seq("Quest Items", "Labyrinth Item", "Pantheon Soul", "Labyrinth Trinket", "Prophecy")),
+    Condition(`class` = Seq("Quest Items", "Labyrinth Item", "Pantheon Soul", "Labyrinth Trinket")),
     Action(size = 45)
   )
 

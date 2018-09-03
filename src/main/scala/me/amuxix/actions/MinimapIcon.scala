@@ -3,18 +3,29 @@ package me.amuxix.actions
 import me.amuxix.Writable
 
 sealed trait Shape
-case object Circle extends Shape
-case object Diamond extends Shape
-case object Hexagon extends Shape
-case object Square extends Shape
 case object Star extends Shape
+case object Hexagon extends Shape
+case object Diamond extends Shape
+case object Square extends Shape
 case object Triangle extends Shape
+case object Circle extends Shape
 
 sealed trait IconSize
-case object Large extends IconSize
-case object Medium extends IconSize
-case object Small extends IconSize
+case object Large extends IconSize {
+  override def toString: String = "0"
+}
+case object Medium extends IconSize {
+  override def toString: String = "1"
+}
+case object Small extends IconSize {
+  override def toString: String = "2"
+}
 
-case class MinimapIcon(size: IconSize, color: EffectColor, shape: Shape) extends Writable {
-  override protected def print: String = s"MinimapIcon $size $color $shape"
+object MinimapIcon {
+  implicit def tuple22MinimapIcon(tuple: (EffectColor, Shape)): MinimapIcon = MinimapIcon(tuple._1, tuple._2)
+  implicit def tuple32MinimapIcon(tuple: (EffectColor, Shape, IconSize)): MinimapIcon = MinimapIcon(tuple._1, tuple._2, tuple._3)
+}
+
+case class MinimapIcon(color: EffectColor, shape: Shape, size: IconSize = Small) extends Writable {
+  override protected def print: String = s"MinimapIcon $size ${color.name} $shape"
 }

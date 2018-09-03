@@ -1,6 +1,6 @@
 package me.amuxix.categories
 
-import me.amuxix.actions.Action
+import me.amuxix.actions._
 import me.amuxix.actions.Color._
 import me.amuxix.actions.Sound._
 import me.amuxix.conditions.Condition
@@ -27,10 +27,12 @@ object DivinationCards extends Category {
     ),
     Action(
       size = 45,
-      sound = myths.quieter,
+      sound = topDivCards,
       backgroundColor = divinationBlue,
       textColor = black,
       borderColor = black,
+      minimapIcon = (Blue, Star),
+      beam = Blue,
     )
   )
 
@@ -75,10 +77,12 @@ object DivinationCards extends Category {
     ),
     Action(
       size = 40,
-      sound = epic.quieter,
+      sound = divCards,
       backgroundColor = divinationBlue.darken,
       textColor = black,
       borderColor = black,
+      minimapIcon = (Blue, Hexagon),
+      beam = Blue,
     )
   )
 
@@ -116,6 +120,8 @@ object DivinationCards extends Category {
       backgroundColor = black,
       textColor = divinationBlue,
       borderColor = divinationBlue,
+      minimapIcon = (Blue, Diamond),
+      beam = (Blue, true),
     )
   )
 
@@ -261,10 +267,11 @@ object DivinationCards extends Category {
     ),
     Action(
       size = 36,
-      sound = divCards.quieter,
+      sound = divCards,
       backgroundColor = black,
       textColor = divinationBlue.darken,
       borderColor = divinationBlue.darken,
+      beam = (Blue, true)
     )
   )
 

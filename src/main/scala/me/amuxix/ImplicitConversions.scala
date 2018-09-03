@@ -14,6 +14,10 @@ trait ImplicitConversions {
   implicit def tuple32OptionBackground(color: (Int, Int, Int)): Option[BackgroundColor] = Some(BackgroundColor(color))
   implicit def color2OptionText(color: Color): Option[TextColor] = Some(TextColor(color))
   implicit def tuple32OptionText(color: (Int, Int, Int)): Option[TextColor] = Some(TextColor(color))
+  implicit def tuple22OptionMinimapIcon(tuple: (EffectColor, Shape)): Option[MinimapIcon] = Some(MinimapIcon(tuple._1, tuple._2))
+  implicit def tuple32OptionMinimapIcon(tuple: (EffectColor, Shape, IconSize)): Option[MinimapIcon] = Some(MinimapIcon(tuple._1, tuple._2, tuple._3))
+  implicit def effectColor2OptionBeam(color: EffectColor): Option[Beam] = Some(Beam(color))
+  implicit def tuple22OptionBeam(tuple: (EffectColor, Boolean)): Option[Beam] = Some(Beam(tuple._1, tuple._2))
 
   implicit def string2OptionBaseType(string: String): Option[BaseType] = Some(BaseType(string))
   implicit def string2OptionBaseType2(string: Seq[String]): Option[BaseType] = Some(BaseType(string: _*))

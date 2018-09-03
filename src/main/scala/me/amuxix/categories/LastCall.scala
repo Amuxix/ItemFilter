@@ -12,7 +12,27 @@ object LastCall extends Category {
 
   val hideBelowRare: Block = Block(
     Condition(
-      `class` = Seq("Flasks", "Gloves", "Boots", "Body Armours", "Helmets", "Rings", "Belts", "Amulets", "Claws", "Daggers", "Wands", "Swords", "Bows", "Staves", "Axes", "Maces", "Quivers", "Shields", "Sceptres"),
+      `class` = Seq(
+        "Flasks",
+        "Gloves",
+        "Boots",
+        "Body Armours",
+        "Helmets",
+        "Rings",
+        "Belts",
+        "Amulets",
+        "Claws",
+        "Daggers",
+        "Wands",
+        "Swords",
+        "Bows",
+        "Staves",
+        "Axes",
+        "Maces",
+        "Quivers",
+        "Shields",
+        "Sceptres"
+      ),
       rarity = ("<=", Magic),
     ),
     hidden,
@@ -21,7 +41,27 @@ object LastCall extends Category {
 
   val hideRemainingRares: Block = Block(
     Condition(
-      `class` = Seq("Flasks", "Gloves", "Boots", "Body Armours", "Helmets", "Rings", "Belts", "Amulets", "Claws", "Daggers", "Wands", "Swords", "Bows", "Staves", "Axes", "Maces", "Quivers", "Shields", "Sceptres"),
+      `class` = Seq(
+        "Flasks",
+        "Gloves",
+        "Boots",
+        "Body Armours",
+        "Helmets",
+        "Rings",
+        "Belts",
+        "Amulets",
+        "Claws",
+        "Daggers",
+        "Wands",
+        "Swords",
+        "Bows",
+        "Staves",
+        "Axes",
+        "Maces",
+        "Quivers",
+        "Shields",
+        "Sceptres"
+      ),
       rarity = Rare,
     ),
     Action(),
