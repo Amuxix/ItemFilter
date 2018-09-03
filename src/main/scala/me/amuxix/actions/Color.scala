@@ -1,6 +1,7 @@
 package me.amuxix.actions
 
-import me.amuxix.InvalidArgument
+import me.amuxix.actions.EffectColor.effectColors
+import Ordering.Double.TotalOrdering
 import me.amuxix.actions.Color.{darknessFactor, lightenFactor}
 
 /**
@@ -14,7 +15,6 @@ object Color {
   val transparent = Color(0, 0, 0, 0)
 
   val unique = Color(175, 96, 37)
-
   val black = Color(0, 0, 0)
   val white = Color(255, 255, 255)
   val red = Color(255, 0, 0)
@@ -34,25 +34,32 @@ object Color {
   val nets = Color(239, 143, 16)
   val incursionGreen = Color(95, 170, 120)
   val incursionRed = Color(173, 54, 42)
+  val delveBlue = Color(21, 22, 96)
 
   private val darknessFactor = .15f
   private val lightenFactor = .3f
+
+  def average(colors: Seq[Color]): Color = {
+    val (redsGgreens, bluesAlphas) = colors.map(c => ((c.r, c.g), (c.b, c.a))).unzip
+    val ((reds, greens), (blues, alphas)) = (redsGgreens.unzip, bluesAlphas.unzip)
+    Color(
+      reds.sum / reds.length,
+      greens.sum / greens.size,
+      blues.sum / blues.size,
+      alphas.sum / alphas.size
+    )
+  }
 }
 
-sealed case class Color(r: Int, g: Int, b: Int, a: Int) {
+case class Color(r: Int, g: Int, b: Int, a: Int) extends Colored(r, g, b, a) {
   def this(r: Int, g: Int, b: Int) = this(r, g, b, 255)
-
-  Seq(r, g, b, a).foreach { p =>
-    if (p < 0 || p > 255) {
-      throw new InvalidArgument
-    }
-  }
 
   private def darken(color: Int): Int = Math.round(color * (1 - darknessFactor))
   private def lighten(color: Int): Int = Math.round(color + ((255 - color) * lightenFactor))
 
-  def darken: Color = Color(darken(r), darken(g), darken(b), a)
-  def lighten: Color = Color(lighten(r), lighten(g), lighten(b), a)
+  def darken: Color = Color(darken(_r), darken(_g), darken(_b), _a)
+  def lighten: Color = Color(lighten(_r), lighten(_g), lighten(_b), _a)
+  def halfTransparent: Color = copy(a / 2)
 
-  override def toString: String = s"$r $g $b${if (a < 255) " " + a else ""}"
+  def closestEffectColor: EffectColor = effectColors.minBy(this.distance)
 }

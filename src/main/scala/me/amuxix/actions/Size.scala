@@ -10,6 +10,8 @@ object Size {
   implicit def int2Size(size: Int): Size = Size(size)
   val min: Int = 18
   val max: Int = 45
+
+  val minimizeAmount: Int = 10
 }
 case class Size(size: Int) extends Writable {
   if (size < Size.min || size > Size.max) throw new InvalidArgument

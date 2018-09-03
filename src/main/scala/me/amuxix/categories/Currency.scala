@@ -1,7 +1,9 @@
 package me.amuxix.categories
 
 import me.amuxix._
-import me.amuxix.actions.{Action, Color, GameSound, Sound}
+import me.amuxix.actions.Color._
+import me.amuxix.actions.Sound._
+import me.amuxix.actions.{Sound, _}
 import me.amuxix.conditions.Condition
 
 object Currency extends Category {
@@ -10,27 +12,38 @@ object Currency extends Category {
     Action(
       size = 45,
       sound = sound,
-      backgroundColor = Color.lightGreen,
-      textColor = Color.black,
-      borderColor = Color.black
+      backgroundColor = lightGreen,
+      textColor = black,
+      borderColor = black,
+      minimapIcon = (Green, Star),
+      beam = Green,
   )
-  val t1MissingSound: Sound => Action = (sound: Sound) => Action(size = 45, sound = sound, backgroundColor = Color.black, textColor = Color.goodYellow, borderColor = Color.goodYellow)
+  val t1MissingSound: Sound => Action = (sound: Sound) =>
+    Action(
+      size = 45,
+      sound = sound,
+      backgroundColor = black,
+      textColor = goodYellow,
+      borderColor = goodYellow,
+      minimapIcon = (Yellow, Star),
+      beam = Yellow,
+  )
 
-  val eternal = Block(Condition(base = "Eternal Orb", `class` = "Currency"), t0MissingSound(GameSound.myths))
-  val mirror = Block(Condition(base = "Mirror of Kalandra", `class` = "Currency"), t0MissingSound(GameSound.myths))
-  val exalt = Block(Condition(base = "Exalted Orb", `class` = "Currency"), t0MissingSound(GameSound.myths))
-  val divine = Block(Condition(base = "Divine Orb", `class` = "Currency"), t0MissingSound(GameSound.myths))
-  val masterSextant = Block(Condition(base = "Master Cartographer's Sextant", `class` = "Currency"), t0MissingSound(GameSound.epic))
+  val eternal = Block(Condition(base = "Eternal Orb", `class` = "Currency"), t0MissingSound(myths))
+  val mirror = Block(Condition(base = "Mirror of Kalandra", `class` = "Currency"), t0MissingSound(myths))
+  val exalt = Block(Condition(base = "Exalted Orb", `class` = "Currency"), t0MissingSound(myths))
+  val divine = Block(Condition(base = "Divine Orb", `class` = "Currency"), t0MissingSound(myths))
+  val masterSextant = Block(Condition(base = "Master Cartographer's Sextant", `class` = "Currency"), t0MissingSound(epic))
   val t0: Seq[Block] = Seq(eternal, mirror, exalt, divine, masterSextant)
 
-  val chaos = Block(Condition(base = "Chaos Orb", `class` = "Currency"), t1MissingSound(GameSound.rare))
-  val regal = Block(Condition(base = "Regal Orb", `class` = "Currency"), t1MissingSound(GameSound.rare))
-  val vaal = Block(Condition(base = "Vaal Orb", `class` = "Currency"), t1MissingSound(GameSound.rare))
-  val fusing = Block(Condition(base = "Orb of Fusing", `class` = "Currency"), t1MissingSound(GameSound.rare))
+  val chaos = Block(Condition(base = "Chaos Orb", `class` = "Currency"), t1MissingSound(Sound.chaos))
+  val regal = Block(Condition(base = "Regal Orb", `class` = "Currency"), t1MissingSound(Sound.chaos))
+  val vaal = Block(Condition(base = "Vaal Orb", `class` = "Currency"), t1MissingSound(Sound.chaos))
+  val fusing = Block(Condition(base = "Orb of Fusing", `class` = "Currency"), t1MissingSound(Sound.chaos))
 
   val remainingT1 = Block(
     Condition(base = Seq("Silver Coin", "Orb of Regret", "Gemcutter's Prism", "Cartographer's Sextant", "Divine Vessel", "Stacked Deck"), `class` = "Currency"),
-    t1MissingSound(GameSound.rare.quieter)
+    t1MissingSound(rare)
   )
   val t1: Seq[Block] = Seq(chaos, regal, vaal, fusing, remainingT1)
 
@@ -39,7 +52,15 @@ object Currency extends Category {
       base = Seq("Blessed Orb", "Cartographer's Chisel", "Glassblower's Bauble", "Orb of Alchemy", "Orb of Chance", "Orb of Scouring", "Jeweller's Orb", "Perandus Coin"),
       `class` = "Currency",
     ),
-    Action(size = 45, sound = GameSound.rare.quieter, backgroundColor = Color.black, textColor = Color.goodYellow.lighten, borderColor = Color.goodYellow.lighten)
+    Action(
+      size = 45,
+      sound = rare,
+      backgroundColor = black,
+      textColor = goodYellow.lighten,
+      borderColor = goodYellow.lighten,
+      minimapIcon = (Yellow, Hexagon),
+      beam = (Yellow, true),
+    )
   )
 
   val t3 = Block(
@@ -47,7 +68,13 @@ object Currency extends Category {
       base = Seq("Armourer's Scrap", "Blacksmith's Whetstone", "Chromatic Orb", "Orb of Alteration", "Orb of Augmentation", "Orb of Transmutation"),
       `class` = "Currency",
     ),
-    Action(size = 45, backgroundColor = Color.black, textColor = Color.goodYellow.lighten, borderColor = Color.goodYellow.lighten)
+    Action(
+      size = 45,
+      backgroundColor = black,
+      textColor = goodYellow.lighten,
+      borderColor = goodYellow.lighten,
+      beam = (Yellow, true),
+    )
   )
 
   val portal = Block(
@@ -55,7 +82,7 @@ object Currency extends Category {
       base = "Portal Scroll",
       `class` = "Currency",
     ),
-    Action(size = 40, backgroundColor = Color.black, textColor = Color.goodYellow.lighten)
+    Action(size = 40, backgroundColor = black, textColor = goodYellow.lighten, sound = scrolls)
   )
 
   val wisdom = Block(
@@ -63,7 +90,7 @@ object Currency extends Category {
       base = "Scroll of Wisdom",
       `class` = "Currency",
     ),
-    Action(size = 40, backgroundColor = Color.black, textColor = Color.goodYellow.lighten)
+    Action(size = 40, backgroundColor = black, textColor = goodYellow.lighten)
   )
 
   val shards = Block(
@@ -71,7 +98,7 @@ object Currency extends Category {
       base = Seq("Alchemy Shard", "Alteration Shard", "Scroll Fragment", "Transmutation Shard"),
       `class` = "Currency",
     ),
-    Action(size = 40, backgroundColor = Color.black, textColor = Color.goodYellow.lighten)
+    Action(size = 40, backgroundColor = black, textColor = goodYellow.lighten)
   )
 
   override def categoryBlocks(filterLevel: FilterLevel): Seq[Block] = filterLevel match {

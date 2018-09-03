@@ -14,5 +14,5 @@ case class Action(
     beam: Option[Beam] = None,
     minimapIcon: Option[MinimapIcon] = None
 ) {
-  val actions: Seq[Writable] = Seq(size, sound, borderColor, backgroundColor, textColor).collect { case Some(writable) => writable }
+  val actions: Seq[Writable] = Seq(size, sound, borderColor, backgroundColor, textColor, beam, minimapIcon).collect { case Some(writable) => writable }
 }

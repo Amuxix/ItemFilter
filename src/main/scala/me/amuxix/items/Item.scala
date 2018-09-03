@@ -29,7 +29,7 @@ abstract case class Item(dropLevel: Int, `class`: ItemClass, minDropBuffer: Int 
     )
   )
 
-  def blocksOfGoodRaresForZoneLevel(rarity: Option[Rarity] = Rare) = Block(
+  def blocksOfGoodRaresForZoneLevel() = Block(
     closeToZoneLevel(ItemLevel("<=", this.dropLevel + 20)),
     Action(
       size = 25
@@ -41,8 +41,7 @@ abstract case class Item(dropLevel: Int, `class`: ItemClass, minDropBuffer: Int 
   )
 }
 
-sealed trait BestBaseBlocks extends ImplicitConversions {
-  this: Item =>
+sealed trait BestBaseBlocks extends ImplicitConversions { this: Item =>
   val rare: Block = Block(
     Condition(base = Some(this.baseType), itemLevel = (">=", this.bestModsDropLevel), rarity = Rare),
     Action(textColor = goodYellow, backgroundColor = darkRed, borderColor = goodYellow)
@@ -59,7 +58,7 @@ abstract class Weapon(dropLevel: Int, `class`: String) extends Item(dropLevel, `
 }
 
 abstract class Accessory(dropLevel: Int, `class`: String) extends Item(dropLevel, `class`) with BestBaseBlocks
-
+// format: off
 object Item {
   val oneHandedAxes: Seq[OneHandedAxe] = Seq(RustedHatchet, JadeHatchet, BoardingAxe, Cleaver, BroadAxe, ArmingAxe, DecorativeAxe, SpectralAxe, EtchedHatchet, JasperAxe, Tomahawk, WristChopper, WarAxe, ChestSplitter, CeremonialAxe, WraithAxe, EngravedHatchet, KaruiAxe, SiegeAxe, ReaverAxe, ButcherAxe, VaalHatchet, RoyalAxe, InfernalAxe, RunicHatchet)
   val twoHandedAxes: Seq[TwoHandedAxe] = Seq(StoneAxe, JadeChopper, Woodsplitter, Poleaxe, DoubleAxe, GildedAxe, ShadowAxe, DaggerAxe, JasperChopper, TimberAxe, HeadsmanAxe, Labrys, NobleAxe, AbyssalAxe, KaruiChopper, TalonAxe, SunderingAxe, EzomyteAxe, VaalAxe, DespotAxe, VoidAxe, Fleshripper)
@@ -137,3 +136,4 @@ object Item {
   val bestEquipment: Seq[Item with BestBaseBlocks] = (weapons ++ armours).flatMap(_.takeRight(2)) ++ Seq(SpikePointArrowQuiver, BroadheadArrowQuiver).sortBy(_.dropLevel)(implicitly[Ordering[Int]].reverse)
   val allEquipment: Seq[Item] = (weapons ++ armours).flatten.sortBy(_.dropLevel)(implicitly[Ordering[Int]].reverse)
 }
+// format: oon
