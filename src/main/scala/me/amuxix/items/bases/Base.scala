@@ -1,14 +1,15 @@
 package me.amuxix.items.bases
 
-import me.amuxix._
+import me.amuxix.{items, _}
 import me.amuxix.actions.Action
 import me.amuxix.actions.Color.{darkRed, goodYellow}
 import me.amuxix.conditions._
+import me.amuxix.items.Item
 import me.amuxix.items.bases.accessories._
 import me.amuxix.items.bases.armour._
 import me.amuxix.items.bases.weapons._
 
-abstract case class Item(dropLevel: Int, `class`: ItemClass, minDropBuffer: Int = 5) extends Named with ImplicitConversions {
+abstract case class Base(dropLevel: Int, `class`: ItemClass, minDropBuffer: Int = 5) extends Item with Named with ImplicitConversions {
   def this(dropLevel: Int, `class`: String, minDropBuffer: Int) = this(dropLevel, ItemClass(`class`), minDropBuffer)
   def this(dropLevel: Int, `class`: String) = this(dropLevel, ItemClass(`class`))
 
@@ -18,7 +19,7 @@ abstract case class Item(dropLevel: Int, `class`: ItemClass, minDropBuffer: Int 
 
   def closeToZoneLevel(howClose: ItemLevel, rarity: Option[Rarity] = Rare): Condition = Condition(
     base = Some(this.baseType),
-    itemLevel = if (Item.bestEquipment contains this) None else Some(howClose),
+    itemLevel = if (Base.bestEquipment contains this) None else Some(howClose),
     rarity = rarity
   )
 
@@ -41,7 +42,7 @@ abstract case class Item(dropLevel: Int, `class`: ItemClass, minDropBuffer: Int 
   )
 }
 
-sealed trait BestBaseBlocks extends ImplicitConversions { this: Item =>
+sealed trait BestBaseBlocks extends ImplicitConversions { this: Base =>
   val rare: Block = Block(
     Condition(base = Some(this.baseType), itemLevel = (">=", this.bestModsDropLevel), rarity = Rare),
     Action(textColor = goodYellow, backgroundColor = darkRed, borderColor = goodYellow)
@@ -51,15 +52,15 @@ sealed trait BestBaseBlocks extends ImplicitConversions { this: Item =>
   ).hidden
 }
 
-abstract class Armour(dropLevel: Int, `class`: String) extends Item(dropLevel, `class`) with BestBaseBlocks
+abstract class Armour(dropLevel: Int, `class`: String) extends Base(dropLevel, `class`) with BestBaseBlocks
 
-abstract class Weapon(dropLevel: Int, `class`: String) extends Item(dropLevel, `class`) with BestBaseBlocks {
+abstract class Weapon(dropLevel: Int, `class`: String) extends Base(dropLevel, `class`) with BestBaseBlocks {
   override def bestModsDropLevel: Int = 83
 }
 
-abstract class Accessory(dropLevel: Int, `class`: String) extends Item(dropLevel, `class`) with BestBaseBlocks
+abstract class Accessory(dropLevel: Int, `class`: String) extends Base(dropLevel, `class`) with BestBaseBlocks
 // format: off
-object Item {
+object Base {
   val oneHandedAxes: Seq[OneHandedAxe] = Seq(RustedHatchet, JadeHatchet, BoardingAxe, Cleaver, BroadAxe, ArmingAxe, DecorativeAxe, SpectralAxe, EtchedHatchet, JasperAxe, Tomahawk, WristChopper, WarAxe, ChestSplitter, CeremonialAxe, WraithAxe, EngravedHatchet, KaruiAxe, SiegeAxe, ReaverAxe, ButcherAxe, VaalHatchet, RoyalAxe, InfernalAxe, RunicHatchet)
   val twoHandedAxes: Seq[TwoHandedAxe] = Seq(StoneAxe, JadeChopper, Woodsplitter, Poleaxe, DoubleAxe, GildedAxe, ShadowAxe, DaggerAxe, JasperChopper, TimberAxe, HeadsmanAxe, Labrys, NobleAxe, AbyssalAxe, KaruiChopper, TalonAxe, SunderingAxe, EzomyteAxe, VaalAxe, DespotAxe, VoidAxe, Fleshripper)
   val bows: Seq[Bow] = Seq(CrudeBow, ShortBow, LongBow, CompositeBow, RecurveBow, BoneBow, RoyalBow, DeathBow, GroveBow, ReflexBow, DecurveBow, CompoundBow, SniperBow, IvoryBow, HighbornBow, DecimationBow, ThicketBow, SteelwoodBow, CitadelBow, RangerBow, AssassinBow, SpineBow, ImperialBow, HarbingerBow, MarakethBow)
@@ -133,7 +134,7 @@ object Item {
 
   val accessories: Seq[Accessory] = amulets ++ rings ++ belts
 
-  val bestEquipment: Seq[Item with BestBaseBlocks] = (weapons ++ armours).flatMap(_.takeRight(2)) ++ Seq(SpikePointArrowQuiver, BroadheadArrowQuiver).sortBy(_.dropLevel)(implicitly[Ordering[Int]].reverse)
-  val allEquipment: Seq[Item] = (weapons ++ armours).flatten.sortBy(_.dropLevel)(implicitly[Ordering[Int]].reverse)
+  val bestEquipment: Seq[Base with BestBaseBlocks] = (weapons ++ armours).flatMap(_.takeRight(2)) ++ Seq(SpikePointArrowQuiver, BroadheadArrowQuiver).sortBy(_.dropLevel)(implicitly[Ordering[Int]].reverse)
+  val allEquipment: Seq[Base] = (weapons ++ armours).flatten.sortBy(_.dropLevel)(implicitly[Ordering[Int]].reverse)
 }
 // format: oon
