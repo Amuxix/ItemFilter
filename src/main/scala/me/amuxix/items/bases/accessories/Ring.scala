@@ -1,7 +1,7 @@
-package me.amuxix.items.accessories
+package me.amuxix.items.bases.accessories
 
 import me.amuxix.conditions.BaseType
-import me.amuxix.items.Accessory
+import me.amuxix.items.bases.Accessory
 
 sealed abstract class Ring(dropLevel: Int) extends Accessory(dropLevel, "Ring")
 

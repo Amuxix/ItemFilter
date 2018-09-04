@@ -1,6 +1,6 @@
-package me.amuxix.items.weapons
+package me.amuxix.items.bases.weapons
 
-import me.amuxix.items.Weapon
+import me.amuxix.items.bases.Weapon
 
 sealed abstract class Staff(dropLevel: Int) extends Weapon(dropLevel, "Staff")
 

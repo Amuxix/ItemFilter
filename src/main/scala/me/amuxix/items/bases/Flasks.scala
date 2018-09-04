@@ -1,4 +1,4 @@
-package me.amuxix.items
+package me.amuxix.items.bases
 
 import me.amuxix.Block
 import me.amuxix.actions.Action

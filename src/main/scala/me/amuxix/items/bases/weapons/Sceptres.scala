@@ -1,7 +1,7 @@
-package me.amuxix.items.weapons
+package me.amuxix.items.bases.weapons
 
 import me.amuxix.conditions.BaseType
-import me.amuxix.items.Weapon
+import me.amuxix.items.bases.Weapon
 
 sealed abstract class Sceptre(dropLevel: Int) extends Weapon(dropLevel, "Sceptre")
 

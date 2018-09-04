@@ -1,8 +1,8 @@
-package me.amuxix.items.armour
+package me.amuxix.items.bases.armour
 
 import me.amuxix.Block
 import me.amuxix.conditions.BaseType
-import me.amuxix.items.Armour
+import me.amuxix.items.bases.Armour
 
 sealed abstract class Quiver(dropLevel: Int) extends Armour(dropLevel, "Quiver")
 

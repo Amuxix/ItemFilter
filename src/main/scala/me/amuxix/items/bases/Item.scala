@@ -1,12 +1,12 @@
-package me.amuxix.items
+package me.amuxix.items.bases
 
 import me.amuxix._
 import me.amuxix.actions.Action
 import me.amuxix.actions.Color.{darkRed, goodYellow}
 import me.amuxix.conditions._
-import me.amuxix.items.accessories._
-import me.amuxix.items.armour._
-import me.amuxix.items.weapons._
+import me.amuxix.items.bases.accessories._
+import me.amuxix.items.bases.armour._
+import me.amuxix.items.bases.weapons._
 
 abstract case class Item(dropLevel: Int, `class`: ItemClass, minDropBuffer: Int = 5) extends Named with ImplicitConversions {
   def this(dropLevel: Int, `class`: String, minDropBuffer: Int) = this(dropLevel, ItemClass(`class`), minDropBuffer)

@@ -1,6 +1,6 @@
-package me.amuxix.items.accessories
+package me.amuxix.items.bases.accessories
 
-import me.amuxix.items.Accessory
+import me.amuxix.items.bases.Accessory
 
 sealed abstract class Belt(dropLevel: Int) extends Accessory(dropLevel, "Belt")
 

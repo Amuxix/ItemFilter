@@ -1,6 +1,6 @@
-package me.amuxix.items.armour
+package me.amuxix.items.bases.armour
 
-import me.amuxix.items.Armour
+import me.amuxix.items.bases.Armour
 
 sealed abstract class Shield(dropLevel: Int) extends Armour(dropLevel, "Shield")
 
