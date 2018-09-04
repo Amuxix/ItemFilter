@@ -7,7 +7,7 @@ abstract class Category extends ImplicitConversions with Named {
   def blocks(filterLevel: FilterLevel): Seq[Block] = Mergeable.merge(categoryBlocks(filterLevel))
 
   private def addSeparatorAndMakeString(blocks: Seq[Block]): String =
-    blocks.headOption.fold(""){ _ =>
+    blocks.headOption.fold("") { _ =>
       separator + blocks.map(_.write).mkString("", "\n", "\n")
     }
 
