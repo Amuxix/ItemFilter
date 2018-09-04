@@ -39,11 +39,28 @@ object Color {
   private val darknessFactor = .15f
   private val lightenFactor = .3f
 
+  implicit class ListUnzip4[+A](val list: Seq[A]) extends AnyVal {
+    def unzip4[A1, A2, A3, A4](implicit asTuple4: A => (A1, A2, A3, A4)): (Seq[A1], Seq[A2], Seq[A3], Seq[A4]) = {
+      val b1 = Seq.newBuilder[A1]
+      val b2 = Seq.newBuilder[A2]
+      val b3 = Seq.newBuilder[A3]
+      val b4 = Seq.newBuilder[A4]
+
+      for (abcd <- list) {
+        val (a, b, c, d) = asTuple4(abcd)
+        b1 += a
+        b2 += b
+        b3 += c
+        b4 += d
+      }
+      (b1.result(), b2.result(), b3.result(), b4.result())
+    }
+  }
+
   def average(colors: Seq[Color]): Color = {
-    val (redsGgreens, bluesAlphas) = colors.map(c => ((c.r, c.g), (c.b, c.a))).unzip
-    val ((reds, greens), (blues, alphas)) = (redsGgreens.unzip, bluesAlphas.unzip)
+    val (reds, greens, blues, alphas) = colors.map(c => (c.r, c.g, c.b, c.a)).unzip4
     Color(
-      reds.sum / reds.length,
+      reds.sum / reds.size,
       greens.sum / greens.size,
       blues.sum / blues.size,
       alphas.sum / alphas.size
@@ -62,4 +79,6 @@ case class Color(r: Int, g: Int, b: Int, a: Int) extends Colored(r, g, b, a) {
   def halfTransparent: Color = copy(a / 2)
 
   def closestEffectColor: EffectColor = effectColors.minBy(this.distance)
+
+  override def toString: String = s"$r $g $b${if (a < 255) " " + a else ""}"
 }

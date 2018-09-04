@@ -17,15 +17,14 @@ case class Block(condition: Condition, action: Action, show: Boolean) extends Me
 
   def hidden: Block = Block(condition, action, show = false)
 
-  private def averageColor: Color = {
+  private def averageColor: Color =
     (action.backgroundColor.map(_.color), action.textColor.map(_.color), action.borderColor.map(_.color)) match {
-      case (None, None, None) => Color.white
-      case (Some(background), _, _) => background
+      case (None, None, None)                         => Color.white
+      case (Some(background), _, _)                   => background
       case (None, Some(textColor), Some(borderColor)) => Color.average(Seq(textColor, borderColor))
-      case (None, Some(textColor), None) => textColor
-      case (None, None, Some(borderColor)) => borderColor
+      case (None, Some(textColor), None)              => textColor
+      case (None, None, Some(borderColor))            => borderColor
     }
-  }
 
   def concealed(conceal: Boolean): Block = {
     if (conceal == false) return this

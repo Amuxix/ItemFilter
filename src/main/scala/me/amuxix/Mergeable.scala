@@ -17,5 +17,3 @@ trait Mergeable[T] {
 
   def merge(other: T): T
 }
-
-
