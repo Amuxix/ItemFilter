@@ -8,10 +8,21 @@ package me.amuxix.items.currency
   */
 sealed abstract class Shard[O <: Orb](val stackSize: Int = 20) extends Currency
 
-object ExaltedShard extends Shard[ExaltedOrb.type]
-object AnnulmentShard extends Shard[OrbOfAnnulment.type]
 object SplinterOfChayula extends Shard[BlessingOfChayula.type](100)
 object SplinterOfEsh extends Shard[BlessingOfEsh.type](100)
 object SplinterOfUulNetol extends Shard[BlessingOfUulNetol.type](100)
 object SplinterOfXoph extends Shard[BlessingOfXoph.type](100)
 object SplinterOfTul extends Shard[BlessingOfTul.type](100)
+
+object MirrorShard extends Shard[MirrorOfKalandra.type]
+object ExaltedShard extends Shard[ExaltedOrb.type]
+object AnnulmentShard extends Shard[OrbOfAnnulment.type]
+
+object BindingShard extends Shard[OrbOfAnnulment.type]
+object HorizonShard extends Shard[OrbOfAnnulment.type]
+object HarbingersShard extends Shard[OrbOfAnnulment.type]
+object EngineersShard extends Shard[OrbOfAnnulment.type]
+object AncientShard extends Shard[OrbOfAnnulment.type]
+object ChaosShard extends Shard[OrbOfAnnulment.type]
+object RegalShard extends Shard[OrbOfAnnulment.type]
+object ScrollFragment extends Shard[ScrollOfWisdom.type]

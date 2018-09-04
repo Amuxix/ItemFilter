@@ -5,7 +5,7 @@ import me.amuxix.actions.Action
 import me.amuxix.actions.Color._
 import me.amuxix.conditions._
 import me.amuxix.items.bases.Flask
-import me.amuxix.items.bases.Item._
+import me.amuxix.items.bases.Base._
 
 object Leveling extends Category {
   val whiteCutoff: Int = 15

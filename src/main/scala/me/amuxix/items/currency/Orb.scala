@@ -11,12 +11,9 @@ object AncientOrb extends Orb
 object HarbingersOrb extends Orb
 object DivineOrb extends Orb
 object OrbOfAnnulment extends Orb
-object MasterCartographersSextant extends Orb
 object EngineersOrb extends Orb
 object OrbOfHorizons extends Orb
-object JourneymanCartographersSextant extends Orb
 object RegalOrb extends Orb
-object ApprenticeCartographersSextant extends Orb
 object OrbOfBinding extends Orb
 object GemcuttersPrism extends Orb
 object OrbOfRegret extends Orb
@@ -33,8 +30,15 @@ object OrbOfChance extends Orb
 object JewellersOrb extends Orb
 object OrbOfAlteration extends Orb
 object ChromaticOrb extends Orb
+object ScrollOfWisdom extends Orb
+object PortalScroll extends Orb
+
 object OrbOfAugmentation extends Orb
 object BlacksmithsWhetstone extends Orb
+
+object MasterCartographersSextant extends Orb
+object JourneymanCartographersSextant extends Orb
+object ApprenticeCartographersSextant extends Orb
 
 object BlessingOfChayula extends Orb
 object BlessingOfEsh extends Orb
