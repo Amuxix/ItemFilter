@@ -3,7 +3,7 @@ package me.amuxix.categories
 import me.amuxix._
 import me.amuxix.actions.{Action, Color}
 import me.amuxix.conditions._
-import me.amuxix.items.Item.flasks
+import me.amuxix.items.bases.Item.flasks
 
 object Flasks extends Category {
   val whiteBorder = Action(borderColor = Color.white)

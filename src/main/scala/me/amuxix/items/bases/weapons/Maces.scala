@@ -1,6 +1,6 @@
-package me.amuxix.items.weapons
+package me.amuxix.items.bases.weapons
 
-import me.amuxix.items.Weapon
+import me.amuxix.items.bases.Weapon
 
 sealed abstract class Mace(dropLevel: Int, `class`: String) extends Weapon(dropLevel, `class` + " Mace")
 
