@@ -1,6 +1,6 @@
 package me.amuxix.items
 
-trait DivinationCard extends Item
+abstract class DivinationCard extends Item(1, 1)
 
 object AMothersPartingGift extends DivinationCard
 object AbandonedWealth extends DivinationCard

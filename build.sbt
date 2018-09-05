@@ -1,7 +1,7 @@
 name := "ItemFilter"
-version := "1.0"
+version := "2.0"
 
-scalaVersion := "2.13.0-M5"
+scalaVersion := "2.13.0-M3"
 scalacOptions ++= Seq(
   "-deprecation", //Emit warning and location for usages of deprecated APIs.
   "-encoding", "UTF-8",
@@ -10,7 +10,7 @@ scalacOptions ++= Seq(
   "-unchecked", //Enable detailed unchecked (erasure) warnings
   "-explaintypes",                     // Explain type errors in more detail.
   "-Xmigration:2.13.0",                // Warn about constructs whose behavior may have changed since version.
-  "-Ybackend-parallelism", "12",        // Maximum worker threads for backend
+  //"-Ybackend-parallelism", "12",        // Maximum worker threads for backend
   "-Xfatal-warnings", //Fail the compilation if there are any warnings.
   "-Xlint", //Enable recommended additional warnings.
   "-Ywarn-dead-code", // Warn when dead code is identified.
@@ -25,3 +25,8 @@ scalacOptions ++= Seq(
 )
 
 scalafmtOnCompile := true
+
+libraryDependencies ++= Seq(
+  "com.typesafe.play" %% "play-ahc-ws-standalone" % "2.0.0-M3",
+  "com.typesafe.play" %% "play-ws-standalone-json" % "2.0.0-M3",
+)

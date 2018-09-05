@@ -3,7 +3,7 @@ package me.amuxix.items.bases.weapons
 import me.amuxix.conditions.BaseType
 import me.amuxix.items.bases.Weapon
 
-sealed abstract class Sceptre(dropLevel: Int) extends Weapon(dropLevel, "Sceptre")
+sealed abstract class Sceptre(dropLevel: Int) extends Weapon(3, 2, dropLevel, "Sceptre")
 
 object DriftwoodSceptre extends Sceptre(dropLevel = 1)
 object DarkwoodSceptre extends Sceptre(dropLevel = 5)

@@ -3,7 +3,7 @@ package me.amuxix.items.bases.weapons
 import me.amuxix.conditions.BaseType
 import me.amuxix.items.bases.Weapon
 
-sealed abstract class Claw(dropLevel: Int) extends Weapon(dropLevel, "Claw")
+sealed abstract class Claw(dropLevel: Int) extends Weapon(2, 2, dropLevel, "Claw")
 
 object NailedFist extends Claw(dropLevel = 3)
 object SharktoothClaw extends Claw(dropLevel = 7)

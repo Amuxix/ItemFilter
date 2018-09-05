@@ -1,7 +1,7 @@
 package me.amuxix.actions
 
 import me.amuxix.actions.EffectColor.effectColors
-import Ordering.Double.TotalOrdering
+//import Ordering.Double.TotalOrdering
 import me.amuxix.actions.Color.{darknessFactor, lightenFactor}
 
 /**

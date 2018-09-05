@@ -2,9 +2,8 @@ package me.amuxix.items.bases
 
 import me.amuxix.Block
 import me.amuxix.actions.Action
-import me.amuxix.items.Item
 
-sealed abstract class Flask(dropLevel: Int, `class`: String, minDropBuffer: Int = 5) extends Base(dropLevel, `class` + " Flasks", minDropBuffer) {
+sealed abstract class Flask(dropLevel: Int, `class`: String, minDropBuffer: Int = 5) extends Base(2, 1, dropLevel, `class` + " Flasks", minDropBuffer) {
   override def blocksOfBestRaresForZoneLevel(): Block = {
     val superBlock = super.blocksOfBestRaresForZoneLevel()
     superBlock.copy(
