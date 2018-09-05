@@ -4,7 +4,7 @@ import me.amuxix.Block
 import me.amuxix.conditions.BaseType
 import me.amuxix.items.bases.Armour
 
-sealed abstract class Quiver(dropLevel: Int) extends Armour(dropLevel, "Quiver")
+sealed abstract class Quiver(dropLevel: Int) extends Armour(3, 2, dropLevel, "Quiver")
 
 object TwoPointArrowQuiver extends Quiver(dropLevel = 4) {
   override def baseType: BaseType = BaseType("Two-Point Arrow Quiver")

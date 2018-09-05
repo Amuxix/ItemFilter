@@ -3,7 +3,7 @@ package me.amuxix.items.bases.armour
 import me.amuxix.conditions.BaseType
 import me.amuxix.items.bases.Armour
 
-sealed abstract class Gloves(dropLevel: Int) extends Armour(dropLevel, "Gloves")
+sealed abstract class Gloves(dropLevel: Int) extends Armour(2, 2, dropLevel, "Gloves")
 
 //Armour
 object IronGauntlets extends Gloves(dropLevel = 1)

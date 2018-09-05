@@ -2,7 +2,7 @@ package me.amuxix.items.bases.weapons
 
 import me.amuxix.items.bases.Weapon
 
-sealed abstract class Dagger(dropLevel: Int) extends Weapon(dropLevel, "Dagger")
+sealed abstract class Dagger(dropLevel: Int) extends Weapon(3, 1, dropLevel, "Dagger")
 
 object GlassShank extends Dagger(dropLevel = 1)
 object SkinningKnife extends Dagger(dropLevel = 5)

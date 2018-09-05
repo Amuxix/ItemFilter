@@ -2,9 +2,9 @@ package me.amuxix.items
 
 import me.amuxix.Named
 
-class Item extends Named {
+abstract class Item(val height: Int, val width: Int) extends Named {
   /**
     * This is the worth of the currency in chaos.
     */
-  def chaosEquivalent: Double = ???
+  def chaosEquivalent: Option[Double] = ???
 }
