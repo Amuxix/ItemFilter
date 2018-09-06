@@ -1,8 +1,9 @@
 package me.amuxix.items.bases.armour
 
+import me.amuxix.items.Size
 import me.amuxix.items.bases.Armour
 
-sealed abstract class Shield(dropLevel: Int) extends Armour(2, 2, dropLevel, "Shield")
+sealed abstract class Shield(dropLevel: Int) extends Armour(Size(2, 2), dropLevel, "Shield")
 
 //Armour
 object SplinteredTowerShield extends Shield(dropLevel = 1)

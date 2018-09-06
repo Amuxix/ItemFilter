@@ -28,7 +28,7 @@ object ItemFilter {
   }
 
   def main(args: Array[String]): Unit = {
-    val poeFolder = FileSystemView.getFileSystemView.getDefaultDirectory.getPath + File.separatorChar + "My Games" + File.separatorChar + "Path of Exile" + File.separatorChar
+    /*val poeFolder = FileSystemView.getFileSystemView.getDefaultDirectory.getPath + File.separatorChar + "My Games" + File.separatorChar + "Path of Exile" + File.separatorChar
     //val poeFolder = new java.io.File(".").getCanonicalPath
 
     val categories: Seq[Category] = Seq(
@@ -62,7 +62,9 @@ object ItemFilter {
     )
     //println(currentDirectory.toString)
     Seq(Reduced, Normal, Racing).foreach(createFilterFile(poeFolder, _, categories))
-    createFilterFile(poeFolder, Reduced, categories, conceal = true)
+    createFilterFile(poeFolder, Reduced, categories, conceal = true)*/
+
+
   }
 
   def createFilterFile(poeFolder: String, filterLevel: FilterLevel, categories: Seq[Category], conceal: Boolean = false): Unit = {

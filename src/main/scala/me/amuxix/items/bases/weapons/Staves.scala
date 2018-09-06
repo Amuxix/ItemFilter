@@ -1,8 +1,9 @@
 package me.amuxix.items.bases.weapons
 
+import me.amuxix.items.Size
 import me.amuxix.items.bases.Weapon
 
-sealed abstract class Staff(dropLevel: Int) extends Weapon(4, 2, dropLevel, "Staff")
+sealed abstract class Staff(dropLevel: Int) extends Weapon(Size(4, 2), dropLevel, "Staff")
 
 object GnarledBranch extends Staff(dropLevel = 4)
 object PrimitiveStaff extends Staff(dropLevel = 9)
