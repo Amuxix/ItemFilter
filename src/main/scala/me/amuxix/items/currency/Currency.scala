@@ -1,8 +1,8 @@
 package me.amuxix.items.currency
 
-import me.amuxix.items.Item
+import me.amuxix.items.{Item, Size}
 
 /**
   * This is the parent of all currency marker traits.
   */
-abstract class Currency extends Item(1, 1)
+abstract class Currency extends Item(Size(1, 1))

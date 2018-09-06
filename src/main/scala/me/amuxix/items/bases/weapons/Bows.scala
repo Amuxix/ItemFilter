@@ -1,8 +1,9 @@
 package me.amuxix.items.bases.weapons
 
+import me.amuxix.items.Size
 import me.amuxix.items.bases.Weapon
 
-sealed abstract class Bow(dropLevel: Int) extends Weapon(4, 2, dropLevel, "Bow")
+sealed abstract class Bow(dropLevel: Int) extends Weapon(Size(4, 2), dropLevel, "Bow")
 
 object CrudeBow extends Bow(dropLevel = 1)
 object ShortBow extends Bow(dropLevel = 5)
