@@ -1,10 +1,10 @@
 package me.amuxix.items.bases
 
-import me.amuxix.Block
+import me.amuxix.{Block, FilterRarity}
 import me.amuxix.actions.Action
-import me.amuxix.items.Size
+import me.amuxix.items.ItemSize
 
-sealed abstract class Flask(dropLevel: Int, `class`: String, minDropBuffer: Int = 5) extends Base(Size(2, 1), dropLevel, `class` + " Flasks", minDropBuffer) {
+sealed abstract class Flask(dropLevel: Int, itemClass: String, minDropBuffer: Int = 5) extends Base(ItemSize(2, 1), dropLevel, itemClass + " Flasks", minDropBuffer) {
   override def blocksOfBestRaresForZoneLevel(): Block = {
     val superBlock = super.blocksOfBestRaresForZoneLevel()
     superBlock.copy(
@@ -12,6 +12,8 @@ sealed abstract class Flask(dropLevel: Int, `class`: String, minDropBuffer: Int 
       action = Action()
     )
   }
+
+  override def actionForRarity(rarity: FilterRarity): Action = Action()
 }
 
 sealed abstract class LifeFlask(dropLevel: Int) extends Flask(dropLevel, "Life", minDropBuffer = 10)

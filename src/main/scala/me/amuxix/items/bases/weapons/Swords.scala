@@ -1,12 +1,12 @@
 package me.amuxix.items.bases.weapons
 
 import me.amuxix.conditions.BaseType
-import me.amuxix.items.Size
+import me.amuxix.items.ItemSize
 import me.amuxix.items.bases.Weapon
 
-sealed abstract class Sword(size: Size, dropLevel: Int, `class`: String) extends Weapon(size, dropLevel, `class` + " Sword")
+sealed abstract class Sword(size: ItemSize, dropLevel: Int, `class`: String) extends Weapon(size, dropLevel, `class` + " Sword")
 
-sealed abstract class OneHandedSword(dropLevel: Int, `class`: String) extends Sword(Size(3, 2), dropLevel, `class` + "One Handed") {
+sealed abstract class OneHandedSword(dropLevel: Int, `class`: String) extends Sword(ItemSize(3, 2), dropLevel, `class` + "One Handed") {
   def this(dropLevel: Int) = this(dropLevel, "")
 }
 
@@ -36,7 +36,7 @@ object EternalSword extends OneHandedSword(dropLevel = 66)
 object MidnightBlade extends OneHandedSword(dropLevel = 68)
 object TigerHook extends OneHandedSword(dropLevel = 70)
 
-sealed abstract class TwoHandedSword(dropLevel: Int) extends Sword(Size(4, 2), dropLevel, "Two Handed")
+sealed abstract class TwoHandedSword(dropLevel: Int) extends Sword(ItemSize(4, 2), dropLevel, "Two Handed")
 
 object CorrodedBlade extends TwoHandedSword(dropLevel = 3)
 object Longsword extends TwoHandedSword(dropLevel = 8)
@@ -65,7 +65,7 @@ object LionSword extends TwoHandedSword(dropLevel = 65)
 object InfernalSword extends TwoHandedSword(dropLevel = 67)
 object ExquisiteBlade extends TwoHandedSword(dropLevel = 70)
 
-sealed abstract class ThrustingOneHandedSword(dropLevel: Int) extends Sword(Size(4, 1), dropLevel, "Thrusting ")
+sealed abstract class ThrustingOneHandedSword(dropLevel: Int) extends Sword(ItemSize(4, 1), dropLevel, "Thrusting ")
 
 object RustedSpike extends ThrustingOneHandedSword(dropLevel = 3)
 object WhaleboneRapier extends ThrustingOneHandedSword(dropLevel = 7)

@@ -1,4 +1,4 @@
-package me.amuxix.poeninja
+package me.amuxix.providers
 
 import play.api.libs.ws.StandaloneWSResponse
 

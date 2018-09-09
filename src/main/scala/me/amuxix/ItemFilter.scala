@@ -5,12 +5,19 @@ import akka.stream.ActorMaterializer
 import play.api.libs.ws._
 import play.api.libs.ws.ahc._
 import java.io.{File, PrintWriter}
+import java.util.concurrent.TimeUnit
 
+import com.github.benmanes.caffeine.cache.{Caffeine, Ticker}
 import javax.swing.filechooser.FileSystemView
 import me.amuxix.categories._
 import me.amuxix.categories.leagues._
 import me.amuxix.categories.recipes._
+import me.amuxix.items.Item
+import me.amuxix.providers.poeninja.PoeNinja
+import play.api.libs.ws.ahc.cache.{AhcHttpCache, Cache, EffectiveURIKey, ResponseEntry}
+import scala.concurrent.ExecutionContext.Implicits.global
 
+import scala.concurrent.Future
 
 object ItemFilter {
   def wsClient(): StandaloneWSClient = {
@@ -63,8 +70,11 @@ object ItemFilter {
     //println(currentDirectory.toString)
     Seq(Reduced, Normal, Racing).foreach(createFilterFile(poeFolder, _, categories))
     createFilterFile(poeFolder, Reduced, categories, conceal = true)*/
-
-
+    implicit val provider = new PoeNinja(wsClient())
+    Future
+      .sequence(Item.items.map(_.block(Normal, 0.1)))
+      .map(Mergeable.merge(_).map(_.write).mkString)
+      .foreach(println)
   }
 
   def createFilterFile(poeFolder: String, filterLevel: FilterLevel, categories: Seq[Category], conceal: Boolean = false): Unit = {

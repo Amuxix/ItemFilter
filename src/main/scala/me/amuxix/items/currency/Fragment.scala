@@ -1,9 +1,39 @@
 package me.amuxix.items.currency
+import me.amuxix.items.Item
 
 /**
   * This marker trait represents currency that can be put into the map device to open portals to special zones or enhance maps.
   */
-trait Fragment
+trait Fragment extends Currency
+
+object Fragment {
+  val fragments = Seq[Item](
+    OfferingToTheGoddess,
+    DivineVessel,
+    TimewornReliquaryKey,
+    ChayulasBreachstone,
+    XophsBreachstone,
+    EshsBreachstone,
+    UulNetolsBreachstone,
+    TulsBreachstone,
+    FragmentOfTheHydra,
+    FragmentOfTheMinotaur,
+    FragmentOfThePhoenix,
+    FragmentOfTheChimera,
+    MortalIgnorance,
+    MortalHope,
+    MortalRage,
+    MortalGrief,
+    YrielsKey,
+    EbersKey,
+    InyasKey,
+    VolkuursKey,
+    SacrificeAtMidnight,
+    SacrificeAtDawn,
+    SacrificeAtDusk,
+    SacrificeAtNoon,
+  )
+}
 
 object OfferingToTheGoddess extends Fragment
 object DivineVessel extends Fragment

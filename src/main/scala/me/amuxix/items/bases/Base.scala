@@ -1,17 +1,19 @@
 package me.amuxix.items.bases
 
-import me.amuxix._
+import me.amuxix.{Block, ImplicitConversions, Named, FilterRarity => FilterRarity}
 import me.amuxix.actions.Action
 import me.amuxix.actions.Color.{darkRed, goodYellow}
 import me.amuxix.conditions._
-import me.amuxix.items.{Item, Size}
+import me.amuxix.items.{Item, ItemSize}
 import me.amuxix.items.bases.accessories._
 import me.amuxix.items.bases.armour._
 import me.amuxix.items.bases.weapons._
 
-abstract class Base(size: Size, val dropLevel: Int, `class`: ItemClass, minDropBuffer: Int = 5) extends Item(size) with Named with ImplicitConversions {
-  def this(size: Size, dropLevel: Int, `class`: String, minDropBuffer: Int) = this(size, dropLevel, ItemClass(`class`), minDropBuffer)
-  def this(size: Size, dropLevel: Int, `class`: String) = this(size, dropLevel, ItemClass(`class`))
+abstract class Base(size: ItemSize, val dropLevel: Int, itemClass: ItemClass, minDropBuffer: Int = 5) extends Item(size) with Named with ImplicitConversions {
+  def this(size: ItemSize, dropLevel: Int, `class`: String, minDropBuffer: Int) = this(size, dropLevel, ItemClass(`class`), minDropBuffer)
+  def this(size: ItemSize, dropLevel: Int, `class`: String) = this(size, dropLevel, ItemClass(`class`))
+
+  override val `class`: Option[ItemClass] = Some(itemClass)
 
   def bestModsDropLevel: Int = 84
 
@@ -52,13 +54,18 @@ sealed trait BestBaseBlocks extends ImplicitConversions { this: Base =>
   ).hidden
 }
 
-abstract class Armour(size: Size, dropLevel: Int, `class`: String) extends Base(size, dropLevel, `class`) with BestBaseBlocks
-
-abstract class Weapon(size: Size, dropLevel: Int, `class`: String) extends Base(size, dropLevel, `class`) with BestBaseBlocks {
-  override def bestModsDropLevel: Int = 83
+abstract class Armour(size: ItemSize, dropLevel: Int, `class`: String) extends Base(size, dropLevel, `class`) with BestBaseBlocks {
+  override def actionForRarity(rarity: FilterRarity): Action = Action()
 }
 
-abstract class Accessory(dropLevel: Int, `class`: String) extends Base(Size(1, 1), dropLevel, `class`) with BestBaseBlocks
+abstract class Weapon(size: ItemSize, dropLevel: Int, `class`: String) extends Base(size, dropLevel, `class`) with BestBaseBlocks {
+  override def bestModsDropLevel: Int = 83
+  override def actionForRarity(rarity: FilterRarity): Action = Action()
+}
+
+abstract class Accessory(dropLevel: Int, `class`: String) extends Base(ItemSize(1, 1), dropLevel, `class`) with BestBaseBlocks {
+  override def actionForRarity(rarity: FilterRarity): Action = Action()
+}
 // format: off
 object Base {
   val oneHandedAxes: Seq[OneHandedAxe] = Seq(RustedHatchet, JadeHatchet, BoardingAxe, Cleaver, BroadAxe, ArmingAxe, DecorativeAxe, SpectralAxe, EtchedHatchet, JasperAxe, Tomahawk, WristChopper, WarAxe, ChestSplitter, CeremonialAxe, WraithAxe, EngravedHatchet, KaruiAxe, SiegeAxe, ReaverAxe, ButcherAxe, VaalHatchet, RoyalAxe, InfernalAxe, RunicHatchet)

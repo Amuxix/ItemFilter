@@ -1,9 +1,52 @@
 package me.amuxix.items.currency
+import me.amuxix.items.Item
 
 /**
   * This marker trait represents currency that alters items is ready to use, such as Exalted Orb or Chaos Orb.
   */
 trait Orb extends Currency
+
+object Orb {
+  val orbs = Seq[Item](
+    MirrorOfKalandra,
+    ExaltedOrb,
+    AncientOrb,
+    HarbingersOrb,
+    DivineOrb,
+    OrbOfAnnulment,
+    EngineersOrb,
+    OrbOfHorizons,
+    RegalOrb,
+    OrbOfBinding,
+    GemcuttersPrism,
+    OrbOfRegret,
+    VaalOrb,
+    BlessedOrb,
+    OrbOfAlchemy,
+    OrbOfFusing,
+    GlassblowersBauble,
+    PerandusCoin,
+    OrbOfScouring,
+    CartographersChisel,
+    SilverCoin,
+    OrbOfChance,
+    JewellersOrb,
+    OrbOfAlteration,
+    ChromaticOrb,
+    ScrollOfWisdom,
+    PortalScroll,
+    OrbOfAugmentation,
+    BlacksmithsWhetstone,
+    MasterCartographersSextant,
+    JourneymanCartographersSextant,
+    ApprenticeCartographersSextant,
+    BlessingOfChayula,
+    BlessingOfEsh,
+    BlessingOfUulNetol,
+    BlessingOfXoph,
+    BlessingOfTul,
+  )
+}
 
 object MirrorOfKalandra extends Orb
 object ExaltedOrb extends Orb

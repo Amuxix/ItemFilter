@@ -1,8 +1,39 @@
 package me.amuxix.items.currency.delve
 
+import me.amuxix.items.Item
 import me.amuxix.items.currency.Currency
 
 trait Fossil extends Currency
+
+object Fossil {
+  val fossils = Seq[Item](
+    FracturedFossil,
+    FacetedFossil,
+    GlyphicFossil,
+    HollowFossil,
+    ShudderingFossil,
+    TangledFossil,
+    BloodstainedFossil,
+    GildedFossil,
+    PrismaticFossil,
+    CorrodedFossil,
+    SanctifiedFossil,
+    EncrustedFossil,
+    LucentFossil,
+    BoundFossil,
+    EnchantedFossil,
+    AethericFossil,
+    PerfectFossil,
+    SerratedFossil,
+    PristineFossil,
+    DenseFossil,
+    JaggedFossil,
+    MetallicFossil,
+    ScorchedFossil,
+    AberrantFossil,
+    FrigidFossil,
+  )
+}
 
 object FracturedFossil extends Fossil
 object FacetedFossil extends Fossil

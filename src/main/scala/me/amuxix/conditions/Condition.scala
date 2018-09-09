@@ -42,8 +42,7 @@ case class Condition(
   ).collect { case Some(writable) => writable }
 
   override def canMerge(o: Condition): Boolean =
-    (base == o.base || (base.isDefined && o.base.isDefined)) && //Both bases are equal or both are defined
-      `class` == o.`class` &&
+    `class` == o.`class` &&
       dropLevel == o.dropLevel &&
       itemLevel == o.itemLevel &&
       quality == o.quality &&
@@ -61,7 +60,11 @@ case class Condition(
       gemLevel == o.gemLevel
 
   override def merge(o: Condition): Condition = {
-    val mergedBase = Some(BaseType(base.get.bases ++ o.base.get.bases: _*))
+    val mergedBase: Option[BaseType] = (base, o.base) match {
+      case (_, None)                                => None
+      case (None, _)                                => None
+      case (Some(BaseType(b1)), Some(BaseType(b2))) => Some(BaseType(b1 ++ b2))
+    }
     Condition(
       mergedBase,
       `class`,
