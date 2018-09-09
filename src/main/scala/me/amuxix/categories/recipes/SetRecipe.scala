@@ -4,11 +4,20 @@ import me.amuxix.actions.Color.black
 import me.amuxix.actions.{Action, Color}
 import me.amuxix.categories.Category
 import me.amuxix.conditions._
-import me.amuxix._
+import me.amuxix.{Block, FilterLevel, Reduced}
 
 abstract class SetRecipe(minItemLevel: Int, color: Color) extends Category {
   private val equipmentAction = Action(size = 34, textColor = color, borderColor = color, backgroundColor = black)
-  private val partialCondition = (c: Option[ItemClass], w: Option[Width], h: Option[Height]) => Condition(`class` = c, width = w, height = h, itemLevel = (">=", minItemLevel), rarity = Rare, identified = false)
+  private val partialCondition =
+    (c: Option[ItemClass], w: Option[Width], h: Option[Height]) =>
+      Condition(
+        `class` = c,
+        width = w,
+        height = h,
+        itemLevel = (">=", minItemLevel),
+        rarity = Rare,
+        identified = false
+    )
 
   private val weapons = Block(partialCondition(None, 1, 3), equipmentAction)
   private val smallBows = Block(partialCondition(Seq("Bows"), 2, 3), equipmentAction)

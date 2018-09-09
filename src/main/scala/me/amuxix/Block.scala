@@ -15,7 +15,11 @@ case class Block(condition: Condition, action: Action, show: Boolean) extends Me
     showText + actionsAndConditions
   }
 
-  def hidden: Block = Block(condition, action, show = false)
+  def hidden: Block = Block(
+    condition,
+    action.copy(sound = None, minimapIcon = None, beam = None),
+    show = false
+  )
 
   private def averageColor: Color =
     (action.backgroundColor.map(_.color), action.textColor.map(_.color), action.borderColor.map(_.color)) match {
@@ -35,7 +39,7 @@ case class Block(condition: Condition, action: Action, show: Boolean) extends Me
       )
     } else {
       action.copy(
-        size = Some(action.size.fold(Size(Size.default - Size.minimizeAmount))(size => size.copy((size.size - Size.minimizeAmount) max Size.min))),
+        size = Some(action.size.fold(Size(Size.default))(identity).change(-10)),
         /*backgroundColor = action.backgroundColor.map(c => c.copy(c.color.halfTransparent)),
         textColor = action.textColor.map(c => c.copy(c.color.halfTransparent)),
         borderColor = action.borderColor.map(c => c.copy(c.color.halfTransparent))*/

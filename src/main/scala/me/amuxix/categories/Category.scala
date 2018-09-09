@@ -2,7 +2,7 @@ package me.amuxix.categories
 
 import me.amuxix._
 
-abstract class Category extends ImplicitConversions with Named {
+trait Category extends ImplicitConversions with Named {
   protected def categoryBlocks(filterLevel: FilterLevel): Seq[Block]
   def blocks(filterLevel: FilterLevel): Seq[Block] = Mergeable.merge(categoryBlocks(filterLevel))
 

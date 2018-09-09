@@ -1,4 +1,5 @@
 package me.amuxix.items.currency
+import me.amuxix.items.Item
 
 /**
   * This represents parts of an [[Orb]] and can't be used on its own but rather needs
@@ -7,6 +8,27 @@ package me.amuxix.items.currency
   * @param stackSize How many parts does it take to form a full piece of currency
   */
 sealed abstract class Shard[O <: Orb](val stackSize: Int = 20) extends Currency
+
+object Shard {
+  val shards = Seq[Item](
+    SplinterOfChayula,
+    SplinterOfEsh,
+    SplinterOfUulNetol,
+    SplinterOfXoph,
+    SplinterOfTul,
+    MirrorShard,
+    ExaltedShard,
+    AnnulmentShard,
+    BindingShard,
+    HorizonShard,
+    HarbingersShard,
+    EngineersShard,
+    AncientShard,
+    ChaosShard,
+    RegalShard,
+    ScrollFragment,
+  )
+}
 
 object SplinterOfChayula extends Shard[BlessingOfChayula.type](100)
 object SplinterOfEsh extends Shard[BlessingOfEsh.type](100)
