@@ -20,7 +20,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 object ItemFilter {
-  def wsClient(): StandaloneWSClient = {
+  def wsClient(): (ActorSystem, StandaloneAhcWSClient) = {
     // Create Akka system for thread and streaming management
     implicit val system = ActorSystem()
     system.registerOnTermination {
@@ -31,7 +31,7 @@ object ItemFilter {
     // Create the standalone WS client
     // no argument defaults to a AhcWSClientConfig created from
     // "AhcWSClientConfigFactory.forConfig(ConfigFactory.load, this.getClass.getClassLoader)"
-    StandaloneAhcWSClient()
+    (system, StandaloneAhcWSClient())
   }
 
   def main(args: Array[String]): Unit = {
@@ -70,11 +70,15 @@ object ItemFilter {
     //println(currentDirectory.toString)
     Seq(Reduced, Normal, Racing).foreach(createFilterFile(poeFolder, _, categories))
     createFilterFile(poeFolder, Reduced, categories, conceal = true)*/
-    implicit val provider = new PoeNinja(wsClient())
+    val (system, client) = wsClient()
+    implicit val provider = new PoeNinja(client)
     Future
       .sequence(Item.items.map(_.block(Normal, 0.1)))
       .map(Mergeable.merge(_).map(_.write).mkString)
-      .foreach(println)
+      .map(println)
+      .andThen { case _ => client.close() }
+      .andThen { case _ => system.terminate() }
+    println("Done")
   }
 
   def createFilterFile(poeFolder: String, filterLevel: FilterLevel, categories: Seq[Category], conceal: Boolean = false): Unit = {
