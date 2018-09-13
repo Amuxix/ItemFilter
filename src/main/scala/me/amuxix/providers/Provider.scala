@@ -1,9 +1,10 @@
 package me.amuxix.providers
 
 import cats.data.{EitherT, OptionT}
+import cats.implicits._
 import me.amuxix.League
+import me.amuxix.providers.Provider.ParsableWSResponse
 import me.amuxix.items.Item
-import me.amuxix.providers.Provider.requestsInProgress
 import me.amuxix.providers.poeninja.PoeNinja.defaultLeague
 import play.api.libs.json.{JsValue, Reads}
 import play.api.libs.ws.JsonBodyReadables._
@@ -13,10 +14,6 @@ import scala.collection.mutable
 import scala.concurrent.{ExecutionContext, Future}
 
 object Provider {
-  private def requestsInProgress = mutable.Map.empty[(String, Seq[(String, String)]), Future[Either[ProviderError, Any]]]
-}
-
-abstract class Provider(wsClient: StandaloneWSClient)(implicit ec: ExecutionContext) {
   implicit class ParsableWSResponse(response: StandaloneWSResponse) {
     def parse[Response](url: String)(implicit reads: Reads[Response]): Either[ProviderError, Response] =
       response match {
@@ -33,21 +30,26 @@ abstract class Provider(wsClient: StandaloneWSClient)(implicit ec: ExecutionCont
           Left(RequestError(url, response, s"Response returned a failed status code: ${response.status}"))
       }
   }
+}
+
+abstract class Provider(wsClient: StandaloneWSClient)(implicit ec: ExecutionContext) {
+  private val requestsInProgress = mutable.Map.empty[(String, Seq[(String, String)]), Future[Either[ProviderError, Any]]]
 
   protected def get[Response](url: String, parameters: (String, String)*)(implicit reads: Reads[Response]): EitherT[Future, ProviderError, Response] = {
-    val future = requestsInProgress.getOrElseUpdate((url, parameters), {
+    EitherT(requestsInProgress.getOrElseUpdate((url, parameters), {
       println("making new request")
       println(requestsInProgress)
-      wsClient
+      val future = wsClient
         .url(url)
         .withQueryStringParameters(parameters.toSeq: _*)
         .get()
         .map(_.parse[Response](url))
+      future.onComplete(_ => requestsInProgress.remove((url, parameters)))
+      future
     }
-    ).map(_.map(_.asInstanceOf[Response]))
-    future.onComplete(_ => requestsInProgress.remove((url, parameters)))
-    EitherT(future)
+    )).map(_.asInstanceOf[Response])
   }
 
   def getChaosEquivalentFor(item: Item, league: League = defaultLeague): OptionT[Future, Double]
 }
+
