@@ -31,7 +31,20 @@ object ItemFilter {
     // Create the standalone WS client
     // no argument defaults to a AhcWSClientConfig created from
     // "AhcWSClientConfigFactory.forConfig(ConfigFactory.load, this.getClass.getClassLoader)"
-    (system, StandaloneAhcWSClient())
+    class CaffeineHttpCache extends Cache {
+      val underlying = Caffeine.newBuilder()
+        .ticker(Ticker.systemTicker())
+        .expireAfterWrite(365, TimeUnit.DAYS)
+        .build[EffectiveURIKey, ResponseEntry]()
+
+       override def remove(key: EffectiveURIKey) = Future.successful(Option(underlying.invalidate(key)))
+       override def put(key: EffectiveURIKey, entry: ResponseEntry) = Future.successful(underlying.put(key, entry))
+       override def get(key: EffectiveURIKey) = Future.successful(Option(underlying.getIfPresent(key)))
+       override def close(): Unit = underlying.cleanUp()
+    }
+    val cache = new CaffeineHttpCache()
+    val client = StandaloneAhcWSClient(httpCache = Some(new AhcHttpCache(cache)))
+    (system, client)
   }
 
   def main(args: Array[String]): Unit = {
