@@ -1,51 +1,30 @@
 package me.amuxix
 
-import akka.actor.ActorSystem
-import akka.stream.ActorMaterializer
-import play.api.libs.ws._
-import play.api.libs.ws.ahc._
 import java.io.{File, PrintWriter}
-import java.util.concurrent.TimeUnit
 
-import com.github.benmanes.caffeine.cache.{Caffeine, Ticker}
-import javax.swing.filechooser.FileSystemView
+import me.amuxix.WSClient.wsClient
 import me.amuxix.categories._
-import me.amuxix.categories.leagues._
-import me.amuxix.categories.recipes._
 import me.amuxix.items.Item
 import me.amuxix.providers.poeninja.PoeNinja
-import play.api.libs.ws.ahc.cache.{AhcHttpCache, Cache, EffectiveURIKey, ResponseEntry}
-import scala.concurrent.ExecutionContext.Implicits.global
 
-import scala.concurrent.Future
+import scala.concurrent.Await
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.duration._
+import scala.language.postfixOps
 
 object ItemFilter {
-  def wsClient(): (ActorSystem, StandaloneAhcWSClient) = {
-    // Create Akka system for thread and streaming management
-    implicit val system = ActorSystem()
-    system.registerOnTermination {
-      System.exit(0)
-    }
-    implicit val materializer = ActorMaterializer()
+  val threshold = 0.1
 
-    // Create the standalone WS client
-    // no argument defaults to a AhcWSClientConfig created from
-    // "AhcWSClientConfigFactory.forConfig(ConfigFactory.load, this.getClass.getClassLoader)"
-    class CaffeineHttpCache extends Cache {
-      val underlying = Caffeine.newBuilder()
-        .ticker(Ticker.systemTicker())
-        .expireAfterWrite(365, TimeUnit.DAYS)
-        .build[EffectiveURIKey, ResponseEntry]()
-
-       override def remove(key: EffectiveURIKey) = Future.successful(Option(underlying.invalidate(key)))
-       override def put(key: EffectiveURIKey, entry: ResponseEntry) = Future.successful(underlying.put(key, entry))
-       override def get(key: EffectiveURIKey) = Future.successful(Option(underlying.getIfPresent(key)))
-       override def close(): Unit = underlying.cleanUp()
-    }
-    val cache = new CaffeineHttpCache()
-    val client = StandaloneAhcWSClient(httpCache = Some(new AhcHttpCache(cache)))
-    (system, client)
+  def updateItemPrices(): Unit = {
+    val (system, client) = wsClient
+    implicit val provider = new PoeNinja(client)
+    val f = provider
+      .getAllItemsPrices()
+      .andThen { case _ => client.close() }
+      .andThen { case _ => system.terminate() }
+    Await.result(f, 30 seconds)
   }
+
 
   def main(args: Array[String]): Unit = {
     /*val poeFolder = FileSystemView.getFileSystemView.getDefaultDirectory.getPath + File.separatorChar + "My Games" + File.separatorChar + "Path of Exile" + File.separatorChar
@@ -83,15 +62,8 @@ object ItemFilter {
     //println(currentDirectory.toString)
     Seq(Reduced, Normal, Racing).foreach(createFilterFile(poeFolder, _, categories))
     createFilterFile(poeFolder, Reduced, categories, conceal = true)*/
-    val (system, client) = wsClient()
-    implicit val provider = new PoeNinja(client)
-    Future
-      .sequence(Item.items.map(_.block(Normal, 0.1)))
-      .map(Mergeable.merge(_).map(_.write).mkString)
-      .map(println)
-      .andThen { case _ => client.close() }
-      .andThen { case _ => system.terminate() }
-    println("Done")
+    updateItemPrices()
+    println(Mergeable.merge(Item.items.map(_.block)).map(_.write).mkString)
   }
 
   def createFilterFile(poeFolder: String, filterLevel: FilterLevel, categories: Seq[Category], conceal: Boolean = false): Unit = {

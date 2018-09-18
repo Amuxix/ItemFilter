@@ -1,11 +1,9 @@
 package me.amuxix.providers
 
-import cats.data.{EitherT, OptionT}
-import cats.implicits._
-import me.amuxix.League
-import me.amuxix.providers.Provider.ParsableWSResponse
+import cats.data.EitherT
 import me.amuxix.items.Item
-import me.amuxix.providers.poeninja.PoeNinja.defaultLeague
+import me.amuxix.providers.Provider.{ParsableWSResponse, defaultLeague, itemPrices}
+import me.amuxix.{Delve, League}
 import play.api.libs.json.{JsValue, Reads}
 import play.api.libs.ws.JsonBodyReadables._
 import play.api.libs.ws.{StandaloneWSClient, StandaloneWSResponse}
@@ -30,26 +28,29 @@ object Provider {
           Left(RequestError(url, response, s"Response returned a failed status code: ${response.status}"))
       }
   }
+  val defaultLeague: League = Delve
+
+  val itemPrices = mutable.Map.empty[String, Double]
+
+  def getChaosEquivalentFor(item: Item, league: League = defaultLeague): Option[Double] = {
+    if (itemPrices.contains(item.name.toLowerCase) == false) println(s"No Price for ${item.name}")
+    itemPrices.get(item.name.toLowerCase)
+  }
 }
 
 abstract class Provider(wsClient: StandaloneWSClient)(implicit ec: ExecutionContext) {
-  private val requestsInProgress = mutable.Map.empty[(String, Seq[(String, String)]), Future[Either[ProviderError, Any]]]
-
-  protected def get[Response](url: String, parameters: (String, String)*)(implicit reads: Reads[Response]): EitherT[Future, ProviderError, Response] = {
-    EitherT(requestsInProgress.getOrElseUpdate((url, parameters), {
-      println("making new request")
-      println(requestsInProgress)
-      val future = wsClient
+  protected def get[Response](url: String, parameters: (String, String)*)(implicit reads: Reads[Response]): EitherT[Future, ProviderError, Response] =
+    EitherT(
+      wsClient
         .url(url)
         .withQueryStringParameters(parameters.toSeq: _*)
         .get()
         .map(_.parse[Response](url))
-      future.onComplete(_ => requestsInProgress.remove((url, parameters)))
-      future
-    }
-    )).map(_.asInstanceOf[Response])
-  }
+    )
 
-  def getChaosEquivalentFor(item: Item, league: League = defaultLeague): OptionT[Future, Double]
+  /**
+    * This should update price for all items so they are accessible on itemPrices map
+    */
+  def getAllItemsPrices(league: League = defaultLeague): Future[_]
 }
 

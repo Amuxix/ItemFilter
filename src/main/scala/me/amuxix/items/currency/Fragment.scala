@@ -35,32 +35,50 @@ object Fragment {
   )
 }
 
-object OfferingToTheGoddess extends Fragment
-object DivineVessel extends Fragment
-object TimewornReliquaryKey extends Fragment
+case object OfferingToTheGoddess extends Fragment
+case object DivineVessel extends Fragment
+case object TimewornReliquaryKey extends Fragment
 
-object ChayulasBreachstone extends Fragment
-object XophsBreachstone extends Fragment
-object EshsBreachstone extends Fragment
-object UulNetolsBreachstone extends Fragment
-object TulsBreachstone extends Fragment
+case object ChayulasBreachstone extends Fragment {
+  override  val name: String = "Chayula's Breachstone"
+}
+case object XophsBreachstone extends Fragment {
+  override  val name: String = "Xoph's Breachstone"
+}
+case object EshsBreachstone extends Fragment {
+  override  val name: String = "Esh's Breachstone"
+}
+case object UulNetolsBreachstone extends Fragment {
+  override  val name: String = "Uul-Netol's Breachstone"
+}
+case object TulsBreachstone extends Fragment {
+  override  val name: String = "Tul's Breachstone"
+}
 
-object FragmentOfTheHydra extends Fragment
-object FragmentOfTheMinotaur extends Fragment
-object FragmentOfThePhoenix extends Fragment
-object FragmentOfTheChimera extends Fragment
+case object FragmentOfTheHydra extends Fragment
+case object FragmentOfTheMinotaur extends Fragment
+case object FragmentOfThePhoenix extends Fragment
+case object FragmentOfTheChimera extends Fragment
 
-object MortalIgnorance extends Fragment
-object MortalHope extends Fragment
-object MortalRage extends Fragment
-object MortalGrief extends Fragment
+case object MortalIgnorance extends Fragment
+case object MortalHope extends Fragment
+case object MortalRage extends Fragment
+case object MortalGrief extends Fragment
 
-object YrielsKey extends Fragment
-object EbersKey extends Fragment
-object InyasKey extends Fragment
-object VolkuursKey extends Fragment
+case object YrielsKey extends Fragment {
+  override  val name: String = "Yriel's Key"
+}
+case object EbersKey extends Fragment {
+  override  val name: String = "Eber's Key"
+}
+case object InyasKey extends Fragment {
+  override  val name: String = "Inya's Key"
+}
+case object VolkuursKey extends Fragment {
+  override  val name: String = "Volkuur's Key"
+}
 
-object SacrificeAtMidnight extends Fragment
-object SacrificeAtDawn extends Fragment
-object SacrificeAtDusk extends Fragment
-object SacrificeAtNoon extends Fragment
+case object SacrificeAtMidnight extends Fragment
+case object SacrificeAtDawn extends Fragment
+case object SacrificeAtDusk extends Fragment
+case object SacrificeAtNoon extends Fragment

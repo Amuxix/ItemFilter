@@ -63,7 +63,7 @@ case class Condition(
     val mergedBase: Option[BaseType] = (base, o.base) match {
       case (_, None)                                => None
       case (None, _)                                => None
-      case (Some(BaseType(b1)), Some(BaseType(b2))) => Some(BaseType(b1 ++ b2))
+      case (Some(BaseType(b1 @ _*)), Some(BaseType(b2 @ _*))) => Some(BaseType((b1 ++ b2):_*))
     }
     Condition(
       mergedBase,

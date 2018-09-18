@@ -22,29 +22,24 @@ abstract class Item(val size: ItemSize, val show: Boolean = true) extends Named 
     case Undetermined =>
   }
    */
-  val condition: Condition = Condition(`class` = `class`, base = name)
+  lazy val condition: Condition = Condition(`class` = `class`, base = name)
 
   /**
     * This is the worth of the currency in chaos per slot the item has.
     */
-  def chaosValuePerSlot(implicit provider: Provider, ec: ExecutionContext): Future[Option[Double]] =
-    provider.getChaosEquivalentFor(this).map(_ / size.area).value
+  lazy val chaosValuePerSlot: Double =
+    Provider.getChaosEquivalentFor(this).map(_ / size.area).value.fold[Double](0)(identity)
 
-  def rarity(filterThreshold: Double)(implicit provider: Provider, ec: ExecutionContext): Future[FilterRarity] =
-    chaosValuePerSlot.map { possibleValue =>
-      val value = possibleValue.getOrElse(0.0) / filterThreshold
-      if (value >= Mythic.multiplier) Mythic
-      else if (value >= Epic.multiplier) Epic
-      else if (value >= Rare.multiplier) Rare
-      else if (value >= Uncommon.multiplier) Uncommon
-      else if (value >= Common.multiplier) Common
-      else Undetermined
-    }
+  lazy val rarity: FilterRarity = {
+    if (chaosValuePerSlot >= Mythic.threshold) Mythic
+    else if (chaosValuePerSlot >= Epic.threshold) Epic
+    else if (chaosValuePerSlot >= Rare.threshold) Rare
+    else if (chaosValuePerSlot >= Uncommon.threshold) Uncommon
+    else if (chaosValuePerSlot >= Common.threshold) Common
+    else Undetermined
+  }
 
-  def block(filterLevel: FilterLevel, filterThreshold: Double)(implicit provider: Provider, ec: ExecutionContext): Future[Block] =
-    rarity(filterThreshold).map { rarity =>
-      Block(condition, actionForRarity(rarity), show)
-    }
+  lazy val block: Block = Block(condition, actionForRarity(rarity), show)
 }
 
 object Item {

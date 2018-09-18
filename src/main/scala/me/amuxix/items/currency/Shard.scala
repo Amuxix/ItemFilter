@@ -13,7 +13,7 @@ object Shard {
   val shards = Seq[Item](
     SplinterOfChayula,
     SplinterOfEsh,
-    SplinterOfUulNetol,
+    `SplinterOfUul-Netol`,
     SplinterOfXoph,
     SplinterOfTul,
     MirrorShard,
@@ -30,21 +30,27 @@ object Shard {
   )
 }
 
-object SplinterOfChayula extends Shard[BlessingOfChayula.type](100)
-object SplinterOfEsh extends Shard[BlessingOfEsh.type](100)
-object SplinterOfUulNetol extends Shard[BlessingOfUulNetol.type](100)
-object SplinterOfXoph extends Shard[BlessingOfXoph.type](100)
-object SplinterOfTul extends Shard[BlessingOfTul.type](100)
+case object SplinterOfChayula extends Shard[BlessingOfChayula.type](100)
+case object SplinterOfEsh extends Shard[BlessingOfEsh.type](100)
+case object `SplinterOfUul-Netol` extends Shard[BlessingOfUulNetol.type](100) {
+  override  val name: String = "Splinter Of Uul-Netol"
+}
+case object SplinterOfXoph extends Shard[BlessingOfXoph.type](100)
+case object SplinterOfTul extends Shard[BlessingOfTul.type](100)
 
-object MirrorShard extends Shard[MirrorOfKalandra.type]
-object ExaltedShard extends Shard[ExaltedOrb.type]
-object AnnulmentShard extends Shard[OrbOfAnnulment.type]
+case object MirrorShard extends Shard[MirrorOfKalandra.type]
+case object ExaltedShard extends Shard[ExaltedOrb.type]
+case object AnnulmentShard extends Shard[OrbOfAnnulment.type]
 
-object BindingShard extends Shard[OrbOfAnnulment.type]
-object HorizonShard extends Shard[OrbOfAnnulment.type]
-object HarbingersShard extends Shard[OrbOfAnnulment.type]
-object EngineersShard extends Shard[OrbOfAnnulment.type]
-object AncientShard extends Shard[OrbOfAnnulment.type]
-object ChaosShard extends Shard[OrbOfAnnulment.type]
-object RegalShard extends Shard[OrbOfAnnulment.type]
-object ScrollFragment extends Shard[ScrollOfWisdom.type]
+case object BindingShard extends Shard[OrbOfAnnulment.type]
+case object HorizonShard extends Shard[OrbOfAnnulment.type]
+case object HarbingersShard extends Shard[OrbOfAnnulment.type] {
+  override  val name: String = "Harbinger's Shard"
+}
+case object EngineersShard extends Shard[OrbOfAnnulment.type] {
+  override  val name: String = "Engineer's Shard"
+}
+case object AncientShard extends Shard[OrbOfAnnulment.type]
+case object ChaosShard extends Shard[OrbOfAnnulment.type]
+case object RegalShard extends Shard[OrbOfAnnulment.type]
+case object ScrollFragment extends Shard[ScrollOfWisdom.type]

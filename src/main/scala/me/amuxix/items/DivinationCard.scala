@@ -156,7 +156,7 @@ object DivinationCard {
     TheDarkestDream,
     TheDeceiver,
     TheDemoness,
-    TheDevastator,
+    //TheDevastator, //Not sure if this is in the game.
     TheDoctor,
     TheDoppelganger,
     TheDragon,
@@ -293,287 +293,287 @@ object DivinationCard {
   )
 }
 
-object AMothersPartingGift extends DivinationCard {
+case object AMothersPartingGift extends DivinationCard {
   override val name: String = "A Mother's Parting Gift"
 }
-object AbandonedWealth extends DivinationCard
-object AnarchysPrice extends DivinationCard {
+case object AbandonedWealth extends DivinationCard
+case object AnarchysPrice extends DivinationCard {
   override val name: String = "Anarchy's Price"
 }
-object AssassinsFavour extends DivinationCard {
+case object AssassinsFavour extends DivinationCard {
   override val name: String = "Assassin's Favour"
 }
-object AtzirisArsenal extends DivinationCard {
+case object AtzirisArsenal extends DivinationCard {
   override val name: String = "Atziri's Arsenal"
 }
-object Audacity extends DivinationCard
-object BeautyThroughDeath extends DivinationCard
-object BirthOfTheThree extends DivinationCard
-object BlessingOfGod extends DivinationCard
-object BlindVenture extends DivinationCard
-object BoonOfTheFirstOnes extends DivinationCard
-object BoundlessRealms extends DivinationCard
-object BowyersDream extends DivinationCard {
+case object Audacity extends DivinationCard
+case object BeautyThroughDeath extends DivinationCard
+case object BirthOfTheThree extends DivinationCard
+case object BlessingOfGod extends DivinationCard
+case object BlindVenture extends DivinationCard
+case object BoonOfTheFirstOnes extends DivinationCard
+case object BoundlessRealms extends DivinationCard
+case object BowyersDream extends DivinationCard {
   override val name: String = "Bowyer's Dream"
 }
-object CallToTheFirstOnes extends DivinationCard
-object CartographersDelight extends DivinationCard {
+case object CallToTheFirstOnes extends DivinationCard
+case object CartographersDelight extends DivinationCard {
   override val name: String = "Cartographer's Delight"
 }
-object ChaoticDisposition extends DivinationCard
-object CovetedPossession extends DivinationCard
-object Death extends DivinationCard
-object DestinedToCrumble extends DivinationCard
-object DiallasSubjugation extends DivinationCard {
+case object ChaoticDisposition extends DivinationCard
+case object CovetedPossession extends DivinationCard
+case object Death extends DivinationCard
+case object DestinedToCrumble extends DivinationCard
+case object DiallasSubjugation extends DivinationCard {
   override val name: String = "Dialla's Subjugation"
 }
-object DoedresMadness extends DivinationCard {
+case object DoedresMadness extends DivinationCard {
   override val name: String = "Doedre's Madness"
 }
-object DyingAnguish extends DivinationCard
-object EarthDrinker extends DivinationCard
-object EmperorOfPurity extends DivinationCard
-object EmperorsLuck extends DivinationCard {
+case object DyingAnguish extends DivinationCard
+case object EarthDrinker extends DivinationCard
+case object EmperorOfPurity extends DivinationCard
+case object EmperorsLuck extends DivinationCard {
   override val name: String = "Emperor's Luck"
 }
-object ForbiddenPower extends DivinationCard
-object GemcuttersPromise extends DivinationCard {
+case object ForbiddenPower extends DivinationCard
+case object GemcuttersPromise extends DivinationCard {
   override val name: String = "Gemcutter's Promise"
 }
-object GiftOfTheGemlingQueen extends DivinationCard
-object GlimmerOfHope extends DivinationCard
-object GraveKnowledge extends DivinationCard
-object HarmonyOfSouls extends DivinationCard
-object HerMask extends DivinationCard
-object Heterochromia extends DivinationCard
-object Hope extends DivinationCard
-object HouseOfMirrors extends DivinationCard
-object Hubris extends DivinationCard
-object Humility extends DivinationCard
-object HuntersResolve extends DivinationCard {
+case object GiftOfTheGemlingQueen extends DivinationCard
+case object GlimmerOfHope extends DivinationCard
+case object GraveKnowledge extends DivinationCard
+case object HarmonyOfSouls extends DivinationCard
+case object HerMask extends DivinationCard
+case object Heterochromia extends DivinationCard
+case object Hope extends DivinationCard
+case object HouseOfMirrors extends DivinationCard
+case object Hubris extends DivinationCard
+case object Humility extends DivinationCard
+case object HuntersResolve extends DivinationCard {
   override val name: String = "Hunter's Resolve"
 }
-object HuntersReward extends DivinationCard {
+case object HuntersReward extends DivinationCard {
   override val name: String = "Hunter's Reward"
 }
-object ImmortalResolve extends DivinationCard
-object JackInTheBox extends DivinationCard
-object LantadorsLostLove extends DivinationCard {
+case object ImmortalResolve extends DivinationCard
+case object JackInTheBox extends DivinationCard
+case object LantadorsLostLove extends DivinationCard {
   override val name: String = "Lantador's Lost Love"
 }
-object LastHope extends DivinationCard
-object LeftToFate extends DivinationCard
-object LightAndTruth extends DivinationCard
-object LingeringRemnants extends DivinationCard
-object LostWorlds extends DivinationCard
-object Loyalty extends DivinationCard
-object LuckyConnections extends DivinationCard
-object LuckyDeck extends DivinationCard
-object LysahsRespite extends DivinationCard {
+case object LastHope extends DivinationCard
+case object LeftToFate extends DivinationCard
+case object LightAndTruth extends DivinationCard
+case object LingeringRemnants extends DivinationCard
+case object LostWorlds extends DivinationCard
+case object Loyalty extends DivinationCard
+case object LuckyConnections extends DivinationCard
+case object LuckyDeck extends DivinationCard
+case object LysahsRespite extends DivinationCard {
   override val name: String = "Lysah's Respite"
 }
-object MawrBlaidd extends DivinationCard
-object MercilessArmament extends DivinationCard
-object MightIsRight extends DivinationCard
-object Mitts extends DivinationCard
-object NoTraces extends DivinationCard
-object Perfection extends DivinationCard
-object PrideBeforeTheFall extends DivinationCard
-object Prosperity extends DivinationCard
-object RainOfChaos extends DivinationCard
-object RainTempter extends DivinationCard
-object Rats extends DivinationCard
-object Rebirth extends DivinationCard
-object ScholarOfTheSeas extends DivinationCard
-object ShardOfFate extends DivinationCard
-object StruckByLightning extends DivinationCard
-object TheAdmirer extends DivinationCard
-object TheAesthete extends DivinationCard
-object TheArenaChampion extends DivinationCard
-object TheArmyOfBlood extends DivinationCard
-object TheArtist extends DivinationCard
-object TheAvenger extends DivinationCard
-object TheBattleBorn extends DivinationCard
-object TheBeast extends DivinationCard
-object TheBetrayal extends DivinationCard
-object TheBlazingFire extends DivinationCard
-object TheBody extends DivinationCard
-object TheBreach extends DivinationCard
-object TheBrittleEmperor extends DivinationCard
-object TheCacophony extends DivinationCard
-object TheCalling extends DivinationCard
-object TheCarrionCrow extends DivinationCard
-object TheCartographer extends DivinationCard
-object TheCataclysm extends DivinationCard
-object TheCatalyst extends DivinationCard
-object TheCelestialJusticar extends DivinationCard
-object TheCelestialStone extends DivinationCard
-object TheChainsThatBind extends DivinationCard
-object TheComingStorm extends DivinationCard
-object TheConduit extends DivinationCard
-object TheCursedKing extends DivinationCard
-object TheDapperProdigy extends DivinationCard
-object TheDarkMage extends DivinationCard
-object TheDarkestDream extends DivinationCard
-object TheDeceiver extends DivinationCard
-object TheDemoness extends DivinationCard
-object TheDevastator extends DivinationCard
-object TheDoctor extends DivinationCard
-object TheDoppelganger extends DivinationCard
-object TheDragon extends DivinationCard
-object TheDragonsHeart extends DivinationCard {
+case object MawrBlaidd extends DivinationCard
+case object MercilessArmament extends DivinationCard
+case object MightIsRight extends DivinationCard
+case object Mitts extends DivinationCard
+case object NoTraces extends DivinationCard
+case object Perfection extends DivinationCard
+case object PrideBeforeTheFall extends DivinationCard
+case object Prosperity extends DivinationCard
+case object RainOfChaos extends DivinationCard
+case object RainTempter extends DivinationCard
+case object Rats extends DivinationCard
+case object Rebirth extends DivinationCard
+case object ScholarOfTheSeas extends DivinationCard
+case object ShardOfFate extends DivinationCard
+case object StruckByLightning extends DivinationCard
+case object TheAdmirer extends DivinationCard
+case object TheAesthete extends DivinationCard
+case object TheArenaChampion extends DivinationCard
+case object TheArmyOfBlood extends DivinationCard
+case object TheArtist extends DivinationCard
+case object TheAvenger extends DivinationCard
+case object TheBattleBorn extends DivinationCard
+case object TheBeast extends DivinationCard
+case object TheBetrayal extends DivinationCard
+case object TheBlazingFire extends DivinationCard
+case object TheBody extends DivinationCard
+case object TheBreach extends DivinationCard
+case object TheBrittleEmperor extends DivinationCard
+case object TheCacophony extends DivinationCard
+case object TheCalling extends DivinationCard
+case object TheCarrionCrow extends DivinationCard
+case object TheCartographer extends DivinationCard
+case object TheCataclysm extends DivinationCard
+case object TheCatalyst extends DivinationCard
+case object TheCelestialJusticar extends DivinationCard
+case object TheCelestialStone extends DivinationCard
+case object TheChainsThatBind extends DivinationCard
+case object TheComingStorm extends DivinationCard
+case object TheConduit extends DivinationCard
+case object TheCursedKing extends DivinationCard
+case object TheDapperProdigy extends DivinationCard
+case object TheDarkMage extends DivinationCard
+case object TheDarkestDream extends DivinationCard
+case object TheDeceiver extends DivinationCard
+case object TheDemoness extends DivinationCard
+case object TheDevastator extends DivinationCard
+case object TheDoctor extends DivinationCard
+case object TheDoppelganger extends DivinationCard
+case object TheDragon extends DivinationCard
+case object TheDragonsHeart extends DivinationCard {
   override val name: String = "The Dragon's Heart"
 }
-object TheDreamer extends DivinationCard
-object TheDreamland extends DivinationCard
-object TheDrunkenAristocrat extends DivinationCard
-object TheEncroachingDarkness extends DivinationCard
-object TheEndlessDarkness extends DivinationCard
-object TheEndurance extends DivinationCard
-object TheEnlightened extends DivinationCard
-object TheEthereal extends DivinationCard
-object TheExplorer extends DivinationCard
-object TheEyeOfTheDragon extends DivinationCard
-object TheFathomlessDepths extends DivinationCard
-object TheFeast extends DivinationCard
-object TheFiend extends DivinationCard
-object TheFletcher extends DivinationCard
-object TheFlorasGift extends DivinationCard {
+case object TheDreamer extends DivinationCard
+case object TheDreamland extends DivinationCard
+case object TheDrunkenAristocrat extends DivinationCard
+case object TheEncroachingDarkness extends DivinationCard
+case object TheEndlessDarkness extends DivinationCard
+case object TheEndurance extends DivinationCard
+case object TheEnlightened extends DivinationCard
+case object TheEthereal extends DivinationCard
+case object TheExplorer extends DivinationCard
+case object TheEyeOfTheDragon extends DivinationCard
+case object TheFathomlessDepths extends DivinationCard
+case object TheFeast extends DivinationCard
+case object TheFiend extends DivinationCard
+case object TheFletcher extends DivinationCard
+case object TheFlorasGift extends DivinationCard {
   override val name: String = "The Flora's Gift"
 }
-object TheFormlessSea extends DivinationCard
-object TheForsaken extends DivinationCard
-object TheFox extends DivinationCard
-object TheGambler extends DivinationCard
-object TheGarishPower extends DivinationCard
-object TheGemcutter extends DivinationCard
-object TheGentleman extends DivinationCard
-object TheGladiator extends DivinationCard
-object TheHaleHeart extends DivinationCard
-object TheHarvester extends DivinationCard
-object TheHermit extends DivinationCard
-object TheHoarder extends DivinationCard
-object TheHunger extends DivinationCard
-object TheImmortal extends DivinationCard
-object TheIncantation extends DivinationCard
-object TheInnocent extends DivinationCard
-object TheInoculated extends DivinationCard
-object TheInsatiable extends DivinationCard
-object TheInventor extends DivinationCard
-object TheIronBard extends DivinationCard
-object TheJester extends DivinationCard
-object TheJewellersBoon extends DivinationCard {
+case object TheFormlessSea extends DivinationCard
+case object TheForsaken extends DivinationCard
+case object TheFox extends DivinationCard
+case object TheGambler extends DivinationCard
+case object TheGarishPower extends DivinationCard
+case object TheGemcutter extends DivinationCard
+case object TheGentleman extends DivinationCard
+case object TheGladiator extends DivinationCard
+case object TheHaleHeart extends DivinationCard
+case object TheHarvester extends DivinationCard
+case object TheHermit extends DivinationCard
+case object TheHoarder extends DivinationCard
+case object TheHunger extends DivinationCard
+case object TheImmortal extends DivinationCard
+case object TheIncantation extends DivinationCard
+case object TheInnocent extends DivinationCard
+case object TheInoculated extends DivinationCard
+case object TheInsatiable extends DivinationCard
+case object TheInventor extends DivinationCard
+case object TheIronBard extends DivinationCard
+case object TheJester extends DivinationCard
+case object TheJewellersBoon extends DivinationCard {
   override val name: String = "The Jeweller's Boon"
 }
-object TheKingsBlade extends DivinationCard {
+case object TheKingsBlade extends DivinationCard {
   override val name: String = "The King's Blade"
 }
-object TheKingsHeart extends DivinationCard {
+case object TheKingsHeart extends DivinationCard {
   override val name: String = "The King's Heart"
 }
-object TheLastOneStanding extends DivinationCard
-object TheLich extends DivinationCard
-object TheLion extends DivinationCard
-object TheLordInBlack extends DivinationCard
-object TheLover extends DivinationCard
-object TheLunarisPriestess extends DivinationCard
-object TheMaster extends DivinationCard
-object TheMayor extends DivinationCard
-object TheMercenary extends DivinationCard
-object TheMetalsmithsGift extends DivinationCard {
+case object TheLastOneStanding extends DivinationCard
+case object TheLich extends DivinationCard
+case object TheLion extends DivinationCard
+case object TheLordInBlack extends DivinationCard
+case object TheLover extends DivinationCard
+case object TheLunarisPriestess extends DivinationCard
+case object TheMaster extends DivinationCard
+case object TheMayor extends DivinationCard
+case object TheMercenary extends DivinationCard
+case object TheMetalsmithsGift extends DivinationCard {
   override val name: String = "The Metalsmith's Gift"
 }
-object TheOath extends DivinationCard
-object TheObscured extends DivinationCard
-object TheOffering extends DivinationCard
-object TheOneWithAll extends DivinationCard
-object TheOpulent extends DivinationCard
-object ThePackLeader extends DivinationCard
-object ThePact extends DivinationCard
-object ThePenitent extends DivinationCard
-object ThePoet extends DivinationCard
-object ThePolymath extends DivinationCard
-object ThePorcupine extends DivinationCard
-object ThePriceOfProtection extends DivinationCard
-object TheProfessor extends DivinationCard
-object ThePuzzle extends DivinationCard
-object TheQueen extends DivinationCard
-object TheRabidRhoa extends DivinationCard
-object TheRealm extends DivinationCard
-object TheRisk extends DivinationCard
-object TheRiteOfElements extends DivinationCard
-object TheRoadToPower extends DivinationCard
-object TheRuthlessCeinture extends DivinationCard
-object TheSaintsTreasure extends DivinationCard {
+case object TheOath extends DivinationCard
+case object TheObscured extends DivinationCard
+case object TheOffering extends DivinationCard
+case object TheOneWithAll extends DivinationCard
+case object TheOpulent extends DivinationCard
+case object ThePackLeader extends DivinationCard
+case object ThePact extends DivinationCard
+case object ThePenitent extends DivinationCard
+case object ThePoet extends DivinationCard
+case object ThePolymath extends DivinationCard
+case object ThePorcupine extends DivinationCard
+case object ThePriceOfProtection extends DivinationCard
+case object TheProfessor extends DivinationCard
+case object ThePuzzle extends DivinationCard
+case object TheQueen extends DivinationCard
+case object TheRabidRhoa extends DivinationCard
+case object TheRealm extends DivinationCard
+case object TheRisk extends DivinationCard
+case object TheRiteOfElements extends DivinationCard
+case object TheRoadToPower extends DivinationCard
+case object TheRuthlessCeinture extends DivinationCard
+case object TheSaintsTreasure extends DivinationCard {
   override val name: String = "The Saint's Treasure"
 }
-object TheSamuraisEye extends DivinationCard {
+case object TheSamuraisEye extends DivinationCard {
   override val name: String = "The Samurai's Eye"
 }
-object TheScarredMeadow extends DivinationCard
-object TheScavenger extends DivinationCard
-object TheScholar extends DivinationCard
-object TheSephirot extends DivinationCard
-object TheSigil extends DivinationCard
-object TheSiren extends DivinationCard
-object TheSoul extends DivinationCard
-object TheSparkAndTheFlame extends DivinationCard
-object TheSpoiledPrince extends DivinationCard
-object TheStandoff extends DivinationCard
-object TheStormcaller extends DivinationCard
-object TheSummoner extends DivinationCard
-object TheSun extends DivinationCard
-object TheSurgeon extends DivinationCard
-object TheSurveyor extends DivinationCard
-object TheSurvivalist extends DivinationCard
-object TheSwordKingsSalute extends DivinationCard {
+case object TheScarredMeadow extends DivinationCard
+case object TheScavenger extends DivinationCard
+case object TheScholar extends DivinationCard
+case object TheSephirot extends DivinationCard
+case object TheSigil extends DivinationCard
+case object TheSiren extends DivinationCard
+case object TheSoul extends DivinationCard
+case object TheSparkAndTheFlame extends DivinationCard
+case object TheSpoiledPrince extends DivinationCard
+case object TheStandoff extends DivinationCard
+case object TheStormcaller extends DivinationCard
+case object TheSummoner extends DivinationCard
+case object TheSun extends DivinationCard
+case object TheSurgeon extends DivinationCard
+case object TheSurveyor extends DivinationCard
+case object TheSurvivalist extends DivinationCard
+case object TheSwordKingsSalute extends DivinationCard {
   override val name: String = "The Sword King's Salute"
 }
-object TheThaumaturgist extends DivinationCard
-object TheThrone extends DivinationCard
-object TheTower extends DivinationCard
-object TheTraitor extends DivinationCard
-object TheTrial extends DivinationCard
-object TheTwilightMoon extends DivinationCard
-object TheTwins extends DivinationCard
-object TheTyrant extends DivinationCard
-object TheUndaunted extends DivinationCard
-object TheUndisputed extends DivinationCard
-object TheUnion extends DivinationCard
-object TheValkyrie extends DivinationCard
-object TheValleyOfSteelBoxes extends DivinationCard
-object TheVast extends DivinationCard
-object TheVisionary extends DivinationCard
-object TheVoid extends DivinationCard
-object TheWarden extends DivinationCard
-object TheWarlord extends DivinationCard
-object TheWatcher extends DivinationCard
-object TheWeb extends DivinationCard
-object TheWiltedRose extends DivinationCard
-object TheWind extends DivinationCard
-object TheWitch extends DivinationCard
-object TheWolf extends DivinationCard
-object TheWolfsShadow extends DivinationCard {
+case object TheThaumaturgist extends DivinationCard
+case object TheThrone extends DivinationCard
+case object TheTower extends DivinationCard
+case object TheTraitor extends DivinationCard
+case object TheTrial extends DivinationCard
+case object TheTwilightMoon extends DivinationCard
+case object TheTwins extends DivinationCard
+case object TheTyrant extends DivinationCard
+case object TheUndaunted extends DivinationCard
+case object TheUndisputed extends DivinationCard
+case object TheUnion extends DivinationCard
+case object TheValkyrie extends DivinationCard
+case object TheValleyOfSteelBoxes extends DivinationCard
+case object TheVast extends DivinationCard
+case object TheVisionary extends DivinationCard
+case object TheVoid extends DivinationCard
+case object TheWarden extends DivinationCard
+case object TheWarlord extends DivinationCard
+case object TheWatcher extends DivinationCard
+case object TheWeb extends DivinationCard
+case object TheWiltedRose extends DivinationCard
+case object TheWind extends DivinationCard
+case object TheWitch extends DivinationCard
+case object TheWolf extends DivinationCard
+case object TheWolfsShadow extends DivinationCard {
   override val name: String = "The Wolf's Shadow"
 }
-object TheWolvenKingsBite extends DivinationCard {
+case object TheWolvenKingsBite extends DivinationCard {
   override val name: String = "The Wolven King's Bite"
 }
-object TheWolverine extends DivinationCard
-object TheWorldEater extends DivinationCard
-object TheWrath extends DivinationCard
-object TheWretched extends DivinationCard
-object ThreeFacesInTheDark extends DivinationCard
-object ThreeVoices extends DivinationCard
-object ThunderousSkies extends DivinationCard
-object TimeLostRelic extends DivinationCard {
+case object TheWolverine extends DivinationCard
+case object TheWorldEater extends DivinationCard
+case object TheWrath extends DivinationCard
+case object TheWretched extends DivinationCard
+case object ThreeFacesInTheDark extends DivinationCard
+case object ThreeVoices extends DivinationCard
+case object ThunderousSkies extends DivinationCard
+case object TimeLostRelic extends DivinationCard {
   override val name: String = "Time-Lost Relic"
 }
-object Tranquillity extends DivinationCard
-object TreasureHunter extends DivinationCard
-object TurnTheOtherCheek extends DivinationCard
-object ViniasToken extends DivinationCard {
+case object Tranquillity extends DivinationCard
+case object TreasureHunter extends DivinationCard
+case object TurnTheOtherCheek extends DivinationCard
+case object ViniasToken extends DivinationCard {
   override val name: String = "Vinia's Token"
 }
-object VolatilePower extends DivinationCard
-object WealthAndPower extends DivinationCard
+case object VolatilePower extends DivinationCard
+case object WealthAndPower extends DivinationCard

@@ -35,28 +35,28 @@ object Fossil {
   )
 }
 
-object FracturedFossil extends Fossil
-object FacetedFossil extends Fossil
-object GlyphicFossil extends Fossil
-object HollowFossil extends Fossil
-object ShudderingFossil extends Fossil
-object TangledFossil extends Fossil
-object BloodstainedFossil extends Fossil
-object GildedFossil extends Fossil
-object PrismaticFossil extends Fossil
-object CorrodedFossil extends Fossil
-object SanctifiedFossil extends Fossil
-object EncrustedFossil extends Fossil
-object LucentFossil extends Fossil
-object BoundFossil extends Fossil
-object EnchantedFossil extends Fossil
-object AethericFossil extends Fossil
-object PerfectFossil extends Fossil
-object SerratedFossil extends Fossil
-object PristineFossil extends Fossil
-object DenseFossil extends Fossil
-object JaggedFossil extends Fossil
-object MetallicFossil extends Fossil
-object ScorchedFossil extends Fossil
-object AberrantFossil extends Fossil
-object FrigidFossil extends Fossil
+case object FracturedFossil extends Fossil
+case object FacetedFossil extends Fossil
+case object GlyphicFossil extends Fossil
+case object HollowFossil extends Fossil
+case object ShudderingFossil extends Fossil
+case object TangledFossil extends Fossil
+case object BloodstainedFossil extends Fossil
+case object GildedFossil extends Fossil
+case object PrismaticFossil extends Fossil
+case object CorrodedFossil extends Fossil
+case object SanctifiedFossil extends Fossil
+case object EncrustedFossil extends Fossil
+case object LucentFossil extends Fossil
+case object BoundFossil extends Fossil
+case object EnchantedFossil extends Fossil
+case object AethericFossil extends Fossil
+case object PerfectFossil extends Fossil
+case object SerratedFossil extends Fossil
+case object PristineFossil extends Fossil
+case object DenseFossil extends Fossil
+case object JaggedFossil extends Fossil
+case object MetallicFossil extends Fossil
+case object ScorchedFossil extends Fossil
+case object AberrantFossil extends Fossil
+case object FrigidFossil extends Fossil
