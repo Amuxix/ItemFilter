@@ -1,11 +1,9 @@
 package me.amuxix.items.bases.weapons
-
-import me.amuxix.items.ItemSize
 import me.amuxix.items.bases.Weapon
 
-sealed abstract class Axe(size: ItemSize, dropLevel: Int, `class`: String) extends Weapon(size, dropLevel, `class` + " Axe")
+sealed abstract class Axe(height: Int, width: Int, dropLevel: Int, `class`: String) extends Weapon(height, width, dropLevel, `class` + " Axe")
 
-sealed abstract class OneHandedAxe(dropLevel: Int) extends Axe(ItemSize(3, 2), dropLevel, "Two Handed")
+sealed abstract class OneHandedAxe(dropLevel: Int) extends Axe(3, 2, dropLevel, "Two Handed")
 
 object RustedHatchet extends OneHandedAxe(dropLevel = 2)
 object JadeHatchet extends OneHandedAxe(dropLevel = 6)
@@ -33,7 +31,7 @@ object RoyalAxe extends OneHandedAxe(dropLevel = 67)
 object InfernalAxe extends OneHandedAxe(dropLevel = 69)
 object RunicHatchet extends OneHandedAxe(dropLevel = 71)
 
-sealed abstract class TwoHandedAxe(dropLevel: Int) extends Axe(ItemSize(4, 2), dropLevel, "Two Handed")
+sealed abstract class TwoHandedAxe(dropLevel: Int) extends Axe(4, 2, dropLevel, "Two Handed")
 
 object StoneAxe extends TwoHandedAxe(dropLevel = 4)
 object JadeChopper extends TwoHandedAxe(dropLevel = 9)

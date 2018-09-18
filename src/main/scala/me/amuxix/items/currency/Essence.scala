@@ -1,10 +1,13 @@
 package me.amuxix.items.currency
+import me.amuxix.conditions.Condition
 import me.amuxix.items.Item
 
 /**
   * Like [[Orb]] this currency can enhance items but they themselves can also be upgraded.
   */
-abstract class Essence(val upgradesTo: Option[Essence]) extends Orb
+abstract class Essence(val upgradesTo: Option[Essence]) extends Currency {
+  override protected lazy val condition: Condition = Condition(`class` = "Essence", base = name)
+}
 
 object Essence {
   val essences = Seq[Item](

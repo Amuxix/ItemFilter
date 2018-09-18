@@ -35,6 +35,7 @@ object Color {
   val incursionGreen = Color(95, 170, 120)
   val incursionRed = Color(173, 54, 42)
   val delveBlue = Color(21, 22, 96)
+  val delveOrange = Color(255, 166, 50)
 
   private val darknessFactor = .15f
   private val lightenFactor = .3f

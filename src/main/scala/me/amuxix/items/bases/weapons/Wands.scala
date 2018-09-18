@@ -1,10 +1,9 @@
 package me.amuxix.items.bases.weapons
 
 import me.amuxix.conditions.BaseType
-import me.amuxix.items.ItemSize
 import me.amuxix.items.bases.Weapon
 
-sealed abstract class Wand(dropLevel: Int) extends Weapon(ItemSize(3, 1), dropLevel, "Wand")
+sealed abstract class Wand(dropLevel: Int) extends Weapon(3, 1, dropLevel, "Wand")
 
 object DriftwoodWand extends Wand(dropLevel = 1)
 object GoatsHorn extends Wand(dropLevel = 6) {

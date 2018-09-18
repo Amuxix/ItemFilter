@@ -1,7 +1,5 @@
 package me.amuxix.items.bases.accessories
 
-import me.amuxix.FilterRarity
-import me.amuxix.actions.Action
 import me.amuxix.items.bases.Accessory
 
 sealed abstract class Amulet(dropLevel: Int) extends Accessory(dropLevel, "Amulet")

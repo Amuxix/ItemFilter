@@ -1,6 +1,7 @@
 package me.amuxix.categories
 
 import me.amuxix._
+import me.amuxix.categories2.Category
 import me.amuxix.items.bases.Base.{accessories, bestEquipment}
 
 object BestBases extends Category {

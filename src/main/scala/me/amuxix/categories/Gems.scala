@@ -2,6 +2,7 @@ package me.amuxix.categories
 
 import me.amuxix._
 import me.amuxix.actions.{Action, Color, Sound}
+import me.amuxix.categories2.Category
 import me.amuxix.conditions.Condition
 
 object Gems extends Category {

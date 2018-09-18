@@ -2,6 +2,7 @@ package me.amuxix.categories
 
 import me.amuxix.actions.Action
 import me.amuxix.actions.Color._
+import me.amuxix.categories2.Category
 import me.amuxix.conditions._
 import me.amuxix.{Block, FilterLevel}
 

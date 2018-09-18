@@ -1,10 +1,9 @@
 package me.amuxix.items.bases.armour
 
 import me.amuxix.conditions.BaseType
-import me.amuxix.items.ItemSize
 import me.amuxix.items.bases.Armour
 
-sealed abstract class Helmet(dropLevel: Int) extends Armour(ItemSize(2, 2), dropLevel, "Helmet")
+sealed abstract class Helmet(dropLevel: Int) extends Armour(2, 2, dropLevel, "Helmet")
 
 //Armour
 object IronHat extends Helmet(dropLevel = 1)

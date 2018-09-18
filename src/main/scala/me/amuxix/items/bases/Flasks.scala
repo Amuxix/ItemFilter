@@ -1,22 +1,32 @@
 package me.amuxix.items.bases
 
-import me.amuxix.{Block, FilterRarity}
-import me.amuxix.actions.Action
-import me.amuxix.items.ItemSize
+import me.amuxix.conditions.Condition
+import me.amuxix.items.Item
 
-sealed abstract class Flask(dropLevel: Int, itemClass: String, minDropBuffer: Int = 5) extends Base(ItemSize(2, 1), dropLevel, itemClass + " Flasks", minDropBuffer) {
-  override def blocksOfBestRaresForZoneLevel(): Block = {
-    val superBlock = super.blocksOfBestRaresForZoneLevel()
-    superBlock.copy(
-      condition = superBlock.condition.copy(rarity = None),
-      action = Action()
-    )
-  }
-
-  override def actionForRarity(rarity: FilterRarity): Action = Action()
+sealed abstract class Flask(dropLevel: Int, itemClass: String, minDropBuffer: Int = 5) extends Base(2, 1, dropLevel, itemClass + " Flasks", minDropBuffer) {
+  override def conditionsOfBestRaresForZoneLevel(): Condition = super.conditionsOfBestRaresForZoneLevel().copy(rarity = None)
 }
 
-sealed abstract class LifeFlask(dropLevel: Int) extends Flask(dropLevel, "Life", minDropBuffer = 10)
+sealed abstract class LifeFlask(dropLevel: Int) extends Flask(dropLevel, "Life", minDropBuffer = 10) {
+  override protected lazy val condition: Condition = Condition(base = name, itemLevel = ("<=", dropLevel + 10))
+}
+
+object LifeFlask {
+  val flasks: Seq[Item] = Seq(
+  SmallLifeFlask,
+  MediumLifeFlask,
+  LargeLifeFlask,
+  GreaterLifeFlask,
+  GrandLifeFlask,
+  GiantLifeFlask,
+  ColossalLifeFlask,
+  SacredLifeFlask,
+  HallowedLifeFlask,
+  SanctifiedLifeFlask,
+  DivineLifeFlask,
+  EternalLifeFlask,
+  )
+}
 
 object SmallLifeFlask extends LifeFlask(dropLevel = 1)
 object MediumLifeFlask extends LifeFlask(dropLevel = 3)

@@ -2,6 +2,7 @@ package me.amuxix.categories
 
 import me.amuxix._
 import me.amuxix.actions.{Action, Color}
+import me.amuxix.categories2.Category
 import me.amuxix.conditions._
 import me.amuxix.items.bases.Base.flasks
 
@@ -12,7 +13,7 @@ object Flasks extends Category {
   val mapWhite = Block(Condition(`class` = "Flask", itemLevel = (">=", 68), rarity = White, quality = (">", 0)), whiteBorder)
   val preMap = Block(Condition(`class` = "Flask", itemLevel = ("<", 68), quality = (">", 0)), whiteBorder)
   val preMapUtility = Block(Condition(`class` = "Utility Flask", itemLevel = ("<", 68)))
-  val resourceFlasks: Seq[Block] = flasks.flatten.sortBy(_.dropLevel)(implicitly[Ordering[Int]].reverse).map(_.blocksOfBestRaresForZoneLevel())
+  val resourceFlasks: Seq[Block] = flasks.flatten.sortBy(_.dropLevel)(implicitly[Ordering[Int]].reverse).map(_.conditionsOfBestRaresForZoneLevel())
 
   override def categoryBlocks(filterLevel: FilterLevel): Seq[Block] = filterLevel match {
     case Reduced => Seq(glassblowers, mapMagic.hidden, mapWhite.hidden, preMapUtility.hidden, preMap.hidden) ++ resourceFlasks.map(_.hidden)

@@ -4,16 +4,16 @@ import me.amuxix.{Block, ImplicitConversions, Named, FilterRarity => FilterRarit
 import me.amuxix.actions.Action
 import me.amuxix.actions.Color.{darkRed, goodYellow}
 import me.amuxix.conditions._
-import me.amuxix.items.{Item, ItemSize}
+import me.amuxix.items.Item
 import me.amuxix.items.bases.accessories._
 import me.amuxix.items.bases.armour._
 import me.amuxix.items.bases.weapons._
 
-abstract class Base(size: ItemSize, val dropLevel: Int, itemClass: ItemClass, minDropBuffer: Int = 5) extends Item(size) with Named with ImplicitConversions {
-  def this(size: ItemSize, dropLevel: Int, `class`: String, minDropBuffer: Int) = this(size, dropLevel, ItemClass(`class`), minDropBuffer)
-  def this(size: ItemSize, dropLevel: Int, `class`: String) = this(size, dropLevel, ItemClass(`class`))
+abstract class Base(height: Int, width: Int, val dropLevel: Int, itemClass: ItemClass, minDropBuffer: Int = 5) extends Item(height, width) with Named with ImplicitConversions {
+  def this(height: Int, width: Int, dropLevel: Int, `class`: String, minDropBuffer: Int) = this(height, width, dropLevel, ItemClass(`class`), minDropBuffer)
+  def this(height: Int, width: Int, dropLevel: Int, `class`: String) = this(height, width, dropLevel, ItemClass(`class`))
 
-  override val `class`: Option[ItemClass] = Some(itemClass)
+  override protected lazy val condition: Condition = Condition(`class` = Some(itemClass), base = name)
 
   def bestModsDropLevel: Int = 84
 
@@ -25,23 +25,14 @@ abstract class Base(size: ItemSize, val dropLevel: Int, itemClass: ItemClass, mi
     rarity = rarity
   )
 
-  def blocksOfBestRaresForZoneLevel() = Block(
-    closeToZoneLevel(ItemLevel("<=", this.dropLevel + minDropBuffer max this.dropLevel / 10)),
-    Action(
-      textColor = goodYellow,
-    )
-  )
+  def conditionsOfBestRaresForZoneLevel(): Condition =
+    closeToZoneLevel(ItemLevel("<=", this.dropLevel + minDropBuffer max this.dropLevel / 10))
 
-  def blocksOfGoodRaresForZoneLevel() = Block(
-    closeToZoneLevel(ItemLevel("<=", this.dropLevel + 20)),
-    Action(
-      size = 25
-    )
-  )
+  def conditionsOfGoodRaresForZoneLevel(): Condition =
+    closeToZoneLevel(ItemLevel("<=", this.dropLevel + 20))
 
-  def blocksOfBestWhitesForZoneLevel() = Block(
+  def conditionsOfBestWhitesForZoneLevel(): Condition =
     closeToZoneLevel(ItemLevel("<=", this.dropLevel + minDropBuffer max this.dropLevel / 10), White)
-  )
 }
 
 sealed trait BestBaseBlocks extends ImplicitConversions { this: Base =>
@@ -54,18 +45,13 @@ sealed trait BestBaseBlocks extends ImplicitConversions { this: Base =>
   ).hidden
 }
 
-abstract class Armour(size: ItemSize, dropLevel: Int, `class`: String) extends Base(size, dropLevel, `class`) with BestBaseBlocks {
-  override def actionForRarity(rarity: FilterRarity): Action = Action()
-}
+abstract class Armour(height: Int, width: Int, dropLevel: Int, `class`: String) extends Base(height, width, dropLevel, `class`) with BestBaseBlocks
 
-abstract class Weapon(size: ItemSize, dropLevel: Int, `class`: String) extends Base(size, dropLevel, `class`) with BestBaseBlocks {
+abstract class Weapon(height: Int, width: Int, dropLevel: Int, `class`: String) extends Base(height, width, dropLevel, `class`) with BestBaseBlocks {
   override def bestModsDropLevel: Int = 83
-  override def actionForRarity(rarity: FilterRarity): Action = Action()
 }
 
-abstract class Accessory(dropLevel: Int, `class`: String) extends Base(ItemSize(1, 1), dropLevel, `class`) with BestBaseBlocks {
-  override def actionForRarity(rarity: FilterRarity): Action = Action()
-}
+abstract class Accessory(dropLevel: Int, `class`: String) extends Base(1, 1, dropLevel, `class`) with BestBaseBlocks
 // format: off
 object Base {
   val oneHandedAxes: Seq[OneHandedAxe] = Seq(RustedHatchet, JadeHatchet, BoardingAxe, Cleaver, BroadAxe, ArmingAxe, DecorativeAxe, SpectralAxe, EtchedHatchet, JasperAxe, Tomahawk, WristChopper, WarAxe, ChestSplitter, CeremonialAxe, WraithAxe, EngravedHatchet, KaruiAxe, SiegeAxe, ReaverAxe, ButcherAxe, VaalHatchet, RoyalAxe, InfernalAxe, RunicHatchet)
