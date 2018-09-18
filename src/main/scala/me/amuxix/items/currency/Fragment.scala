@@ -1,10 +1,13 @@
 package me.amuxix.items.currency
+import me.amuxix.conditions.Condition
 import me.amuxix.items.Item
 
 /**
   * This marker trait represents currency that can be put into the map device to open portals to special zones or enhance maps.
   */
-trait Fragment extends Currency
+trait Fragment extends Currency {
+  override protected val condition: Condition = Condition(base = name)
+}
 
 object Fragment {
   val fragments = Seq[Item](

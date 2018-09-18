@@ -4,6 +4,7 @@ import java.io.{File, PrintWriter}
 
 import me.amuxix.WSClient.wsClient
 import me.amuxix.categories._
+import me.amuxix.categories2.Category
 import me.amuxix.items.Item
 import me.amuxix.providers.poeninja.PoeNinja
 
@@ -25,8 +26,8 @@ object ItemFilter {
     Await.result(f, 30 seconds)
   }
 
-
   def main(args: Array[String]): Unit = {
+    updateItemPrices()
     /*val poeFolder = FileSystemView.getFileSystemView.getDefaultDirectory.getPath + File.separatorChar + "My Games" + File.separatorChar + "Path of Exile" + File.separatorChar
     //val poeFolder = new java.io.File(".").getCanonicalPath
 
@@ -62,8 +63,7 @@ object ItemFilter {
     //println(currentDirectory.toString)
     Seq(Reduced, Normal, Racing).foreach(createFilterFile(poeFolder, _, categories))
     createFilterFile(poeFolder, Reduced, categories, conceal = true)*/
-    updateItemPrices()
-    println(Mergeable.merge(Item.items.map(_.block)).map(_.write).mkString)
+    //println(Mergeable.merge(Item.items.map(_.block)).map(_.write).mkString)
   }
 
   def createFilterFile(poeFolder: String, filterLevel: FilterLevel, categories: Seq[Category], conceal: Boolean = false): Unit = {

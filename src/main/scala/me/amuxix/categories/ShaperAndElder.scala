@@ -3,6 +3,7 @@ package me.amuxix.categories
 import me.amuxix.actions.Color.shelder
 import me.amuxix.actions.{Action, Color}
 import me.amuxix.categories.BestBases.bestBases
+import me.amuxix.categories2.Category
 import me.amuxix.conditions.{Condition, Rare}
 import me.amuxix.{Block, FilterLevel, Reduced}
 

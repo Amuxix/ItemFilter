@@ -1,11 +1,9 @@
 package me.amuxix.items.bases.weapons
-
-import me.amuxix.items.ItemSize
 import me.amuxix.items.bases.Weapon
 
-sealed abstract class Mace(size: ItemSize, dropLevel: Int, `class`: String) extends Weapon(size, dropLevel, `class` + " Mace")
+sealed abstract class Mace(height: Int, width: Int, dropLevel: Int, `class`: String) extends Weapon(height, width, dropLevel, `class` + " Mace")
 
-sealed abstract class OneHandedMace(dropLevel: Int) extends Mace(ItemSize(3, 2), dropLevel, "One Handed")
+sealed abstract class OneHandedMace(dropLevel: Int) extends Mace(3, 2, dropLevel, "One Handed")
 
 object DriftwoodClub extends OneHandedMace(dropLevel = 1)
 object TribalClub extends OneHandedMace(dropLevel = 5)
@@ -33,7 +31,7 @@ object AuricMace extends OneHandedMace(dropLevel = 66)
 object NightmareMace extends OneHandedMace(dropLevel = 68)
 object BehemothMace extends OneHandedMace(dropLevel = 70)
 
-sealed abstract class TwoHandedMace(dropLevel: Int) extends Mace(ItemSize(4, 2), dropLevel, "Two Handed")
+sealed abstract class TwoHandedMace(dropLevel: Int) extends Mace(4, 2, dropLevel, "Two Handed")
 
 object DriftwoodMaul extends TwoHandedMace(dropLevel = 3)
 object TribalMaul extends TwoHandedMace(dropLevel = 8)

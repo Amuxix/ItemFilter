@@ -1,6 +1,5 @@
 package me.amuxix.categories.recipes
-
-import me.amuxix.categories.Category
+import me.amuxix.categories2.Category
 import me.amuxix.conditions.{Condition, Magic, White}
 import me.amuxix.{Block, FilterLevel, Reduced}
 

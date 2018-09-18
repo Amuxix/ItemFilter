@@ -1,6 +1,7 @@
 package me.amuxix.categories
 
 import me.amuxix.actions._
+import me.amuxix.categories2.Category
 import me.amuxix.conditions.Condition
 import me.amuxix.{Block, FilterLevel}
 

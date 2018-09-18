@@ -3,6 +3,8 @@ package me.amuxix.categories
 import me.amuxix.actions._
 import me.amuxix.actions.Color._
 import me.amuxix.actions.Sound.{myths, redMaps => redMapsSound, whiteMaps => whiteMapsSound, yellowMaps => yellowMapsSound}
+import me.amuxix.categories2.Category
+import me.amuxix.categories2.currency.Currency
 import me.amuxix.conditions.{Condition, Unique}
 import me.amuxix.{Block, FilterLevel}
 

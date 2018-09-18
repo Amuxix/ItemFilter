@@ -1,61 +1,9 @@
 package me.amuxix.items
 
-import me.amuxix._
-import me.amuxix.actions.Color.{black, divinationBlue}
-import me.amuxix.actions.Sound.{divCards, topDivCards}
-import me.amuxix.actions._
-import me.amuxix.conditions.ItemClass
+import me.amuxix.conditions.Condition
 
-abstract class DivinationCard extends Item(ItemSize(1, 1)) {
-  override val `class`: Option[ItemClass] = "Divination"
-
-  override def actionForRarity(rarity: FilterRarity): Action =
-    rarity match {
-      case Mythic =>
-        Action(
-          size = 45,
-          sound = topDivCards,
-          backgroundColor = divinationBlue,
-          textColor = black,
-          borderColor = black,
-          minimapIcon = (Blue, Star),
-          beam = Blue,
-        )
-      case Epic =>
-        Action(
-          size = 40,
-          sound = divCards,
-          backgroundColor = divinationBlue.darken,
-          textColor = black,
-          borderColor = black,
-          minimapIcon = (Blue, Hexagon),
-          beam = Blue,
-        )
-      case Rare =>
-        Action(
-          size = 36,
-          sound = divCards,
-          backgroundColor = black,
-          textColor = divinationBlue,
-          borderColor = divinationBlue,
-          minimapIcon = (Blue, Diamond),
-          beam = (Blue, true),
-        )
-      case Uncommon =>
-        Action(
-          size = 36,
-          sound = divCards,
-          backgroundColor = black,
-          textColor = divinationBlue.darken,
-          borderColor = divinationBlue.darken,
-          beam = (Blue, true),
-        )
-      case _ =>
-        Action(
-          backgroundColor = black,
-          textColor = divinationBlue,
-        )
-    }
+abstract class DivinationCard extends Item(1, 1) {
+  override protected lazy val condition: Condition = Condition(`class` = "Divination", base = name)
 }
 
 object DivinationCard {
@@ -417,7 +365,7 @@ case object TheDarkMage extends DivinationCard
 case object TheDarkestDream extends DivinationCard
 case object TheDeceiver extends DivinationCard
 case object TheDemoness extends DivinationCard
-case object TheDevastator extends DivinationCard
+//case object TheDevastator extends DivinationCard
 case object TheDoctor extends DivinationCard
 case object TheDoppelganger extends DivinationCard
 case object TheDragon extends DivinationCard
