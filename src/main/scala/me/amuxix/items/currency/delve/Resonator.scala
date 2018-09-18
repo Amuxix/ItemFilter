@@ -18,11 +18,11 @@ object Resonator {
   )
 }
 
-object PrimeAlchemicalResonator extends Resonator
-object PrimeChaoticResonator extends Resonator
-object PowerfulChaoticResonator extends Resonator
-object PowerfulAlchemicalResonator extends Resonator
-object PotentAlchemicalResonator extends Resonator
-object PotentChaoticResonator extends Resonator
-object PrimitiveAlchemicalResonator extends Resonator
-object PrimitiveChaoticResonator extends Resonator
+case object PrimeAlchemicalResonator extends Resonator
+case object PrimeChaoticResonator extends Resonator
+case object PowerfulChaoticResonator extends Resonator
+case object PowerfulAlchemicalResonator extends Resonator
+case object PotentAlchemicalResonator extends Resonator
+case object PotentChaoticResonator extends Resonator
+case object PrimitiveAlchemicalResonator extends Resonator
+case object PrimitiveChaoticResonator extends Resonator

@@ -1,11 +1,8 @@
 package me.amuxix
 
-sealed case class FilterRarity(multiplier: Int) {
-
-  /**
-    * Checks if the given values is of this rarity
-    */
-  def is(value: Int, filterThreshold: Double): Boolean = value <= multiplier * filterThreshold
+sealed abstract case class FilterRarity(private val multiplier: Int) extends Ordered[FilterRarity] {
+  lazy val threshold: Double = ItemFilter.threshold * multiplier
+  override def compare(that: FilterRarity): Int = multiplier compare that.multiplier
 }
 
 object Undetermined extends FilterRarity(0)
