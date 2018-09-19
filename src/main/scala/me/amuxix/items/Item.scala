@@ -3,7 +3,7 @@ package me.amuxix.items
 import me.amuxix._
 import me.amuxix.providers.Provider
 
-abstract class Item(height: Int, width: Int) extends GenItem {
+abstract class Item(height: Int, width: Int, _rarity: FilterRarity = Undetermined) extends GenItem(_rarity) {
   private val area: Int = height * width
   /**
     * This is the worth of the currency in chaos per slot the item has.

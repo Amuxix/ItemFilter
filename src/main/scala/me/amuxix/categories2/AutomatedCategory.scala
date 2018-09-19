@@ -13,6 +13,8 @@ trait AutomatedCategory extends Category {
     case Rare =>
     case Uncommon =>
     case Common =>
+    case Leveling =>
+    case Trash =>
     case Undetermined =>
   }
    */

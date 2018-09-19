@@ -5,7 +5,7 @@ import me.amuxix.conditions.{Condition, Magic, Rare, White}
 import me.amuxix.items.GenItem
 import me.amuxix.{FilterRarity, Leveling => LevelingRarity}
 
-object Leveling extends AutomatedCategory {
+object LevelingCategory extends AutomatedCategory {
   val whiteCutoff: Int = 15
   val magicCutoff: Int = 30
   val fourLinkRareCutoff: Int = 60
