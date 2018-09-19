@@ -11,7 +11,7 @@ object General extends Category {
     Action(size = 45)
   )
 
-  val sixLinks = Block(
+  val sixSockets = Block(
     Condition(sockets = 6),
     Action(size = 45, sound = Sound.sixLinks, borderColor = Color.red)
   )
@@ -21,5 +21,5 @@ object General extends Category {
     Action(size = 45, sound = Sound.epic)
   )
 
-  override def categoryBlocks(filterLevel: FilterLevel) = Seq(quests, sixLinks, divineVessel)
+  override def categoryBlocks(filterLevel: FilterLevel) = Seq(quests, sixSockets, divineVessel)
 }
