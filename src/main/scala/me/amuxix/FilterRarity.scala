@@ -6,7 +6,9 @@ sealed abstract case class FilterRarity(private val multiplier: Int) extends Ord
 }
 
 object Undetermined extends FilterRarity(Int.MaxValue)
-object Trash extends FilterRarity(Int.MinValue)
+
+object AlwaysShow extends FilterRarity(Int.MaxValue)
+object AlwaysHide extends FilterRarity(Int.MinValue)
 
 object Leveling extends FilterRarity(0)
 object Common extends FilterRarity(1)

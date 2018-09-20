@@ -11,7 +11,7 @@ abstract class Item(height: Int, width: Int, _rarity: FilterRarity = Undetermine
   private lazy val chaosValuePerSlot: Double =
     Provider.getChaosEquivalentFor(this).fold[Double](0)(identity) / area
 
-  override protected lazy val rarity: FilterRarity = {
+  override lazy val rarity: FilterRarity = {
     if (chaosValuePerSlot >= Mythic.threshold) Mythic
     else if (chaosValuePerSlot >= Epic.threshold) Epic
     else if (chaosValuePerSlot >= Rare.threshold) Rare
