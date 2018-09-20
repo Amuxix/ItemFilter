@@ -16,11 +16,6 @@ object Maps extends Category {
   private val mapCondition = (level: Int) => Condition(`class` = "Maps", dropLevel = (">=", level))
   private val uniqueMapCondition = (level: Int) => Condition(`class` = "Maps", dropLevel = (">=", level), rarity = Unique)
 
-  val reliquaryKey = Block(
-    Condition(base = "Timeworn Reliquary Key", `class` = "Misc Map Items"),
-    Currency.t0MissingSound(myths)
-  )
-
   val uniqueRed = Block(
     uniqueMapCondition(redMapsMinDropLevel),
     Action(

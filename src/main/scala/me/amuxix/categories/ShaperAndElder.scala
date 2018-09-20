@@ -2,7 +2,7 @@ package me.amuxix.categories
 
 import me.amuxix.actions.Color.shelder
 import me.amuxix.actions.{Action, Color}
-import me.amuxix.categories.BestBases.bestBases
+import me.amuxix.items.bases.Base.{accessories, allEquipment, bestEquipment}
 import me.amuxix.categories2.Category
 import me.amuxix.conditions.{Condition, Rare}
 import me.amuxix.{Block, FilterLevel, Reduced}
@@ -10,7 +10,7 @@ import me.amuxix.{Block, FilterLevel, Reduced}
 object ShaperAndElder extends Category {
   private val shelderAction = Action(backgroundColor = Color.shelder)
 
-  val bestShelder: Seq[Block] = bestBases.flatMap { block =>
+  val bestShelder: Seq[Block] = (bestEquipment ++ accessories).flatMap { block =>
     Seq(
       block.copy(
         block.condition.copy(shaperItem = true),

@@ -9,6 +9,7 @@ import me.amuxix.items.GenItem
 object Gems extends AutomatedCategory {
   override protected val categoryItems: Seq[GenItem] = Seq(
     new GenItem(Mythic) { override protected lazy val condition: Condition = Condition(`class` = "Gem", gemLevel = ("=", 20)) },
+    new GenItem(Epic) { override protected lazy val condition: Condition = Condition(`class` = "Gem", gemLevel = (">=", 17)) },
     new GenItem(Mythic) { override protected lazy val condition: Condition = Condition(base = "Enlighten", `class` = "Gem") },
     new GenItem(Rare) { override protected lazy val condition: Condition = Condition(
       base = Seq(
@@ -25,10 +26,10 @@ object Gems extends AutomatedCategory {
       ),
       `class` = "Gem"
     ) },
+    new GenItem(Epic) { override protected lazy val condition: Condition = Condition(`class` = "Gem", quality = ("=", 20)) },
+    new GenItem(Rare) { override protected lazy val condition: Condition = Condition(`class` = "Gem", quality = (">=", 16)) },
+    new GenItem(Uncommon) { override protected lazy val condition: Condition = Condition(`class` = "Gem", quality = (">=", 1)) },
     new GenItem(Common) { override protected lazy val condition: Condition = Condition(base = "Vaal", `class` = "Gem") },
-    new GenItem(Epic) { override protected lazy val condition: Condition = Condition(`class` = "Gem", gemLevel = (">=", 18)) },
-    new GenItem(Rare) { override protected lazy val condition: Condition = Condition(`class` = "Gem", gemLevel = (">=", 16)) },
-    new GenItem(Uncommon) { override protected lazy val condition: Condition = Condition(`class` = "Gem", gemLevel = (">=", 1)) },
     new GenItem(Leveling) { override protected lazy val condition: Condition = Condition(`class` = "Gem") },
   )
   override protected def actionForRarity(rarity: FilterRarity): Action = rarity match {

@@ -36,13 +36,8 @@ abstract class Base(height: Int, width: Int, val dropLevel: Int, itemClass: Item
 }
 
 sealed trait BestBaseBlocks extends ImplicitConversions { this: Base =>
-  val rare: Block = Block(
-    Condition(base = Some(this.baseType), itemLevel = (">=", this.bestModsDropLevel), rarity = Rare),
-    Action(textColor = goodYellow, backgroundColor = darkRed, borderColor = goodYellow)
-  )
-  val craftting: Block = Block(
-    Condition(base = Some(this.baseType), itemLevel = (">=", this.bestModsDropLevel), rarity = ("<", Rare))
-  ).hidden
+  val rare: Condition = Condition(base = Some(this.baseType), itemLevel = (">=", this.bestModsDropLevel), rarity = Rare)
+  val crafting: Condition = Condition(base = Some(this.baseType), itemLevel = (">=", this.bestModsDropLevel), rarity = ("<", Rare))
 }
 
 abstract class Armour(height: Int, width: Int, dropLevel: Int, `class`: String) extends Base(height, width, dropLevel, `class`) with BestBaseBlocks

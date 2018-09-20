@@ -3,8 +3,8 @@ package me.amuxix
 import java.io.{File, PrintWriter}
 
 import me.amuxix.WSClient.wsClient
-import me.amuxix.categories._
-import me.amuxix.categories2.Category
+import me.amuxix.categories2._
+//import me.amuxix.categories2.Category
 import me.amuxix.items.Item
 import me.amuxix.providers.poeninja.PoeNinja
 
@@ -66,10 +66,10 @@ object ItemFilter {
     //println(Mergeable.merge(Item.items.map(_.block)).map(_.write).mkString)
   }
 
-  def createFilterFile(poeFolder: String, filterLevel: FilterLevel, categories: Seq[Category], conceal: Boolean = false): Unit = {
+/*  def createFilterFile(poeFolder: String, filterLevel: FilterLevel, categories: Seq[Category], conceal: Boolean = false): Unit = {
     val filterFile = new PrintWriter(new File(poeFolder + s"${if (conceal) "Concealed " else ""}Amuxix's${filterLevel.suffix} filter.filter"))
     val (shown, hidden) = categories.map(_.partitionHiddenAndShown(filterLevel, conceal)).unzip
     filterFile.write((shown ++ hidden ++ LastCall.write).mkString)
     filterFile.close()
-  }
+  }*/
 }
