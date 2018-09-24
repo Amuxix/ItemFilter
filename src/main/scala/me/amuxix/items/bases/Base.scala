@@ -9,13 +9,13 @@ import me.amuxix.items.bases.accessories._
 import me.amuxix.items.bases.armour._
 import me.amuxix.items.bases.weapons._
 
-abstract class Base(height: Int, width: Int, val dropLevel: Int, itemClass: ItemClass, minDropBuffer: Int = 5) extends Item(height, width) with Named with ImplicitConversions {
-  def this(height: Int, width: Int, dropLevel: Int, `class`: String, minDropBuffer: Int) = this(height, width, dropLevel, ItemClass(`class`), minDropBuffer)
+abstract class Base(height: Int, width: Int, val dropLevel: Int, itemClass: ItemClass) extends Item(height, width) {
   def this(height: Int, width: Int, dropLevel: Int, `class`: String) = this(height, width, dropLevel, ItemClass(`class`))
 
   override protected lazy val condition: Condition = Condition(`class` = Some(itemClass), base = name)
 
-  def bestModsDropLevel: Int = 84
+  val bestModsDropLevel: Int = 84
+  val minDropBuffer: Int = 5
 
   def baseType: BaseType = BaseType(name.replaceAll("([a-z])([A-Z])", "$1 $2"))
 
@@ -43,7 +43,7 @@ sealed trait BestBaseBlocks extends ImplicitConversions { this: Base =>
 abstract class Armour(height: Int, width: Int, dropLevel: Int, `class`: String) extends Base(height, width, dropLevel, `class`) with BestBaseBlocks
 
 abstract class Weapon(height: Int, width: Int, dropLevel: Int, `class`: String) extends Base(height, width, dropLevel, `class`) with BestBaseBlocks {
-  override def bestModsDropLevel: Int = 83
+  override val bestModsDropLevel: Int = 83
 }
 
 abstract class Accessory(dropLevel: Int, `class`: String) extends Base(1, 1, dropLevel, `class`) with BestBaseBlocks
