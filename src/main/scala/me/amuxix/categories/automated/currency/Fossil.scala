@@ -1,8 +1,9 @@
-package me.amuxix.categories2.currency
+package me.amuxix.categories.automated.currency
+
 import me.amuxix.FilterRarity
 import me.amuxix.actions.Color.delveOrange
 import me.amuxix.actions.{Action, Brown, Circle}
-import me.amuxix.categories2.AutomatedCategory
+import me.amuxix.categories.automated.AutomatedCategory
 import me.amuxix.items.GenItem
 import me.amuxix.items.currency.delve.Fossil.fossils
 

@@ -26,8 +26,12 @@ class PoeNinja(wsClient: StandaloneWSClient)(implicit ec: ExecutionContext) exte
       ("Resonator", s"$baseURL/itemoverview", readItemLines),
       ("Fragment", s"$baseURL/currencyoverview", readCurrencyLines),
       ("Currency", s"$baseURL/currencyoverview", readCurrencyLines),
-      ("Currency", s"$baseURL/currencyoverview", readCurrencyLines),
-      ("DivinationCard", s"$baseURL/itemoverview", readItemLines)
+      ("UniqueWeapon", s"$baseURL/itemoverview", readItemLines),
+      ("UniqueArmour", s"$baseURL/itemoverview", readItemLines),
+      ("UniqueAccessory", s"$baseURL/itemoverview", readItemLines),
+      ("Map", s"$baseURL/itemoverview", readItemLines),
+      ("DivinationCard", s"$baseURL/itemoverview", readItemLines),
+      ("Scarab", s"$baseURL/itemoverview", readItemLines),
     )
     val requests = routes.map {
       case (t, url, priceReader) =>

@@ -1,5 +1,7 @@
-package me.amuxix.categories2
+package me.amuxix.categories.automated
+
 import me.amuxix.actions.Action
+import me.amuxix.categories.Category
 import me.amuxix.items.GenItem
 import me.amuxix.{Block, FilterLevel, FilterRarity}
 
@@ -14,8 +16,9 @@ trait AutomatedCategory extends Category {
     case Uncommon =>
     case Common =>
     case Leveling =>
-    case Trash =>
     case Undetermined =>
+    case AlwaysShow =>
+    case AlwaysHide =>
   }
    */
 

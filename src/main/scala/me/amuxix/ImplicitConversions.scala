@@ -60,6 +60,8 @@ trait ImplicitConversions {
   implicit def tuple22OptionMapTier(tuple: (Operator, Int)): Option[MapTier] = Some(MapTier(tuple._1, tuple._2))
   implicit def tuple22OptionMapTier2(tuple: (String, Int)): Option[MapTier] = Some(MapTier(tuple._1, tuple._2))
   implicit def int2OptionMapTier(int: Int): Option[MapTier] = Some(MapTier(int))
+  implicit def string2OptionExplicitMod(string: String): Option[ExplicitMod] = Some(ExplicitMod(string))
+  implicit def string2OptionExplicitMod2(string: Seq[String]): Option[ExplicitMod] = Some(ExplicitMod(string: _*))
 
   implicit def color2OptionColor(color: Color): Option[Color] = Some(color)
   implicit def sound2OptionSound(sound: Sound): Option[Sound] = Some(sound)

@@ -1,20 +1,19 @@
-package me.amuxix.categories2
+package me.amuxix.categories.automated
+
 import me.amuxix._
 import me.amuxix.actions.Color.{darkRed, goodYellow, red, white}
 import me.amuxix.actions.{Action, Sound}
 import me.amuxix.conditions.{Condition, Magic, Rare, White}
 import me.amuxix.items.GenItem
-import me.amuxix.items.bases.{Base, BestBaseBlocks}
-import me.amuxix.items.bases.Base.{accessories, allEquipment, bestEquipment}
+import me.amuxix.items.bases.Base.{allEquipment, bestItems}
 import me.amuxix.items.currency.JewellersOrb
 
 object General extends AutomatedCategory {
-  val bestItems: Seq[Base with BestBaseBlocks] = bestEquipment ++ accessories
   val whiteCutoff: Int = 15
   val magicCutoff: Int = 30
   val fourLinkRareCutoff: Int = 60
   override protected lazy val categoryItems: Seq[GenItem] = Seq(
-    new GenItem(AlwaysShow) { override protected def condition: Condition = Condition(`class` = Seq("Quest Items", "Labyrinth Item", "Pantheon Soul", "Labyrinth Trinket")), },
+    new GenItem(AlwaysShow) { override protected def condition: Condition = Condition(`class` = Seq("Quest Items", "Labyrinth Item", "Pantheon Soul", "Labyrinth Trinket")) },
     new GenItem(AlwaysShow) { override protected def condition: Condition = Condition(base = "Divine Vessel") },
     new GenItem(Mythic) { override protected def condition: Condition = Condition(base = Seq("Albino Rhoa Feather", "Timeworn Reliquary Key")) },
     new GenItem(Mythic) { override protected def condition: Condition = Condition(`class` = "Fishing Rod") },
@@ -32,9 +31,9 @@ object General extends AutomatedCategory {
       new GenItem(Uncommon) { override protected def condition: Condition = i.rare },
       new GenItem(AlwaysHide) { override protected def condition: Condition = i.crafting }
     )) ++ allEquipment.flatMap(i => Seq(
-    new GenItem(Leveling) { override protected def condition: Condition = i.conditionsOfBestRaresForZoneLevel() },
-    new GenItem(Leveling) { override protected def condition: Condition = i.conditionsOfGoodRaresForZoneLevel() },
-    new GenItem(Leveling) { override protected def condition: Condition = i.conditionsOfBestWhitesForZoneLevel() },
+    new GenItem(Leveling) { override protected def condition: Condition = i.conditionsOfBestRaresForZoneLevel },
+    new GenItem(Leveling) { override protected def condition: Condition = i.conditionsOfGoodRaresForZoneLevel },
+    new GenItem(Leveling) { override protected def condition: Condition = i.conditionsOfBestWhitesForZoneLevel },
   ))
 
   override protected def actionForRarity(rarity: FilterRarity): Action = rarity match {

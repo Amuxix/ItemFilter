@@ -1,6 +1,7 @@
-package me.amuxix.categories2.currency
+package me.amuxix.categories.automated.currency
+
 import me.amuxix.actions.{Action, Color}
-import me.amuxix.categories2.AutomatedCategory
+import me.amuxix.categories.automated.AutomatedCategory
 import me.amuxix.items.GenItem
 import me.amuxix.items.currency.Essence.essences
 import me.amuxix.{Epic, FilterRarity, Mythic}

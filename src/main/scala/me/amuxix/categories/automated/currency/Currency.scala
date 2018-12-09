@@ -1,9 +1,10 @@
-package me.amuxix.categories2.currency
+package me.amuxix.categories.automated.currency
+
 import me.amuxix._
 import me.amuxix.actions.Color.{black, goodYellow, lightGreen}
 import me.amuxix.actions.Sound.{chaos, myths, rare}
 import me.amuxix.actions._
-import me.amuxix.categories2.AutomatedCategory
+import me.amuxix.categories.automated.AutomatedCategory
 import me.amuxix.items.GenItem
 import me.amuxix.items.currency.{Orb, Shard}
 

@@ -1,4 +1,5 @@
-package me.amuxix.categories2
+package me.amuxix.categories.automated
+
 import me.amuxix._
 import me.amuxix.actions.Color.{black, divinationBlue}
 import me.amuxix.actions.Sound.{divCards, topDivCards}

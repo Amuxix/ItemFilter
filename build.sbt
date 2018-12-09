@@ -30,9 +30,10 @@ scalafmtOnCompile := true
 //val http4sVersion = "0.19.0-M2"
 
 libraryDependencies ++= Seq(
-  "com.typesafe.play" %% "play-ahc-ws-standalone" % "2.0.0-M3",
-  "com.typesafe.play" %% "play-ws-standalone-json" % "2.0.0-M3",
+  "com.typesafe.play" %% "play-ahc-ws-standalone" % "2.0.0-RC2",
+  "com.typesafe.play" %% "play-ws-standalone-json" % "2.0.0-RC2",
   "com.github.ben-manes.caffeine" % "caffeine" % "2.6.2",
+  "org.slf4j" % "slf4j-nop" % "1.8.0-beta2",
 
   //"org.http4s" % "http4s-core_2.12" % http4sVersion,
   /*"org.http4s" %% "http4s-dsl" % http4sVersion,

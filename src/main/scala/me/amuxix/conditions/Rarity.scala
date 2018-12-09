@@ -7,7 +7,7 @@ import me.amuxix._
   */
 sealed class GameRarity extends Named
 case object White extends GameRarity {
-  override  val name: String = "Normal"
+  override lazy val name: String = "Normal"
 }
 case object Magic extends GameRarity
 case object Rare extends GameRarity

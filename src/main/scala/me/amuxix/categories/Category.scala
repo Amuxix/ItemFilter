@@ -1,4 +1,4 @@
-package me.amuxix.categories2
+package me.amuxix.categories
 import me.amuxix._
 
 trait Category extends ImplicitConversions with Named {

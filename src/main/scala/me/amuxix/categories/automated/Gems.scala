@@ -1,4 +1,5 @@
-package me.amuxix.categories2
+package me.amuxix.categories.automated
+
 import me.amuxix._
 import me.amuxix.actions.Color.{black, darkRed, teal}
 import me.amuxix.actions.Sound.gems
@@ -43,7 +44,7 @@ object Gems extends AutomatedCategory {
       Action(size = 40, sound = gems, borderColor = teal, backgroundColor = darkRed)
     case Common =>
       Action(size = 40, borderColor = Color.teal, backgroundColor = Color.black)
-    case Leveling =>
+    case _ =>
       Action(borderColor = Color.teal, backgroundColor = Color.black)
   }
 }
