@@ -2,7 +2,7 @@ package me.amuxix.categories.recipes
 
 import me.amuxix.actions.Color.black
 import me.amuxix.actions.{Action, Color}
-import me.amuxix.categories2.Category
+import me.amuxix.categories.Category
 import me.amuxix.conditions._
 import me.amuxix.{Block, FilterLevel, Reduced}
 

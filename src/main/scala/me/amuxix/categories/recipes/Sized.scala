@@ -1,7 +1,7 @@
 package me.amuxix.categories.recipes
 
 import me.amuxix._
-import me.amuxix.categories2.Category
+import me.amuxix.categories.Category
 import me.amuxix.conditions.Condition
 
 abstract class Sized extends Category {

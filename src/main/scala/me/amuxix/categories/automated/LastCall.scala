@@ -1,9 +1,10 @@
-package me.amuxix.categories2
-import me.amuxix.{AlwaysHide, FilterRarity, Undetermined}
+package me.amuxix.categories.automated
+
 import me.amuxix.actions.Action
 import me.amuxix.actions.Color.{transparent, white}
 import me.amuxix.conditions.{Condition, Magic, Rare}
 import me.amuxix.items.GenItem
+import me.amuxix.{AlwaysHide, FilterRarity, Undetermined}
 
 object LastCall extends AutomatedCategory {
   override protected val categoryItems: Seq[GenItem] = Seq(

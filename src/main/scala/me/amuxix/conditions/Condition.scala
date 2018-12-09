@@ -20,8 +20,9 @@ case class Condition(
     shaperItem: Option[ShaperItem] = None,
     elderItem: Option[ElderItem] = None,
     gemLevel: Option[GemLevel] = None,
-    mapTier: Option[MapTier] = None)
-      extends Mergeable[Condition] {
+    mapTier: Option[MapTier] = None,
+    explicitMod: Option[ExplicitMod] = None,
+) extends Mergeable[Condition] {
   val conditions: Seq[Writable] = Seq(
     base,
     `class`,
@@ -40,7 +41,8 @@ case class Condition(
     shaperItem,
     elderItem,
     gemLevel,
-    mapTier
+    mapTier,
+    explicitMod,
   ).collect { case Some(writable) => writable }
 
   override def canMerge(o: Condition): Boolean =
@@ -60,7 +62,8 @@ case class Condition(
       shaperItem == o.shaperItem &&
       elderItem == o.elderItem &&
       gemLevel == o.gemLevel &&
-      mapTier == o.mapTier
+      mapTier == o.mapTier &&
+      explicitMod == o.explicitMod
 
   override def merge(o: Condition): Condition = {
     val mergedBase: Option[BaseType] = (base, o.base) match {
@@ -86,7 +89,8 @@ case class Condition(
       shaperItem,
       elderItem,
       gemLevel,
-      mapTier
+      mapTier,
+      explicitMod
     )
   }
 }

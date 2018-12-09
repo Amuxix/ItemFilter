@@ -2,8 +2,8 @@ package me.amuxix.providers
 
 import cats.data.EitherT
 import me.amuxix.items.Item
-import me.amuxix.providers.Provider.{ParsableWSResponse, defaultLeague, itemPrices}
-import me.amuxix.{Delve, League}
+import me.amuxix.providers.Provider.{ParsableWSResponse, defaultLeague}
+import me.amuxix.{Betrayal, League}
 import play.api.libs.json.{JsValue, Reads}
 import play.api.libs.ws.JsonBodyReadables._
 import play.api.libs.ws.{StandaloneWSClient, StandaloneWSResponse}
@@ -28,7 +28,7 @@ object Provider {
           Left(RequestError(url, response, s"Response returned a failed status code: ${response.status}"))
       }
   }
-  val defaultLeague: League = Delve
+  val defaultLeague: League = Betrayal
 
   val itemPrices = mutable.Map.empty[String, Double]
 

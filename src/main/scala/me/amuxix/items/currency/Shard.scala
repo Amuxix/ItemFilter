@@ -33,7 +33,7 @@ object Shard {
 case object SplinterOfChayula extends Shard[BlessingOfChayula.type](100)
 case object SplinterOfEsh extends Shard[BlessingOfEsh.type](100)
 case object `SplinterOfUul-Netol` extends Shard[BlessingOfUulNetol.type](100) {
-  override  val name: String = "Splinter Of Uul-Netol"
+  override lazy val name: String = "Splinter of Uul-Netol"
 }
 case object SplinterOfXoph extends Shard[BlessingOfXoph.type](100)
 case object SplinterOfTul extends Shard[BlessingOfTul.type](100)
@@ -45,10 +45,10 @@ case object AnnulmentShard extends Shard[OrbOfAnnulment.type]
 case object BindingShard extends Shard[OrbOfAnnulment.type]
 case object HorizonShard extends Shard[OrbOfAnnulment.type]
 case object HarbingersShard extends Shard[OrbOfAnnulment.type] {
-  override  val name: String = "Harbinger's Shard"
+  override lazy val name: String = "Harbinger's Shard"
 }
 case object EngineersShard extends Shard[OrbOfAnnulment.type] {
-  override  val name: String = "Engineer's Shard"
+  override lazy val name: String = "Engineer's Shard"
 }
 case object AncientShard extends Shard[OrbOfAnnulment.type]
 case object ChaosShard extends Shard[OrbOfAnnulment.type]

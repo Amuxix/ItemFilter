@@ -1,7 +1,7 @@
 package me.amuxix.categories.leagues
 
 import me.amuxix.actions.{Action, Color}
-import me.amuxix.categories2.Category
+import me.amuxix.categories.Category
 import me.amuxix.conditions.Condition
 import me.amuxix.{Block, FilterLevel}
 

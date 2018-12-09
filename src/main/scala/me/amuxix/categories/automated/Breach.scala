@@ -1,4 +1,5 @@
-package me.amuxix.categories2
+package me.amuxix.categories.automated
+
 import me.amuxix.FilterRarity
 import me.amuxix.actions.{Action, Color}
 import me.amuxix.conditions.Condition

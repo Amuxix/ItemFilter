@@ -2,12 +2,13 @@ package me.amuxix.items.bases
 
 import me.amuxix.conditions.Condition
 import me.amuxix.items.Item
+import me.amuxix.items.bases.traits.HasRarity
 
-sealed abstract class Flask(dropLevel: Int, itemClass: String, minDropBuffer: Int = 5) extends Base(2, 1, dropLevel, itemClass + " Flasks", minDropBuffer) {
-  override def conditionsOfBestRaresForZoneLevel(): Condition = super.conditionsOfBestRaresForZoneLevel().copy(rarity = None)
+sealed abstract class Flask(dropLevel: Int, itemClass: String) extends Base(2, 1, dropLevel, itemClass + " Flasks") with HasRarity {
+  override def conditionsOfBestRaresForZoneLevel: Condition = super.conditionsOfBestRaresForZoneLevel.copy(rarity = None)
 }
 
-sealed abstract class LifeFlask(dropLevel: Int) extends Flask(dropLevel, "Life", minDropBuffer = 10) {
+sealed abstract class LifeFlask(dropLevel: Int) extends Flask(dropLevel, "Life") {
   override protected lazy val condition: Condition = Condition(base = name, itemLevel = ("<=", dropLevel + 10))
 }
 
@@ -41,7 +42,7 @@ object SanctifiedLifeFlask extends LifeFlask(dropLevel = 50)
 object DivineLifeFlask extends LifeFlask(dropLevel = 60)
 object EternalLifeFlask extends LifeFlask(dropLevel = 65)
 
-sealed abstract class ManaFlask(dropLevel: Int) extends Flask(dropLevel, "Mana", minDropBuffer = 7)
+sealed abstract class ManaFlask(dropLevel: Int) extends Flask(dropLevel, "Mana")
 
 object SmallManaFlask extends ManaFlask(dropLevel = 1)
 object MediumManaFlask extends ManaFlask(dropLevel = 3)

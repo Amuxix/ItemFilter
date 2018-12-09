@@ -1,10 +1,6 @@
 package me.amuxix.items
 
-import me.amuxix.conditions.Condition
-
-abstract class DivinationCard extends Item(1, 1) {
-  override protected lazy val condition: Condition = Condition(`class` = "Divination", base = name)
-}
+abstract class DivinationCard extends Item(1, 1, "Divination")
 
 object DivinationCard {
   val divCards = Seq[Item](
@@ -241,18 +237,19 @@ object DivinationCard {
   )
 }
 
+case object ADabofInk extends DivinationCard
 case object AMothersPartingGift extends DivinationCard {
-  override val name: String = "A Mother's Parting Gift"
+  override lazy val name: String = "A Mother's Parting Gift"
 }
 case object AbandonedWealth extends DivinationCard
 case object AnarchysPrice extends DivinationCard {
-  override val name: String = "Anarchy's Price"
+  override lazy val name: String = "Anarchy's Price"
 }
 case object AssassinsFavour extends DivinationCard {
-  override val name: String = "Assassin's Favour"
+  override lazy val name: String = "Assassin's Favour"
 }
 case object AtzirisArsenal extends DivinationCard {
-  override val name: String = "Atziri's Arsenal"
+  override lazy val name: String = "Atziri's Arsenal"
 }
 case object Audacity extends DivinationCard
 case object BeautyThroughDeath extends DivinationCard
@@ -262,31 +259,31 @@ case object BlindVenture extends DivinationCard
 case object BoonOfTheFirstOnes extends DivinationCard
 case object BoundlessRealms extends DivinationCard
 case object BowyersDream extends DivinationCard {
-  override val name: String = "Bowyer's Dream"
+  override lazy val name: String = "Bowyer's Dream"
 }
 case object CallToTheFirstOnes extends DivinationCard
 case object CartographersDelight extends DivinationCard {
-  override val name: String = "Cartographer's Delight"
+  override lazy val name: String = "Cartographer's Delight"
 }
 case object ChaoticDisposition extends DivinationCard
 case object CovetedPossession extends DivinationCard
 case object Death extends DivinationCard
 case object DestinedToCrumble extends DivinationCard
 case object DiallasSubjugation extends DivinationCard {
-  override val name: String = "Dialla's Subjugation"
+  override lazy val name: String = "Dialla's Subjugation"
 }
 case object DoedresMadness extends DivinationCard {
-  override val name: String = "Doedre's Madness"
+  override lazy val name: String = "Doedre's Madness"
 }
 case object DyingAnguish extends DivinationCard
 case object EarthDrinker extends DivinationCard
 case object EmperorOfPurity extends DivinationCard
 case object EmperorsLuck extends DivinationCard {
-  override val name: String = "Emperor's Luck"
+  override lazy val name: String = "Emperor's Luck"
 }
 case object ForbiddenPower extends DivinationCard
 case object GemcuttersPromise extends DivinationCard {
-  override val name: String = "Gemcutter's Promise"
+  override lazy val name: String = "Gemcutter's Promise"
 }
 case object GiftOfTheGemlingQueen extends DivinationCard
 case object GlimmerOfHope extends DivinationCard
@@ -299,15 +296,15 @@ case object HouseOfMirrors extends DivinationCard
 case object Hubris extends DivinationCard
 case object Humility extends DivinationCard
 case object HuntersResolve extends DivinationCard {
-  override val name: String = "Hunter's Resolve"
+  override lazy val name: String = "Hunter's Resolve"
 }
 case object HuntersReward extends DivinationCard {
-  override val name: String = "Hunter's Reward"
+  override lazy val name: String = "Hunter's Reward"
 }
 case object ImmortalResolve extends DivinationCard
 case object JackInTheBox extends DivinationCard
 case object LantadorsLostLove extends DivinationCard {
-  override val name: String = "Lantador's Lost Love"
+  override lazy val name: String = "Lantador's Lost Love"
 }
 case object LastHope extends DivinationCard
 case object LeftToFate extends DivinationCard
@@ -318,7 +315,7 @@ case object Loyalty extends DivinationCard
 case object LuckyConnections extends DivinationCard
 case object LuckyDeck extends DivinationCard
 case object LysahsRespite extends DivinationCard {
-  override val name: String = "Lysah's Respite"
+  override lazy val name: String = "Lysah's Respite"
 }
 case object MawrBlaidd extends DivinationCard
 case object MercilessArmament extends DivinationCard
@@ -370,7 +367,7 @@ case object TheDoctor extends DivinationCard
 case object TheDoppelganger extends DivinationCard
 case object TheDragon extends DivinationCard
 case object TheDragonsHeart extends DivinationCard {
-  override val name: String = "The Dragon's Heart"
+  override lazy val name: String = "The Dragon's Heart"
 }
 case object TheDreamer extends DivinationCard
 case object TheDreamland extends DivinationCard
@@ -387,7 +384,7 @@ case object TheFeast extends DivinationCard
 case object TheFiend extends DivinationCard
 case object TheFletcher extends DivinationCard
 case object TheFlorasGift extends DivinationCard {
-  override val name: String = "The Flora's Gift"
+  override lazy val name: String = "The Flora's Gift"
 }
 case object TheFormlessSea extends DivinationCard
 case object TheForsaken extends DivinationCard
@@ -411,26 +408,29 @@ case object TheInventor extends DivinationCard
 case object TheIronBard extends DivinationCard
 case object TheJester extends DivinationCard
 case object TheJewellersBoon extends DivinationCard {
-  override val name: String = "The Jeweller's Boon"
+  override lazy val name: String = "The Jeweller's Boon"
 }
 case object TheKingsBlade extends DivinationCard {
-  override val name: String = "The King's Blade"
+  override lazy val name: String = "The King's Blade"
 }
 case object TheKingsHeart extends DivinationCard {
-  override val name: String = "The King's Heart"
+  override lazy val name: String = "The King's Heart"
 }
 case object TheLastOneStanding extends DivinationCard
 case object TheLich extends DivinationCard
+case object TheLifeThief extends DivinationCard
 case object TheLion extends DivinationCard
 case object TheLordInBlack extends DivinationCard
 case object TheLover extends DivinationCard
 case object TheLunarisPriestess extends DivinationCard
 case object TheMaster extends DivinationCard
+case object TheMasterArtisan extends DivinationCard
 case object TheMayor extends DivinationCard
 case object TheMercenary extends DivinationCard
 case object TheMetalsmithsGift extends DivinationCard {
-  override val name: String = "The Metalsmith's Gift"
+  override lazy val name: String = "The Metalsmith's Gift"
 }
+case object TheNurse extends DivinationCard
 case object TheOath extends DivinationCard
 case object TheObscured extends DivinationCard
 case object TheOffering extends DivinationCard
@@ -452,11 +452,12 @@ case object TheRisk extends DivinationCard
 case object TheRiteOfElements extends DivinationCard
 case object TheRoadToPower extends DivinationCard
 case object TheRuthlessCeinture extends DivinationCard
+case object TheSacrifice extends DivinationCard
 case object TheSaintsTreasure extends DivinationCard {
-  override val name: String = "The Saint's Treasure"
+  override lazy val name: String = "The Saint's Treasure"
 }
 case object TheSamuraisEye extends DivinationCard {
-  override val name: String = "The Samurai's Eye"
+  override lazy val name: String = "The Samurai's Eye"
 }
 case object TheScarredMeadow extends DivinationCard
 case object TheScavenger extends DivinationCard
@@ -475,7 +476,7 @@ case object TheSurgeon extends DivinationCard
 case object TheSurveyor extends DivinationCard
 case object TheSurvivalist extends DivinationCard
 case object TheSwordKingsSalute extends DivinationCard {
-  override val name: String = "The Sword King's Salute"
+  override lazy val name: String = "The Sword King's Salute"
 }
 case object TheThaumaturgist extends DivinationCard
 case object TheThrone extends DivinationCard
@@ -502,10 +503,10 @@ case object TheWind extends DivinationCard
 case object TheWitch extends DivinationCard
 case object TheWolf extends DivinationCard
 case object TheWolfsShadow extends DivinationCard {
-  override val name: String = "The Wolf's Shadow"
+  override lazy val name: String = "The Wolf's Shadow"
 }
 case object TheWolvenKingsBite extends DivinationCard {
-  override val name: String = "The Wolven King's Bite"
+  override lazy val name: String = "The Wolven King's Bite"
 }
 case object TheWolverine extends DivinationCard
 case object TheWorldEater extends DivinationCard
@@ -515,13 +516,13 @@ case object ThreeFacesInTheDark extends DivinationCard
 case object ThreeVoices extends DivinationCard
 case object ThunderousSkies extends DivinationCard
 case object TimeLostRelic extends DivinationCard {
-  override val name: String = "Time-Lost Relic"
+  override lazy val name: String = "Time-Lost Relic"
 }
 case object Tranquillity extends DivinationCard
 case object TreasureHunter extends DivinationCard
 case object TurnTheOtherCheek extends DivinationCard
 case object ViniasToken extends DivinationCard {
-  override val name: String = "Vinia's Token"
+  override lazy val name: String = "Vinia's Token"
 }
 case object VolatilePower extends DivinationCard
 case object WealthAndPower extends DivinationCard

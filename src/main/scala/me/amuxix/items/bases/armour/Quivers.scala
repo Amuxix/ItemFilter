@@ -13,10 +13,10 @@ object SharktoothArrowQuiver extends Quiver(dropLevel = 10)
 object BluntArrowQuiver extends Quiver(dropLevel = 16)
 object FireArrowQuiver extends Quiver(dropLevel = 22)
 object BroadheadArrowQuiver extends Quiver(dropLevel = 28) {
-  override def conditionsOfBestRaresForZoneLevel(): Condition = super.conditionsOfBestRaresForZoneLevel().copy(itemLevel = None)
+  override def conditionsOfBestRaresForZoneLevel: Condition = super.conditionsOfBestRaresForZoneLevel.copy(itemLevel = None)
 }
 object PenetratingArrowQuiver extends Quiver(dropLevel = 36)
 object SpikePointArrowQuiver extends Quiver(dropLevel = 45) {
   override def baseType: BaseType = BaseType("Spike-Point Arrow Quiver")
-  override def conditionsOfBestRaresForZoneLevel(): Condition = super.conditionsOfBestRaresForZoneLevel().copy(itemLevel = None)
+  override def conditionsOfBestRaresForZoneLevel: Condition = super.conditionsOfBestRaresForZoneLevel.copy(itemLevel = None)
 }

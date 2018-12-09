@@ -1,11 +1,12 @@
-package me.amuxix.categories2
+package me.amuxix.categories.automated
+
 import me.amuxix.actions.Action
 import me.amuxix.conditions.Condition
 import me.amuxix.items.GenItem
 import me.amuxix.items.bases.Base.flasks
 import me.amuxix.{Common, FilterRarity, Leveling}
 
-class Flasks extends AutomatedCategory {
+object Flasks extends AutomatedCategory {
   override protected val categoryItems: Seq[GenItem] =
     flasks
       .flatten

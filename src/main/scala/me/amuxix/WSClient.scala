@@ -5,7 +5,7 @@ import akka.actor.ActorSystem
 import akka.stream.ActorMaterializer
 import com.github.benmanes.caffeine.cache.{Caffeine, Ticker}
 import play.api.libs.ws.ahc.StandaloneAhcWSClient
-import play.api.libs.ws.ahc.cache.{AhcHttpCache, Cache, EffectiveURIKey, ResponseEntry}
+import play.api.libs.ws.ahc.cache.{Cache, EffectiveURIKey, ResponseEntry}
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -33,7 +33,8 @@ object WSClient {
       override def close(): Unit = underlying.cleanUp()
     }
     val cache = new CaffeineHttpCache()
-    val client = StandaloneAhcWSClient(httpCache = Some(new AhcHttpCache(cache)))
+    //val client = StandaloneAhcWSClient(httpCache = Some(new AhcHttpCache(cache)))
+    val client = StandaloneAhcWSClient(httpCache = None)
     (system, client)
   }
 }
