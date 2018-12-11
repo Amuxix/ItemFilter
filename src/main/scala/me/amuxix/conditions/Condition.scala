@@ -69,28 +69,30 @@ case class Condition(
     val mergedBase: Option[BaseType] = (base, o.base) match {
       case (_, None)                                => None
       case (None, _)                                => None
-      case (Some(BaseType(b1 @ _*)), Some(BaseType(b2 @ _*))) => Some(BaseType((b1 ++ b2):_*))
+      case (Some(BaseType(b1 @ _*)), Some(BaseType(b2 @ _*))) =>
+        //noinspection ScalaUnnecessaryParentheses
+        Some(BaseType((b1 ++ b2):_*))
     }
     Condition(
       mergedBase,
-      `class`,
-      dropLevel,
-      itemLevel,
-      quality,
-      rarity,
-      sockets,
-      linkedSockets,
-      socketGroup,
-      height,
-      width,
-      identified,
-      corrupted,
-      shapedMap,
-      shaperItem,
-      elderItem,
-      gemLevel,
-      mapTier,
-      explicitMod
+      `class`.orElse(o.`class`),
+      dropLevel.orElse(o.dropLevel),
+      itemLevel.orElse(o.itemLevel),
+      quality.orElse(o.quality),
+      rarity.orElse(o.rarity),
+      sockets.orElse(o.sockets),
+      linkedSockets.orElse(o.linkedSockets),
+      socketGroup.orElse(o.socketGroup),
+      height.orElse(o.height),
+      width.orElse(o.width),
+      identified.orElse(o.identified),
+      corrupted.orElse(o.corrupted),
+      shapedMap.orElse(o.shapedMap),
+      shaperItem.orElse(o.shaperItem),
+      elderItem.orElse(o.elderItem),
+      gemLevel.orElse(o.gemLevel),
+      mapTier.orElse(o.mapTier),
+      explicitMod.orElse(o.explicitMod)
     )
   }
 }

@@ -5,12 +5,16 @@ import me.amuxix.items.Item
 /**
   * Like [[Orb]] this currency can enhance items but they themselves can also be upgraded.
   */
-abstract class Essence(val upgradesTo: Option[Essence]) extends Currency {
+abstract class Essence(val upgradesTo: Option[Essence]) extends Currency with PriceFallback {
   override protected lazy val condition: Condition = Condition(`class` = "Currency", base = name)
+  override def fallback: Double = (for {
+    essence <- upgradesTo
+    value <- essence.chaosValuePerSlot
+  } yield value / 3).getOrElse(0)
 }
 
 object Essence {
-  val essences = Seq[Item](
+  val essences: Seq[Item] = Seq[Item](
     RemnantOfCorruption,
     EssenceOfHorror,
     EssenceOfInsanity,

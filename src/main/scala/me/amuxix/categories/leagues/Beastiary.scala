@@ -6,11 +6,6 @@ import me.amuxix.conditions.Condition
 import me.amuxix.{Block, FilterLevel, Normal, Reduced}
 
 object Beastiary extends Category {
-  val beastiaryOrbs = Block(
-    Condition(base = "Bestiary Orb", `class` = "Currency"),
-    Action(size = 45, borderColor = Color.black, textColor = Color.black, backgroundColor = Color.goodYellow.lighten)
-  )
-
   val ropeNet = Block(
     Condition(base = "Rope Net", `class` = "Currency"),
     Action(size = 45, textColor = Color.nets, backgroundColor = Color.black)
@@ -37,8 +32,8 @@ object Beastiary extends Category {
   )
 
   override protected def categoryBlocks(filterLevel: FilterLevel): Seq[Block] = filterLevel match {
-    case Reduced => Seq(beastiaryOrbs, ropeNet, ironNet, steelNet).map(_.hidden) ++ Seq(thaumaturgicalNet, necromancyNet)
-    case Normal  => Seq(beastiaryOrbs, ropeNet, ironNet).map(_.hidden) ++ Seq(steelNet, thaumaturgicalNet, necromancyNet)
-    case _       => Seq(beastiaryOrbs, ropeNet, ironNet, steelNet, thaumaturgicalNet, necromancyNet)
+    case Reduced => Seq(ropeNet, ironNet, steelNet).map(_.hidden) ++ Seq(thaumaturgicalNet, necromancyNet)
+    case Normal  => Seq(ropeNet, ironNet).map(_.hidden) ++ Seq(steelNet, thaumaturgicalNet, necromancyNet)
+    case _       => Seq(ropeNet, ironNet, steelNet, thaumaturgicalNet, necromancyNet)
   }
 }

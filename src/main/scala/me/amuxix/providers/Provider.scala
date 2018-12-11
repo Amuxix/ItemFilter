@@ -1,9 +1,9 @@
 package me.amuxix.providers
 
 import cats.data.EitherT
-import me.amuxix.items.Item
-import me.amuxix.providers.Provider.{ParsableWSResponse, defaultLeague}
-import me.amuxix.{Betrayal, League}
+import me.amuxix.items.currency.{ChaosOrb, PriceFallback}
+import me.amuxix.items.{Item, NoDrop}
+import me.amuxix.providers.Provider.ParsableWSResponse
 import play.api.libs.json.{JsValue, Reads}
 import play.api.libs.ws.JsonBodyReadables._
 import play.api.libs.ws.{StandaloneWSClient, StandaloneWSResponse}
@@ -28,14 +28,22 @@ object Provider {
           Left(RequestError(url, response, s"Response returned a failed status code: ${response.status}"))
       }
   }
-  val defaultLeague: League = Betrayal
 
-  val itemPrices = mutable.Map.empty[String, Double]
+  val itemPrices: mutable.Map[String, Double] = mutable.Map[String, Double]((ChaosOrb.name.toLowerCase, 1))
 
-  def getChaosEquivalentFor(item: Item, league: League = defaultLeague): Option[Double] = {
-    if (itemPrices.contains(item.name.toLowerCase) == false) println(s"No Price for ${item.name}")
-    itemPrices.get(item.name.toLowerCase)
-  }
+  def getChaosEquivalentFor(item: Item): Option[Double] =
+    itemPrices
+      .get(item.name.toLowerCase)
+      .orElse(item match {
+        case fallback: PriceFallback =>
+          println(s"Using fallback price for ${fallback.name}")
+          Some(fallback.fallback)
+        case _: NoDrop =>
+          None
+        case other =>
+          println(s"No Price for ${other.name}")
+          None
+      })
 }
 
 abstract class Provider(wsClient: StandaloneWSClient)(implicit ec: ExecutionContext) {
@@ -51,6 +59,6 @@ abstract class Provider(wsClient: StandaloneWSClient)(implicit ec: ExecutionCont
   /**
     * This should update price for all items so they are accessible on itemPrices map
     */
-  def getAllItemsPrices(league: League = defaultLeague): Future[_]
+  def getAllItemsPrices: Future[_]
 }
 
