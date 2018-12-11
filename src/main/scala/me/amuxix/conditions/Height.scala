@@ -1,19 +1,13 @@
 package me.amuxix.conditions
 
-import me.amuxix._
-
 /**
   * Created by Amuxix on 03/03/2017.
   */
 object Height {
-  implicit def tuple22Height(tuple: (Operator, Int)): Height = Height(tuple._1, tuple._2)
-  implicit def int2Height(i: Int): Height = Height(i)
-
-  def apply(i: Int): Height = Height("", i)
+  def apply(level: Int): Height = new Height(level)
 }
+case class Height(start: Int, end: Int) extends OperatorWritable[Height](4, "Height") {
+  def this(value: Int) = this(value, value)
 
-case class Height(op: Operator, i: Int) extends Writable {
-  if (i < 1 || i > 4) throw new InvalidArgument
-  def this(i: Int) = this("=", i)
-  override def print: String = s"Height ${op.print}$i"
+  override def merge(other: Height): Height = Height(start min other.start, end max other.end)
 }

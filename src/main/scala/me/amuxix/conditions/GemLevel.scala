@@ -1,14 +1,11 @@
 package me.amuxix.conditions
 
-import me.amuxix.{InvalidArgument, Operator, Writable}
 
 object GemLevel {
-  implicit def tuple22GemLevel(tuple: (Operator, Int)): GemLevel = GemLevel(tuple._1, tuple._2)
   def apply(level: Int): GemLevel = new GemLevel(level)
 }
-case class GemLevel(op: Operator, level: Int) extends Writable {
-  if (level < 0 || level > 20) throw new InvalidArgument
-  def this(level: Int) = this("=", level)
+case class GemLevel(start: Int, end: Int) extends OperatorWritable[GemLevel](20, "GemLevel") {
+  def this(value: Int) = this(value, value)
 
-  override def print: String = s"GemLevel ${op.print}$level"
+  override def merge(other: GemLevel): GemLevel = GemLevel(start min other.start, end max other.end)
 }

@@ -1,7 +1,6 @@
 package me.amuxix.items.bases
 
 import me.amuxix.ImplicitConversions
-import me.amuxix.Operator.string2Operator
 import me.amuxix.conditions._
 import me.amuxix.items.Item
 import me.amuxix.items.bases.accessories._
@@ -22,18 +21,18 @@ abstract class Base(height: Int, width: Int, val dropLevel: Int, `class`: String
   )
 
   def conditionsOfBestRaresForZoneLevel: Condition =
-    closeToZoneLevel(ItemLevel(Left("<="), this.dropLevel + minDropBuffer max this.dropLevel / 10))
+    closeToZoneLevel(ItemLevel(0, this.dropLevel + minDropBuffer max this.dropLevel / 10))
 
   def conditionsOfGoodRaresForZoneLevel: Condition =
-    closeToZoneLevel(ItemLevel(Left("<="), this.dropLevel + 20))
+    closeToZoneLevel(ItemLevel(0, this.dropLevel + 20))
 
   def conditionsOfBestWhitesForZoneLevel: Condition =
-    closeToZoneLevel(ItemLevel(Left("<="), this.dropLevel + minDropBuffer max this.dropLevel / 10), White)
+    closeToZoneLevel(ItemLevel(0, this.dropLevel + minDropBuffer max this.dropLevel / 10), Normal)
 }
 
 sealed trait BestBaseBlocks extends ImplicitConversions { this: Base =>
-  val rare: Condition = Condition(base = Some(this.baseType), itemLevel = (">=", this.bestModsDropLevel), rarity = Rare)
-  val crafting: Condition = Condition(base = Some(this.baseType), itemLevel = (">=", this.bestModsDropLevel), rarity = ("<", Rare))
+  val rare: Condition = Condition(base = Some(this.baseType), itemLevel = (this.bestModsDropLevel, 100), rarity = Rare)
+  val crafting: Condition = Condition(base = Some(this.baseType), itemLevel = (this.bestModsDropLevel, 100), rarity = (Normal, Magic))
 }
 
 abstract class Armour(height: Int, width: Int, dropLevel: Int, `class`: String) extends Base(height, width, dropLevel, `class`) with BestBaseBlocks with Corruptible with Elder with Shaper with HasSockets with HasRarity

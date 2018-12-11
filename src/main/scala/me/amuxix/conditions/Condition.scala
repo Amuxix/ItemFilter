@@ -11,17 +11,17 @@ case class Condition(
     rarity: Option[Rarity] = None,
     sockets: Option[Sockets] = None,
     linkedSockets: Option[LinkedSockets] = None,
-    socketGroup: Option[SocketGroup] = None,
     height: Option[Height] = None,
     width: Option[Width] = None,
-    identified: Option[Identified] = None,
-    corrupted: Option[Corrupted] = None,
-    shapedMap: Option[ShapedMap] = None,
-    shaperItem: Option[ShaperItem] = None,
-    elderItem: Option[ElderItem] = None,
     gemLevel: Option[GemLevel] = None,
     mapTier: Option[MapTier] = None,
     explicitMod: Option[ExplicitMod] = None,
+    shapedMap: Option[ShapedMap] = None,
+    identified: Option[Identified] = None,
+    corrupted: Option[Corrupted] = None,
+    shaperItem: Option[ShaperItem] = None,
+    elderItem: Option[ElderItem] = None,
+    socketGroup: Option[SocketGroup] = None,
 ) extends Mergeable[Condition] {
   val conditions: Seq[Writable] = Seq(
     base,
@@ -32,67 +32,74 @@ case class Condition(
     rarity,
     sockets,
     linkedSockets,
-    socketGroup,
     height,
     width,
-    identified,
-    corrupted,
-    shapedMap,
-    shaperItem,
-    elderItem,
     gemLevel,
     mapTier,
     explicitMod,
+    shapedMap,
+    identified,
+    corrupted,
+    shaperItem,
+    elderItem,
+    socketGroup,
   ).collect { case Some(writable) => writable }
+  
+  private def mergeOptions[T <: Mergeable[T], R](o1: Option[T], o2: Option[T]): Option[T] = {
+    for {
+      m1 <- o1
+      m2 <- o2
+    } yield m1 merge m2
+  }
+
+  private def canMergeOptions[T <: Mergeable[T], R](o1: Option[T], o2: Option[T]): Boolean = {
+    (for {
+      m1 <- o1
+      m2 <- o2
+    } yield m1 canMerge m2).getOrElse(false)
+  }
 
   override def canMerge(o: Condition): Boolean =
-    `class` == o.`class` &&
-      dropLevel == o.dropLevel &&
-      itemLevel == o.itemLevel &&
-      quality == o.quality &&
-      rarity == o.rarity &&
-      sockets == o.sockets &&
-      linkedSockets == o.linkedSockets &&
-      socketGroup == o.socketGroup &&
-      height == o.height &&
-      width == o.width &&
-      identified == o.identified &&
-      corrupted == o.corrupted &&
-      shapedMap == o.shapedMap &&
-      shaperItem == o.shaperItem &&
-      elderItem == o.elderItem &&
-      gemLevel == o.gemLevel &&
-      mapTier == o.mapTier &&
-      explicitMod == o.explicitMod
+    canMergeOptions(base, o.base) &&
+      canMergeOptions(`class`, o.`class`) &&
+      canMergeOptions(dropLevel, o.dropLevel) &&
+      canMergeOptions(itemLevel, o.itemLevel) &&
+      canMergeOptions(quality, o.quality) &&
+      canMergeOptions(rarity, o.rarity) &&
+      canMergeOptions(sockets, o.sockets) &&
+      canMergeOptions(linkedSockets, o.linkedSockets) &&
+      canMergeOptions(height, o.height) &&
+      canMergeOptions(width, o.width) &&
+      canMergeOptions(gemLevel, o.gemLevel) &&
+      canMergeOptions(mapTier, o.mapTier) &&
+      canMergeOptions(explicitMod, o.explicitMod) &&
+      shapedMap.size == o.shapedMap.size &&
+      identified.size == o.identified.size &&
+      corrupted.size == o.corrupted.size &&
+      shaperItem.size == o.shaperItem.size &&
+      elderItem.size == o.elderItem.size &&
+      socketGroup == o.socketGroup
 
-  override def merge(o: Condition): Condition = {
-    val mergedBase: Option[BaseType] = (base, o.base) match {
-      case (_, None)                                => None
-      case (None, _)                                => None
-      case (Some(BaseType(b1 @ _*)), Some(BaseType(b2 @ _*))) =>
-        //noinspection ScalaUnnecessaryParentheses
-        Some(BaseType((b1 ++ b2):_*))
-    }
+  override def merge(o: Condition): Condition = 
     Condition(
-      mergedBase,
-      `class`.orElse(o.`class`),
-      dropLevel.orElse(o.dropLevel),
-      itemLevel.orElse(o.itemLevel),
-      quality.orElse(o.quality),
-      rarity.orElse(o.rarity),
-      sockets.orElse(o.sockets),
-      linkedSockets.orElse(o.linkedSockets),
-      socketGroup.orElse(o.socketGroup),
-      height.orElse(o.height),
-      width.orElse(o.width),
+      mergeOptions(base, o.base),
+      mergeOptions(`class`, o.`class`),
+      mergeOptions(dropLevel, o.dropLevel),
+      mergeOptions(itemLevel, o.itemLevel),
+      mergeOptions(quality, o.quality),
+      mergeOptions(rarity, o.rarity),
+      mergeOptions(sockets, o.sockets),
+      mergeOptions(linkedSockets, o.linkedSockets),
+      mergeOptions(height, o.height),
+      mergeOptions(width, o.width),
+      mergeOptions(gemLevel, o.gemLevel),
+      mergeOptions(mapTier, o.mapTier),
+      mergeOptions(explicitMod, o.explicitMod),
+      shapedMap.orElse(o.shapedMap),
       identified.orElse(o.identified),
       corrupted.orElse(o.corrupted),
-      shapedMap.orElse(o.shapedMap),
       shaperItem.orElse(o.shaperItem),
       elderItem.orElse(o.elderItem),
-      gemLevel.orElse(o.gemLevel),
-      mapTier.orElse(o.mapTier),
-      explicitMod.orElse(o.explicitMod)
+      socketGroup,
     )
-  }
 }

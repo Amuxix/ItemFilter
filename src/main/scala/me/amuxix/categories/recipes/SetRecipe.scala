@@ -14,14 +14,14 @@ abstract class SetRecipe(minItemLevel: Int, color: Color) extends Category {
         `class` = `class`,
         width = width,
         height = height,
-        itemLevel = (">=", minItemLevel),
+        itemLevel = (minItemLevel, 100),
         rarity = Rare,
         identified = false,
-        dropLevel = dropLevel.map(i => DropLevel("<=", i))
+        dropLevel = dropLevel.map(i => DropLevel(0, i))
     )
 
-  private val weapons = Block(partialCondition(None, Some(1), Some(3), dropLevel = Some(setDropLevelCutoff)), equipmentAction)
-  private val smallBows = Block(partialCondition(Seq("Bows"), Some(2), Some(3), dropLevel = Some(setDropLevelCutoff)), equipmentAction)
+  private val weapons = Block(partialCondition(None, 1, 3, dropLevel = Some(setDropLevelCutoff)), equipmentAction)
+  private val smallBows = Block(partialCondition(Seq("Bows"), 2, 3, dropLevel = Some(setDropLevelCutoff)), equipmentAction)
   private val armor = Block(partialCondition(armourClasses, dropLevel = Some(setDropLevelCutoff)), equipmentAction)
   private val accessories = Block(
     partialCondition(accessoriesClasses),

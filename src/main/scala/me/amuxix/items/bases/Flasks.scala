@@ -9,7 +9,7 @@ sealed abstract class Flask(dropLevel: Int, itemClass: String) extends Base(2, 1
 }
 
 sealed abstract class LifeFlask(dropLevel: Int) extends Flask(dropLevel, "Life") {
-  override protected lazy val condition: Condition = Condition(base = name, itemLevel = ("<=", dropLevel + 10))
+  override protected lazy val condition: Condition = Condition(base = name, itemLevel = (0, dropLevel + 10))
 }
 
 object LifeFlask {
