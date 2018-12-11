@@ -25,7 +25,7 @@ object Currency extends AutomatedCategory {
     case Epic =>
       Action(
         size = 45,
-        sound = chaos,
+        sound = rare,
         backgroundColor = black,
         textColor = goodYellow,
         borderColor = goodYellow,
@@ -35,21 +35,23 @@ object Currency extends AutomatedCategory {
     case Rare =>
       Action(
         size = 45,
-        sound = rare,
-        backgroundColor = black,
-        textColor = goodYellow.lighten,
-        borderColor = goodYellow.lighten,
+        sound = chaos,
+        textColor = goodYellow,
+        borderColor = goodYellow,
         minimapIcon = (Yellow, Hexagon),
-        beam = (Yellow, true),
+        beam = Yellow,
       )
     case Uncommon =>
       Action(
         size = 45,
-        backgroundColor = black,
         textColor = goodYellow.lighten,
         borderColor = goodYellow.lighten,
         beam = (Yellow, true),
       )
-    case _ => Action(size = 40, backgroundColor = black, textColor = goodYellow.lighten)
+    case _ =>
+      Action(
+        size = 40,
+        textColor = goodYellow.lighten
+      )
   }
 }

@@ -9,25 +9,19 @@ import me.amuxix.items.GenItem
 object DivinationCard extends AutomatedCategory {
   override protected val categoryItems: Seq[GenItem] = items.DivinationCard.divCards
   override protected def actionForRarity(rarity: FilterRarity): Action = rarity match {
-    case Mythic =>
+    case AlwaysHide | Common =>
       Action(
-        size = 45,
-        sound = topDivCards,
-        backgroundColor = divinationBlue,
-        textColor = black,
-        borderColor = black,
-        minimapIcon = (Blue, Star),
-        beam = Blue,
+        backgroundColor = black,
+        textColor = divinationBlue,
       )
-    case Epic =>
+    case Uncommon =>
       Action(
-        size = 40,
+        size = 36,
         sound = divCards,
-        backgroundColor = divinationBlue.darken,
-        textColor = black,
-        borderColor = black,
-        minimapIcon = (Blue, Hexagon),
-        beam = Blue,
+        backgroundColor = black,
+        textColor = divinationBlue.darken,
+        borderColor = divinationBlue.darken,
+        beam = (Blue, true),
       )
     case Rare =>
       Action(
@@ -39,19 +33,25 @@ object DivinationCard extends AutomatedCategory {
         minimapIcon = (Blue, Diamond),
         beam = (Blue, true),
       )
-    case Uncommon =>
+    case Epic =>
       Action(
-        size = 36,
+        size = 40,
         sound = divCards,
-        backgroundColor = black,
-        textColor = divinationBlue.darken,
-        borderColor = divinationBlue.darken,
-        beam = (Blue, true),
+        backgroundColor = divinationBlue.darken,
+        textColor = black,
+        borderColor = black,
+        minimapIcon = (Blue, Hexagon),
+        beam = Blue,
       )
     case _ =>
       Action(
-        backgroundColor = black,
-        textColor = divinationBlue,
+        size = 45,
+        sound = topDivCards,
+        backgroundColor = divinationBlue,
+        textColor = black,
+        borderColor = black,
+        minimapIcon = (Blue, Star),
+        beam = Blue,
       )
   }
 }

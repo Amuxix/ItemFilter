@@ -3,7 +3,7 @@ package me.amuxix.items
 abstract class DivinationCard extends Item(1, 1, "Divination")
 
 object DivinationCard {
-  val divCards = Seq[Item](
+  val divCards: Seq[Item] = Seq[Item](
     AMothersPartingGift,
     AbandonedWealth,
     AnarchysPrice,
@@ -25,7 +25,7 @@ object DivinationCard {
     DestinedToCrumble,
     DiallasSubjugation,
     DoedresMadness,
-    DyingAnguish,
+    //DyingAnguish,
     EarthDrinker,
     EmperorOfPurity,
     EmperorsLuck,
@@ -275,7 +275,7 @@ case object DiallasSubjugation extends DivinationCard {
 case object DoedresMadness extends DivinationCard {
   override lazy val name: String = "Doedre's Madness"
 }
-case object DyingAnguish extends DivinationCard
+//case object DyingAnguish extends DivinationCard
 case object EarthDrinker extends DivinationCard
 case object EmperorOfPurity extends DivinationCard
 case object EmperorsLuck extends DivinationCard {

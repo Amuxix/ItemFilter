@@ -5,14 +5,14 @@ import me.amuxix.actions.Color._
 import me.amuxix.actions.Sound._
 import me.amuxix.actions._
 import me.amuxix.conditions.Condition
-import me.amuxix.items.GenItem
 import me.amuxix.items.bases.Map.maps
+import me.amuxix.items.{CategoryItem, GenItem}
 
 object Maps extends AutomatedCategory {
   override protected val categoryItems: Seq[GenItem] = maps.flatMap { map =>
     Seq(
-      new GenItem(Epic) { override protected def condition: Condition = map.sameTierOrUpgrade },
-      new GenItem(Rare) { override protected def condition: Condition = map.good },
+      new CategoryItem(Epic) { override protected def condition: Condition = map.sameTierOrUpgrade },
+      new CategoryItem(Rare) { override protected def condition: Condition = map.good },
       map,
     )
   }
@@ -21,7 +21,7 @@ object Maps extends AutomatedCategory {
     case Mythic =>
       Action(
         size = 45,
-        sound = redMaps,
+        sound = yellowMaps,
         borderColor = red,
         minimapIcon = (Red, Square),
         beam = Red,

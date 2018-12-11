@@ -10,15 +10,16 @@ trait AutomatedCategory extends Category {
   protected def actionForRarity(rarity: FilterRarity): Action
   /*
   rarity match {
-    case Mythic =>
-    case Epic =>
-    case Rare =>
-    case Uncommon =>
-    case Common =>
-    case Leveling =>
-    case Undetermined =>
-    case AlwaysShow =>
     case AlwaysHide =>
+    case Leveling =>
+    case Trash =>
+    case Common =>
+    case Uncommon =>
+    case Rare =>
+    case Epic =>
+    case Mythic =>
+    case AlwaysShow =>
+    case Undetermined =>
   }
    */
 

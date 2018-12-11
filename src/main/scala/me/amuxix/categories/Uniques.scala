@@ -103,12 +103,6 @@ object Uniques extends Category {
     )
   )
 
-  val hidden = Block(
-    Condition(
-      base = "Shadow Sceptre"
-    ),
-  )
-
   val rest = Block(
     Condition(rarity = Unique),
     Action(
@@ -118,5 +112,5 @@ object Uniques extends Category {
     )
   )
 
-  override def categoryBlocks(filterLevel: FilterLevel) = Seq(tabula, t0, t1, hidden.hidden, rest)
+  override def categoryBlocks(filterLevel: FilterLevel) = Seq(tabula, t0, t1, rest)
 }
