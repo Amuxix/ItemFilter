@@ -1,12 +1,11 @@
 package me.amuxix.categories
-
 import me.amuxix._
 
-abstract class Category extends ImplicitConversions with Named {
+trait Category extends ImplicitConversions with Named {
   protected def categoryBlocks(filterLevel: FilterLevel): Seq[Block]
   def blocks(filterLevel: FilterLevel): Seq[Block] = Mergeable.merge(categoryBlocks(filterLevel))
 
-  private def addSeparatorAndMakeString(blocks: Seq[Block]): String =
+  protected def addSeparatorAndMakeString(blocks: Seq[Block]): String =
     blocks.headOption.fold("") { _ =>
       separator + blocks.map(_.write).mkString("", "\n", "\n")
     }

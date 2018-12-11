@@ -18,6 +18,10 @@ object Sound {
   val topDivCards = CustomSound("Top Div Cards")
   val scrolls = CustomSound("Scrolls")
   val chaos = CustomSound("Chaos")
+  val pileOfShit = CustomSound("What a pile of shit")
+  val pickItUp = CustomSound("Yeah I'll pick it up")
+  val veskara1 = CustomSound("Veskara 1")
+  val veskara2 = CustomSound("Veskara 2")
 
   val nets = GameSound(2)
   val incursion = GameSound(3)

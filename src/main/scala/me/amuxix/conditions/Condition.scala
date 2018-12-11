@@ -19,8 +19,10 @@ case class Condition(
     shapedMap: Option[ShapedMap] = None,
     shaperItem: Option[ShaperItem] = None,
     elderItem: Option[ElderItem] = None,
-    gemLevel: Option[GemLevel] = None)
-      extends Mergeable[Condition] {
+    gemLevel: Option[GemLevel] = None,
+    mapTier: Option[MapTier] = None,
+    explicitMod: Option[ExplicitMod] = None,
+) extends Mergeable[Condition] {
   val conditions: Seq[Writable] = Seq(
     base,
     `class`,
@@ -38,12 +40,13 @@ case class Condition(
     shapedMap,
     shaperItem,
     elderItem,
-    gemLevel
+    gemLevel,
+    mapTier,
+    explicitMod,
   ).collect { case Some(writable) => writable }
 
   override def canMerge(o: Condition): Boolean =
-    (base == o.base || (base.isDefined && o.base.isDefined)) && //Both bases are equal or both are defined
-      `class` == o.`class` &&
+    `class` == o.`class` &&
       dropLevel == o.dropLevel &&
       itemLevel == o.itemLevel &&
       quality == o.quality &&
@@ -58,28 +61,38 @@ case class Condition(
       shapedMap == o.shapedMap &&
       shaperItem == o.shaperItem &&
       elderItem == o.elderItem &&
-      gemLevel == o.gemLevel
+      gemLevel == o.gemLevel &&
+      mapTier == o.mapTier &&
+      explicitMod == o.explicitMod
 
   override def merge(o: Condition): Condition = {
-    val mergedBase = Some(BaseType(base.get.bases ++ o.base.get.bases: _*))
+    val mergedBase: Option[BaseType] = (base, o.base) match {
+      case (_, None)                                => None
+      case (None, _)                                => None
+      case (Some(BaseType(b1 @ _*)), Some(BaseType(b2 @ _*))) =>
+        //noinspection ScalaUnnecessaryParentheses
+        Some(BaseType((b1 ++ b2):_*))
+    }
     Condition(
       mergedBase,
-      `class`,
-      dropLevel,
-      itemLevel,
-      quality,
-      rarity,
-      sockets,
-      linkedSockets,
-      socketGroup,
-      height,
-      width,
-      identified,
-      corrupted,
-      shapedMap,
-      shaperItem,
-      elderItem,
-      gemLevel
+      `class`.orElse(o.`class`),
+      dropLevel.orElse(o.dropLevel),
+      itemLevel.orElse(o.itemLevel),
+      quality.orElse(o.quality),
+      rarity.orElse(o.rarity),
+      sockets.orElse(o.sockets),
+      linkedSockets.orElse(o.linkedSockets),
+      socketGroup.orElse(o.socketGroup),
+      height.orElse(o.height),
+      width.orElse(o.width),
+      identified.orElse(o.identified),
+      corrupted.orElse(o.corrupted),
+      shapedMap.orElse(o.shapedMap),
+      shaperItem.orElse(o.shaperItem),
+      elderItem.orElse(o.elderItem),
+      gemLevel.orElse(o.gemLevel),
+      mapTier.orElse(o.mapTier),
+      explicitMod.orElse(o.explicitMod)
     )
   }
 }
