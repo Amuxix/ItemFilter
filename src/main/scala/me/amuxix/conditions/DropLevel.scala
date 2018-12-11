@@ -6,7 +6,6 @@ import me.amuxix._
   * Created by Amuxix on 03/03/2017.
   */
 object DropLevel {
-  implicit def tuple22DropLevel(tuple: (Operator, Int)): DropLevel = DropLevel(tuple._1, tuple._2)
   def apply(level: Int): DropLevel = new DropLevel(level)
 }
 case class DropLevel(op: Operator, level: Int) extends Writable {

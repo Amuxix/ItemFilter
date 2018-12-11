@@ -1,7 +1,7 @@
 package me.amuxix.actions
 
 import me.amuxix.actions.EffectColor.effectColors
-import Ordering.Double.TotalOrdering
+//import Ordering.Double.TotalOrdering
 import me.amuxix.actions.Color.{darknessFactor, lightenFactor}
 
 /**
@@ -13,6 +13,7 @@ object Color {
   def apply(r: Int, g: Int, b: Int): Color = new Color(r, g, b)
 
   val transparent = Color(0, 0, 0, 0)
+  val defaultBackground = Color(0, 0, 0, 230)
 
   val unique = Color(175, 96, 37)
   val black = Color(0, 0, 0)
@@ -35,6 +36,8 @@ object Color {
   val incursionGreen = Color(95, 170, 120)
   val incursionRed = Color(173, 54, 42)
   val delveBlue = Color(21, 22, 96)
+  val delveOrange = Color(255, 166, 50)
+  val scarabBlue = Color(0, 50, 130)
 
   private val darknessFactor = .15f
   private val lightenFactor = .3f

@@ -7,6 +7,8 @@ import me.amuxix.{InvalidArgument, Writable}
   */
 object BaseType {
   implicit def string2BaseType(string: String*): BaseType = BaseType(string: _*)
+
+  //def unapply(arg: BaseType): Option[Seq[String]] = Some(arg.bases)
 }
 
 case class BaseType(bases: String*) extends Writable {

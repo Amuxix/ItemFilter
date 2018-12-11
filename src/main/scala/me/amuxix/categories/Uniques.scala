@@ -1,8 +1,8 @@
 package me.amuxix.categories
 
-import me.amuxix.actions._
 import me.amuxix.actions.Color._
 import me.amuxix.actions.Sound._
+import me.amuxix.actions._
 import me.amuxix.conditions.{Condition, Unique}
 import me.amuxix.{Block, FilterLevel}
 
@@ -103,13 +103,14 @@ object Uniques extends Category {
     )
   )
 
-  val hidden = Block(
-    Condition(
-      base = "Shadow Sceptre"
-    ),
+  val rest = Block(
+    Condition(rarity = Unique),
+    Action(
+      borderColor = unique,
+      beam = (Brown, true),
+      sound = pileOfShit,
+    )
   )
 
-  val rest = Block(Condition(rarity = Unique), Action(borderColor = unique, beam = (Brown, true)))
-
-  override def categoryBlocks(filterLevel: FilterLevel) = Seq(tabula, t0, t1, hidden.hidden, rest)
+  override def categoryBlocks(filterLevel: FilterLevel) = Seq(tabula, t0, t1, rest)
 }
