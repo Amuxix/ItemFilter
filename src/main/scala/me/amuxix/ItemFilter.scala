@@ -84,7 +84,7 @@ object ItemFilter {
       Fragment,
       Currency,
       Gems,
-      Incursion, //TODO: This is just Flashpowder Keg and Stone of Passage, add bases and use a decent category
+      Incursion,
       DivinationCard,
       Uniques,
       VeiledItems,
