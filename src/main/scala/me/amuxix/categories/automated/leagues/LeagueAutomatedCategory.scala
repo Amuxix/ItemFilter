@@ -9,11 +9,11 @@ trait LeagueAutomatedCategory extends AutomatedCategory { outer =>
   val condition: Condition
 
   override protected val categoryItems: Seq[GenItem] = bestItems.map(base =>
-    new CategoryItem(Epic) { override protected def condition: Condition = base.rare.merge(outer.condition) },
+    new CategoryItem(Epic) { override protected def condition: Condition = base.rare.join(outer.condition) },
   ) ++ allEquipment.flatMap(base =>
     Seq(
-      new CategoryItem(Rare) { override protected def condition: Condition = base.conditionsOfBestRaresForZoneLevel.merge(outer.condition) },
-      new CategoryItem(AlwaysShow) { override protected def condition: Condition = base.conditionsOfGoodRaresForZoneLevel.merge(outer.condition) },
+      new CategoryItem(Rare) { override protected def condition: Condition = base.conditionsOfBestRaresForZoneLevel.join(outer.condition) },
+      new CategoryItem(AlwaysShow) { override protected def condition: Condition = base.conditionsOfGoodRaresForZoneLevel.join(outer.condition) },
     )
   ) ++ Seq(
     new CategoryItem(AlwaysShow) { override protected def condition: Condition = outer.condition }

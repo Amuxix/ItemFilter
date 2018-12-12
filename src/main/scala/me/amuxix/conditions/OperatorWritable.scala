@@ -16,9 +16,10 @@ abstract class OperatorWritable[T <: OperatorWritable[T]](max: Int, conditionNam
   }
 
   override def print: String = start match {
-    case `end` => s"$conditionName $start"
-    case 0 => s"$conditionName <= $end"
+    case `end`           => s"$conditionName $start"
+    case 0 if end == max => ""
+    case 0               => s"$conditionName <= $end"
     case _ if end == max => s"$conditionName >= $start"
-    case _ => s"$conditionName >= $start\n  $conditionName <= $end"
+    case _               => s"$conditionName >= $start\n  $conditionName <= $end"
   }
 }

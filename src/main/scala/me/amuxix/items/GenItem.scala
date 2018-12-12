@@ -15,7 +15,7 @@ abstract class GenItem extends Named with ImplicitConversions {
       else if (chaosValuePerSlot >= Rare.threshold) Rare
       else if (chaosValuePerSlot >= Uncommon.threshold) Uncommon
       else if (chaosValuePerSlot >= Common.threshold) Common
-      else Leveling //If the price is lower than the lowest threshold.
+      else Leveling //The price is lower than the lowest threshold.
     }
 
   def block(actionForRarity: FilterRarity => Action, filterLevel: FilterLevel): Block =

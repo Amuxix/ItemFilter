@@ -73,29 +73,33 @@ object ItemFilter {
     }.mkString("\n")
     println(prices)
 
+    //TODO >>>>>ADD STACK SIZE<<<<<< Generate currrency stacksizes based on rarity thresholds
+
+    //TODO Adjust gem level to account for corruption(lvl 21 gems)
+    //TODO Adjust quality to include values above 20(incursion, corruption, syndicate)
+
+    //TODO show items with white sockets
     val categories: Seq[Category] = Seq(
       General,
       Essence,
       Fossil,
       Resonator,
-      Beastiary,
-      Incursion,
+      Beastiary, //TODO: Make automatic category
       Scarab,
       Fragment,
       Currency,
       Gems,
-      VeiledItems,
-      Breach,
-      Abyss,
-      Talisman,
-      Maps,
-      Uniques,
-      Jewels,
+      Incursion, //TODO: This is just Flashpowder Keg and Stone of Passage, add bases and use a decent category
       DivinationCard,
+      Uniques,
+      VeiledItems,
+      Breach, //TODO: Add to base types, merge with accessories
+      Abyss, //TODO: Add to base types, merge with accessories/jewels
+      Talisman,
       Shaper,
       Elder,
       Atlas,
-      Flasks,
+      //TODO: Add corrupted items
       Chisel,
       Regal,
       Chaos,
@@ -103,6 +107,10 @@ object ItemFilter {
       Bauble,
       Whetstone,
       Scrap,
+      Jewels,
+      Flasks,
+      Maps,
+      //TODO: Add prophecies
       Legacy,
     )
     Seq(Reduced, Diminished, Normal, Racing).foreach(createFilterFile(poeFolder, _, categories))

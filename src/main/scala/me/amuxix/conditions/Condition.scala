@@ -1,7 +1,11 @@
 package me.amuxix.conditions
 
 import me.amuxix.{Mergeable, Writable}
+import sun.plugin.dom.exception.InvalidStateException
 
+//TODO Separate into two argument lists, one for properties fixed by base(class, baseType, height and width) and one for the rest.
+//TODO Accept an option of base instead of first argument list
+//TODO ADD STACK SIZE
 case class Condition(
     base: Option[BaseType] = None,
     `class`: Option[ItemClass] = None,
@@ -43,21 +47,29 @@ case class Condition(
     shaperItem,
     elderItem,
     socketGroup,
-  ).collect { case Some(writable) => writable }
+  ).flatten
   
-  private def mergeOptions[T <: Mergeable[T], R](o1: Option[T], o2: Option[T]): Option[T] = {
-    for {
-      m1 <- o1
-      m2 <- o2
-    } yield m1 merge m2
-  }
+  private def mergeOptions[T <: Mergeable[T]](o1: Option[T], o2: Option[T]): Option[T] =
+    (o1, o2) match {
+      case (Some(m1), Some(m2)) => Some(m1 merge m2)
+      case (None, None) => None
+      case _ =>
+        println(o1)
+        println(o2)
+        println(canMergeOptions(o1, o2))
+        throw new InvalidStateException("Attempting to merge un-mergeable things.")
+    }
 
-  private def canMergeOptions[T <: Mergeable[T], R](o1: Option[T], o2: Option[T]): Boolean = {
-    (for {
-      m1 <- o1
-      m2 <- o2
-    } yield m1 canMerge m2).getOrElse(false)
-  }
+  private def canMergeOptions[T <: Mergeable[T]](o1: Option[T], o2: Option[T]): Boolean =
+    (o1, o2) match {
+      case (Some(m1), Some(m2)) => m1 canMerge m2
+      case (None, None) => true
+      case _ => false
+    }
+
+  private def mergeBooleanOption[T](o1: Option[T], o2: Option[T]): Option[T] =
+    if (o1 == o2) o1
+    else None
 
   override def canMerge(o: Condition): Boolean =
     canMergeOptions(base, o.base) &&
@@ -95,11 +107,34 @@ case class Condition(
       mergeOptions(gemLevel, o.gemLevel),
       mergeOptions(mapTier, o.mapTier),
       mergeOptions(explicitMod, o.explicitMod),
+      mergeBooleanOption(shapedMap, o.shapedMap),
+      mergeBooleanOption(identified, o.identified),
+      mergeBooleanOption(corrupted, o.corrupted),
+      mergeBooleanOption(shaperItem, o.shaperItem),
+      mergeBooleanOption(elderItem, o.elderItem),
+      socketGroup,
+    )
+
+  def join(o: Condition): Condition =
+    Condition(
+      base.orElse(o.base),
+      `class`.orElse(o.`class`),
+      dropLevel.orElse(o.dropLevel),
+      itemLevel.orElse(o.itemLevel),
+      quality.orElse(o.quality),
+      rarity.orElse(o.rarity),
+      sockets.orElse(o.sockets),
+      linkedSockets.orElse(o.linkedSockets),
+      height.orElse(o.height),
+      width.orElse(o.width),
+      gemLevel.orElse(o.gemLevel),
+      mapTier.orElse(o.mapTier),
+      explicitMod.orElse(o.explicitMod),
       shapedMap.orElse(o.shapedMap),
       identified.orElse(o.identified),
       corrupted.orElse(o.corrupted),
       shaperItem.orElse(o.shaperItem),
       elderItem.orElse(o.elderItem),
-      socketGroup,
+      socketGroup.orElse(o.socketGroup),
     )
 }
