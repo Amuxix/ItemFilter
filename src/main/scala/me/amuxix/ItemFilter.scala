@@ -65,18 +65,13 @@ object ItemFilter {
   }
 
   def main(args: Array[String]): Unit = {
-    val poeFolder = FileSystemView.getFileSystemView.getDefaultDirectory.getPath + File.separatorChar + "My Games" + File.separatorChar + "Path of Exile" + File.separatorChar
     val (system, client) = updateItemPrices()
-    //val poeFolder = new java.io.File(".").getCanonicalPath
+    //val poeFolder = FileSystemView.getFileSystemView.getDefaultDirectory.getPath + File.separatorChar + "My Games" + File.separatorChar + "Path of Exile" + File.separatorChar
+    val poeFolder = new java.io.File(".").getCanonicalPath
     lazy val prices = Provider.itemPrices.toSeq.sortBy(_._2).map {
       case (name, price) => s"${name.capitalize} -> $price"
     }.mkString("\n")
     println(prices)
-
-    //TODO >>>>>ADD STACK SIZE<<<<<< Generate currrency stacksizes based on rarity thresholds
-
-    //TODO Adjust gem level to account for corruption(lvl 21 gems)
-    //TODO Adjust quality to include values above 20(incursion, corruption, syndicate)
 
     //TODO show items with white sockets
     val categories: Seq[Category] = Seq(

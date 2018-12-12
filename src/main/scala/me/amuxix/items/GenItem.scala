@@ -6,7 +6,7 @@ import me.amuxix.conditions.Condition
 abstract class GenItem extends Named with ImplicitConversions {
   def chaosValuePerSlot: Option[Double]
 
-  protected def condition: Condition
+  def condition: Condition
 
   lazy val rarity: FilterRarity =
     chaosValuePerSlot.fold[FilterRarity](Undetermined) { chaosValuePerSlot =>

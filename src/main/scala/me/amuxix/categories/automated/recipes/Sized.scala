@@ -12,7 +12,7 @@ abstract class Sized extends AutomatedCategory { outer =>
   def generateGenericItem(height: Int, width: Int): GenItem =
     new GenItem {
       override lazy val chaosValuePerSlot: Option[Double] = chaosValue.map(_ / (width * height))
-      override protected lazy val condition: Condition = outer.condition.copy(height = height, width = width)
+      override lazy val condition: Condition = outer.condition.copy(height = height, width = width)
     }
 
   override protected val categoryItems: Seq[GenItem] = Seq(

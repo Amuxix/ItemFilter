@@ -13,10 +13,10 @@ abstract class Item(height: Int, width: Int, `class`: String) extends GenItem {
   override lazy val chaosValuePerSlot: Option[Double] =
     Provider.getChaosEquivalentFor(this).map(_ / area)
 
-  override protected def condition: Condition = Condition(
+  override def condition: Condition = Condition(
     `class` = Some(itemClass),
     base = name,
-    height = height,
-    width = width
+    /*height = height,
+    width = width*/
   )
 }

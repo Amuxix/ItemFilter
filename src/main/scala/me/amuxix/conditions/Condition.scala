@@ -1,11 +1,9 @@
 package me.amuxix.conditions
 
 import me.amuxix.{Mergeable, Writable}
-import sun.plugin.dom.exception.InvalidStateException
 
 //TODO Separate into two argument lists, one for properties fixed by base(class, baseType, height and width) and one for the rest.
 //TODO Accept an option of base instead of first argument list
-//TODO ADD STACK SIZE
 case class Condition(
     base: Option[BaseType] = None,
     `class`: Option[ItemClass] = None,
@@ -20,6 +18,7 @@ case class Condition(
     gemLevel: Option[GemLevel] = None,
     mapTier: Option[MapTier] = None,
     explicitMod: Option[ExplicitMod] = None,
+    stackSize: Option[StackSize] = None,
     shapedMap: Option[ShapedMap] = None,
     identified: Option[Identified] = None,
     corrupted: Option[Corrupted] = None,
@@ -41,6 +40,7 @@ case class Condition(
     gemLevel,
     mapTier,
     explicitMod,
+    stackSize,
     shapedMap,
     identified,
     corrupted,
@@ -57,7 +57,7 @@ case class Condition(
         println(o1)
         println(o2)
         println(canMergeOptions(o1, o2))
-        throw new InvalidStateException("Attempting to merge un-mergeable things.")
+        throw new Exception("Attempting to merge un-mergeable things.")
     }
 
   private def canMergeOptions[T <: Mergeable[T]](o1: Option[T], o2: Option[T]): Boolean =
@@ -85,6 +85,7 @@ case class Condition(
       canMergeOptions(gemLevel, o.gemLevel) &&
       canMergeOptions(mapTier, o.mapTier) &&
       canMergeOptions(explicitMod, o.explicitMod) &&
+      canMergeOptions(stackSize, o.stackSize) &&
       shapedMap.size == o.shapedMap.size &&
       identified.size == o.identified.size &&
       corrupted.size == o.corrupted.size &&
@@ -107,6 +108,7 @@ case class Condition(
       mergeOptions(gemLevel, o.gemLevel),
       mergeOptions(mapTier, o.mapTier),
       mergeOptions(explicitMod, o.explicitMod),
+      mergeOptions(stackSize, o.stackSize),
       mergeBooleanOption(shapedMap, o.shapedMap),
       mergeBooleanOption(identified, o.identified),
       mergeBooleanOption(corrupted, o.corrupted),
@@ -130,6 +132,7 @@ case class Condition(
       gemLevel.orElse(o.gemLevel),
       mapTier.orElse(o.mapTier),
       explicitMod.orElse(o.explicitMod),
+      stackSize.orElse(o.stackSize),
       shapedMap.orElse(o.shapedMap),
       identified.orElse(o.identified),
       corrupted.orElse(o.corrupted),

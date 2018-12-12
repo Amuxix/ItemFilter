@@ -21,7 +21,7 @@ object Chisel extends AutomatedCategory {
         chisel <- chaosValue
         whetstone <- BlacksmithsWhetstone.chaosValuePerSlot
       } yield chisel - whetstone * whetstonesRequired
-      override protected lazy val condition: Condition = cond
+      override lazy val condition: Condition = cond
     }
   }
 
@@ -30,7 +30,7 @@ object Chisel extends AutomatedCategory {
 
   override protected val categoryItems: Seq[GenItem] = whites ++ blues :+ new GenItem {
     override def chaosValuePerSlot: Option[Double] = chaosValue
-    override protected def condition: Condition = Condition(base = hammers, quality = 20)
+    override def condition: Condition = Condition(base = hammers, quality = 20)
   }
   override protected def actionForRarity(rarity: FilterRarity): Action = Action()
 }
