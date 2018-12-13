@@ -5,8 +5,8 @@ import me.amuxix.{Mergeable, Writable}
 //TODO Separate into two argument lists, one for properties fixed by base(class, baseType, height and width) and one for the rest.
 //TODO Accept an option of base instead of first argument list
 case class Condition(
-    base: Option[BaseType] = None,
-    `class`: Option[ItemClass] = None,
+  `class`: Option[ItemClass] = None,
+  base: Option[BaseType] = None,
     dropLevel: Option[DropLevel] = None,
     itemLevel: Option[ItemLevel] = None,
     quality: Option[Quality] = None,
@@ -27,8 +27,8 @@ case class Condition(
     socketGroup: Option[SocketGroup] = None,
 ) extends Mergeable[Condition] {
   val conditions: Seq[Writable] = Seq(
-    base,
     `class`,
+    base,
     dropLevel,
     itemLevel,
     quality,
@@ -72,8 +72,8 @@ case class Condition(
     else None
 
   override def canMerge(o: Condition): Boolean =
-    canMergeOptions(base, o.base) &&
-      canMergeOptions(`class`, o.`class`) &&
+    canMergeOptions(`class`, o.`class`) &&
+      canMergeOptions(base, o.base) &&
       canMergeOptions(dropLevel, o.dropLevel) &&
       canMergeOptions(itemLevel, o.itemLevel) &&
       canMergeOptions(quality, o.quality) &&
@@ -95,8 +95,8 @@ case class Condition(
 
   override def merge(o: Condition): Condition = 
     Condition(
-      mergeOptions(base, o.base),
       mergeOptions(`class`, o.`class`),
+      mergeOptions(base, o.base),
       mergeOptions(dropLevel, o.dropLevel),
       mergeOptions(itemLevel, o.itemLevel),
       mergeOptions(quality, o.quality),
@@ -119,8 +119,8 @@ case class Condition(
 
   def join(o: Condition): Condition =
     Condition(
-      base.orElse(o.base),
       `class`.orElse(o.`class`),
+      base.orElse(o.base),
       dropLevel.orElse(o.dropLevel),
       itemLevel.orElse(o.itemLevel),
       quality.orElse(o.quality),

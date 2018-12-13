@@ -2,7 +2,7 @@ package me.amuxix.providers
 
 import cats.data.EitherT
 import me.amuxix.items.currency.{ChaosOrb, PriceFallback}
-import me.amuxix.items.{Item, NoDrop}
+import me.amuxix.items.{Item, NoPrice}
 import me.amuxix.providers.Provider.ParsableWSResponse
 import play.api.libs.json.{JsValue, Reads}
 import play.api.libs.ws.JsonBodyReadables._
@@ -38,7 +38,7 @@ object Provider {
         case fallback: PriceFallback =>
           println(s"Using fallback price for ${fallback.name}")
           Some(fallback.fallback)
-        case _: NoDrop =>
+        case _: NoPrice =>
           None
         case other =>
           println(s"No Price for ${other.name}")

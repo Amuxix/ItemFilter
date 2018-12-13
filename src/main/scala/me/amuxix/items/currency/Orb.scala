@@ -1,5 +1,5 @@
 package me.amuxix.items.currency
-import me.amuxix.items.NoDrop
+import me.amuxix.items.NoPrice
 
 /**
   * This marker trait represents currency that alters items is ready to use, such as Exalted Orb or Chaos Orb.
@@ -54,20 +54,11 @@ object Orb {
     BlessingOfUulNetol,
     BlessingOfXoph,
     BlessingOfTul,
-    VialOfAwakening,
-    VialOfConsequence,
-    VialOfDominance,
-    VialOfFate,
-    VialOfSacrifice,
-    VialOfSummoning,
-    VialOfTheGhost,
-    VialOfTheRitual,
-    VialOfTranscendence,
   )
 }
 
-case object EternalOrb extends Orb(10) with NoDrop
-case object BestiaryOrb extends Orb(10) with NoDrop
+case object EternalOrb extends Orb(10) with NoPrice
+case object BestiaryOrb extends Orb(10) with NoPrice
 
 
 case object MirrorOfKalandra extends Orb(10)
@@ -111,13 +102,13 @@ case object BlacksmithsWhetstone extends Orb(20) {
   override lazy val name: String = "Blacksmith's Whetstone"
 }
 
-case object MasterCartographersSeal extends Orb(10) with NoDrop {
+case object MasterCartographersSeal extends Orb(10) with NoPrice {
   override def name: String = "Master Cartographer's Seal"
 }
-case object JourneymanCartographersSeal extends Orb(10) with NoDrop {
+case object JourneymanCartographersSeal extends Orb(10) with NoPrice {
   override def name: String = "Journeyman Cartographer's Seal"
 }
-case object ApprenticeCartographersSeal extends Orb(10) with NoDrop {
+case object ApprenticeCartographersSeal extends Orb(10) with NoPrice {
   override def name: String = "Apprentice Cartographer's Seal"
 }
 case object MasterCartographersSextant extends Orb(10) {
@@ -129,7 +120,7 @@ case object JourneymanCartographersSextant extends Orb(10) {
 case object ApprenticeCartographersSextant extends Orb(10) {
   override lazy val name: String = "Apprentice Cartographer's Sextant"
 }
-case object UnshapingOrb extends Orb(10) with NoDrop
+case object UnshapingOrb extends Orb(10) with NoPrice
 
 case object AncientOrb extends Orb(20)
 case object OrbOfHorizons extends Orb(20)
@@ -149,13 +140,3 @@ case object BlessingOfUulNetol extends Orb(10) {
 }
 case object BlessingOfXoph extends Orb(10)
 case object BlessingOfTul extends Orb(10)
-
-case object VialOfAwakening extends Orb(10)
-case object VialOfConsequence extends Orb(10)
-case object VialOfDominance extends Orb(10)
-case object VialOfFate extends Orb(10)
-case object VialOfSacrifice extends Orb(10)
-case object VialOfSummoning extends Orb(10)
-case object VialOfTheGhost extends Orb(10)
-case object VialOfTheRitual extends Orb(10)
-case object VialOfTranscendence extends Orb(10)

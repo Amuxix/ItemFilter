@@ -23,13 +23,13 @@ object General extends AutomatedCategory {
       override def chaosValuePerSlot: Option[Double] = JewellersOrb.chaosValuePerSlot.map(_ * 7)
       override def condition: Condition = Condition(sockets = 6)
     },
-    new CategoryItem(Leveling) { override def condition: Condition = Condition(itemLevel = (0, magicCutoff), linkedSockets = 4) },
-    new CategoryItem(Leveling) { override def condition: Condition = Condition(itemLevel = (0, whiteCutoff), linkedSockets = 3) },
-    new CategoryItem(Leveling) { override def condition: Condition = Condition(itemLevel = (0, fourLinkRareCutoff), linkedSockets = 4, rarity = GameRare) },
-    new CategoryItem(Leveling) { override def condition: Condition = Condition(`class` = "Belt", itemLevel = (0, whiteCutoff)) },
+    new CategoryItem(Leveling) { override def condition: Condition = Condition(itemLevel = (1, magicCutoff), linkedSockets = 4) },
+    new CategoryItem(Leveling) { override def condition: Condition = Condition(itemLevel = (1, whiteCutoff), linkedSockets = 3) },
+    new CategoryItem(Leveling) { override def condition: Condition = Condition(itemLevel = (1, fourLinkRareCutoff), linkedSockets = 4, rarity = GameRare) },
+    new CategoryItem(Leveling) { override def condition: Condition = Condition(`class` = "Belt", itemLevel = (1, whiteCutoff)) },
     new CategoryItem(Leveling) { override def condition: Condition = Condition(`class` = itemClasses, itemLevel = (1, whiteCutoff), rarity = Normal) },
     new CategoryItem(Leveling) { override def condition: Condition = Condition(`class` = itemClasses, itemLevel = (1, magicCutoff), rarity = Magic) },
-    new CategoryItem(Leveling) { override def condition: Condition = Condition(`class` = Seq("Amulet", "Ring", "Belt"), rarity = GameRare, itemLevel = (0, 60)) },
+    new CategoryItem(Leveling) { override def condition: Condition = Condition(`class` = Seq("Amulet", "Ring", "Belt"), rarity = GameRare, itemLevel = (1, 60)) },
   ) ++ bestItems.flatMap(i => Seq(
     new CategoryItem { override def condition: Condition = i.rare },
     new CategoryItem(AlwaysHide) { override def condition: Condition = i.crafting }

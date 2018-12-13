@@ -9,5 +9,6 @@ object Width {
 case class Width(start: Int, end: Int) extends OperatorWritable[Width](2, "Width") {
   def this(value: Int) = this(value, value)
 
+  override val min: Int = 1
   override def merge(other: Width): Width = Width(start min other.start, end max other.end)
 }

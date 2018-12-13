@@ -21,13 +21,13 @@ abstract class Base(height: Int, width: Int, val dropLevel: Int, `class`: String
   )
 
   def conditionsOfBestRaresForZoneLevel: Condition =
-    closeToZoneLevel(ItemLevel(0, this.dropLevel + minDropBuffer max this.dropLevel / 10))
+    closeToZoneLevel(ItemLevel(1, this.dropLevel + minDropBuffer max this.dropLevel / 10))
 
   def conditionsOfGoodRaresForZoneLevel: Condition =
-    closeToZoneLevel(ItemLevel(0, this.dropLevel + 20))
+    closeToZoneLevel(ItemLevel(1, this.dropLevel + 20))
 
   def conditionsOfBestWhitesForZoneLevel: Condition =
-    closeToZoneLevel(ItemLevel(0, this.dropLevel + minDropBuffer max this.dropLevel / 10), Normal)
+    closeToZoneLevel(ItemLevel(1, this.dropLevel + minDropBuffer max this.dropLevel / 10), Normal)
 }
 
 sealed trait BestBaseBlocks extends ImplicitConversions { this: Base =>

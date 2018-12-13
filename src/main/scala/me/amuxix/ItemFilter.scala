@@ -5,14 +5,15 @@ import java.io.{File, PrintWriter}
 import akka.actor.ActorSystem
 import javax.swing.filechooser.FileSystemView
 import me.amuxix.WSClient.wsClient
+import me.amuxix.categories._
 import me.amuxix.categories.automated._
 import me.amuxix.categories.automated.currency._
 import me.amuxix.categories.automated.leagues._
 import me.amuxix.categories.automated.leagues.betrayal.{Scarab, VeiledItems}
+import me.amuxix.categories.automated.legacy.Net
 import me.amuxix.categories.automated.recipes._
 import me.amuxix.categories.leagues._
 import me.amuxix.categories.recipes._
-import me.amuxix.categories.{Category, _}
 import me.amuxix.providers.Provider
 import me.amuxix.providers.poeninja.PoeNinja
 import play.api.libs.ws.ahc.StandaloneAhcWSClient
@@ -59,15 +60,15 @@ object ItemFilter {
     val (system, client) = wsClient
     val provider = new PoeNinja(client)
     val f = provider.getAllItemsPrices
-    Await.result(f, 30 seconds)
+    Await.result(f, 10 seconds)
     println("Prices updated")
     (system, client)
   }
 
   def main(args: Array[String]): Unit = {
     val (system, client) = updateItemPrices()
-    //val poeFolder = FileSystemView.getFileSystemView.getDefaultDirectory.getPath + File.separatorChar + "My Games" + File.separatorChar + "Path of Exile" + File.separatorChar
-    val poeFolder = new java.io.File(".").getCanonicalPath
+    val poeFolder = FileSystemView.getFileSystemView.getDefaultDirectory.getPath + File.separatorChar + "My Games" + File.separatorChar + "Path of Exile" + File.separatorChar
+    //val poeFolder = new java.io.File(".").getCanonicalPath
     lazy val prices = Provider.itemPrices.toSeq.sortBy(_._2).map {
       case (name, price) => s"${name.capitalize} -> $price"
     }.mkString("\n")
@@ -79,7 +80,6 @@ object ItemFilter {
       Essence,
       Fossil,
       Resonator,
-      Beastiary, //TODO: Make automatic category
       Scarab,
       Fragment,
       Currency,
@@ -105,18 +105,28 @@ object ItemFilter {
       Jewels,
       Flasks,
       Maps,
-      //TODO: Add prophecies
+      Prophecy,
+    )
+
+    val legacyCategories = Seq(
+      Net,
       Legacy,
     )
-    Seq(Reduced, Diminished, Normal, Racing).foreach(createFilterFile(poeFolder, _, categories))
-    createFilterFile(poeFolder, Reduced, categories, conceal = true)
+
+    Seq(Reduced, Diminished, Normal, Racing).foreach((filterLevel: FilterLevel) => createFilterFile(poeFolder, filterLevel, categories, legacyCategories))
+    createFilterFile(poeFolder, Reduced, categories, legacyCategories, conceal = true)
     client.close()
     system.terminate()
   }
 
-  def createFilterFile(poeFolder: String, filterLevel: FilterLevel, categories: Seq[Category], conceal: Boolean = false): Unit = {
+  def createFilterFile(poeFolder: String, filterLevel: FilterLevel, categories: Seq[Category], legacyCategories: Seq[Category], conceal: Boolean = false): Unit = {
     val filterFile = new PrintWriter(new File(poeFolder + s"${if (conceal) "Concealed " else ""}Amuxix's${filterLevel.suffix} filter.filter"))
-    val (shown, hidden) = categories.map(_.partitionHiddenAndShown(filterLevel, conceal)).unzip
+    val allCategories = if (league == Standard || league == Hardcore) {
+      categories ++ legacyCategories
+    } else {
+      categories
+    }
+    val (shown, hidden) = allCategories.map(_.partitionHiddenAndShown(filterLevel, conceal)).unzip
     filterFile.write((shown ++ hidden ++ LastCall.blocks(filterLevel).map(_.write)).mkString)
     filterFile.close()
   }
