@@ -14,7 +14,7 @@ object GameSound {
 
 sealed case class GameSound(soundNumber: Int, volume: Int) extends Sound {
   def this(soundNumber: Int) = this(soundNumber, 100)
-  if (soundNumber < 0 || soundNumber > 12 || volume < 0 || volume > 300) throw new InvalidArgument
+  if (soundNumber < 0 || soundNumber > 16 || volume < 0 || volume > 300) throw new InvalidArgument
 
   def setVolume(volume: Int): GameSound = GameSound(this.soundNumber, volume)
 

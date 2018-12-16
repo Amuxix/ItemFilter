@@ -20,8 +20,8 @@ abstract class SetRecipe(minItemLevel: Int, color: Color) extends Category {
         dropLevel = dropLevel.map(i => DropLevel(1, i))
     )
 
-  private val weapons = Block(partialCondition(None, 1, 3, dropLevel = Some(setDropLevelCutoff)), equipmentAction)
-  private val smallBows = Block(partialCondition(Seq("Bows"), 2, 3, dropLevel = Some(setDropLevelCutoff)), equipmentAction)
+  private val weapons = Block(partialCondition(None, 1, 3), equipmentAction)
+  private val smallBows = Block(partialCondition(Seq("Bows"), 2, 3), equipmentAction)
   private val armor = Block(partialCondition(armourClasses, dropLevel = Some(setDropLevelCutoff)), equipmentAction)
   private val accessories = Block(
     partialCondition(accessoriesClasses),

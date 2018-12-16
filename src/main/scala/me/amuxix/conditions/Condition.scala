@@ -75,7 +75,7 @@ case class Condition(
     canMergeOptions(`class`, o.`class`) &&
       canMergeOptions(base, o.base) &&
       canMergeOptions(dropLevel, o.dropLevel) &&
-      canMergeOptions(itemLevel, o.itemLevel) &&
+      itemLevel == o.itemLevel &&
       canMergeOptions(quality, o.quality) &&
       canMergeOptions(rarity, o.rarity) &&
       canMergeOptions(sockets, o.sockets) &&
@@ -93,12 +93,40 @@ case class Condition(
       elderItem.size == o.elderItem.size &&
       socketGroup == o.socketGroup
 
-  override def merge(o: Condition): Condition = 
+  //This will create problems where it adds a class to a block without one, possibly with bases outside that class
+  /*def reduceBases(`class`: Option[ItemClass], base: Option[BaseType]): (Option[ItemClass], Option[BaseType]) = {
+    val classes: Seq[FilterClass[Item]] = Seq(BodyArmour, Boots, Gloves, Helmet, Quiver, Shield,
+      OneHandedAxe, TwoHandedAxe, Bow, Claw, Dagger, OneHandedMace, TwoHandedMace, Sceptre, Staff, OneHandedSword, TwoHandedSword, ThrustingOneHandedSword, Wand,
+      LifeFlask, ManaFlask, HybridFlask, UtilityFlask,
+      Map, DivinationCard, IncursionItem,
+    )
+    base.fold((`class`, base)) { base =>
+      val (reducedClass, reducedBase) = classes.foldLeft((`class`, base)) {
+        case ((itemClass, base), filterClass) =>
+          val classBases = filterClass.all.map(_.`class`).toSet
+          val bases = base.bases.toSet
+          if (classBases subsetOf bases) {
+            val clazz = ItemClass(filterClass.className)
+            val rClass = itemClass.fold(Some(clazz))(oldClass => Some(oldClass merge clazz))
+            val rBase = BaseType((bases -- classBases).toSeq: _*)
+            (rClass, rBase)
+          } else {
+            (itemClass, base)
+          }
+      }
+      (reducedClass, Some(reducedBase))
+    }
+  }*/
+
+  override def merge(o: Condition): Condition = {
+    /*val mergedClass = mergeOptions(`class`, o.`class`)
+    val mergedBase = mergeOptions(base, o.base)
+    val (reducedClass, reducedBase) = reduceBases(mergedClass, mergedBase)*/
     Condition(
       mergeOptions(`class`, o.`class`),
       mergeOptions(base, o.base),
       mergeOptions(dropLevel, o.dropLevel),
-      mergeOptions(itemLevel, o.itemLevel),
+      itemLevel,
       mergeOptions(quality, o.quality),
       mergeOptions(rarity, o.rarity),
       mergeOptions(sockets, o.sockets),
@@ -116,6 +144,7 @@ case class Condition(
       mergeBooleanOption(elderItem, o.elderItem),
       socketGroup,
     )
+  }
 
   def join(o: Condition): Condition =
     Condition(

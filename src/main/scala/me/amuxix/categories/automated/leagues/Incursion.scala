@@ -5,7 +5,7 @@ import me.amuxix.categories.automated.AutomatedCategory
 import me.amuxix.items.{GenItem, IncursionItem}
 
 object Incursion extends AutomatedCategory {
-  override protected val categoryItems: Seq[GenItem] = IncursionItem.incursionItems
+  override protected val categoryItems: Seq[GenItem] = IncursionItem.all
 
   override protected def actionForRarity(rarity: FilterRarity): Action =
     Action(

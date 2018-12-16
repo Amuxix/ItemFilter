@@ -2,8 +2,8 @@ package me.amuxix.items
 
 sealed abstract class IncursionItem extends Item(1, 1, "Incursion Item") with NoPrice
 
-object IncursionItem {
-  val incursionItems: Seq[IncursionItem] = Seq(
+object IncursionItem extends FilterClass[IncursionItem] {
+  override val all: Seq[IncursionItem] = Seq(
     FlashpowderKeg,
     StoneOfPassage
   )

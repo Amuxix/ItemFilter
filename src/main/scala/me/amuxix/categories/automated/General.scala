@@ -14,8 +14,7 @@ object General extends AutomatedCategory {
 
   override protected lazy val categoryItems: Seq[GenItem] = Seq(
     new CategoryItem(AlwaysShow) { override def condition: Condition = Condition(`class` = Seq("Quest Items", "Labyrinth Item", "Pantheon Soul", "Labyrinth Trinket")) },
-    new CategoryItem(AlwaysShow) { override def condition: Condition = Condition(base = "Divine Vessel") },
-    new CategoryItem(Mythic) { override def condition: Condition = Condition(base = Seq("Albino Rhoa Feather", "Timeworn Reliquary Key")) },
+    new CategoryItem(Mythic) { override def condition: Condition = Condition(base = "Albino Rhoa Feather") },
     new CategoryItem(Mythic) { override def condition: Condition = Condition(`class` = "Fishing Rod") },
     new CategoryItem(Mythic) { override def condition: Condition = Condition(linkedSockets = 6) },
     new CategoryItem(Epic) { override def condition: Condition = Condition(linkedSockets = 5) },
@@ -36,7 +35,7 @@ object General extends AutomatedCategory {
   )) ++ allEquipment.flatMap(i => Seq(
     new CategoryItem(Leveling) { override def condition: Condition = i.conditionsOfBestRaresForZoneLevel },
     new CategoryItem(Leveling) { override def condition: Condition = i.conditionsOfGoodRaresForZoneLevel },
-    new CategoryItem(Leveling) { override def condition: Condition = i.conditionsOfBestWhitesForZoneLevel },
+    new CategoryItem(AlwaysHide) { override def condition: Condition = i.conditionsOfBestWhitesForZoneLevel },
   ))
 
 

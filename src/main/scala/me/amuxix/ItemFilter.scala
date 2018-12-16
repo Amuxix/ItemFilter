@@ -127,7 +127,7 @@ object ItemFilter {
       categories
     }
     val (shown, hidden) = allCategories.map(_.partitionHiddenAndShown(filterLevel, conceal)).unzip
-    filterFile.write((shown ++ hidden ++ LastCall.blocks(filterLevel).map(_.write)).mkString)
+    filterFile.write((shown ++ hidden ++ LastCall.blocks(filterLevel).reverse.map(_.write)).mkString)
     filterFile.close()
   }
 }
