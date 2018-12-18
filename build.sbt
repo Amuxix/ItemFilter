@@ -33,6 +33,10 @@ libraryDependencies ++= Seq(
   "com.typesafe.play" %% "play-ahc-ws-standalone" % "2.0.0-RC2",
   "com.typesafe.play" %% "play-ws-standalone-json" % "2.0.0-RC2",
   "org.slf4j" % "slf4j-nop" % "1.8.0-beta2",
+  "com.github.tminglei" %% "slick-pg" % "0.16.2",
+  "com.typesafe.slick" %% "slick-hikaricp" % "3.2.0",
+  "org.postgresql" % "postgresql" % "42.2.5",
+  "org.flywaydb" % "flyway-core" % "5.2.0",
 
   //"org.http4s" % "http4s-core_2.12" % http4sVersion,
   /*"org.http4s" %% "http4s-dsl" % http4sVersion,
