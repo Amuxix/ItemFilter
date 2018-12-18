@@ -7,7 +7,7 @@ import me.amuxix.{AlwaysShow, FilterRarity}
 
 object Shaper extends AutomatedCategory {
   override protected val categoryItems: Seq[GenItem] = Seq(
-    new CategoryItem(AlwaysShow) { override protected def condition: Condition = Condition(shaperItem = true) }
+    new CategoryItem(AlwaysShow) { override def condition: Condition = Condition(shaperItem = true) }
   )
   override protected def actionForRarity(rarity: FilterRarity): Action = Action()
 }

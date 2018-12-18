@@ -1,17 +1,10 @@
 package me.amuxix.conditions
 
-import me.amuxix._
-
-/**
-  * Created by Amuxix on 03/03/2017.
-  */
 object Quality {
-  implicit def tuple22Quality(tuple: (Operator, Int)): Quality = Quality(tuple._1, tuple._2)
-  def apply(quality: Int): Quality = new Quality(quality)
+  def apply(level: Int): Quality = new Quality(level)
 }
-case class Quality(op: Operator, quality: Int) extends Writable {
-  if (quality < 0 || quality > 20) throw new InvalidArgument
-  def this(quality: Int) = this("=", quality)
+case class Quality(start: Int, end: Int) extends OperatorWritable[Quality](30, "Quality") {
+  def this(value: Int) = this(value, value)
 
-  override def print: String = s"Quality ${op.print}$quality"
+  override def merge(other: Quality): Quality = Quality(start min other.start, end max other.end)
 }

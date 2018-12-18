@@ -11,8 +11,8 @@ object Flasks extends AutomatedCategory {
     flasks
       .flatten
       .sortBy(_.dropLevel)(implicitly[Ordering[Int]].reverse)
-      .map(flask => new CategoryItem(Leveling) { override protected def condition: Condition = flask.conditionsOfBestRaresForZoneLevel }) :+
-    new CategoryItem(Common) { override protected def condition: Condition = Condition(`class` = "Utility Flask") }
+      .map(flask => new CategoryItem(Leveling) { override def condition: Condition = flask.conditionsOfBestRaresForZoneLevel }) :+
+    new CategoryItem(Common) { override def condition: Condition = Condition(`class` = "Utility Flask") }
 
   override protected def actionForRarity(rarity: FilterRarity): Action = Action()
 }

@@ -1,12 +1,10 @@
 package me.amuxix.items.currency.delve
-
-import me.amuxix.items.Item
 import me.amuxix.items.currency.Currency
 
-trait Fossil extends Currency
+sealed abstract class Fossil extends Currency(1)
 
 object Fossil {
-  val fossils = Seq[Item](
+  val fossils: Seq[Fossil] = Seq(
     FracturedFossil,
     FacetedFossil,
     GlyphicFossil,

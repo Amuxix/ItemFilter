@@ -1,12 +1,11 @@
 package me.amuxix.items.currency.delve
 
-import me.amuxix.items.Item
 import me.amuxix.items.currency.Currency
 
-trait Resonator extends Currency
+sealed abstract class Resonator extends Currency(1)
 
 object Resonator {
-  val resonators = Seq[Item](
+  val resonators: Seq[Resonator] = Seq(
     PrimeAlchemicalResonator,
     PrimeChaoticResonator,
     PowerfulChaoticResonator,

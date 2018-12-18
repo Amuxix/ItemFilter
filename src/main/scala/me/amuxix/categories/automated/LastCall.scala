@@ -3,17 +3,17 @@ package me.amuxix.categories.automated
 import me.amuxix.ItemFilter._
 import me.amuxix.actions.Action
 import me.amuxix.actions.Color.{transparent, white}
-import me.amuxix.conditions.{Condition, Rare}
+import me.amuxix.conditions.{Condition, Normal, Rare}
 import me.amuxix.items.{CategoryItem, GenItem}
-import me.amuxix.{AlwaysHide, FilterRarity, Undetermined}
+import me.amuxix.{AlwaysHide, AlwaysShow, FilterRarity}
 
 object LastCall extends AutomatedCategory {
   override protected val categoryItems: Seq[GenItem] = Seq(
-    new CategoryItem(AlwaysHide) { override protected def condition: Condition = Condition(
+    new CategoryItem(AlwaysHide) { override def condition: Condition = Condition(
       `class` = accessoriesClasses ++ armourClasses ++ weaponClasses ++ shieldClasses ++ flaskClasses,
-      rarity = ("<=", Rare),
+      rarity = (Normal, Rare),
     ) },
-    new CategoryItem(Undetermined) { override protected def condition: Condition = Condition() }
+    new CategoryItem(AlwaysShow) { override def condition: Condition = Condition() }
   )
   override protected def actionForRarity(rarity: FilterRarity): Action = rarity match {
     case AlwaysHide =>
