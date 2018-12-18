@@ -49,7 +49,7 @@ case class Block(condition: Condition, action: Action, show: Boolean) extends Me
   }
 
   override def canMerge(other: Block): Boolean =
-    (condition canMerge other.condition) && action == other.action && show == other.show
+    action == other.action && show == other.show && (condition canMerge other.condition)
 
   override def merge(other: Block) = Block(condition merge other.condition, action, show)
 }

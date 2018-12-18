@@ -2,8 +2,8 @@ package me.amuxix.items
 
 abstract class DivinationCard extends Item(1, 1, "Divination")
 
-object DivinationCard {
-  val divCards: Seq[Item] = Seq[Item](
+object DivinationCard extends FilterClass[DivinationCard] {
+  override val all: Seq[DivinationCard] = Seq(
     AMothersPartingGift,
     AbandonedWealth,
     AnarchysPrice,

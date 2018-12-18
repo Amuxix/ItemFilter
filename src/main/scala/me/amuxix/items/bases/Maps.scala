@@ -1,14 +1,15 @@
 package me.amuxix.items.bases
 import me.amuxix.Named
 import me.amuxix.conditions.Condition
+import me.amuxix.items.FilterClass
 
-object Map {
+object Map extends FilterClass[Map] {
   def dropLevel(tier: Int): Int = tier match {
     case 1 => 58
     case _ => 68 + tier
   }
 
-  val maps: Seq[Map] = Seq(
+  override val all: Seq[Map] = Seq(
     FloodedMineMap,
     ChannelMap,
     AtollMap,
@@ -149,26 +150,26 @@ object Map {
     PitOfTheChimeraMap,
   )
 
-  lazy val tier1 = maps.filter(_.tier == 1)
-  lazy val tier2 = maps.filter(_.tier == 2)
-  lazy val tier3 = maps.filter(_.tier == 3)
-  lazy val tier4 = maps.filter(_.tier == 4)
-  lazy val tier5 = maps.filter(_.tier == 5)
-  lazy val tier6 = maps.filter(_.tier == 6)
-  lazy val tier7 = maps.filter(_.tier == 7)
-  lazy val tier8 = maps.filter(_.tier == 8)
-  lazy val tier9 = maps.filter(_.tier == 9)
-  lazy val tier10 = maps.filter(_.tier == 10)
-  lazy val tier11 = maps.filter(_.tier == 11)
-  lazy val tier12 = maps.filter(_.tier == 12)
-  lazy val tier13 = maps.filter(_.tier == 13)
-  lazy val tier14 = maps.filter(_.tier == 14)
-  lazy val tier15 = maps.filter(_.tier == 15)
-  lazy val tier16 = maps.filter(_.tier == 16)
+  lazy val tier1 = all.filter(_.tier == 1)
+  lazy val tier2 = all.filter(_.tier == 2)
+  lazy val tier3 = all.filter(_.tier == 3)
+  lazy val tier4 = all.filter(_.tier == 4)
+  lazy val tier5 = all.filter(_.tier == 5)
+  lazy val tier6 = all.filter(_.tier == 6)
+  lazy val tier7 = all.filter(_.tier == 7)
+  lazy val tier8 = all.filter(_.tier == 8)
+  lazy val tier9 = all.filter(_.tier == 9)
+  lazy val tier10 = all.filter(_.tier == 10)
+  lazy val tier11 = all.filter(_.tier == 11)
+  lazy val tier12 = all.filter(_.tier == 12)
+  lazy val tier13 = all.filter(_.tier == 13)
+  lazy val tier14 = all.filter(_.tier == 14)
+  lazy val tier15 = all.filter(_.tier == 15)
+  lazy val tier16 = all.filter(_.tier == 16)
 
-  lazy val white = maps.filter(_.tier < 6)
-  lazy val yellow = maps.filter(m => m.tier >= 6 && m.tier < 11)
-  lazy val red = maps.filter(m => m.tier >= 11)
+  lazy val white = all.filter(_.tier < 6)
+  lazy val yellow = all.filter(m => m.tier >= 6 && m.tier < 11)
+  lazy val red = all.filter(m => m.tier >= 11)
 }
 
 sealed abstract class Map(val tier: Int) extends Base(1, 1, Map.dropLevel(tier), "Maps") with Named {

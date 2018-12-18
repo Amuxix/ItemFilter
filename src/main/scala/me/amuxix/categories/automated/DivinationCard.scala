@@ -7,7 +7,7 @@ import me.amuxix.actions._
 import me.amuxix.items.GenItem
 
 object DivinationCard extends AutomatedCategory {
-  override protected val categoryItems: Seq[GenItem] = items.DivinationCard.divCards
+  override protected val categoryItems: Seq[GenItem] = items.DivinationCard.all
   override protected def actionForRarity(rarity: FilterRarity): Action = rarity match {
     case AlwaysHide | Common =>
       Action(

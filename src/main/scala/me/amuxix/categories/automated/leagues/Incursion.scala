@@ -1,34 +1,18 @@
 package me.amuxix.categories.automated.leagues
 import me.amuxix._
 import me.amuxix.actions.{Action, Color, Sound}
-import me.amuxix.conditions.Condition
+import me.amuxix.categories.automated.AutomatedCategory
+import me.amuxix.items.{GenItem, IncursionItem}
 
-object Incursion extends LeagueAutomatedCategory {
-  override val condition: Condition = Condition(`class` = "Incursion Item")
+object Incursion extends AutomatedCategory {
+  override protected val categoryItems: Seq[GenItem] = IncursionItem.all
 
-  override protected def actionForRarity(rarity: FilterRarity): Action = rarity match {
-    case AlwaysShow =>
-      Action(
-        backgroundColor = Color.black,
-        textColor = Color.incursionRed,
-        borderColor = Color.incursionGreen,
-        sound = Sound.incursion
-      )
-    case Rare =>
-      Action(
-        size = 40,
-        backgroundColor = Color.black,
-        textColor = Color.incursionRed,
-        borderColor = Color.incursionGreen,
-        sound = Sound.incursion
-      )
-    case _ =>
-      Action(
-        size = 45,
-        backgroundColor = Color.black,
-        textColor = Color.incursionRed,
-        borderColor = Color.incursionGreen,
-        sound = Sound.incursion
-      )
-  }
+  override protected def actionForRarity(rarity: FilterRarity): Action =
+    Action(
+      size = 45,
+      backgroundColor = Color.black,
+      textColor = Color.incursionRed,
+      borderColor = Color.incursionGreen,
+      sound = Sound.incursion
+    )
 }

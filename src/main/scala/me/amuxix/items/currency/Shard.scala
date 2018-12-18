@@ -1,5 +1,4 @@
 package me.amuxix.items.currency
-import me.amuxix.items.Item
 
 /**
   * This represents parts of an [[Orb]] and can't be used on its own but rather needs
@@ -7,12 +6,12 @@ import me.amuxix.items.Item
   *
   * @param stackSize How many parts does it take to form a full piece of currency
   */
-sealed abstract class Shard(val orb: Orb, val stackSize: Int = 20) extends Currency with PriceFallback {
+sealed abstract class Shard(val orb: Orb, stackSize: Int = 20) extends Currency(stackSize) with PriceFallback {
   override def fallback: Double = orb.chaosValuePerSlot.fold(0D)(_ / stackSize)
 }
 
 object Shard {
-  val shards: Seq[Item] = Seq[Item](
+  val shards: Seq[Shard] = Seq(
     SplinterOfChayula,
     SplinterOfEsh,
     SplinterOfUulNetol,

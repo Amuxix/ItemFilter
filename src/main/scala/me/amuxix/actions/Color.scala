@@ -29,6 +29,7 @@ object Color {
   val goodYellow = Color(255, 255, 0)
   val blue = Color(27, 66, 130)
   val divinationBlue = Color(14, 186, 255)
+  val prophecyPink = Color(181, 75, 255)
   val chaosBlue = Color(0, 64, 255)
   val regalPurple = Color(82, 0, 155)
   val shelder = Color(50, 130, 165)

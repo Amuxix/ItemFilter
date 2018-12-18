@@ -2,17 +2,17 @@ package me.amuxix.categories.automated.recipes
 import me.amuxix._
 import me.amuxix.actions.Action
 import me.amuxix.categories.automated.AutomatedCategory
-import me.amuxix.conditions.{Condition, Height, Width}
+import me.amuxix.conditions.Condition
 import me.amuxix.items.GenItem
 
 abstract class Sized extends AutomatedCategory { outer =>
   def condition: Condition
   def chaosValue: Option[Double]
 
-  def generateGenericItem(height: Height, width: Width): GenItem =
+  def generateGenericItem(height: Int, width: Int): GenItem =
     new GenItem {
-      override lazy val chaosValuePerSlot: Option[Double] = chaosValue.map(_ / (width.i * height.i))
-      override protected lazy val condition: Condition = outer.condition.copy(height = Some(height), width = Some(width))
+      override lazy val chaosValuePerSlot: Option[Double] = chaosValue.map(_ / (width * height))
+      override lazy val condition: Condition = outer.condition.copy(height = height, width = width)
     }
 
   override protected val categoryItems: Seq[GenItem] = Seq(

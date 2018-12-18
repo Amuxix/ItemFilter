@@ -1,13 +1,11 @@
 package me.amuxix.conditions
-import me.amuxix.{InvalidArgument, Operator, Writable}
 
 object MapTier {
-  def apply(tier: Int): MapTier = new MapTier(tier)
+  def apply(level: Int): MapTier = new MapTier(level)
 }
+case class MapTier(start: Int, end: Int) extends OperatorWritable[MapTier](17, "MapTier") {
+  def this(value: Int) = this(value, value)
 
-case class MapTier(op: Operator, tier: Int) extends Writable {
-  if (tier < 1 || tier > 16) throw new InvalidArgument
-  def this(tier: Int) = this("=", tier)
-
-  override def print: String = s"MapTier ${op.print}$tier"
+  override val min: Int = 1
+  override def merge(other: MapTier): MapTier = MapTier(start min other.start, end max other.end)
 }

@@ -5,14 +5,14 @@ import me.amuxix.actions.Color._
 import me.amuxix.actions.Sound._
 import me.amuxix.actions._
 import me.amuxix.conditions.Condition
-import me.amuxix.items.bases.Map.maps
+import me.amuxix.items.bases.Map.all
 import me.amuxix.items.{CategoryItem, GenItem}
 
 object Maps extends AutomatedCategory {
-  override protected val categoryItems: Seq[GenItem] = maps.flatMap { map =>
+  override protected val categoryItems: Seq[GenItem] = all.flatMap { map =>
     Seq(
-      new CategoryItem(Epic) { override protected def condition: Condition = map.sameTierOrUpgrade },
-      new CategoryItem(Rare) { override protected def condition: Condition = map.good },
+      new CategoryItem(Epic) { override def condition: Condition = map.sameTierOrUpgrade },
+      new CategoryItem(Rare) { override def condition: Condition = map.good },
       map,
     )
   }
