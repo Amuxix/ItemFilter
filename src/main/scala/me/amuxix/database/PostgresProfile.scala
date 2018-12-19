@@ -17,3 +17,5 @@ trait PostgresProfile
 
   override val api: API = API
 }
+
+object PostgresProfile extends PostgresProfile

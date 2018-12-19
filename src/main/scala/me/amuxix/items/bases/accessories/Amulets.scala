@@ -1,8 +1,26 @@
 package me.amuxix.items.bases.accessories
 
+import me.amuxix.items.FilterClass
 import me.amuxix.items.bases.Accessory
 
 sealed abstract class Amulet(dropLevel: Int) extends Accessory(dropLevel, "Amulet")
+
+object Amulet extends FilterClass[Amulet] {
+  override val all: Seq[Amulet] = Seq(
+    CoralAmulet,
+    PauaAmulet,
+    AmberAmulet,
+    JadeAmulet,
+    LapisAmulet,
+    GoldAmulet,
+    AgateAmulet,
+    CitrineAmulet,
+    TurquoiseAmulet,
+    OnyxAmulet,
+    MarbleAmulet,
+    BluePearlAmulet,
+  )
+}
 
 case object CoralAmulet extends Amulet(dropLevel = 1)
 case object PauaAmulet extends Amulet(dropLevel = 1)

@@ -10,7 +10,7 @@ import me.amuxix.{AlwaysHide, AlwaysShow, FilterRarity}
 object LastCall extends AutomatedCategory {
   override protected val categoryItems: Seq[GenItem] = Seq(
     new CategoryItem(AlwaysHide) { override def condition: Condition = Condition(
-      `class` = accessoriesClasses ++ armourClasses ++ weaponClasses ++ shieldClasses ++ flaskClasses,
+      `class` = config.accessoriesClasses ++ config.armourClasses ++ config.weaponClasses ++ config.shieldClasses ++ config.flaskClasses,
       rarity = (Normal, Rare),
     ) },
     new CategoryItem(AlwaysShow) { override def condition: Condition = Condition() }

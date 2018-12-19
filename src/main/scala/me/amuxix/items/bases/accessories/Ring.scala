@@ -1,9 +1,30 @@
 package me.amuxix.items.bases.accessories
 
 import me.amuxix.conditions.BaseType
+import me.amuxix.items.FilterClass
 import me.amuxix.items.bases.Accessory
 
 sealed abstract class Ring(dropLevel: Int) extends Accessory(dropLevel, "Ring")
+
+object Ring extends FilterClass[Ring] {
+  override val all: Seq[Ring] = Seq(
+    CoralRing,
+    IronRing,
+    PauaRing,
+    UnsetRing,
+    SapphireRing,
+    TopazRing,
+    RubyRing,
+    DiamondRing,
+    GoldRing,
+    MoonstoneRing,
+    TwoStoneRing,
+    AmethystRing,
+    PrismaticRing,
+    OpalRing,
+    SteelRing,
+  )
+}
 
 case object CoralRing extends Ring(dropLevel = 1)
 case object IronRing extends Ring(dropLevel = 1)

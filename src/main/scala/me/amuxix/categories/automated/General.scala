@@ -10,7 +10,7 @@ import me.amuxix.items.currency.JewellersOrb
 import me.amuxix.items.{CategoryItem, GenItem}
 
 object General extends AutomatedCategory {
-  private val itemClasses = accessoriesClasses ++ armourClasses ++ weaponClasses ++ shieldClasses
+  private val itemClasses = config.accessoriesClasses ++ config.armourClasses ++ config.weaponClasses ++ config.shieldClasses
 
   override protected lazy val categoryItems: Seq[GenItem] = Seq(
     new CategoryItem(AlwaysShow) { override def condition: Condition = Condition(`class` = Seq("Quest Items", "Labyrinth Item", "Pantheon Soul", "Labyrinth Trinket")) },
@@ -22,13 +22,13 @@ object General extends AutomatedCategory {
       override def chaosValuePerSlot: Option[Double] = JewellersOrb.chaosValuePerSlot.map(_ * 7)
       override def condition: Condition = Condition(sockets = 6)
     },
-    new CategoryItem(Leveling) { override def condition: Condition = Condition(itemLevel = (1, magicCutoff), linkedSockets = 4) },
-    new CategoryItem(Leveling) { override def condition: Condition = Condition(itemLevel = (1, whiteCutoff), linkedSockets = 3) },
-    new CategoryItem(Leveling) { override def condition: Condition = Condition(itemLevel = (1, fourLinkRareCutoff), linkedSockets = 4, rarity = GameRare) },
-    new CategoryItem(Leveling) { override def condition: Condition = Condition(`class` = "Belt", itemLevel = (1, whiteCutoff)) },
-    new CategoryItem(Leveling) { override def condition: Condition = Condition(`class` = itemClasses, itemLevel = (1, whiteCutoff), rarity = Normal) },
-    new CategoryItem(Leveling) { override def condition: Condition = Condition(`class` = itemClasses, itemLevel = (1, magicCutoff), rarity = Magic) },
-    new CategoryItem(Leveling) { override def condition: Condition = Condition(`class` = Seq("Amulet", "Ring", "Belt"), rarity = GameRare, itemLevel = (1, 60)) },
+    new CategoryItem(Leveling) { override def condition: Condition = Condition(itemLevel = (1, cutoffs.normalItems), linkedSockets = 3) },
+    new CategoryItem(Leveling) { override def condition: Condition = Condition(itemLevel = (1, cutoffs.magicItems), linkedSockets = 4) },
+    new CategoryItem(Leveling) { override def condition: Condition = Condition(itemLevel = (1, cutoffs.fourLinkRare), linkedSockets = 4, rarity = GameRare) },
+    new CategoryItem(Leveling) { override def condition: Condition = Condition(`class` = "Belt", itemLevel = (1, cutoffs.normalItems)) },
+    new CategoryItem(Leveling) { override def condition: Condition = Condition(`class` = itemClasses, itemLevel = (1, cutoffs.normalItems), rarity = Normal) },
+    new CategoryItem(Leveling) { override def condition: Condition = Condition(`class` = itemClasses, itemLevel = (1, cutoffs.magicItems), rarity = Magic) },
+    new CategoryItem(Leveling) { override def condition: Condition = Condition(`class` = config.accessoriesClasses, rarity = GameRare, itemLevel = (1, 60)) },
   ) ++ bestItems.flatMap(i => Seq(
     new CategoryItem { override def condition: Condition = i.rare },
     new CategoryItem(AlwaysHide) { override def condition: Condition = i.crafting }

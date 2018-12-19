@@ -28,6 +28,8 @@ abstract class Base(height: Int, width: Int, val dropLevel: Int, `class`: String
 
   def conditionsOfBestWhitesForZoneLevel: Condition =
     closeToZoneLevel(ItemLevel(1, this.dropLevel + minDropBuffer max this.dropLevel / 10), Normal)
+
+  def insertValues: String = s"""(\"$name\", $height, $width, \"${`class`}\", $dropLevel)"""
 }
 
 sealed trait BestBaseBlocks extends ImplicitConversions { this: Base =>
@@ -50,14 +52,10 @@ object Base {
 
   val flasks: Seq[Seq[Flask]] = Seq(LifeFlask.all, ManaFlask.all, HybridFlask.all)
 
-  val amulets: Seq[Amulet] = Seq(CoralAmulet, PauaAmulet, AmberAmulet, JadeAmulet, LapisAmulet, GoldAmulet, AgateAmulet, CitrineAmulet, TurquoiseAmulet, OnyxAmulet, MarbleAmulet, BluePearlAmulet)
-  val rings: Seq[Ring] = Seq(CoralRing, IronRing, PauaRing, UnsetRing, SapphireRing, TopazRing, RubyRing, DiamondRing, GoldRing, MoonstoneRing, TwoStoneRing, AmethystRing, PrismaticRing, OpalRing, SteelRing)
-  val belts: Seq[Belt] = Seq(ChainBelt, RusticSash, StygianVise, HeavyBelt, LeatherBelt, ClothBelt, StuddedBelt, VanguardBelt, CrystalBelt)
-
-  val accessories: Seq[Accessory] = amulets ++ rings ++ belts
+  val accessories: Seq[Seq[Accessory]] = Seq(Amulet.all ++ Ring.all ++ Belt.all)
 
   val bestEquipment: Seq[Base with BestBaseBlocks] = (weapons ++ armours).flatMap(_.takeRight(2)) ++ Seq(SpikePointArrowQuiver, BroadheadArrowQuiver).sortBy(_.dropLevel)(implicitly[Ordering[Int]].reverse)
-  val bestItems: Seq[Base with BestBaseBlocks] = bestEquipment ++ accessories
+  val bestItems: Seq[Base with BestBaseBlocks] = bestEquipment ++ accessories.flatten
   val allEquipment: Seq[Base] = (weapons ++ armours).flatten.sortBy(_.dropLevel)(implicitly[Ordering[Int]].reverse)
 }
 // format: on

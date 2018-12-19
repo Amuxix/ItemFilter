@@ -12,7 +12,7 @@ CREATE TABLE items(
 CREATE TABLE unique(
   id											serial					NOT NULL          PRIMARY,
   "name"									text						NOT NULL,
-  base  									integer					NOT NULL          REFERENCES(items.id) ,
+  base  									integer					NOT NULL          REFERENCES(items.id),
 	created_at							timestamp				NOT NULL 					DEFAULT now(),
 	updated_at							timestamp				NOT NULL 					DEFAULT now(),
 )

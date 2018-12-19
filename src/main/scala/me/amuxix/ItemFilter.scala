@@ -3,20 +3,16 @@ package me.amuxix
 import java.io.{File, PrintWriter}
 
 import akka.actor.ActorSystem
-import javax.swing.filechooser.FileSystemView
 import me.amuxix.WSClient.wsClient
 import me.amuxix.categories._
 import me.amuxix.categories.automated._
-import me.amuxix.categories.automated.currency._
-import me.amuxix.categories.automated.leagues._
-import me.amuxix.categories.automated.leagues.betrayal.{Scarab, VeiledItems}
-import me.amuxix.categories.automated.legacy.Net
-import me.amuxix.categories.automated.recipes._
-import me.amuxix.categories.leagues._
-import me.amuxix.categories.recipes._
-import me.amuxix.providers.Provider
+import me.amuxix.database.PostgresProfile.api.Database
 import me.amuxix.providers.poeninja.PoeNinja
+import org.flywaydb.core.Flyway
 import play.api.libs.ws.ahc.StandaloneAhcWSClient
+import pureconfig.generic.auto._
+import slick.jdbc.DataSourceJdbcDataSource
+import slick.jdbc.hikaricp.HikariCPJdbcDataSource
 
 import scala.concurrent.Await
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -24,37 +20,16 @@ import scala.concurrent.duration._
 import scala.language.postfixOps
 
 object ItemFilter {
-  val threshold = 0.04
   val league: League = Betrayal
-  val whiteCutoff: Int = 15
-  val magicCutoff: Int = 30
-  val fourLinkRareCutoff: Int = 60
-  val setDropLevelCutoff: Int = 50
-  val weaponClasses = Seq(
-    "Claw",
-    "Dagger",
-    "Wand",
-    "Sword",
-    "Bow",
-    "Stave",
-    "Axe",
-    "Mace",
-    "Quiver",
-    "Sceptre",
+  val config = pureconfig.loadConfigOrThrow[FilterConfiguration]("filter")
+  val cutoffs = config.levelCutoffs
+  val dbgConfig = pureconfig.loadConfigOrThrow[DatabaseConfiguration]("db")
+  lazy val db = Database.forURL(
+    url = dbgConfig.url,
+    user = dbgConfig.user,
+    password = dbgConfig.password,
+    driver = dbgConfig.driver,
   )
-  val armourClasses = Seq(
-    "Glove",
-    "Boot",
-    "Body Armour",
-    "Helmet",
-  )
-  val accessoriesClasses = Seq(
-    "Ring",
-    "Belt",
-    "Amulet",
-  )
-  val shieldClasses = Seq("Shield")
-  val flaskClasses = Seq("Flask")
 
   def updateItemPrices(): (ActorSystem, StandaloneAhcWSClient) = {
     val (system, client) = wsClient
@@ -65,7 +40,29 @@ object ItemFilter {
     (system, client)
   }
 
+  def runMigrations() = {
+    val ds = db.source match {
+      case d: DataSourceJdbcDataSource => d.ds
+      case d: HikariCPJdbcDataSource => d.ds
+      case other => throw new IllegalStateException("Unknown DataSource type: " + other)
+    }
+    val flyway = Flyway
+      .configure()
+      .dataSource(ds)
+      .baselineOnMigrate(true)
+      .load()
+
+    val migrations = flyway.migrate()
+
+    println(s"Ran $migrations migrations.")
+  }
+
   def main(args: Array[String]): Unit = {
+    runMigrations()
+    //print((weapons ++ armours ++ flasks ++ accessories).flatten.map(_.insertValues).mkString(",\n"))
+  }
+
+  /*def main(args: Array[String]): Unit = {
     val (system, client) = updateItemPrices()
     val poeFolder = FileSystemView.getFileSystemView.getDefaultDirectory.getPath + File.separatorChar + "My Games" + File.separatorChar + "Path of Exile" + File.separatorChar
     //val poeFolder = new java.io.File(".").getCanonicalPath
@@ -117,7 +114,7 @@ object ItemFilter {
     createFilterFile(poeFolder, Reduced, categories, legacyCategories, conceal = true)
     client.close()
     system.terminate()
-  }
+  }*/
 
   def createFilterFile(poeFolder: String, filterLevel: FilterLevel, categories: Seq[Category], legacyCategories: Seq[Category], conceal: Boolean = false): Unit = {
     val filterFile = new PrintWriter(new File(poeFolder + s"${if (conceal) "Concealed " else ""}Amuxix's${filterLevel.suffix} filter.filter"))
