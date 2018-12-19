@@ -3,7 +3,7 @@ package me.amuxix.categories.automated
 import me.amuxix._
 import me.amuxix.actions.Color.{black, darkRed, teal}
 import me.amuxix.actions.Sound.gems
-import me.amuxix.actions.{Action, Color, White}
+import me.amuxix.actions.{Action, White}
 import me.amuxix.conditions.Condition
 import me.amuxix.items.{CategoryItem, GenItem}
 
@@ -37,14 +37,14 @@ object Gems extends AutomatedCategory {
   )
   override protected def actionForRarity(rarity: FilterRarity): Action = rarity match {
     case Leveling =>
-      Action(borderColor = Color.teal, backgroundColor = Color.black)
+      Action(borderColor = teal)
     case Common =>
-      Action(size = 40, borderColor = Color.teal, backgroundColor = Color.black)
+      Action(size = 40, borderColor = teal)
     case Uncommon =>
-      Action(size = 40, sound = gems, borderColor = teal, backgroundColor = darkRed)
+      Action(size = 40, sound = gems, borderColor = teal)
     case Rare =>
       Action(size = 40, sound = gems, borderColor = teal, backgroundColor = black, beam = (White, true))
     case _ =>
-      Action(size = 40, sound = gems, borderColor = teal, backgroundColor = black, beam = White)
+      Action(size = 40, sound = gems, borderColor = teal, backgroundColor = darkRed, beam = White)
   }
 }
