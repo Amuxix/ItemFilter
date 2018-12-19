@@ -2,7 +2,7 @@ package me.amuxix.categories.automated.currency
 
 import me.amuxix._
 import me.amuxix.actions.Color.{black, goodYellow, lightGreen}
-import me.amuxix.actions.Sound.{chaos, myths, rare}
+import me.amuxix.actions.Sound.{armourKit, chaos, epic, myths}
 import me.amuxix.actions._
 import me.amuxix.categories.automated.AutomatedCategory
 import me.amuxix.conditions.{Condition, StackSize}
@@ -40,7 +40,7 @@ object Currency extends AutomatedCategory {
     case Epic =>
       Action(
         size = 45,
-        sound = rare,
+        sound = epic,
         backgroundColor = black,
         textColor = goodYellow,
         borderColor = goodYellow,
@@ -59,6 +59,7 @@ object Currency extends AutomatedCategory {
     case Uncommon =>
       Action(
         size = 45,
+        sound = armourKit,
         textColor = goodYellow.lighten,
         borderColor = goodYellow.lighten,
         beam = (Yellow, true),

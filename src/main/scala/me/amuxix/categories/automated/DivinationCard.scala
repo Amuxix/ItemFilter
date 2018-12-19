@@ -2,7 +2,7 @@ package me.amuxix.categories.automated
 
 import me.amuxix._
 import me.amuxix.actions.Color.{black, divinationBlue}
-import me.amuxix.actions.Sound.{divCards, topDivCards}
+import me.amuxix.actions.Sound.{probablyShit, topDivCards}
 import me.amuxix.actions._
 import me.amuxix.items.GenItem
 
@@ -17,7 +17,7 @@ object DivinationCard extends AutomatedCategory {
     case Uncommon =>
       Action(
         size = 36,
-        sound = divCards,
+        sound = probablyShit,
         backgroundColor = black,
         textColor = divinationBlue.darken,
         borderColor = divinationBlue.darken,
@@ -26,7 +26,7 @@ object DivinationCard extends AutomatedCategory {
     case Rare =>
       Action(
         size = 36,
-        sound = divCards,
+        sound = probablyShit,
         backgroundColor = black,
         textColor = divinationBlue,
         borderColor = divinationBlue,
@@ -36,7 +36,7 @@ object DivinationCard extends AutomatedCategory {
     case Epic =>
       Action(
         size = 40,
-        sound = divCards,
+        sound = topDivCards,
         backgroundColor = divinationBlue.darken,
         textColor = black,
         borderColor = black,

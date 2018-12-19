@@ -21,7 +21,7 @@ object Maps extends AutomatedCategory {
     case Mythic =>
       Action(
         size = 45,
-        sound = yellowMaps,
+        sound = betterMaps,
         borderColor = red,
         minimapIcon = (Red, Square),
         beam = Red,
@@ -29,7 +29,7 @@ object Maps extends AutomatedCategory {
     case Epic =>
       Action(
         size = 40,
-        sound = yellowMaps,
+        sound = maps,
         borderColor = goodYellow,
         minimapIcon = (Yellow, Square),
         beam = Yellow,
@@ -37,12 +37,12 @@ object Maps extends AutomatedCategory {
     case Rare =>
       Action(
         borderColor = white,
-        sound = whiteMaps,
+        sound = maps,
         minimapIcon = (White, Square),
         beam = White,
       )
     case _ => Action(
-      sound = whiteMaps,
+      sound = maps,
       minimapIcon = (White, Square),
     )
   }
