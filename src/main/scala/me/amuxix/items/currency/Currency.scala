@@ -1,7 +1,11 @@
 package me.amuxix.items.currency
 
-import me.amuxix.items.{Item, NoPrice}
+import me.amuxix.items.Item
 
-abstract class Currency(val stackSize: Int) extends Item(1, 1, "Currency")
+class Currency(name: String, val stackSize: Int, val currencyType: String) extends Item(name, 1, 1, "Currency")
 
-case object Prophecy extends Currency(1) with NoPrice
+object Currency {
+  def apply(name: String, stackSize: Int, currencyType: String): Currency = new Currency(name, stackSize, currencyType)
+
+  def unapply(arg: Currency): Option[(String, Int, String)] = Some((arg.name, arg.stackSize, arg.currencyType))
+}

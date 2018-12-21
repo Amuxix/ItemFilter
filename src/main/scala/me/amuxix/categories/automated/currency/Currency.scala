@@ -5,14 +5,12 @@ import me.amuxix.actions.Color.{black, goodYellow, lightGreen}
 import me.amuxix.actions.Sound.{armourKit, chaos, epic, myths}
 import me.amuxix.actions._
 import me.amuxix.categories.automated.AutomatedCategory
-import me.amuxix.conditions.{Condition, StackSize}
 import me.amuxix.items.GenItem
-import me.amuxix.items.currency._
 
 object Currency extends AutomatedCategory {
   private val rarities = Seq(Mythic, Epic, Rare, Uncommon, Common)
-  override protected val categoryItems: Seq[GenItem] =
-    (Orb.orbs ++ Shard.shards).flatMap { currency =>
+  override protected val categoryItems: Seq[GenItem] = ???
+    /*(Orb.orbs ++ CurrencyFragment.shards).flatMap { currency =>
       currency.chaosValuePerSlot.fold(Seq(currency)) { chaosValue =>
         val increasedStackSizes = rarities.collect {
           case rarity if rarity.threshold > chaosValue && rarity.threshold / chaosValue <= currency.stackSize =>
@@ -24,7 +22,7 @@ object Currency extends AutomatedCategory {
         }
         increasedStackSizes :+ currency
       }
-  } ++ Vial.vials
+  } ++ Vial.vials*/
 
   override protected def actionForRarity(rarity: FilterRarity): Action = rarity match {
     case Mythic =>

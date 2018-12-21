@@ -5,12 +5,15 @@ import java.io.{File, PrintWriter}
 import akka.actor.ActorSystem
 import me.amuxix.WSClient.wsClient
 import me.amuxix.categories._
-import me.amuxix.categories.automated._
+import me.amuxix.categories.automated.{DivinationCard => _, _}
 import me.amuxix.database.PostgresProfile.api.Database
+import me.amuxix.items.DivinationCard
 import me.amuxix.providers.poeninja.PoeNinja
 import org.flywaydb.core.Flyway
 import play.api.libs.ws.ahc.StandaloneAhcWSClient
 import pureconfig.generic.auto._
+import slick.jdbc.DataSourceJdbcDataSource
+import slick.jdbc.hikaricp.HikariCPJdbcDataSource
 
 import scala.concurrent.Await
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -39,24 +42,31 @@ object ItemFilter {
   }
 
   def runMigrations() = {
+    val ds = db.source match {
+      case d: DataSourceJdbcDataSource => d.ds
+      case d: HikariCPJdbcDataSource => d.ds
+      case other => throw new IllegalStateException("Unknown DataSource type: " + other)
+    }
     val flyway = Flyway
       .configure()
-      .dataSource(
-        dbgConfig.url,
-        dbgConfig.user,
-        dbgConfig.password
-      )
-      //.baselineOnMigrate(true)
+      .dataSource(ds)
+      .baselineOnMigrate(true)
       .load()
-    //flyway.baseline()
+
+    println(flyway.getConfiguration.getLocations.map(_.getPath).mkString)
+
     val migrations = flyway.migrate()
 
     println(s"Ran $migrations migrations.")
   }
 
   def main(args: Array[String]): Unit = {
-    runMigrations()
-    //print((weapons ++ armours ++ flasks ++ accessories).flatten.map(_.insertValues).mkString(",\n"))
+    //runMigrations()
+
+    //Divination Cards
+    //Incursion Items
+    val items = DivinationCard.all
+    print(items.map(_.insertValues).mkString(",\n"))
   }
 
   /*def main(args: Array[String]): Unit = {

@@ -1,10 +1,8 @@
-package me.amuxix.items.bases
+package me.amuxix.items
 
 import me.amuxix.conditions.Condition
-import me.amuxix.items.FilterClass
-import me.amuxix.items.bases.traits.HasRarity
 
-sealed abstract class Flask(dropLevel: Int, itemClass: String) extends Base(2, 1, dropLevel, itemClass + " Flasks") with HasRarity {
+sealed abstract class Flask(dropLevel: Int, itemClass: String) extends Base("", 2, 1, dropLevel, itemClass + " Flasks") {
   override def conditionsOfBestRaresForZoneLevel: Condition = super.conditionsOfBestRaresForZoneLevel.copy(rarity = None)
 }
 

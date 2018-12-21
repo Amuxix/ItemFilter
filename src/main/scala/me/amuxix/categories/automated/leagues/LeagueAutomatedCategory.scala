@@ -1,7 +1,7 @@
 package me.amuxix.categories.automated.leagues
 import me.amuxix.categories.automated.AutomatedCategory
 import me.amuxix.conditions.Condition
-import me.amuxix.items.bases.Base.{allEquipment, bestItems}
+import me.amuxix.items.Base.{allEquipment, bestItems}
 import me.amuxix.items.{CategoryItem, GenItem}
 import me.amuxix.{AlwaysShow, Epic, Rare}
 

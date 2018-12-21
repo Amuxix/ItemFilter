@@ -1,8 +1,7 @@
 package me.amuxix.providers
 
 import cats.data.EitherT
-import me.amuxix.items.currency.{ChaosOrb, PriceFallback}
-import me.amuxix.items.{GenItem, NoPrice}
+import me.amuxix.items.{GenItem, NoPrice, PriceFallback}
 import me.amuxix.providers.Provider.ParsableWSResponse
 import play.api.libs.json.{JsValue, Reads}
 import play.api.libs.ws.JsonBodyReadables._

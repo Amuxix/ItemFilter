@@ -1,5 +1,4 @@
-package me.amuxix.items.currency
-import me.amuxix.items.Item
+package me.amuxix.items
 
 trait PriceFallback { item: Item =>
   def fallback: Double

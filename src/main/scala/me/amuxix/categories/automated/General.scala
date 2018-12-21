@@ -4,15 +4,12 @@ import me.amuxix.ItemFilter._
 import me.amuxix._
 import me.amuxix.actions.Color.{darkRed, goodYellow, red, white}
 import me.amuxix.actions.{Action, Green, Sound}
-import me.amuxix.conditions.{Condition, Magic, Normal, Rare => GameRare}
-import me.amuxix.items.bases.Base.{allEquipment, bestItems}
-import me.amuxix.items.currency.JewellersOrb
-import me.amuxix.items.{CategoryItem, GenItem}
+import me.amuxix.items.GenItem
 
 object General extends AutomatedCategory {
   private val itemClasses = config.accessoriesClasses ++ config.armourClasses ++ config.weaponClasses ++ config.shieldClasses
 
-  override protected lazy val categoryItems: Seq[GenItem] = Seq(
+  override protected lazy val categoryItems: Seq[GenItem] = ??? /*Seq(
     new CategoryItem(AlwaysShow) { override def condition: Condition = Condition(`class` = Seq("Quest Items", "Labyrinth Item", "Pantheon Soul", "Labyrinth Trinket")) },
     new CategoryItem(Mythic) { override def condition: Condition = Condition(base = "Albino Rhoa Feather") },
     new CategoryItem(Mythic) { override def condition: Condition = Condition(`class` = "Fishing Rod") },
@@ -35,7 +32,7 @@ object General extends AutomatedCategory {
   )) ++ allEquipment.flatMap(i => Seq(
     new CategoryItem(Leveling) { override def condition: Condition = i.conditionsOfBestRaresForZoneLevel },
     new CategoryItem(Leveling) { override def condition: Condition = i.conditionsOfGoodRaresForZoneLevel },
-    new CategoryItem(AlwaysHide) { override def condition: Condition = i.conditionsOfBestWhitesForZoneLevel },
+    new CategoryItem(AlwaysHide) { override def condition: Condition = i.conditionsOfBestWhitesForZoneLevel },*/
   ))
 
 

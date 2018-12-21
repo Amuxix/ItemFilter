@@ -1,6 +1,9 @@
 package me.amuxix.items
+import me.amuxix.Named
 
-abstract class DivinationCard extends Item(1, 1, "Divination")
+abstract class DivinationCard extends Named {
+  def insertValues: String = s"('$name')"
+}
 
 object DivinationCard extends FilterClass[DivinationCard] {
   override val all: Seq[DivinationCard] = Seq(

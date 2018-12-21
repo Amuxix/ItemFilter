@@ -4,11 +4,10 @@ import me.amuxix.actions.Color.{black, darkRed, white}
 import me.amuxix.actions._
 import me.amuxix.categories.automated.AutomatedCategory
 import me.amuxix.items.GenItem
-import me.amuxix.items.currency.Fragment.fragments
 import me.amuxix.{Epic, FilterRarity, Mythic, Rare}
 
 object Fragment extends AutomatedCategory {
-  override protected val categoryItems: Seq[GenItem] = fragments
+  override protected val categoryItems: Seq[GenItem] = ??? //fragments
 
   override protected def actionForRarity(rarity: FilterRarity): Action = rarity match {
     case Mythic =>
