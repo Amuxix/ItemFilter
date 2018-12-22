@@ -1,10 +1,9 @@
-package me.amuxix.items.currency
+package me.amuxix.items
 
 import me.amuxix.conditions.Condition
-import me.amuxix.items.{Item, PriceFallback}
 
 /**
-  * Like [[Orb]] this currency can enhance items but they themselves can also be upgraded.
+  * Like [[Currency]] this currency can enhance items but they themselves can also be upgraded.
   */
 class Essence(name: String, val upgradesTo: Option[Essence]) extends Item(name, 1, 1, "Currency") with PriceFallback {
   override lazy val condition: Condition = Condition(`class` = "Currency", base = name)

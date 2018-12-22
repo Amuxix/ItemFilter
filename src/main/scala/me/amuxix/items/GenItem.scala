@@ -3,7 +3,7 @@ import me.amuxix._
 import me.amuxix.actions.Action
 import me.amuxix.conditions.Condition
 
-abstract class GenItem extends ImplicitConversions {
+abstract class GenItem(val name: String = "") extends ImplicitConversions {
   def chaosValuePerSlot: Option[Double]
 
   def condition: Condition

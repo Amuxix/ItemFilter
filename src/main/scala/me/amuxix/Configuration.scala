@@ -22,4 +22,5 @@ final case class Cutoffs(
   magicItems: Int,
   fourLinkRare: Int,
   setArmourDropLevel: Int,
+  bestBaseMinDropLevel: Int,
 )

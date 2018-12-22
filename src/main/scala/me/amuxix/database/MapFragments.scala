@@ -1,24 +1,23 @@
 package me.amuxix.database
 
 import me.amuxix.database.PostgresProfile.api._
-import me.amuxix.items.currency.MapFragment
+import me.amuxix.items.MapFragment
 
 import scala.concurrent.Future
 
-object MapFragments extends BasicOperations[MapFragment] {
-  type Table = MapFragmentsTable
-  class MapFragmentsTable(tag: Tag) extends NamedTable[MapFragment](tag, "map_fragments") {
-    def fragmentType = column[String]("fragment_type")
+class MapFragmentsTable(tag: Tag) extends Table[MapFragment](tag, "map_fragments") with NamedTable[MapFragment] {
+  def fragmentType = column[String]("fragment_type")
 
-    override def * = (
-      name,
-      fragmentType,
-      ) <> ((MapFragment.apply _).tupled, MapFragment.unapply)
-  }
+  override def * = (
+    name,
+    fragmentType,
+  ) <> ((MapFragment.apply _).tupled, MapFragment.unapply)
+}
+object MapFragments extends BasicOperations[MapFragment, MapFragmentsTable](new MapFragmentsTable(_)) {
 
   def scarabs: Future[Seq[MapFragment]] =
-    db.run(query.filter(_.fragmentType === "Scarab").result)
+    db.run(filter(_.fragmentType === "Scarab").result)
 
   def nonScarabs: Future[Seq[MapFragment]] =
-    db.run(query.filter(_.fragmentType =!= "Scarab").result)
+    db.run(filter(_.fragmentType =!= "Scarab").result)
 }

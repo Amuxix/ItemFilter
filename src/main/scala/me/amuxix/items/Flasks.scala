@@ -10,7 +10,7 @@ sealed abstract class LifeFlask(dropLevel: Int) extends Flask(dropLevel, "Life")
   override lazy val condition: Condition = Condition(base = name, itemLevel = (1, dropLevel + 10))
 }
 
-object LifeFlask extends FilterClass[LifeFlask] {
+object LifeFlask {
   val all: Seq[LifeFlask] = Seq(
   SmallLifeFlask,
   MediumLifeFlask,
@@ -42,7 +42,7 @@ case object EternalLifeFlask extends LifeFlask(dropLevel = 65)
 
 sealed abstract class ManaFlask(dropLevel: Int) extends Flask(dropLevel, "Mana")
 
-object ManaFlask extends FilterClass[ManaFlask] {
+object ManaFlask {
   val all: Seq[ManaFlask] = Seq(SmallManaFlask, MediumManaFlask, LargeManaFlask, GreaterManaFlask, GrandManaFlask, GiantManaFlask, ColossalManaFlask, SacredManaFlask, HallowedManaFlask, SanctifiedManaFlask, DivineManaFlask, EternalManaFlask)
 }
 
@@ -61,7 +61,7 @@ case object EternalManaFlask extends ManaFlask(dropLevel = 65)
 
 sealed abstract class HybridFlask(dropLevel: Int) extends Flask(dropLevel, "Hybrid")
 
-object HybridFlask extends FilterClass[HybridFlask] {
+object HybridFlask {
   val all: Seq[HybridFlask] = Seq(SmallHybridFlask, MediumHybridFlask, LargeHybridFlask, ColossalHybridFlask, SacredHybridFlask, HallowedHybridFlask)
 }
 
@@ -74,7 +74,7 @@ case object HallowedHybridFlask extends HybridFlask(dropLevel = 60)
 
 sealed abstract class UtilityFlask(dropLevel: Int) extends Flask(dropLevel, "Utility")
 
-object UtilityFlask extends FilterClass[UtilityFlask] {
+object UtilityFlask {
   val all: Seq[UtilityFlask] = Seq(QuicksilverFlask, BismuthFlask, StibniteFlask, AmethystFlask, RubyFlask, SapphireFlask, TopazFlask, SilverFlask, AquamarineFlask, GraniteFlask, JadeFlask, QuartzFlask, SulphurFlask, BasaltFlask, DiamondFlask)
 }
 

@@ -1,35 +1,40 @@
 package me.amuxix.database
 
 import me.amuxix.database.PostgresProfile.api._
-import me.amuxix.items.currency.Currency
+import me.amuxix.items.Currency
 
 import scala.concurrent.Future
 
-object Currencies extends BasicOperations[Currency] {
-  type Table = CurrenciesTable
-  class CurrenciesTable(tag: Tag) extends NamedTable[Currency](tag, "currency") {
-    def stackSize = column[Int]("stack_size")
-    def currencyType = column[String]("currency_type")
+class CurrenciesTable(tag: Tag) extends Table[Currency](tag, "currency") with NamedTable[Currency] {
+  def stackSize = column[Int]("stack_size")
+  def currencyType = column[String]("currency_type")
 
-    override def * = (
-      name,
-      stackSize,
-      currencyType,
-    ) <> ((Currency.apply _).tupled, Currency.unapply)
-  }
+  override def * = (
+    name,
+    stackSize,
+    currencyType,
+  ) <> ((Currency.apply _).tupled, Currency.unapply)
+}
+
+object Currencies extends BasicOperations[Currency, CurrenciesTable](new CurrenciesTable(_)) {
+  private def getByCurrencyType(currencyType: String) =
+    db.run(filter(_.currencyType === currencyType).result)
 
   def fossils: Future[Seq[Currency]] =
-    db.run(query.filter(_.currencyType === "Fossil").result)
+    getByCurrencyType("Fossil")
 
   def resonators: Future[Seq[Currency]] =
-    db.run(query.filter(_.currencyType === "Resonator").result)
+    getByCurrencyType("Resonator")
 
   def nets: Future[Seq[Currency]] =
-    db.run(query.filter(_.currencyType === "Net").result)
+    getByCurrencyType("Net")
 
   def orbs: Future[Seq[Currency]] =
-    db.run(query.filter(_.currencyType === "Orb").result)
+    getByCurrencyType("Orb")
 
   def vials: Future[Seq[Currency]] =
-    db.run(query.filter(_.currencyType === "Vial").result)
+    getByCurrencyType("Vial")
+
+  def prophecies: Future[Seq[Currency]] =
+    getByCurrencyType("Prophecy")
 }

@@ -1,7 +1,6 @@
-package me.amuxix.items.currency
+package me.amuxix.items
 
 import me.amuxix.conditions.Condition
-import me.amuxix.items.Item
 
 class MapFragment(name: String, val fragmentType: String) extends Item(name, 1, 1, "Currency") {
   override val condition: Condition = Condition(base = name)

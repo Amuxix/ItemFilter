@@ -4,10 +4,13 @@ import me.amuxix.FilterRarity
 import me.amuxix.actions.Color.{delveBlue, legacyBlue}
 import me.amuxix.actions.{Action, Blue, Circle}
 import me.amuxix.categories.automated.AutomatedCategory
+import me.amuxix.database.Currencies
 import me.amuxix.items.GenItem
 
+import scala.concurrent.Future
+
 object Resonator extends AutomatedCategory {
-  override protected val categoryItems: Seq[GenItem] = resonators
+  override protected val categoryItems: Future[Seq[GenItem]] = Currencies.resonators
   override protected def actionForRarity(rarity: FilterRarity): Action = Action(
     size = 40,
     borderColor = legacyBlue,

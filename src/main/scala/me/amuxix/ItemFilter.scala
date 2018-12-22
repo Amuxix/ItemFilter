@@ -3,11 +3,19 @@ package me.amuxix
 import java.io.{File, PrintWriter}
 
 import akka.actor.ActorSystem
+import javax.swing.filechooser.FileSystemView
 import me.amuxix.WSClient.wsClient
 import me.amuxix.categories._
-import me.amuxix.categories.automated.{DivinationCard => _, _}
+import me.amuxix.categories.automated._
+import me.amuxix.categories.automated.currency._
+import me.amuxix.categories.automated.leagues._
+import me.amuxix.categories.automated.leagues.betrayal._
+import me.amuxix.categories.automated.legacy._
+import me.amuxix.categories.automated.recipes._
+import me.amuxix.categories.leagues._
+import me.amuxix.categories.recipes._
 import me.amuxix.database.PostgresProfile.api.Database
-import me.amuxix.items.DivinationCard
+import me.amuxix.providers.Provider
 import me.amuxix.providers.poeninja.PoeNinja
 import org.flywaydb.core.Flyway
 import play.api.libs.ws.ahc.StandaloneAhcWSClient
@@ -15,13 +23,13 @@ import pureconfig.generic.auto._
 import slick.jdbc.DataSourceJdbcDataSource
 import slick.jdbc.hikaricp.HikariCPJdbcDataSource
 
-import scala.concurrent.Await
-import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
+import scala.concurrent.{Await, ExecutionContext}
 import scala.language.postfixOps
 
 object ItemFilter {
   val league: League = Betrayal
+  implicit val ec = ExecutionContext.global
   val config = pureconfig.loadConfigOrThrow[FilterConfiguration]("filter")
   val cutoffs = config.levelCutoffs
   val dbgConfig = pureconfig.loadConfigOrThrow[DatabaseConfiguration]("db")
@@ -60,16 +68,11 @@ object ItemFilter {
     println(s"Ran $migrations migrations.")
   }
 
-  def main(args: Array[String]): Unit = {
-    //runMigrations()
-
-    //Divination Cards
-    //Incursion Items
-    val items = DivinationCard.all
-    print(items.map(_.insertValues).mkString(",\n"))
-  }
-
   /*def main(args: Array[String]): Unit = {
+    //runMigrations()
+  }*/
+
+  def main(args: Array[String]): Unit = {
     val (system, client) = updateItemPrices()
     val poeFolder = FileSystemView.getFileSystemView.getDefaultDirectory.getPath + File.separatorChar + "My Games" + File.separatorChar + "Path of Exile" + File.separatorChar
     //val poeFolder = new java.io.File(".").getCanonicalPath
@@ -121,7 +124,7 @@ object ItemFilter {
     createFilterFile(poeFolder, Reduced, categories, legacyCategories, conceal = true)
     client.close()
     system.terminate()
-  }*/
+  }
 
   def createFilterFile(poeFolder: String, filterLevel: FilterLevel, categories: Seq[Category], legacyCategories: Seq[Category], conceal: Boolean = false): Unit = {
     val filterFile = new PrintWriter(new File(poeFolder + s"${if (conceal) "Concealed " else ""}Amuxix's${filterLevel.suffix} filter.filter"))

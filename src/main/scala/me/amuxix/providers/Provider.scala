@@ -28,7 +28,7 @@ object Provider {
       }
   }
 
-  val itemPrices: mutable.Map[String, Double] = mutable.Map[String, Double]((ChaosOrb.name.toLowerCase, 1))
+  val itemPrices: mutable.Map[String, Double] = mutable.Map[String, Double](("chaos orb", 1))
 
   def getChaosEquivalentFor(item: GenItem): Option[Double] =
     itemPrices
