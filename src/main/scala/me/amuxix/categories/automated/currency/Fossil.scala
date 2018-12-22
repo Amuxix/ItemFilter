@@ -4,11 +4,13 @@ import me.amuxix.FilterRarity
 import me.amuxix.actions.Color.delveOrange
 import me.amuxix.actions.{Action, Brown, Circle}
 import me.amuxix.categories.automated.AutomatedCategory
+import me.amuxix.database.Currencies
 import me.amuxix.items.GenItem
-import me.amuxix.items.currency.delve.Fossil.fossils
+
+import scala.concurrent.Future
 
 object Fossil extends AutomatedCategory {
-  override protected val categoryItems: Seq[GenItem] = fossils
+  override protected val categoryItems: Future[Seq[GenItem]] = Currencies.fossils
   override protected def actionForRarity(rarity: FilterRarity): Action = Action(
     size = 40,
     borderColor = delveOrange.lighten,

@@ -1,27 +1,32 @@
 package me.amuxix.categories.automated.recipes
+import me.amuxix.ItemFilter.ec
 import me.amuxix._
 import me.amuxix.actions.Action
 import me.amuxix.categories.automated.AutomatedCategory
 import me.amuxix.conditions.Condition
 import me.amuxix.items.GenItem
 
+import scala.concurrent.Future
+
 abstract class Sized extends AutomatedCategory { outer =>
   def condition: Condition
-  def chaosValue: Option[Double]
+  def chaosValue: Future[Option[Double]]
 
-  def generateGenericItem(height: Int, width: Int): GenItem =
-    new GenItem {
-      override lazy val chaosValuePerSlot: Option[Double] = chaosValue.map(_ / (width * height))
-      override lazy val condition: Condition = outer.condition.copy(height = height, width = width)
+  def generateGenericItem(height: Int, width: Int): Future[GenItem] =
+    chaosValue.map { value =>
+      new GenItem {
+        override lazy val chaosValuePerSlot: Option[Double] = value.map(_ / (width * height))
+        override lazy val condition: Condition = outer.condition.copy(height = height, width = width)
+      }
     }
 
-  override protected val categoryItems: Seq[GenItem] = Seq(
+  override protected val categoryItems: Future[Seq[GenItem]] = Future.sequence(Seq(
     generateGenericItem(3, 1),
     generateGenericItem(2, 2),
     generateGenericItem(4, 1),
     generateGenericItem(3, 2),
     generateGenericItem(4, 2),
-  )
+  ))
 
   override protected def actionForRarity(rarity: FilterRarity): Action = Action()
 }

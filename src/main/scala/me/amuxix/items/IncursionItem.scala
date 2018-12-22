@@ -1,13 +1,9 @@
 package me.amuxix.items
 
-sealed abstract class IncursionItem extends Item(1, 1, "Incursion Item") with NoPrice
+class IncursionItem(name: String) extends Item(name, 1, 1, "Incursion Item")
 
-object IncursionItem extends FilterClass[IncursionItem] {
-  override val all: Seq[IncursionItem] = Seq(
-    FlashpowderKeg,
-    StoneOfPassage
-  )
+object IncursionItem {
+  def apply(name: String): IncursionItem = new IncursionItem(name)
+
+  def unapply(arg: IncursionItem): Option[String] = Some(arg.name)
 }
-
-case object FlashpowderKeg extends IncursionItem
-case object StoneOfPassage extends IncursionItem

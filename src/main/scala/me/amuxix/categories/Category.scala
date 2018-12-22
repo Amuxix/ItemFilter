@@ -3,7 +3,7 @@ import me.amuxix._
 
 trait Category extends ImplicitConversions with Named {
   protected def categoryBlocks(filterLevel: FilterLevel): Seq[Block]
-  def blocks(filterLevel: FilterLevel): Seq[Block] = Mergeable.merge(categoryBlocks(filterLevel))
+  def blocks(filterLevel: FilterLevel): Seq[Block] = Mergeable.merge(categoryBlocks(filterLevel).toList)
 
   protected def addSeparatorAndMakeString(blocks: Seq[Block]): String =
     if (blocks.isEmpty) ""
