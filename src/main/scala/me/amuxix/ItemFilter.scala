@@ -9,52 +9,36 @@ import me.amuxix.categories._
 import me.amuxix.categories.automated._
 import me.amuxix.categories.automated.currency._
 import me.amuxix.categories.automated.leagues._
-import me.amuxix.categories.automated.leagues.betrayal.{Scarab, VeiledItems}
-import me.amuxix.categories.automated.legacy.Net
+import me.amuxix.categories.automated.leagues.betrayal._
+import me.amuxix.categories.automated.legacy._
 import me.amuxix.categories.automated.recipes._
 import me.amuxix.categories.leagues._
 import me.amuxix.categories.recipes._
+import me.amuxix.database.PostgresProfile.api.Database
 import me.amuxix.providers.Provider
 import me.amuxix.providers.poeninja.PoeNinja
+import org.flywaydb.core.Flyway
 import play.api.libs.ws.ahc.StandaloneAhcWSClient
+import pureconfig.generic.auto._
+import slick.jdbc.DataSourceJdbcDataSource
+import slick.jdbc.hikaricp.HikariCPJdbcDataSource
 
-import scala.concurrent.Await
-import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
+import scala.concurrent.{Await, ExecutionContext}
 import scala.language.postfixOps
 
 object ItemFilter {
-  val threshold = 0.04
   val league: League = Betrayal
-  val whiteCutoff: Int = 15
-  val magicCutoff: Int = 30
-  val fourLinkRareCutoff: Int = 60
-  val setDropLevelCutoff: Int = 50
-  val weaponClasses = Seq(
-    "Claw",
-    "Dagger",
-    "Wand",
-    "Sword",
-    "Bow",
-    "Stave",
-    "Axe",
-    "Mace",
-    "Quiver",
-    "Sceptre",
+  implicit val ec = ExecutionContext.global
+  val config = pureconfig.loadConfigOrThrow[FilterConfiguration]("filter")
+  val cutoffs = config.levelCutoffs
+  val dbgConfig = pureconfig.loadConfigOrThrow[DatabaseConfiguration]("db")
+  lazy val db = Database.forURL(
+    url = dbgConfig.url,
+    user = dbgConfig.user,
+    password = dbgConfig.password,
+    driver = dbgConfig.driver,
   )
-  val armourClasses = Seq(
-    "Glove",
-    "Boot",
-    "Body Armour",
-    "Helmet",
-  )
-  val accessoriesClasses = Seq(
-    "Ring",
-    "Belt",
-    "Amulet",
-  )
-  val shieldClasses = Seq("Shield")
-  val flaskClasses = Seq("Flask")
 
   def updateItemPrices(): (ActorSystem, StandaloneAhcWSClient) = {
     val (system, client) = wsClient
@@ -64,6 +48,29 @@ object ItemFilter {
     println("Prices updated")
     (system, client)
   }
+
+  def runMigrations() = {
+    val ds = db.source match {
+      case d: DataSourceJdbcDataSource => d.ds
+      case d: HikariCPJdbcDataSource => d.ds
+      case other => throw new IllegalStateException("Unknown DataSource type: " + other)
+    }
+    val flyway = Flyway
+      .configure()
+      .dataSource(ds)
+      .baselineOnMigrate(true)
+      .load()
+
+    println(flyway.getConfiguration.getLocations.map(_.getPath).mkString)
+
+    val migrations = flyway.migrate()
+
+    println(s"Ran $migrations migrations.")
+  }
+
+  /*def main(args: Array[String]): Unit = {
+    //runMigrations()
+  }*/
 
   def main(args: Array[String]): Unit = {
     val (system, client) = updateItemPrices()

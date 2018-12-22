@@ -4,11 +4,13 @@ import me.amuxix.actions.Color._
 import me.amuxix.actions.Sound._
 import me.amuxix.actions.{Action, Blue, Circle}
 import me.amuxix.categories.automated.AutomatedCategory
+import me.amuxix.database.MapFragments
 import me.amuxix.items.GenItem
-import me.amuxix.items.Scarab.scarabs
+
+import scala.concurrent.Future
 
 object Scarab extends AutomatedCategory {
-  override protected val categoryItems: Seq[GenItem] = scarabs
+  override protected val categoryItems: Future[Seq[GenItem]] = MapFragments.scarabs
   private val baseAction = Action(
     textColor = delveOrange,
     borderColor = scarabBlue,

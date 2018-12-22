@@ -5,8 +5,11 @@ import me.amuxix.categories.Category
 import me.amuxix.items.GenItem
 import me.amuxix.{Block, FilterLevel, FilterRarity}
 
+import scala.concurrent.duration.Duration
+import scala.concurrent.{Await, Future}
+
 trait AutomatedCategory extends Category {
-  protected val categoryItems: Seq[GenItem]
+  protected val categoryItems: Future[Seq[GenItem]]
   protected def actionForRarity(rarity: FilterRarity): Action
   /*
   rarity match {
@@ -24,7 +27,7 @@ trait AutomatedCategory extends Category {
    */
 
   override protected def categoryBlocks(filterLevel: FilterLevel): Seq[Block] =
-    categoryItems
+    Await.result(categoryItems, Duration.Inf)
       .sortBy(_.rarity)(implicitly[Ordering[FilterRarity]].reverse)
       .map(_.block(actionForRarity, filterLevel))
 }

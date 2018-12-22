@@ -7,8 +7,10 @@ import me.amuxix.actions.{Action, White}
 import me.amuxix.conditions.Condition
 import me.amuxix.items.{CategoryItem, GenItem}
 
+import scala.concurrent.Future
+
 object Gems extends AutomatedCategory {
-  override protected val categoryItems: Seq[GenItem] = Seq(
+  override protected val categoryItems: Future[Seq[GenItem]] = Future.successful(Seq(
     new CategoryItem(Epic) { override lazy val condition: Condition = Condition(`class` = "Gem", gemLevel = (20, 21)) },
     new CategoryItem(Rare) { override lazy val condition: Condition = Condition(`class` = "Gem", gemLevel = (17, 21)) },
     new CategoryItem(Epic) { override lazy val condition: Condition = Condition(base = "Enlighten", `class` = "Gem") },
@@ -34,7 +36,7 @@ object Gems extends AutomatedCategory {
     new CategoryItem(Uncommon) { override lazy val condition: Condition = Condition(`class` = "Gem", quality = (1, 30)) },
     new CategoryItem(Common) { override lazy val condition: Condition = Condition(base = "Vaal", `class` = "Gem") },
     new CategoryItem(Leveling) { override lazy val condition: Condition = Condition(`class` = "Gem") },
-  )
+  ))
   override protected def actionForRarity(rarity: FilterRarity): Action = rarity match {
     case Leveling =>
       Action(borderColor = teal)
