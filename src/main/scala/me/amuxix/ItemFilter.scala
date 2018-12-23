@@ -79,7 +79,7 @@ object ItemFilter {
     lazy val prices = Provider.itemPrices.toSeq.sortBy(_._2).map {
       case (name, price) => s"${name.capitalize} -> $price"
     }.mkString("\n")
-    println(prices)
+    //println(prices)
 
     //TODO show items with white sockets
     val categories: Seq[Category] = Seq(
@@ -120,8 +120,10 @@ object ItemFilter {
       Legacy,
     )
 
-    Seq(Reduced, Diminished, Normal, Racing).foreach((filterLevel: FilterLevel) => createFilterFile(poeFolder, filterLevel, categories, legacyCategories))
-    createFilterFile(poeFolder, Reduced, categories, legacyCategories, conceal = true)
+    Seq(Reduced, Diminished, Normal, Racing).foreach { level =>
+      createFilterFile(poeFolder, level, categories, legacyCategories)
+      //createFilterFile(poeFolder, level, categories, legacyCategories, conceal = true)
+    }
     client.close()
     system.terminate()
   }
@@ -134,7 +136,10 @@ object ItemFilter {
       categories
     }
     val (shown, hidden) = allCategories.map(_.partitionHiddenAndShown(filterLevel, conceal)).unzip
-    filterFile.write((shown ++ hidden ++ LastCall.blocks(filterLevel).reverse.map(_.write)).mkString)
+    println(LastCall.blocks(filterLevel))
+    println(LastCall.blocks(filterLevel).map(_.write(filterLevel)))
+    val lastCall = LastCall.blocks(filterLevel).map(_.write(filterLevel))
+    filterFile.write((shown ++ hidden ++ lastCall).mkString)
     filterFile.close()
   }
 }
