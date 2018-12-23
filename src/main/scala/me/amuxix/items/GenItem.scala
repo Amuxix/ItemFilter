@@ -18,10 +18,6 @@ abstract class GenItem(val name: String = "") extends ImplicitConversions {
       else Leveling //The price is lower than the lowest threshold.
     }
 
-  def block(actionForRarity: FilterRarity => Action, filterLevel: FilterLevel): Block =
-    Block(
-      condition,
-      actionForRarity(rarity),
-      rarity >= filterLevel.cutoffRarity
-    )
+  def block(actionForRarity: FilterRarity => Action) =
+    Block(condition, actionForRarity(rarity), rarity)
 }

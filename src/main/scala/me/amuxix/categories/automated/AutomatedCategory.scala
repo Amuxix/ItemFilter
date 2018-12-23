@@ -28,6 +28,5 @@ trait AutomatedCategory extends Category {
 
   override protected def categoryBlocks(filterLevel: FilterLevel): Seq[Block] =
     Await.result(categoryItems, Duration.Inf)
-      .sortBy(_.rarity)(implicitly[Ordering[FilterRarity]].reverse)
-      .map(_.block(actionForRarity, filterLevel))
+      .map(_.block(actionForRarity))
 }
