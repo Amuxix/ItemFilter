@@ -7,12 +7,14 @@ import me.amuxix.WSClient.getActorSystemAndWsClient
 import me.amuxix.categories._
 import me.amuxix.categories.automated._
 import me.amuxix.categories.automated.currency._
-import me.amuxix.categories.automated.leagues._
-import me.amuxix.categories.automated.leagues.betrayal._
-import me.amuxix.categories.automated.legacy._
-import me.amuxix.categories.automated.recipes._
-import me.amuxix.categories.leagues._
-import me.amuxix.categories.recipes._
+import me.amuxix.categories.manual._
+import me.amuxix.categories.manual.leagues._
+import me.amuxix.categories.manual.recipes._
+import me.amuxix.categories.semiautomated._
+import me.amuxix.categories.semiautomated.currency._
+import me.amuxix.categories.semiautomated.recipes._
+import me.amuxix.categories.single._
+import me.amuxix.categories.single.legacy._
 import me.amuxix.database.PostgresProfile.api.Database
 import me.amuxix.providers.Provider
 import me.amuxix.providers.poeninja.PoeNinja
@@ -22,7 +24,6 @@ import slick.jdbc.DataSourceJdbcDataSource
 import slick.jdbc.hikaricp.HikariCPJdbcDataSource
 
 import scala.concurrent.ExecutionContext
-import scala.language.postfixOps
 
 object ItemFilter {
   val league: League = Synthesis
@@ -73,8 +74,9 @@ object ItemFilter {
       General,
       Essence,
       Fossil,
-      Resonator,
-      Scarab,
+      ChaoticResonators,
+      AlchemicalResonators,
+      Scarabs,
       Fragment,
       Currency,
       Gems,
@@ -82,7 +84,7 @@ object ItemFilter {
       DivinationCard,
       Uniques,
       VeiledItems,
-      Breach, //TODO: Add to base types, merge with accessories
+      BreachRings, //TODO: Add to base types, merge with accessories
       Abyss, //TODO: Add to base types, merge with accessories/jewels
       Talisman,
       Shaper,

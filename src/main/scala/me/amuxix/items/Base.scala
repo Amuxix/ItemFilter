@@ -42,26 +42,6 @@ sealed trait BestBaseBlocks extends ImplicitConversions { this: Base =>
   lazy val crafting: Condition = Condition(base = Some(baseType), itemLevel = (bestModsDropLevel, 100), rarity = (Normal, Magic))
 }
 
-/*class Armour(name: String, height: Int, width: Int, dropLevel: Int, `class`: String) extends Base(name, height, width, dropLevel, `class`) with BestBaseBlocks
-
-object Armour {
-  def apply(base: Base): Armour = new Armour(base.name, base.height, base.width, base.dropLevel, base.`class`)
-}
-
-class Weapon(name: String, height: Int, width: Int, dropLevel: Int, `class`: String) extends Base(name, height, width, dropLevel, `class`) with BestBaseBlocks {
-  override val bestModsDropLevel: Int = 83
-}
-
-object Weapon {
-  def apply(base: Base): Weapon = new Weapon(base.name, base.height, base.width, base.dropLevel, base.`class`)
-}
-
-class Accessory(name: String, dropLevel: Int, `class`: String) extends Base(name, 1, 1, dropLevel, `class`) with BestBaseBlocks
-
-object Accessory {
-  def apply(base: Base): Accessory = new Accessory(base.name, base.height, base.width, base.dropLevel, base.`class`)
-}*/
-
 object Base {
   def apply(name: String, height: Int, width: Int, dropLevel: Int, `class`: String): Base = new Base(name, height, width, dropLevel, `class`)
 

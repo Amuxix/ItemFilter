@@ -10,7 +10,5 @@ abstract class Item(name: String, val height: Int, val width: Int, val `class`: 
   override def condition: Condition = Condition(
     `class` = Some(itemClass),
     base = name,
-    /*height = height,
-    width = width*/
   )
 }

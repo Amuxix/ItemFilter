@@ -26,9 +26,6 @@ object Currencies extends BasicOperations[Currency, CurrenciesTable](new Currenc
   def resonators: Future[Seq[Currency]] =
     getByCurrencyType("Resonator")
 
-  def nets: Future[Seq[Currency]] =
-    getByCurrencyType("Net")
-
   def orbs: Future[Seq[Currency]] =
     getByCurrencyType("Orb")
 

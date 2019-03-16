@@ -1,18 +1,18 @@
 package me.amuxix.categories.automated
-
 import me.amuxix._
 import me.amuxix.actions.Color.{black, divinationBlue}
 import me.amuxix.actions.Sound.{probablyShit, topDivCards}
 import me.amuxix.actions._
+import me.amuxix.categories.AutomatedCategory
 import me.amuxix.database.DivinationCards
-import me.amuxix.items.GenItem
+import me.amuxix.items.Item
 
 import scala.concurrent.Future
 
 object DivinationCard extends AutomatedCategory {
-  override protected val categoryItems: Future[Seq[GenItem]] = DivinationCards.all
-  override protected def actionForRarity(rarity: FilterRarity): Action = rarity match {
-    case AlwaysHide | Common =>
+  override protected val items: Future[Seq[Item]] = DivinationCards.all
+  override protected def action: FilterRarity with Priced => Action = {
+    case Common =>
       Action(
         backgroundColor = black,
         textColor = divinationBlue,
