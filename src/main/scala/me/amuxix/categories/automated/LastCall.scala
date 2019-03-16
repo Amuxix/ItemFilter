@@ -2,7 +2,7 @@ package me.amuxix.categories.automated
 
 import me.amuxix.ItemFilter._
 import me.amuxix.actions.Action
-import me.amuxix.actions.Color.{transparent, white}
+import me.amuxix.actions.Color.{black, white}
 import me.amuxix.conditions.{Condition, Normal, Rare}
 import me.amuxix.items.{CategoryItem, GenItem}
 import me.amuxix.{AlwaysHide, AlwaysShow, FilterRarity}
@@ -19,7 +19,7 @@ object LastCall extends AutomatedCategory {
   ))
   override protected def actionForRarity(rarity: FilterRarity): Action = rarity match {
     case AlwaysHide =>
-      Action(size = 18, backgroundColor = transparent, borderColor = transparent, textColor = transparent)
+      Action(size = 18, backgroundColor = black.halfTransparent, borderColor = black, textColor = white.halfTransparent)
     case _ =>
       Action(textColor = white, backgroundColor = white, borderColor = white)
   }

@@ -21,8 +21,6 @@ object Gems extends AutomatedCategory {
         "Item Quantity",
         "Block Chance Reduction",
         "Enhance",
-        "Added Chaos Damage",
-        "Detonate Mines",
         "Portal",
         "Vaal Breach",
         "Vaal Haste",

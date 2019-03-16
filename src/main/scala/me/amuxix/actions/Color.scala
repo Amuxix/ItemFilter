@@ -13,6 +13,7 @@ object Color {
   def apply(r: Int, g: Int, b: Int): Color = new Color(r, g, b)
 
   val transparent = Color(0, 0, 0, 0)
+  val nearTransparent = Color(255, 255, 255, 64)
   val defaultBackground = Color(0, 0, 0, 230)
 
   val unique = Color(175, 96, 37)
@@ -80,7 +81,7 @@ case class Color(r: Int, g: Int, b: Int, a: Int) extends Colored(r, g, b, a) {
 
   def darken: Color = Color(darken(_r), darken(_g), darken(_b), _a)
   def lighten: Color = Color(lighten(_r), lighten(_g), lighten(_b), _a)
-  def halfTransparent: Color = copy(a / 2)
+  def halfTransparent: Color = copy(a = a / 2)
 
   def closestEffectColor: EffectColor = effectColors.minBy(this.distance)
 
