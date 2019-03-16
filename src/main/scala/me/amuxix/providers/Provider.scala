@@ -1,18 +1,18 @@
 package me.amuxix.providers
 
 import cats.data.EitherT
+import me.amuxix.ItemFilter
 import me.amuxix.items.{GenItem, NoPrice, PriceFallback}
 import me.amuxix.providers.Provider.ParsableWSResponse
 import play.api.libs.json.{JsValue, Reads}
 import play.api.libs.ws.JsonBodyReadables._
 import play.api.libs.ws.{StandaloneWSClient, StandaloneWSResponse}
 
-import scala.collection.mutable
 import scala.concurrent.{ExecutionContext, Future}
 
 object Provider {
   implicit class ParsableWSResponse(response: StandaloneWSResponse) {
-    def parse[Response](url: String)(implicit reads: Reads[Response]): Either[ProviderError, Response] =
+    def parse[Response : Reads](url: String): Either[ProviderError, Response] =
       response match {
         case _ if response.body.isEmpty =>
           Left(RequestError(url, response, "Response is empty."))
@@ -28,10 +28,8 @@ object Provider {
       }
   }
 
-  val itemPrices: mutable.Map[String, Double] = mutable.Map[String, Double](("chaos orb", 1))
-
   def getChaosEquivalentFor(item: GenItem): Option[Double] =
-    itemPrices
+    ItemFilter.provider.itemPrices
       .get(item.name.toLowerCase)
       .orElse(item match {
         case fallback: PriceFallback =>
@@ -46,18 +44,24 @@ object Provider {
 }
 
 abstract class Provider(wsClient: StandaloneWSClient)(implicit ec: ExecutionContext) {
-  protected def get[Response](url: String, parameters: (String, String)*)(implicit reads: Reads[Response]): EitherT[Future, ProviderError, Response] =
+  protected def get[Response : Reads](url: String, parameters: (String, String)*): EitherT[Future, ProviderError, Response] = {
+    val request = wsClient
+      .url(url)
+      .withQueryStringParameters(parameters.toSeq: _*)
     EitherT(
-      wsClient
-        .url(url)
-        .withQueryStringParameters(parameters.toSeq: _*)
+      request
         .get()
         .map(_.parse[Response](url))
     )
+  }
+
+  val itemPrices: Map[String, Double] = (("chaos orb", 1D) +: getAllItemsPrices.map {
+    case Price(name, chaosEquivalent) => name -> chaosEquivalent
+  }).toMap
 
   /**
     * This should update price for all items so they are accessible on itemPrices map
     */
-  def getAllItemsPrices: Future[_]
+  protected def getAllItemsPrices: List[Price]
 }
 

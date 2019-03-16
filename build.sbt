@@ -1,7 +1,7 @@
 name := "ItemFilter"
 version := "2.0"
 
-scalaVersion := "2.12.6"
+scalaVersion := "2.12.8"
 scalacOptions ++= Seq(
   "-deprecation", //Emit warning and location for usages of deprecated APIs.
   "-encoding", "UTF-8",
@@ -35,6 +35,6 @@ libraryDependencies ++= Seq(
   "com.typesafe.slick" %% "slick-hikaricp" % "3.2.0",
   "org.postgresql" % "postgresql" % "42.2.5",
   "org.flywaydb" % "flyway-core" % "5.2.0",
-  "org.typelevel" %% "cats-core" % "1.3.0",
+  "org.typelevel" %% "cats-core" % "1.6.0",
   "com.github.pureconfig" %% "pureconfig" % "0.10.1",
 )

@@ -28,7 +28,11 @@ object Bases extends BasicOperations[Base, BasesTable](new BasesTable(_)) {
   private def getByClassWithBestBases(`class`: String, bestModsLevel: Int = 84): Future[Seq[Base with BestBaseBlocks]] =
     getByClass(`class`).map(_.map(_.withBestBaseBlocks(bestModsLevel)))
 
-  def flasks: Future[Seq[Base]] = getByClass("Flask")
+  def flasks: Future[Seq[Base]] = for {
+    lifeFlasks <- getByClass("Life Flasks")
+    manaFlasks <- getByClass("Mana Flasks")
+    hybridFlasks <- getByClass("Hybrid Flasks")
+  } yield lifeFlasks ++ manaFlasks ++ hybridFlasks
   
   def rings: Future[Seq[Base with BestBaseBlocks]] = getByClassWithBestBases("Ring")
   

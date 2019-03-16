@@ -2,9 +2,8 @@ package me.amuxix
 
 import java.io.{File, PrintWriter}
 
-import akka.actor.ActorSystem
 import javax.swing.filechooser.FileSystemView
-import me.amuxix.WSClient.wsClient
+import me.amuxix.WSClient.getActorSystemAndWsClient
 import me.amuxix.categories._
 import me.amuxix.categories.automated._
 import me.amuxix.categories.automated.currency._
@@ -18,17 +17,15 @@ import me.amuxix.database.PostgresProfile.api.Database
 import me.amuxix.providers.Provider
 import me.amuxix.providers.poeninja.PoeNinja
 import org.flywaydb.core.Flyway
-import play.api.libs.ws.ahc.StandaloneAhcWSClient
 import pureconfig.generic.auto._
 import slick.jdbc.DataSourceJdbcDataSource
 import slick.jdbc.hikaricp.HikariCPJdbcDataSource
 
-import scala.concurrent.duration._
-import scala.concurrent.{Await, ExecutionContext}
+import scala.concurrent.ExecutionContext
 import scala.language.postfixOps
 
 object ItemFilter {
-  val league: League = Betrayal
+  val league: League = Synthesis
   implicit val ec = ExecutionContext.global
   val config = pureconfig.loadConfigOrThrow[FilterConfiguration]("filter")
   val cutoffs = config.levelCutoffs
@@ -39,15 +36,8 @@ object ItemFilter {
     password = dbgConfig.password,
     driver = dbgConfig.driver,
   )
-
-  def updateItemPrices(): (ActorSystem, StandaloneAhcWSClient) = {
-    val (system, client) = wsClient
-    val provider = new PoeNinja(client)
-    val f = provider.getAllItemsPrices
-    Await.result(f, 10 seconds)
-    println("Prices updated")
-    (system, client)
-  }
+  val (system, client) = getActorSystemAndWsClient
+  val provider: Provider = new PoeNinja(client)
 
   def runMigrations() = {
     val ds = db.source match {
@@ -61,10 +51,7 @@ object ItemFilter {
       .baselineOnMigrate(true)
       .load()
 
-    println(flyway.getConfiguration.getLocations.map(_.getPath).mkString)
-
     val migrations = flyway.migrate()
-
     println(s"Ran $migrations migrations.")
   }
 
@@ -73,12 +60,12 @@ object ItemFilter {
   }*/
 
   def main(args: Array[String]): Unit = {
-    val (system, client) = updateItemPrices()
+    runMigrations()
     val poeFolder = FileSystemView.getFileSystemView.getDefaultDirectory.getPath + File.separatorChar + "My Games" + File.separatorChar + "Path of Exile" + File.separatorChar
     //val poeFolder = new java.io.File(".").getCanonicalPath
-    lazy val prices = Provider.itemPrices.toSeq.sortBy(_._2).map {
+    /*lazy val prices = Provider.itemPrices.toSeq.sortBy(_._2).map {
       case (name, price) => s"${name.capitalize} -> $price"
-    }.mkString("\n")
+    }.mkString("\n")*/
     //println(prices)
 
     //TODO show items with white sockets
@@ -100,6 +87,9 @@ object ItemFilter {
       Talisman,
       Shaper,
       Elder,
+      Fractured,
+      Synthesised,
+      Enchanted,
       Atlas,
       //TODO: Add corrupted items
       Chisel,
@@ -129,15 +119,15 @@ object ItemFilter {
   }
 
   def createFilterFile(poeFolder: String, filterLevel: FilterLevel, categories: Seq[Category], legacyCategories: Seq[Category], conceal: Boolean = false): Unit = {
-    val filterFile = new PrintWriter(new File(poeFolder + s"${if (conceal) "Concealed " else ""}Amuxix's${filterLevel.suffix} filter.filter"))
+    val filterName = s"${if (conceal) "Concealed " else ""}Amuxix's${filterLevel.suffix} filter"
+    val filterFile = new PrintWriter(new File(poeFolder + s"$filterName.filter"))
+    println(s"Generating $filterName")
     val allCategories = if (league == Standard || league == Hardcore) {
       categories ++ legacyCategories
     } else {
       categories
     }
     val (shown, hidden) = allCategories.map(_.partitionHiddenAndShown(filterLevel, conceal)).unzip
-    println(LastCall.blocks(filterLevel))
-    println(LastCall.blocks(filterLevel).map(_.write(filterLevel)))
     val lastCall = LastCall.blocks(filterLevel).map(_.write(filterLevel))
     filterFile.write((shown ++ hidden ++ lastCall).mkString)
     filterFile.close()
