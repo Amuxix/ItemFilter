@@ -109,7 +109,7 @@ object ItemFilter {
       Jewels,
       Flasks,
       Maps,
-      Prophecy,
+      Prophecies,
     ))
 
     val legacyCategories = NonEmptyList.fromListUnsafe(List(
