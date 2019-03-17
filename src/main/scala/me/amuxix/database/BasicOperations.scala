@@ -8,7 +8,7 @@ import slick.lifted.Tag
 
 import scala.concurrent.Future
 
-abstract class BasicOperations[Element, T <: Table[Element] with NamedTable[Element]](cons: Tag => T) extends TableQuery(cons) {
+abstract class BasicOperations[Element, T <: Table[Element] with CommonColumns[Element]](cons: Tag => T) extends TableQuery(cons) {
   val db: Database = ItemFilter.db
 
   def getByName(name: String): OptionT[Future, Element] =

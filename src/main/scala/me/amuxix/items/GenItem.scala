@@ -9,7 +9,7 @@ import me.amuxix.conditions.Condition
 
 import scala.concurrent.Future
 
-abstract class GenItem(val name: String = "") extends ImplicitConversions {
+abstract class GenItem(val name: String = "", val dropEnabled: Boolean = true) extends ImplicitConversions {
   def chaosValuePerSlot: OptionT[Future, Double]
 
   def condition: Condition

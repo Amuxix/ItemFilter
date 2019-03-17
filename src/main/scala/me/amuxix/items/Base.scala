@@ -9,11 +9,11 @@ import me.amuxix.database.Bases
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 
-class Base(name: String, height: Int, width: Int, val dropLevel: Int, `class`: String) extends Item(name, height, width, `class`) {
+case class Base(_name: String, _height: Int, _width: Int, dropLevel: Int, _class: String, _dropEnabled: Boolean) extends Item(_name, _height, _width, _class, _dropEnabled) {
   val bestModsDropLevel: Int = 84
   val minDropBuffer: Int = 5
 
-  def baseType: BaseType = BaseType(name.replaceAll("([a-z])([A-Z])", "$1 $2"))
+  def baseType: BaseType = BaseType(_name.replaceAll("([a-z])([A-Z])", "$1 $2"))
 
   def closeToZoneLevel(howClose: ItemLevel, rarity: Option[Rarity] = Rare): Condition = Condition(
     base = Some(this.baseType),
@@ -33,7 +33,7 @@ class Base(name: String, height: Int, width: Int, val dropLevel: Int, `class`: S
   def conditionsOfBestWhitesForZoneLevel: Condition =
     closeToZoneLevel(ItemLevel(1, this.dropLevel + minDropBuffer max this.dropLevel / 10), Normal).copy(dropLevel = (bestModsDropLevel, 100))
 
-  def withBestBaseBlocks(bestModsLevel: Int): Base with BestBaseBlocks = new Base(name, height, width, dropLevel, `class`) with BestBaseBlocks {
+  def withBestBaseBlocks(bestModsLevel: Int): Base with BestBaseBlocks = new Base(_name, _height, _width, dropLevel, _class, _dropEnabled) with BestBaseBlocks {
     override val bestModsDropLevel: Int = bestModsLevel
   }
 }
@@ -44,10 +44,8 @@ sealed trait BestBaseBlocks extends ImplicitConversions { this: Base =>
 }
 
 object Base {
-  def apply(name: String, height: Int, width: Int, dropLevel: Int, `class`: String): Base = new Base(name, height, width, dropLevel, `class`)
-
-  def unapply(base: Base): Option[(String, Int, Int, Int, String)] = Some((base.name, base.height, base.width, base.dropLevel, base.`class`))
-
+  def tupled = (apply _).tupled
+  
   val weapons =
     for {
       oneHandedAxes <- Bases.oneHandedAxes

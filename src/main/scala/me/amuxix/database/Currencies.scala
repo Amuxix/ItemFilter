@@ -7,7 +7,7 @@ import me.amuxix.items.Currency
 
 import scala.concurrent.Future
 
-class CurrenciesTable(tag: Tag) extends Table[Currency](tag, "currency") with NamedTable[Currency] {
+class CurrenciesTable(tag: Tag) extends Table[Currency](tag, "currency") with CommonColumns[Currency] {
   def stackSize = column[Int]("stack_size")
   def currencyType = column[String]("currency_type")
 
@@ -15,7 +15,8 @@ class CurrenciesTable(tag: Tag) extends Table[Currency](tag, "currency") with Na
     name,
     stackSize,
     currencyType,
-  ) <> ((Currency.apply _).tupled, Currency.unapply)
+    dropEnabled,
+  ).mapTo[Currency]
 }
 
 object Currencies extends BasicOperations[Currency, CurrenciesTable](new CurrenciesTable(_)) {

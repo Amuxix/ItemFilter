@@ -7,12 +7,13 @@ import me.amuxix.items.Resonator
 
 import scala.concurrent.Future
 
-class ResonatorsTable(tag: Tag) extends Table[Resonator](tag, "resonators") with NamedTable[Resonator] {
+class ResonatorsTable(tag: Tag) extends Table[Resonator](tag, "resonators") with CommonColumns[Resonator] {
   def reforges = column[Boolean]("reforges")
   override def * = (
     name,
     reforges,
-  ) <> ((Resonator.apply _).tupled, Resonator.unapply)
+    dropEnabled,
+  ).mapTo[Resonator]
 }
 
 object Resonators extends BasicOperations[Resonator, ResonatorsTable](new ResonatorsTable(_)) {

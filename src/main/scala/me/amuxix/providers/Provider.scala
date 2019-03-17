@@ -4,7 +4,7 @@ import cats.data.{EitherT, OptionT}
 import cats.implicits._
 import me.amuxix.ItemFilter
 import me.amuxix.ItemFilter.ec
-import me.amuxix.items.{GenItem, NoPrice, PriceFallback}
+import me.amuxix.items.{GenItem, PriceFallback}
 import me.amuxix.providers.Provider.ParsableWSResponse
 import play.api.libs.json.{JsValue, Reads}
 import play.api.libs.ws.JsonBodyReadables._
@@ -36,8 +36,8 @@ object Provider {
         case fallback: PriceFallback =>
           println(s"Using fallback price for ${fallback.name}")
           fallback.fallback
-        case unpriced: NoPrice =>
-          println(s"$unpriced is unpriced")
+        case item if item.dropEnabled == false =>
+          println(s"${item.name} drop is disabled")
           OptionT.none
         case other =>
           println(s"No Price for ${other.name}")

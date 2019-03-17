@@ -11,18 +11,12 @@ import scala.concurrent.Future
 /**
   * Like [[Currency]] this currency can enhance items but they themselves can also be upgraded.
   */
-class Essence(name: String, val upgradesTo: Option[String]) extends Item(name, 1, 1, "Currency") with PriceFallback {
-  override lazy val condition: Condition = Condition(`class` = "Currency", base = name)
+case class Essence(_name: String, upgradesTo: Option[String], _dropEnabled: Boolean) extends Item(_name, 1, 1, "Currency", _dropEnabled) with PriceFallback {
+  override lazy val condition: Condition = Condition(`class` = "Currency", base = _name)
   override def fallback: OptionT[Future, Double] =
     for {
       upgrade <- OptionT.fromOption[Future](upgradesTo)
       essence <- Essences.getByName(upgrade)
       value <- essence.chaosValuePerSlot
     } yield value / 3
-}
-
-object Essence {
-  def apply(name: String, upgradesTo: Option[String]): Essence = new Essence(name, upgradesTo)
-
-  def unapply(arg: Essence): Option[(String, Option[String])] = Some((arg.name, arg.upgradesTo))
 }

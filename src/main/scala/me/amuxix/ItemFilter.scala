@@ -11,8 +11,10 @@ import me.amuxix.categories.automated._
 import me.amuxix.categories.automated.currency._
 import me.amuxix.categories.manual._
 import me.amuxix.categories.manual.leagues._
+import me.amuxix.categories.manual.recipes._
 import me.amuxix.categories.semiautomated._
 import me.amuxix.categories.semiautomated.currency._
+import me.amuxix.categories.semiautomated.recipes._
 import me.amuxix.categories.single._
 import me.amuxix.categories.single.legacy._
 import me.amuxix.database.PostgresProfile.api.Database
@@ -86,7 +88,7 @@ object ItemFilter {
       Uniques,
       VeiledItems,
       BreachRings, //TODO: Add to base types, merge with accessories
-      /*Abyss, //TODO: Add to base types, merge with accessories/jewels
+      Abyss, //TODO: Add to base types, merge with accessories/jewels
       Talisman,
       Shaper,
       Elder,
@@ -105,7 +107,7 @@ object ItemFilter {
       Jewels,
       Flasks,
       Maps,
-      Prophecy,*/
+      Prophecy,
     ))
 
     val legacyCategories = NonEmptyList.fromListUnsafe(List(
@@ -120,9 +122,9 @@ object ItemFilter {
       }
       .onComplete {
         case Failure(ex) =>
-          throw ex
           client.close()
           system.terminate()
+          throw ex
         case Success(_) =>
           client.close()
           system.terminate()

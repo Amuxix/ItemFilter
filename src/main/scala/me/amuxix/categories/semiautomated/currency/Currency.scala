@@ -26,7 +26,7 @@ object Currency extends SemiAutomatedCategory {
                              val increasedStackSizes = rarities.collect {
                                case rarity if rarity.threshold > chaosValue && rarity.threshold / chaosValue <= currency.stackSize =>
                                  val stack = math.ceil(rarity.threshold / chaosValue).toInt
-                                 new Currency("", currency.stackSize, "Currency") {
+                                 new Currency("", currency.stackSize, "Currency", currency.dropEnabled) {
                                    override lazy val chaosValuePerSlot: OptionT[Future, Double] = OptionT.pure(chaosValue * stack)
                                    override def condition: Condition = currency.condition.copy(stackSize = Some(StackSize(stack, currency.stackSize)))
                                  }

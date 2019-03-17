@@ -2,7 +2,7 @@ package me.amuxix.items
 
 import me.amuxix.conditions.{Condition, ItemClass}
 
-abstract class Item(name: String, val height: Int, val width: Int, val `class`: String) extends GenItem(name) with ProviderPrice {
+abstract class Item(name: String, val height: Int, val width: Int, val `class`: String, dropEnabled: Boolean) extends GenItem(name, dropEnabled) with ProviderPrice {
   lazy val itemClass: ItemClass = ItemClass(`class`)
 
   val area: Int = height * width

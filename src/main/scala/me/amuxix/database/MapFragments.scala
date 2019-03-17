@@ -7,13 +7,14 @@ import me.amuxix.items.MapFragment
 
 import scala.concurrent.Future
 
-class MapFragmentsTable(tag: Tag) extends Table[MapFragment](tag, "map_fragments") with NamedTable[MapFragment] {
+class MapFragmentsTable(tag: Tag) extends Table[MapFragment](tag, "map_fragments") with CommonColumns[MapFragment] {
   def fragmentType = column[String]("fragment_type")
 
   override def * = (
     name,
     fragmentType,
-  ) <> ((MapFragment.apply _).tupled, MapFragment.unapply)
+    dropEnabled,
+  ).mapTo[MapFragment]
 }
 object MapFragments extends BasicOperations[MapFragment, MapFragmentsTable](new MapFragmentsTable(_)) {
 

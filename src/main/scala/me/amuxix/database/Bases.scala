@@ -7,7 +7,7 @@ import me.amuxix.items.{Base, BestBaseBlocks}
 
 import scala.concurrent.Future
 
-class BasesTable(tag: Tag) extends Table[Base](tag, "bases") with NamedTable[Base] {
+class BasesTable(tag: Tag) extends Table[Base](tag, "bases") with CommonColumns[Base] {
   def height = column[Int]("height")
   def width = column[Int]("width")
   def dropLevel = column[Int]("drop_level")
@@ -19,7 +19,8 @@ class BasesTable(tag: Tag) extends Table[Base](tag, "bases") with NamedTable[Bas
     width,
     dropLevel,
     `class`,
-  ) <> ((Base.apply _).tupled, Base.unapply)
+    dropEnabled,
+  ).mapTo[Base]
 }
 
 object Bases extends BasicOperations[Base, BasesTable](new BasesTable(_)) {
