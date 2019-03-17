@@ -14,7 +14,7 @@ abstract class BasicOperations[Element, T <: Table[Element] with CommonColumns[E
   def getByName(name: String): OptionT[Future, Element] =
     OptionT(db.run(filter(_.name === name).result.headOption))
 
-  def all: Future[NonEmptyList[Element]] =
+  lazy val all: Future[NonEmptyList[Element]] =
     db.run(this.result).map {
       case Seq(head, tail @ _*) => NonEmptyList(head, tail.toList)
     }

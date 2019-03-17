@@ -2,8 +2,8 @@ package me.amuxix.items
 
 import cats.data.OptionT
 import cats.implicits._
-import me.amuxix.ItemFilter.ec
 import me.amuxix._
+import me.amuxix.ItemFilter.ec
 import me.amuxix.actions.Action
 import me.amuxix.conditions.Condition
 
@@ -12,7 +12,7 @@ import scala.concurrent.Future
 abstract class GenItem(val name: String = "", val dropEnabled: Boolean = true) extends ImplicitConversions {
   def chaosValuePerSlot: OptionT[Future, Double]
 
-  def condition: Condition
+  def condition: Future[Condition]
 
   lazy val rarity: Future[FilterRarity] =
     chaosValuePerSlot.fold[FilterRarity](Undetermined) { chaosValuePerSlot =>
@@ -25,7 +25,8 @@ abstract class GenItem(val name: String = "", val dropEnabled: Boolean = true) e
     }
 
   def block(actionForRarity: FilterRarity => Action): Future[Block] =
-    rarity.map { rarity =>
-      Block(condition, actionForRarity(rarity), rarity)
-    }
+    for {
+      rarity <- rarity
+      condition <- condition
+    } yield Block(condition, actionForRarity(rarity), rarity)
 }

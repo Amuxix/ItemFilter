@@ -1,7 +1,5 @@
 package me.amuxix
 
-import java.io.{File, PrintWriter}
-
 import cats.data.NonEmptyList
 import cats.implicits._
 import javax.swing.filechooser.FileSystemView
@@ -25,6 +23,7 @@ import pureconfig.generic.auto._
 import slick.jdbc.DataSourceJdbcDataSource
 import slick.jdbc.hikaricp.HikariCPJdbcDataSource
 
+import java.io.{File, PrintWriter}
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success}
 
@@ -67,10 +66,13 @@ object ItemFilter {
     runMigrations()
     val poeFolder = FileSystemView.getFileSystemView.getDefaultDirectory.getPath + File.separatorChar + "My Games" + File.separatorChar + "Path of Exile" + File.separatorChar
     //val poeFolder = new java.io.File(".").getCanonicalPath
-    /*lazy val prices = Provider.itemPrices.toSeq.sortBy(_._2).map {
-      case (name, price) => s"${name.capitalize} -> $price"
-    }.mkString("\n")*/
-    //println(prices)
+    provider.itemPrices.foreach { items =>
+      val prices = items.toSeq.sortBy(_._2).map {
+        case (name, price) => s"${name.capitalize} -> $price"
+      }.mkString("\n")
+      println(prices)
+    }
+
 
     //TODO show items with white sockets
     val categories = NonEmptyList.fromListUnsafe(List(
@@ -115,20 +117,23 @@ object ItemFilter {
       Legacy,
     ))
 
-    List(Reduced, Diminished, Normal, Racing)
+    val f = List(Reduced, Diminished, Normal, Racing)
       .traverse { level =>
         createFilterFile(poeFolder, level, NonEmptyList(categories.head, categories.tail), legacyCategories)
       //createFilterFile(poeFolder, level, categories, legacyCategories, conceal = true)
       }
-      .onComplete {
-        case Failure(ex) =>
+
+      f andThen {
+        case _ =>
           client.close()
           system.terminate()
+      } andThen {
+        case Failure(ex) =>
           throw ex
         case Success(_) =>
-          client.close()
-          system.terminate()
+          println("Finished")
       }
+
   }
 
   def createFilterFile(poeFolder: String, filterLevel: FilterLevel, categories: NonEmptyList[Category], legacyCategories: NonEmptyList[Category], conceal: Boolean = false): Future[Unit] = {

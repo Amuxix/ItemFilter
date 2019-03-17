@@ -17,11 +17,11 @@ class ResonatorsTable(tag: Tag) extends Table[Resonator](tag, "resonators") with
 }
 
 object Resonators extends BasicOperations[Resonator, ResonatorsTable](new ResonatorsTable(_)) {
-  def chaotic: Future[NonEmptyList[Resonator]] = db.run(filter(_.reforges).result).map {
+  lazy val chaotic: Future[NonEmptyList[Resonator]] = db.run(filter(_.reforges).result).map {
     case Seq(head, tail @ _*) => NonEmptyList(head, tail.toList)
   }
 
-  def alchemical: Future[NonEmptyList[Resonator]] = db.run(filter(_.reforges === false).result).map {
+  lazy val alchemical: Future[NonEmptyList[Resonator]] = db.run(filter(_.reforges === false).result).map {
     case Seq(head, tail @ _*) => NonEmptyList(head, tail.toList)
   }
 }

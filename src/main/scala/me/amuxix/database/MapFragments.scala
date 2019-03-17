@@ -18,12 +18,12 @@ class MapFragmentsTable(tag: Tag) extends Table[MapFragment](tag, "map_fragments
 }
 object MapFragments extends BasicOperations[MapFragment, MapFragmentsTable](new MapFragmentsTable(_)) {
 
-  def scarabs: Future[NonEmptyList[MapFragment]] =
+  lazy val scarabs: Future[NonEmptyList[MapFragment]] =
     db.run(filter(_.fragmentType === "Scarab").result).map {
       case Seq(head, tail @ _*) => NonEmptyList(head, tail.toList)
     }
 
-  def nonScarabs: Future[NonEmptyList[MapFragment]] =
+  lazy val nonScarabs: Future[NonEmptyList[MapFragment]] =
     db.run(filter(_.fragmentType =!= "Scarab").result).map {
       case Seq(head, tail @ _*) => NonEmptyList(head, tail.toList)
     }

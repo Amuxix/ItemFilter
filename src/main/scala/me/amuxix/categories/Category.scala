@@ -1,7 +1,8 @@
 package me.amuxix.categories
+
 import cats.data.NonEmptyList
-import me.amuxix.ItemFilter.ec
 import me.amuxix._
+import me.amuxix.ItemFilter.ec
 
 import scala.concurrent.Future
 

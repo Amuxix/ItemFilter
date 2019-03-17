@@ -2,8 +2,8 @@ package me.amuxix.categories.semiautomated.recipes
 
 import cats.data.{NonEmptyList, OptionT}
 import cats.implicits._
-import me.amuxix.ItemFilter.ec
 import me.amuxix._
+import me.amuxix.ItemFilter.ec
 import me.amuxix.actions.Action
 import me.amuxix.categories.SemiAutomatedCategory
 import me.amuxix.conditions.Condition
@@ -19,7 +19,7 @@ abstract class Sized extends SemiAutomatedCategory { outer =>
     Future.successful {
       new GenItem {
         override lazy val chaosValuePerSlot: OptionT[Future, Double] = chaosValue.map(_ / (width * height))
-        override lazy val condition: Condition = outer.condition.copy(height = height, width = width)
+        override lazy val condition: Future[Condition] = Future.successful(outer.condition.copy(height = height, width = width))
       }
     }
 

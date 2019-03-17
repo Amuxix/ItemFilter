@@ -2,11 +2,11 @@ package me.amuxix.categories.semiautomated.currency
 
 import cats.data.{NonEmptyList, OptionT}
 import cats.implicits._
-import me.amuxix.ItemFilter.ec
 import me.amuxix._
+import me.amuxix.ItemFilter.ec
+import me.amuxix.actions._
 import me.amuxix.actions.Color.{black, goodYellow, lightGreen}
 import me.amuxix.actions.Sound.{armourKit, chaos, epic, myths}
-import me.amuxix.actions._
 import me.amuxix.categories.SemiAutomatedCategory
 import me.amuxix.conditions.{Condition, StackSize}
 import me.amuxix.database.{Currencies, CurrencyFragments}
@@ -28,7 +28,7 @@ object Currency extends SemiAutomatedCategory {
                                  val stack = math.ceil(rarity.threshold / chaosValue).toInt
                                  new Currency("", currency.stackSize, "Currency", currency.dropEnabled) {
                                    override lazy val chaosValuePerSlot: OptionT[Future, Double] = OptionT.pure(chaosValue * stack)
-                                   override def condition: Condition = currency.condition.copy(stackSize = Some(StackSize(stack, currency.stackSize)))
+                                   override lazy val condition: Future[Condition] = currency.condition.map(_.copy(stackSize = Some(StackSize(stack, currency.stackSize))))
                                  }
                              }
                              NonEmptyList.fromListUnsafe(increasedStackSizes :+ currency)

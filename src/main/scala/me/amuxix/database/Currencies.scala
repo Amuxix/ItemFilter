@@ -25,18 +25,18 @@ object Currencies extends BasicOperations[Currency, CurrenciesTable](new Currenc
       case Seq(head, tail @ _*) => NonEmptyList(head, tail.toList)
     }
 
-  def fossils: Future[NonEmptyList[Currency]] =
+  lazy val fossils: Future[NonEmptyList[Currency]] =
     getByCurrencyType("Fossil")
 
-  def resonators: Future[NonEmptyList[Currency]] =
+  lazy val resonators: Future[NonEmptyList[Currency]] =
     getByCurrencyType("Resonator")
 
-  def orbs: Future[NonEmptyList[Currency]] =
+  lazy val orbs: Future[NonEmptyList[Currency]] =
     getByCurrencyType("Orb")
 
-  def vials: Future[NonEmptyList[Currency]] =
+  lazy val vials: Future[NonEmptyList[Currency]] =
     getByCurrencyType("Vial")
 
-  def prophecies: Future[NonEmptyList[Currency]] =
+  lazy val prophecies: Future[NonEmptyList[Currency]] =
     getByCurrencyType("Prophecy")
 }

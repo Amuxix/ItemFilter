@@ -33,7 +33,7 @@ object Chisel extends SemiAutomatedCategory {
             chisel <- hammerValuePerSlot
             whetstone <- whetstoneValue
           } yield chisel - whetstone * whetstonesRequired
-          override lazy val condition: Condition = cond
+          override lazy val condition: Future[Condition] = Future.successful(cond)
         }
       }
 
@@ -42,7 +42,7 @@ object Chisel extends SemiAutomatedCategory {
 
       whites ++ blues :+ new GenItem {
         override def chaosValuePerSlot: OptionT[Future, Double] = hammerValuePerSlot
-        override def condition: Condition = Condition(base = hammers, quality = 20)
+        override lazy val condition: Future[Condition] = Future.successful(Condition(base = hammers, quality = 20))
       }
     }).value.map(hammers => NonEmptyList.fromListUnsafe(hammers.toList.flatten))
 
