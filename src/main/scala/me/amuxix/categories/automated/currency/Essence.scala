@@ -1,16 +1,16 @@
 package me.amuxix.categories.automated.currency
-
+import cats.data.NonEmptyList
 import me.amuxix.actions.{Action, Color}
-import me.amuxix.categories.automated.AutomatedCategory
+import me.amuxix.categories.AutomatedCategory
 import me.amuxix.database.Essences
-import me.amuxix.items.GenItem
-import me.amuxix.{Epic, FilterRarity, Mythic}
+import me.amuxix.items.Item
+import me.amuxix.{Epic, Mythic, Priced}
 
 import scala.concurrent.Future
 
 object Essence extends AutomatedCategory {
-  override protected val categoryItems: Future[Seq[GenItem]] = Essences.all
-  override protected def actionForRarity(rarity: FilterRarity): Action = rarity match {
+  override protected lazy val items: Future[NonEmptyList[Item]] = Essences.all
+  override protected def action: Priced => Action = {
     case Mythic =>
       Action(
         size = 45,
@@ -19,11 +19,7 @@ object Essence extends AutomatedCategory {
         textColor = Color.black
       )
     case Epic =>
-      Action(size = 40,
-        borderColor = Color.black,
-        backgroundColor = Color.slimeGreen.darken,
-        textColor = Color.black
-      )
+      Action(size = 40, borderColor = Color.black, backgroundColor = Color.slimeGreen.darken, textColor = Color.black)
     case _ =>
       Action(
         textColor = Color.slimeGreen

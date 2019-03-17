@@ -12,6 +12,6 @@ case class ExplicitMod(mods: String*) extends Writable with Mergeable[ExplicitMo
 
   override def canMerge(other: ExplicitMod): Boolean = true //This only depends on item class
   override def merge(other: ExplicitMod): ExplicitMod =
-  //noinspection ScalaUnnecessaryParentheses
-    ExplicitMod((mods ++ other.mods).distinct:_*)
+    //noinspection ScalaUnnecessaryParentheses
+    ExplicitMod((mods ++ other.mods).distinct: _*)
 }

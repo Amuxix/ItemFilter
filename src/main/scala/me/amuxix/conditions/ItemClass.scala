@@ -13,6 +13,6 @@ case class ItemClass(`class`: String*) extends Writable with Mergeable[ItemClass
 
   override def canMerge(other: ItemClass): Boolean = true
   override def merge(other: ItemClass): ItemClass =
-  //noinspection ScalaUnnecessaryParentheses
-    ItemClass((`class` ++ other.`class`).distinct:_*)
+    //noinspection ScalaUnnecessaryParentheses
+    ItemClass((`class` ++ other.`class`).distinct: _*)
 }

@@ -9,8 +9,8 @@ trait Named {
       .split("\\$")
       .last
       .replaceAll("([a-z])([A-Z])", "$1 $2")
-    
-    Named.replacements.foldLeft(spaced){
+
+    Named.replacements.foldLeft(spaced) {
       case (string, fix) => string.replaceAll(s"(.\\s?)\\b$fix\\b", s"$$1${fix.toLowerCase}")
     }
   }

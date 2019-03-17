@@ -1,14 +1,20 @@
 package me.amuxix.items
+
+import cats.data.OptionT
+import cats.implicits._
 import me.amuxix._
+import me.amuxix.ItemFilter.ec
 import me.amuxix.actions.Action
 import me.amuxix.conditions.Condition
 
-abstract class GenItem(val name: String = "") extends ImplicitConversions {
-  def chaosValuePerSlot: Option[Double]
+import scala.concurrent.Future
 
-  def condition: Condition
+abstract class GenItem(val name: String = "", val dropEnabled: Boolean = true) extends ImplicitConversions {
+  def chaosValuePerSlot: OptionT[Future, Double]
 
-  lazy val rarity: FilterRarity =
+  def condition: Future[Condition]
+
+  lazy val rarity: Future[FilterRarity] =
     chaosValuePerSlot.fold[FilterRarity](Undetermined) { chaosValuePerSlot =>
       if (chaosValuePerSlot >= Mythic.threshold) Mythic
       else if (chaosValuePerSlot >= Epic.threshold) Epic
@@ -18,6 +24,9 @@ abstract class GenItem(val name: String = "") extends ImplicitConversions {
       else Leveling //The price is lower than the lowest threshold.
     }
 
-  def block(actionForRarity: FilterRarity => Action) =
-    Block(condition, actionForRarity(rarity), rarity)
+  def block(actionForRarity: FilterRarity => Action): Future[Block] =
+    for {
+      rarity <- rarity
+      condition <- condition
+    } yield Block(condition, actionForRarity(rarity), rarity)
 }

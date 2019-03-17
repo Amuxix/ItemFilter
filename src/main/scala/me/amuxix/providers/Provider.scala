@@ -1,8 +1,10 @@
 package me.amuxix.providers
 
-import cats.data.EitherT
+import cats.data.{EitherT, OptionT}
+import cats.implicits._
 import me.amuxix.ItemFilter
-import me.amuxix.items.{GenItem, NoPrice, PriceFallback}
+import me.amuxix.ItemFilter.ec
+import me.amuxix.items.{GenItem, PriceFallback}
 import me.amuxix.providers.Provider.ParsableWSResponse
 import play.api.libs.json.{JsValue, Reads}
 import play.api.libs.ws.JsonBodyReadables._
@@ -12,7 +14,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 object Provider {
   implicit class ParsableWSResponse(response: StandaloneWSResponse) {
-    def parse[Response : Reads](url: String): Either[ProviderError, Response] =
+    def parse[Response: Reads](url: String): Either[ProviderError, Response] =
       response match {
         case _ if response.body.isEmpty =>
           Left(RequestError(url, response, "Response is empty."))
@@ -28,23 +30,23 @@ object Provider {
       }
   }
 
-  def getChaosEquivalentFor(item: GenItem): Option[Double] =
-    ItemFilter.provider.itemPrices
-      .get(item.name.toLowerCase)
+  def getChaosEquivalentFor(item: GenItem): OptionT[Future, Double] =
+    OptionT(ItemFilter.provider.itemPrices.map(_.get(item.name.toLowerCase)))
       .orElse(item match {
         case fallback: PriceFallback =>
           println(s"Using fallback price for ${fallback.name}")
-          Some(fallback.fallback)
-        case _: NoPrice =>
-          None
+          fallback.fallback
+        case item if item.dropEnabled == false =>
+          println(s"${item.name} drop is disabled")
+          OptionT.none
         case other =>
           println(s"No Price for ${other.name}")
-          None
+          OptionT.none
       })
 }
 
 abstract class Provider(wsClient: StandaloneWSClient)(implicit ec: ExecutionContext) {
-  protected def get[Response : Reads](url: String, parameters: (String, String)*): EitherT[Future, ProviderError, Response] = {
+  protected def get[Response: Reads](url: String, parameters: (String, String)*): EitherT[Future, ProviderError, Response] = {
     val request = wsClient
       .url(url)
       .withQueryStringParameters(parameters.toSeq: _*)
@@ -55,13 +57,17 @@ abstract class Provider(wsClient: StandaloneWSClient)(implicit ec: ExecutionCont
     )
   }
 
-  val itemPrices: Map[String, Double] = (("chaos orb", 1D) +: getAllItemsPrices.map {
-    case Price(name, chaosEquivalent) => name -> chaosEquivalent
-  }).toMap
+  val itemPrices: Future[Map[String, Double]] = getAllItemsPrices.value.map {
+    case Some(prices) =>
+      println("Got prices successfully")
+      (("chaos orb", 1D) +: prices.map {
+        case Price(name, chaosEquivalent) => name -> chaosEquivalent
+      }).toMap
+    case None => throw new Exception("Failed to get prices")
+  }
 
   /**
     * This should update price for all items so they are accessible on itemPrices map
     */
-  protected def getAllItemsPrices: List[Price]
+  protected def getAllItemsPrices: OptionT[Future, List[Price]]
 }
-

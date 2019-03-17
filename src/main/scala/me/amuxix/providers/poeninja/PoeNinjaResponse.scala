@@ -12,12 +12,12 @@ object PoeNinjaResponse {
   val readCurrencyLines: Reads[Price] = (
     (JsPath \ "currencyTypeName").read[String] and
       (JsPath \ "chaosEquivalent").read[Double]
-    )(Price.apply _)
+  )(Price.apply _)
 
   val readItemLines: Reads[Price] = (
     (JsPath \ "name").read[String] and
       (JsPath \ "chaosValue").read[Double]
-    )(Price.apply _)
+  )(Price.apply _)
 
   implicit def responseReader(implicit reads: Reads[Price]): Reads[PoeNinjaResponse] = Json.reads
 }

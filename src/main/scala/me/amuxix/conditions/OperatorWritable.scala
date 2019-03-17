@@ -8,10 +8,9 @@ abstract class OperatorWritable[T <: OperatorWritable[T]](max: Int, conditionNam
 
   private def containsOrIsAdjacent(elem: Int): Boolean = start - 1 <= elem && elem <= end + 1
 
-  override def canMerge(other: T): Boolean = {
+  override def canMerge(other: T): Boolean =
     (this containsOrIsAdjacent other.start) || (this containsOrIsAdjacent other.end) ||
       (other containsOrIsAdjacent this.start) || (other containsOrIsAdjacent this.end)
-  }
 
   override def print: String = start match {
     case `end`               => s"$conditionName $start"
