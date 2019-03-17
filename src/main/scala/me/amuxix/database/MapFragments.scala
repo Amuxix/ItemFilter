@@ -1,5 +1,7 @@
 package me.amuxix.database
 
+import cats.data.NonEmptyList
+import me.amuxix.ItemFilter.ec
 import me.amuxix.database.PostgresProfile.api._
 import me.amuxix.items.MapFragment
 
@@ -15,9 +17,13 @@ class MapFragmentsTable(tag: Tag) extends Table[MapFragment](tag, "map_fragments
 }
 object MapFragments extends BasicOperations[MapFragment, MapFragmentsTable](new MapFragmentsTable(_)) {
 
-  def scarabs: Future[Seq[MapFragment]] =
-    db.run(filter(_.fragmentType === "Scarab").result)
+  def scarabs: Future[NonEmptyList[MapFragment]] =
+    db.run(filter(_.fragmentType === "Scarab").result).map {
+      case Seq(head, tail @ _*) => NonEmptyList(head, tail.toList)
+    }
 
-  def nonScarabs: Future[Seq[MapFragment]] =
-    db.run(filter(_.fragmentType =!= "Scarab").result)
+  def nonScarabs: Future[NonEmptyList[MapFragment]] =
+    db.run(filter(_.fragmentType =!= "Scarab").result).map {
+      case Seq(head, tail @ _*) => NonEmptyList(head, tail.toList)
+    }
 }

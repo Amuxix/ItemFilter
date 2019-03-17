@@ -1,5 +1,6 @@
 package me.amuxix.providers.poeninja
 
+import cats.data.OptionT
 import cats.implicits._
 import me.amuxix.ItemFilter
 import me.amuxix.providers.poeninja.PoeNinja._
@@ -8,8 +9,7 @@ import me.amuxix.providers.{Price, Provider}
 import play.api.libs.json.Reads
 import play.api.libs.ws.StandaloneWSClient
 
-import scala.concurrent.duration._
-import scala.concurrent.{Await, ExecutionContext, Future}
+import scala.concurrent.{ExecutionContext, Future}
 import scala.language.postfixOps
 
 object PoeNinja {
@@ -17,7 +17,7 @@ object PoeNinja {
 }
 
 class PoeNinja(wsClient: StandaloneWSClient)(implicit ec: ExecutionContext) extends Provider(wsClient) {
-  protected def getAllItemsPrices: List[Price] = {
+  protected def getAllItemsPrices: OptionT[Future, List[Price]] = {
     val parameters: Seq[(String, String)] = Seq(
       "league" -> ItemFilter.league.toString
       //"date" -> date
@@ -57,14 +57,14 @@ class PoeNinja(wsClient: StandaloneWSClient)(implicit ec: ExecutionContext) exte
           waitForPrices
         }*/
 
-    def recover: Future[List[Price]] = {
+    /*def recover: Future[NonEmptyList[Price]] =
       prices.value
-        .collect{ case Right(prices) => prices }
+        .collect { case Right(prices) => prices }
         .recoverWith {
-        case _ => recover
-      }
-    }
+          case _ => recover
+        }
 
-    Await.result(recover, 10 seconds)
+    recover*/
+    prices.toOption
   }
 }

@@ -1,5 +1,6 @@
 package me.amuxix.categories.semiautomated
 
+import cats.data.NonEmptyList
 import me.amuxix.ItemFilter.ec
 import me.amuxix._
 import me.amuxix.actions.Color._
@@ -12,12 +13,12 @@ import me.amuxix.items.{CategoryItem, GenItem}
 import scala.concurrent.Future
 
 object Maps extends SemiAutomatedCategory {
-  override protected val categoryItems: Future[Seq[GenItem]] = database.Maps.all.map(_.flatMap { map =>
-    Seq(
+  override protected val categoryItems: Future[NonEmptyList[GenItem]] = database.Maps.all.map(_.flatMap { map =>
+    NonEmptyList.fromListUnsafe(List(
       new CategoryItem(Epic) { override def condition: Condition = map.sameTierOrUpgrade },
       new CategoryItem(Rare) { override def condition: Condition = map.good },
       map,
-    )
+    ))
   })
 
   override protected def actionForRarity: FilterRarity => Action = {
@@ -44,9 +45,10 @@ object Maps extends SemiAutomatedCategory {
         minimapIcon = (White, Square),
         beam = White,
       )
-    case _ => Action(
-      sound = maps,
-      minimapIcon = (White, Square),
-    )
+    case _ =>
+      Action(
+        sound = maps,
+        minimapIcon = (White, Square),
+      )
   }
 }

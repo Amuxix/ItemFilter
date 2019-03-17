@@ -1,5 +1,7 @@
 package me.amuxix.categories.semiautomated.currency
 
+import cats.data.{NonEmptyList, OptionT}
+import cats.implicits._
 import me.amuxix.ItemFilter.ec
 import me.amuxix._
 import me.amuxix.actions.Color.{black, goodYellow, lightGreen}
@@ -13,25 +15,26 @@ import me.amuxix.items.{Currency, GenItem}
 import scala.concurrent.Future
 
 object Currency extends SemiAutomatedCategory {
-  private val rarities = Seq(Mythic, Epic, Rare, Uncommon, Common)
-  override protected val categoryItems: Future[Seq[GenItem]] =
+  private val rarities = List(Mythic, Epic, Rare, Uncommon, Common)
+  override protected val categoryItems: Future[NonEmptyList[GenItem]] =
     for {
-    orbs <- Currencies.orbs
-    fragments <- CurrencyFragments.all
-    vials <- Currencies.vials
-    } yield (orbs ++ fragments).flatMap { currency =>
-      currency.chaosValuePerSlot.fold(Seq(currency)) { chaosValue =>
-        val increasedStackSizes = rarities.collect {
-          case rarity if rarity.threshold > chaosValue && rarity.threshold / chaosValue <= currency.stackSize =>
-            val stack = math.ceil(rarity.threshold / chaosValue).toInt
-            new Currency("", currency.stackSize, "Currency") {
-              override lazy val chaosValuePerSlot: Option[Double] = Some(chaosValue * stack)
-              override def condition: Condition = currency.condition.copy(stackSize = Some(StackSize(stack, currency.stackSize)))
-            }
-        }
-        increasedStackSizes :+ currency
-      }
-    } ++ vials
+      orbs <- Currencies.orbs
+      fragments <- CurrencyFragments.all
+      vials <- Currencies.vials
+      orbsAndFragments <- orbs.concatNel(fragments).flatTraverse { currency =>
+                           currency.chaosValuePerSlot.fold(NonEmptyList.one(currency)) { chaosValue =>
+                             val increasedStackSizes = rarities.collect {
+                               case rarity if rarity.threshold > chaosValue && rarity.threshold / chaosValue <= currency.stackSize =>
+                                 val stack = math.ceil(rarity.threshold / chaosValue).toInt
+                                 new Currency("", currency.stackSize, "Currency") {
+                                   override lazy val chaosValuePerSlot: OptionT[Future, Double] = OptionT.pure(chaosValue * stack)
+                                   override def condition: Condition = currency.condition.copy(stackSize = Some(StackSize(stack, currency.stackSize)))
+                                 }
+                             }
+                             NonEmptyList.fromListUnsafe(increasedStackSizes :+ currency)
+                           }
+                         }
+    } yield orbsAndFragments.concatNel(vials)
 
   override protected def actionForRarity: FilterRarity => Action = {
     case Mythic =>

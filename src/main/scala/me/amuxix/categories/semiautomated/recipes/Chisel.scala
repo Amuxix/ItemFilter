@@ -1,4 +1,7 @@
 package me.amuxix.categories.semiautomated.recipes
+
+import cats.data.{NonEmptyList, OptionT}
+import cats.implicits._
 import me.amuxix.FilterRarity
 import me.amuxix.ItemFilter.ec
 import me.amuxix.actions.Action
@@ -11,8 +14,8 @@ import scala.concurrent.Future
 
 object Chisel extends SemiAutomatedCategory {
   private val hammers = Seq("Gavel", "Rock Breaker", "Stone Hammer")
-  override protected val categoryItems: Future[Seq[GenItem]] =
-    for {
+  override protected val categoryItems: Future[NonEmptyList[GenItem]] =
+    (for {
       chisel <- Currencies.getByName("Cartographer's Chisel")
       whetstone <- Currencies.getByName("Blacksmith's Whetstone")
     } yield {
@@ -22,11 +25,11 @@ object Chisel extends SemiAutomatedCategory {
       def generateGenericItem(whetstonesRequired: Int, gameRarity: GameRarity) = {
         val quality: Option[Quality] = gameRarity match {
           case Magic => (0, 20 - 2 * whetstonesRequired)
-          case _ => (0, 20 - 5 * whetstonesRequired)
+          case _     => (0, 20 - 5 * whetstonesRequired)
         }
         val cond: Condition = Condition(base = hammers, rarity = Some(Rarity(gameRarity)), quality = quality)
         new GenItem {
-          override lazy val chaosValuePerSlot: Option[Double] = for {
+          override lazy val chaosValuePerSlot: OptionT[Future, Double] = for {
             chisel <- hammerValuePerSlot
             whetstone <- whetstoneValue
           } yield chisel - whetstone * whetstonesRequired
@@ -38,10 +41,12 @@ object Chisel extends SemiAutomatedCategory {
       val blues = (1 to 10).map(generateGenericItem(_, Magic))
 
       whites ++ blues :+ new GenItem {
-        override def chaosValuePerSlot: Option[Double] = hammerValuePerSlot
+        override def chaosValuePerSlot: OptionT[Future, Double] = hammerValuePerSlot
         override def condition: Condition = Condition(base = hammers, quality = 20)
       }
-    }
+    }).value.map(hammers => NonEmptyList.fromListUnsafe(hammers.toList.flatten))
 
-  override protected def actionForRarity: FilterRarity => Action = { _ => Action() }
+  override protected def actionForRarity: FilterRarity => Action = { _ =>
+    Action()
+  }
 }

@@ -1,14 +1,21 @@
 package me.amuxix
 
+import cats.data.NonEmptyList
+
 import scala.annotation.tailrec
+import scala.language.higherKinds
 
 object Mergeable {
-  @tailrec def merge[T <: Mergeable[T]](unmerged: Seq[T], merged: Seq[T] = Seq.empty): Seq[T] =
-    unmerged match {
+  @tailrec def merge[T <: Mergeable[T]](unmerged: NonEmptyList[T], merged: List[T] = List.empty): NonEmptyList[T] =
+    unmerged.toList match {
       case h :: t =>
         val (mergeable, unmergeable) = t.partition(h.canMerge)
-        merge(unmergeable, merged :+ mergeable.foldLeft(h)(_ merge _))
-      case _ => merged
+        val nonEmptyMerged = NonEmptyList.fromListUnsafe(merged :+ mergeable.foldLeft(h)(_ merge _))
+        unmergeable match {
+          case h :: t => merge(NonEmptyList(h, t), nonEmptyMerged.toList)
+          case _      => nonEmptyMerged
+        }
+      case _ => NonEmptyList.fromListUnsafe(merged)
     }
 }
 

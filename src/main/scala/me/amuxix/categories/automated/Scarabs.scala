@@ -1,4 +1,5 @@
 package me.amuxix.categories.automated
+import cats.data.NonEmptyList
 import me.amuxix._
 import me.amuxix.actions.Color.{delveOrange, scarabBlue}
 import me.amuxix.actions.Sound.{epic, myths}
@@ -10,12 +11,12 @@ import me.amuxix.items.Item
 import scala.concurrent.Future
 
 object Scarabs extends AutomatedCategory {
-  override protected val items: Future[Seq[Item]] = MapFragments.scarabs
+  override protected lazy val items: Future[NonEmptyList[Item]] = MapFragments.scarabs
   private val baseAction = Action(
     textColor = delveOrange,
     borderColor = scarabBlue,
   )
-  override protected def action: FilterRarity with Priced => Action = {
+  override protected def action: Priced => Action = {
     case Mythic =>
       baseAction.copy(
         size = 45,

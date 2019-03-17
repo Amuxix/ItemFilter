@@ -1,4 +1,5 @@
 package me.amuxix.categories.automated.currency
+import cats.data.NonEmptyList
 import me.amuxix._
 import me.amuxix.actions.Color.{black, darkRed, white}
 import me.amuxix.actions._
@@ -9,9 +10,9 @@ import me.amuxix.items.Item
 import scala.concurrent.Future
 
 object Fragment extends AutomatedCategory {
-  override protected val items: Future[Seq[Item]] = MapFragments.nonScarabs
+  override protected lazy val items: Future[NonEmptyList[Item]] = MapFragments.nonScarabs
 
-  override protected def action: FilterRarity with Priced => Action = {
+  override protected def action: Priced => Action = {
     case Mythic =>
       Action(
         borderColor = darkRed,

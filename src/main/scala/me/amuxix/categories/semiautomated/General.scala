@@ -1,6 +1,8 @@
 package me.amuxix.categories.semiautomated
 
-import me.amuxix.ItemFilter._
+import cats.data.{NonEmptyList, OptionT}
+import cats.implicits._
+import me.amuxix.ItemFilter.{ec, _}
 import me.amuxix._
 import me.amuxix.actions.Color.{darkRed, goodYellow, red, white}
 import me.amuxix.actions.{Action, Green, Sound}
@@ -14,20 +16,23 @@ import scala.concurrent.Future
 object General extends SemiAutomatedCategory {
   private val itemClasses = config.accessoriesClasses ++ config.armourClasses ++ config.weaponClasses ++ config.shieldClasses
 
-  override protected lazy val categoryItems: Future[Seq[GenItem]] =
+  override protected lazy val categoryItems: Future[NonEmptyList[GenItem]] =
     for {
-      jew <- Currencies.getByName("Jeweller's Orb")
       bestItems <- Base.bestItems
       allEquipment <- Base.allEquipment
     } yield {
-      Seq(
+      val general = NonEmptyList.fromListUnsafe(List(
         new CategoryItem(AlwaysShow) { override def condition: Condition = Condition(`class` = Seq("Quest Items", "Labyrinth Item", "Pantheon Soul", "Labyrinth Trinket")) },
         new CategoryItem(Mythic) { override def condition: Condition = Condition(base = "Albino Rhoa Feather") },
         new CategoryItem(Mythic) { override def condition: Condition = Condition(`class` = "Fishing Rod") },
         new CategoryItem(Mythic) { override def condition: Condition = Condition(linkedSockets = 6) },
         new CategoryItem(Epic) { override def condition: Condition = Condition(linkedSockets = 5) },
         new GenItem {
-          override def chaosValuePerSlot: Option[Double] = jew.chaosValuePerSlot.map(_ * 7)
+          override def chaosValuePerSlot: OptionT[Future, Double] =
+            for {
+              jew <- Currencies.getByName("Jeweller's Orb")
+              sixSocketValue <- jew.chaosValuePerSlot.map(_ * 7)
+            } yield sixSocketValue
           override def condition: Condition = Condition(sockets = 6)
         },
         new CategoryItem(Leveling) { override def condition: Condition = Condition(itemLevel = (1, cutoffs.normalItems), linkedSockets = 3) },
@@ -37,14 +42,22 @@ object General extends SemiAutomatedCategory {
         new CategoryItem(Leveling) { override def condition: Condition = Condition(`class` = itemClasses, itemLevel = (1, cutoffs.normalItems), rarity = Normal) },
         new CategoryItem(Leveling) { override def condition: Condition = Condition(`class` = itemClasses, itemLevel = (1, cutoffs.magicItems), rarity = Magic) },
         new CategoryItem(Leveling) { override def condition: Condition = Condition(`class` = config.accessoriesClasses, rarity = GameRare, itemLevel = (1, 60)) },
-      ) ++ bestItems.flatMap(i => Seq(
-        new CategoryItem { override def condition: Condition = i.rare },
-        new CategoryItem(AlwaysHide) { override def condition: Condition = i.crafting }
-      )) ++ allEquipment.flatMap(i => Seq(
-        new CategoryItem(Leveling) { override def condition: Condition = i.conditionsOfBestRaresForZoneLevel },
-        new CategoryItem(Leveling) { override def condition: Condition = i.conditionsOfGoodRaresForZoneLevel },
-        new CategoryItem(AlwaysHide) { override def condition: Condition = i.conditionsOfBestWhitesForZoneLevel },
       ))
+      val best = bestItems.flatMap { i =>
+        NonEmptyList.fromListUnsafe(List(
+          new CategoryItem { override def condition: Condition = i.rare },
+          new CategoryItem(AlwaysHide) { override def condition: Condition = i.crafting }
+          ))
+      }
+      val all = allEquipment.flatMap { i =>
+        NonEmptyList.fromListUnsafe(List(
+          new CategoryItem(Leveling) { override def condition: Condition = i.conditionsOfBestRaresForZoneLevel },
+          new CategoryItem(Leveling) { override def condition: Condition = i.conditionsOfGoodRaresForZoneLevel },
+          new CategoryItem(AlwaysHide) { override def condition: Condition = i.conditionsOfBestWhitesForZoneLevel },
+        ))
+      }
+
+      general.concatNel(best).concatNel(all)
     }
 
   override protected def actionForRarity: FilterRarity => Action = {

@@ -9,10 +9,10 @@ import scala.concurrent.duration.Duration
 class CurrencyFragmentsTable(tag: Tag) extends Table[CurrencyFragment](tag, "currency_fragments") with NamedTable[CurrencyFragment] {
   implicit def essenceColumnType = MappedColumnType.base[Currency, String](
     _.name,
-    name => Await.result(Currencies.getByName(name), Duration.Inf)
+    name => Await.result(Currencies.getByName(name).value, Duration.Inf).get
   )
 
-  def fragmentOf = column[Currency]("fragment_of")
+  def fragmentOf = column[String]("fragment_of")
   def stackSize = column[Int]("stack_size")
 
   override def * = (

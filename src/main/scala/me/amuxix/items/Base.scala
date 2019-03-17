@@ -1,5 +1,6 @@
 package me.amuxix.items
 
+import cats.data.NonEmptyList
 import me.amuxix.ImplicitConversions
 import me.amuxix.ItemFilter.{cutoffs, ec}
 import me.amuxix.conditions._
@@ -18,7 +19,7 @@ class Base(name: String, height: Int, width: Int, val dropLevel: Int, `class`: S
     base = Some(this.baseType),
     itemLevel = {
       val bestEquipment = Await.result(Base.bestEquipment, Duration.Inf)
-      if (bestEquipment contains this) None else Some(howClose)
+      if (bestEquipment.toList contains this) None else Some(howClose)
     },
     rarity = rarity
   )
@@ -61,38 +62,38 @@ object Base {
       twoHandedSwords <- Bases.twoHandedSwords
       thrustingOneHandedSwords <- Bases.thrustingOneHandedSwords
       wands <- Bases.wands
-    } yield Seq(oneHandedAxes, twoHandedAxes, bows, claws, daggers, oneHandedMaces, sceptres, staffs, oneHandedSwords, twoHandedSwords, thrustingOneHandedSwords, wands)
+    } yield NonEmptyList.fromListUnsafe(List(oneHandedAxes, twoHandedAxes, bows, claws, daggers, oneHandedMaces, sceptres, staffs, oneHandedSwords, twoHandedSwords, thrustingOneHandedSwords, wands))
 
-  val armours = 
+  val armours =
     for {
       armours <- Bases.bodyArmours
       boots <- Bases.boots
       gloves <- Bases.gloves
       helmets <- Bases.helmets
-    } yield Seq(armours, boots, gloves, helmets)
+    } yield NonEmptyList.fromListUnsafe(List(armours, boots, gloves, helmets))
 
-    val accessories =
-      for {
-        rings <- Bases.rings
-        belts <- Bases.belts
-        amulets <- Bases.amulets
-      } yield rings ++ belts ++ amulets
+  val accessories =
+    for {
+      rings <- Bases.rings
+      belts <- Bases.belts
+      amulets <- Bases.amulets
+    } yield rings.concatNel(belts).concatNel(amulets)
 
-    val bestEquipment =
-      for {
-        weps <- weapons
-        arms <- armours
-      } yield (weps ++ arms).flatMap(_.filter(_.dropLevel >= cutoffs.bestBaseMinDropLevel))
+  val bestEquipment =
+    for {
+      weps <- weapons
+      arms <- armours
+    } yield weps.concatNel(arms).flatMap(items => NonEmptyList.fromListUnsafe(items.filter(_.dropLevel >= cutoffs.bestBaseMinDropLevel)))
 
-    val bestItems =
-      for {
-        bestEquips <- bestEquipment
-        access <- accessories
-      } yield bestEquips ++ access
+  val bestItems =
+    for {
+      bestEquips <- bestEquipment
+      access <- accessories
+    } yield bestEquips.concatNel(access)
 
-    val allEquipment =
-      for {
-        weps <- weapons
-        arms <- armours
-      } yield (weps ++ arms).flatten
+  val allEquipment =
+    for {
+      weps <- weapons
+      arms <- armours
+    } yield weps.concatNel(arms).flatMap(identity)
 }

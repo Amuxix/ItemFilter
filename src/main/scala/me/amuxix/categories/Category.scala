@@ -1,17 +1,22 @@
 package me.amuxix.categories
+import cats.data.NonEmptyList
+import me.amuxix.ItemFilter.ec
 import me.amuxix._
 
-trait Category extends ImplicitConversions with Named {
-  protected def categoryBlocks(filterLevel: FilterLevel): Seq[Block]
-  def blocks(filterLevel: FilterLevel): Seq[Block] =
-    Mergeable.merge(categoryBlocks(filterLevel).toList)
+import scala.concurrent.Future
 
-  protected def writeBlockWithSeparator(blocks: Seq[Block], filterLevel: FilterLevel): String =
+trait Category extends ImplicitConversions with Named {
+  protected def categoryBlocks: FilterLevel => Future[NonEmptyList[Block]]
+
+  def blocks(filterLevel: FilterLevel): Future[NonEmptyList[Block]] =
+    categoryBlocks(filterLevel).map(Mergeable.merge(_))
+
+  protected def writeBlockWithSeparator(blocks: List[Block], filterLevel: FilterLevel): String =
     if (blocks.isEmpty) ""
     else separator + blocks.sortBy(_.rarity)(implicitly[Ordering[FilterRarity]].reverse).map(_.write(filterLevel)).mkString("", "\n", "\n")
 
-  def partitionHiddenAndShown(filterLevel: FilterLevel, conceal: Boolean): (String, String) = {
-    val (shown, hidden) = blocks(filterLevel).map(_.concealed(conceal, filterLevel)).partition(_.show(filterLevel))
+  def partitionHiddenAndShown(filterLevel: FilterLevel, conceal: Boolean): Future[(String, String)] = blocks(filterLevel).map { blocks =>
+    val (shown, hidden) = blocks.map(_.concealed(conceal, filterLevel)).toList.partition(_.show(filterLevel))
     (writeBlockWithSeparator(shown, filterLevel), writeBlockWithSeparator(hidden, filterLevel))
   }
 

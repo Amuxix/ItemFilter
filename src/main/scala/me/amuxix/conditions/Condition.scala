@@ -5,29 +5,29 @@ import me.amuxix.{Mergeable, Writable}
 //TODO Separate into two argument lists, one for properties fixed by base(class, baseType, height and width) and one for the rest.
 //TODO Accept an option of base instead of first argument list
 case class Condition(
-  `class`: Option[ItemClass] = None,
-  base: Option[BaseType] = None,
-  dropLevel: Option[DropLevel] = None,
-  itemLevel: Option[ItemLevel] = None,
-  quality: Option[Quality] = None,
-  rarity: Option[Rarity] = None,
-  sockets: Option[Sockets] = None,
-  linkedSockets: Option[LinkedSockets] = None,
-  height: Option[Height] = None,
-  width: Option[Width] = None,
-  gemLevel: Option[GemLevel] = None,
-  mapTier: Option[MapTier] = None,
-  explicitMod: Option[ExplicitMod] = None,
-  stackSize: Option[StackSize] = None,
-  shapedMap: Option[ShapedMap] = None,
-  identified: Option[Identified] = None,
-  corrupted: Option[Corrupted] = None,
-  shaperItem: Option[ShaperItem] = None,
-  elderItem: Option[ElderItem] = None,
-  fracturedItem: Option[FracturedItem] = None,
-  synthesisedItem: Option[SynthesisedItem] = None,
-  anyEnchantment: Option[AnyEnchantment] = None,
-  socketGroup: Option[SocketGroup] = None,
+    `class`: Option[ItemClass] = None,
+    base: Option[BaseType] = None,
+    dropLevel: Option[DropLevel] = None,
+    itemLevel: Option[ItemLevel] = None,
+    quality: Option[Quality] = None,
+    rarity: Option[Rarity] = None,
+    sockets: Option[Sockets] = None,
+    linkedSockets: Option[LinkedSockets] = None,
+    height: Option[Height] = None,
+    width: Option[Width] = None,
+    gemLevel: Option[GemLevel] = None,
+    mapTier: Option[MapTier] = None,
+    explicitMod: Option[ExplicitMod] = None,
+    stackSize: Option[StackSize] = None,
+    shapedMap: Option[ShapedMap] = None,
+    identified: Option[Identified] = None,
+    corrupted: Option[Corrupted] = None,
+    shaperItem: Option[ShaperItem] = None,
+    elderItem: Option[ElderItem] = None,
+    fracturedItem: Option[FracturedItem] = None,
+    synthesisedItem: Option[SynthesisedItem] = None,
+    anyEnchantment: Option[AnyEnchantment] = None,
+    socketGroup: Option[SocketGroup] = None,
 ) extends Mergeable[Condition] {
   val conditions: Seq[Writable] = Seq(
     `class`,
@@ -54,11 +54,11 @@ case class Condition(
     anyEnchantment,
     socketGroup,
   ).flatten
-  
+
   private def mergeOptions[T <: Mergeable[T]](o1: Option[T], o2: Option[T]): Option[T] =
     (o1, o2) match {
       case (Some(m1), Some(m2)) => Some(m1 merge m2)
-      case (None, None) => None
+      case (None, None)         => None
       case _ =>
         println(o1)
         println(o2)
@@ -69,8 +69,8 @@ case class Condition(
   private def canMergeOptions[T <: Mergeable[T]](o1: Option[T], o2: Option[T]): Boolean =
     (o1, o2) match {
       case (Some(m1), Some(m2)) => m1 canMerge m2
-      case (None, None) => true
-      case _ => false
+      case (None, None)         => true
+      case _                    => false
     }
 
   private def mergeBooleanOption[T](o1: Option[T], o2: Option[T]): Option[T] =
@@ -127,7 +127,7 @@ case class Condition(
     }
   }*/
 
-  override def merge(o: Condition): Condition = {
+  override def merge(o: Condition): Condition =
     /*val mergedClass = mergeOptions(`class`, o.`class`)
     val mergedBase = mergeOptions(base, o.base)
     val (reducedClass, reducedBase) = reduceBases(mergedClass, mergedBase)*/
@@ -156,7 +156,6 @@ case class Condition(
       anyEnchantment = mergeBooleanOption(anyEnchantment, o.anyEnchantment),
       socketGroup = socketGroup,
     )
-  }
 
   def join(o: Condition): Condition =
     Condition(

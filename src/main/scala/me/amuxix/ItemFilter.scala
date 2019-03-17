@@ -2,6 +2,8 @@ package me.amuxix
 
 import java.io.{File, PrintWriter}
 
+import cats.data.NonEmptyList
+import cats.implicits._
 import javax.swing.filechooser.FileSystemView
 import me.amuxix.WSClient.getActorSystemAndWsClient
 import me.amuxix.categories._
@@ -9,10 +11,8 @@ import me.amuxix.categories.automated._
 import me.amuxix.categories.automated.currency._
 import me.amuxix.categories.manual._
 import me.amuxix.categories.manual.leagues._
-import me.amuxix.categories.manual.recipes._
 import me.amuxix.categories.semiautomated._
 import me.amuxix.categories.semiautomated.currency._
-import me.amuxix.categories.semiautomated.recipes._
 import me.amuxix.categories.single._
 import me.amuxix.categories.single.legacy._
 import me.amuxix.database.PostgresProfile.api.Database
@@ -23,7 +23,8 @@ import pureconfig.generic.auto._
 import slick.jdbc.DataSourceJdbcDataSource
 import slick.jdbc.hikaricp.HikariCPJdbcDataSource
 
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, Future}
+import scala.util.{Failure, Success}
 
 object ItemFilter {
   val league: League = Synthesis
@@ -43,8 +44,8 @@ object ItemFilter {
   def runMigrations() = {
     val ds = db.source match {
       case d: DataSourceJdbcDataSource => d.ds
-      case d: HikariCPJdbcDataSource => d.ds
-      case other => throw new IllegalStateException("Unknown DataSource type: " + other)
+      case d: HikariCPJdbcDataSource   => d.ds
+      case other                       => throw new IllegalStateException("Unknown DataSource type: " + other)
     }
     val flyway = Flyway
       .configure()
@@ -70,7 +71,7 @@ object ItemFilter {
     //println(prices)
 
     //TODO show items with white sockets
-    val categories: Seq[Category] = Seq(
+    val categories = NonEmptyList.fromListUnsafe(List(
       General,
       Essence,
       Fossil,
@@ -85,7 +86,7 @@ object ItemFilter {
       Uniques,
       VeiledItems,
       BreachRings, //TODO: Add to base types, merge with accessories
-      Abyss, //TODO: Add to base types, merge with accessories/jewels
+      /*Abyss, //TODO: Add to base types, merge with accessories/jewels
       Talisman,
       Shaper,
       Elder,
@@ -104,34 +105,46 @@ object ItemFilter {
       Jewels,
       Flasks,
       Maps,
-      Prophecy,
-    )
+      Prophecy,*/
+    ))
 
-    val legacyCategories = Seq(
+    val legacyCategories = NonEmptyList.fromListUnsafe(List(
       Net,
       Legacy,
-    )
+    ))
 
-    Seq(Reduced, Diminished, Normal, Racing).foreach { level =>
-      createFilterFile(poeFolder, level, categories, legacyCategories)
+    List(Reduced, Diminished, Normal, Racing)
+      .traverse { level =>
+        createFilterFile(poeFolder, level, NonEmptyList(categories.head, categories.tail), legacyCategories)
       //createFilterFile(poeFolder, level, categories, legacyCategories, conceal = true)
-    }
-    client.close()
-    system.terminate()
+      }
+      .onComplete {
+        case Failure(ex) =>
+          throw ex
+          client.close()
+          system.terminate()
+        case Success(_) =>
+          client.close()
+          system.terminate()
+      }
   }
 
-  def createFilterFile(poeFolder: String, filterLevel: FilterLevel, categories: Seq[Category], legacyCategories: Seq[Category], conceal: Boolean = false): Unit = {
-    val filterName = s"${if (conceal) "Concealed " else ""}Amuxix's${filterLevel.suffix} filter"
-    val filterFile = new PrintWriter(new File(poeFolder + s"$filterName.filter"))
-    println(s"Generating $filterName")
+  def createFilterFile(poeFolder: String, filterLevel: FilterLevel, categories: NonEmptyList[Category], legacyCategories: NonEmptyList[Category], conceal: Boolean = false): Future[Unit] = {
     val allCategories = if (league == Standard || league == Hardcore) {
-      categories ++ legacyCategories
+      categories.concatNel(legacyCategories)
     } else {
       categories
     }
-    val (shown, hidden) = allCategories.map(_.partitionHiddenAndShown(filterLevel, conceal)).unzip
-    val lastCall = LastCall.blocks(filterLevel).map(_.write(filterLevel))
-    filterFile.write((shown ++ hidden ++ lastCall).mkString)
-    filterFile.close()
+    for {
+      (shown, hidden) <- allCategories.traverse(_.partitionHiddenAndShown(filterLevel, conceal)).map(_.toList.unzip)
+      lastCallBlocks <- LastCall.blocks(filterLevel)
+      lastCall = lastCallBlocks.map(_.write(filterLevel))
+      filterName = s"${if (conceal) "Concealed " else ""}Amuxix's${filterLevel.suffix} filter"
+      filterFile = new PrintWriter(new File(poeFolder + s"$filterName.filter"))
+    } yield {
+      println(s"Generating $filterName")
+      filterFile.write((shown ++ hidden ++ lastCall.toList).mkString)
+      filterFile.close()
+    }
   }
 }

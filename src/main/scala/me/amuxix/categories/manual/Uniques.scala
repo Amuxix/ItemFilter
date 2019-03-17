@@ -1,10 +1,13 @@
 package me.amuxix.categories.manual
+import cats.data.NonEmptyList
 import me.amuxix.actions.Color.{black, unique, white}
 import me.amuxix.actions.Sound.{epic, myths, pileOfShit}
 import me.amuxix.actions._
 import me.amuxix.categories.Category
 import me.amuxix.conditions.{Condition, Unique}
 import me.amuxix.{Block, FilterLevel}
+
+import scala.concurrent.Future
 
 object Uniques extends Category {
   val tabula = Block(
@@ -112,5 +115,7 @@ object Uniques extends Category {
     )
   )
 
-  override def categoryBlocks(filterLevel: FilterLevel) = Seq(tabula, t0, t1, rest)
+  override def categoryBlocks: FilterLevel => Future[NonEmptyList[Block]] = { _ =>
+    Future.successful(NonEmptyList(tabula, List(t0, t1, rest)))
+  }
 }
