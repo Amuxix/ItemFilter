@@ -31,16 +31,20 @@ object Mergeable {
     }
     innerMerge(items, monoid.empty)
   }*/
-  @tailrec def merge[T <: Mergeable[T]](unmerged: NonEmptyList[T], merged: List[T] = List.empty): NonEmptyList[T] =
-    unmerged.toList match {
-      case h :: t =>
-        val (mergeable, unmergeable) = t.partition(h.canMerge)
-        val nonEmptyMerged = NonEmptyList.fromListUnsafe(merged :+ mergeable.foldLeft(h)(_ merge _))
-        unmergeable match {
-          case h :: t => merge(NonEmptyList(h, t), nonEmptyMerged.toList)
-          case _ =>      nonEmptyMerged
+  @tailrec def merge[T <: Mergeable[T]](items: NonEmptyList[T], merged: List[T] = List.empty): NonEmptyList[T] =
+    items match {
+      case NonEmptyList(h, t) =>
+        val (mergedItem, unmergeable) = t.foldLeft((h, List.empty[T])) {
+          case ((mergedItem, unmergeable), item) if mergedItem canMerge item =>
+            (mergedItem merge item, unmergeable)
+          case ((mergedItem, unmergeable), item) =>
+            (mergedItem, unmergeable :+ item)
         }
-      case _ => NonEmptyList.fromListUnsafe(merged)
+        val newlyMerged = merged :+ mergedItem
+        unmergeable match {
+          case h :: t => merge(NonEmptyList(h, t), newlyMerged)
+          case _ =>      NonEmptyList(newlyMerged.head, newlyMerged.tail)
+        }
     }
 }
 

@@ -102,35 +102,7 @@ case class Condition(
       anyEnchantment == o.anyEnchantment &&
       socketGroup == o.socketGroup
 
-  //This will create problems where it adds a class to a block without one, possibly with bases outside that class
-  /*def reduceBases(`class`: Option[ItemClass], base: Option[BaseType]): (Option[ItemClass], Option[BaseType]) = {
-    val classes: Seq[FilterClass[Item]] = Seq(BodyArmour, Boots, Gloves, Helmet, Quiver, Shield,
-      OneHandedAxe, TwoHandedAxe, Bow, Claw, Dagger, OneHandedMace, TwoHandedMace, Sceptre, Staff, OneHandedSword, TwoHandedSword, ThrustingOneHandedSword, Wand,
-      LifeFlask, ManaFlask, HybridFlask, UtilityFlask,
-      Map, DivinationCard, IncursionItem,
-    )
-    base.fold((`class`, base)) { base =>
-      val (reducedClass, reducedBase) = classes.foldLeft((`class`, base)) {
-        case ((itemClass, base), filterClass) =>
-          val classBases = filterClass.all.map(_.`class`).toSet
-          val bases = base.bases.toSet
-          if (classBases subsetOf bases) {
-            val clazz = ItemClass(filterClass.className)
-            val rClass = itemClass.fold(Some(clazz))(oldClass => Some(oldClass merge clazz))
-            val rBase = BaseType((bases -- classBases).toSeq: _*)
-            (rClass, rBase)
-          } else {
-            (itemClass, base)
-          }
-      }
-      (reducedClass, Some(reducedBase))
-    }
-  }*/
-
   override def merge(o: Condition): Condition =
-    /*val mergedClass = mergeOptions(`class`, o.`class`)
-    val mergedBase = mergeOptions(base, o.base)
-    val (reducedClass, reducedBase) = reduceBases(mergedClass, mergedBase)*/
     Condition(
       `class` = mergeOptions(`class`, o.`class`),
       base = mergeOptions(base, o.base),

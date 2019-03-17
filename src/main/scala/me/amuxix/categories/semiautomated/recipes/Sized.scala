@@ -24,13 +24,12 @@ abstract class Sized extends SemiAutomatedCategory { outer =>
     }
 
   override protected val categoryItems: Future[NonEmptyList[GenItem]] =
-    NonEmptyList.fromListUnsafe(List(
-      generateGenericItem(3, 1),
-      generateGenericItem(2, 2),
-      generateGenericItem(4, 1),
-      generateGenericItem(3, 2),
-      generateGenericItem(4, 2),
-    )).sequence
+    NonEmptyList.fromListUnsafe(
+      (for {
+        height <- 2 to 4
+        width <- 1 to 2
+      } yield generateGenericItem(height, width)).toList
+    ).sequence
 
   override protected def actionForRarity: FilterRarity => Action = { _ =>
     Action()

@@ -17,7 +17,7 @@ case class Base(_name: String, _height: Int, _width: Int, dropLevel: Int, _class
   def closeToZoneLevel(howClose: ItemLevel, rarity: Option[Rarity] = Rare): Future[Condition] = Base.bestEquipment.map { bestEquipment =>
     Condition(
       base = Some(this.baseType),
-      itemLevel = bestEquipment.toList.collectFirst { case `outer` => howClose },
+      itemLevel = if (bestEquipment.toList contains this) None else Some(howClose),
       rarity = rarity
     )
   }
@@ -29,7 +29,7 @@ case class Base(_name: String, _height: Int, _width: Int, dropLevel: Int, _class
     closeToZoneLevel(ItemLevel(1, this.dropLevel + 20))
 
   def conditionsOfBestWhitesForZoneLevel: Future[Condition] =
-    closeToZoneLevel(ItemLevel(1, this.dropLevel + minDropBuffer max this.dropLevel / 10), Normal).map(_.copy(dropLevel = (bestModsDropLevel, 100)))
+    closeToZoneLevel(ItemLevel(1, this.dropLevel + minDropBuffer max this.dropLevel / 10), Normal).map(_.copy(itemLevel = (bestModsDropLevel, 100)))
 
   def withBestBaseBlocks(bestModsLevel: Int): Base with BestBaseBlocks = new Base(_name, _height, _width, dropLevel, _class, _dropEnabled) with BestBaseBlocks {
     override val bestModsDropLevel: Int = bestModsLevel
