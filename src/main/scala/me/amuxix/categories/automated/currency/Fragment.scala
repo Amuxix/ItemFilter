@@ -1,18 +1,18 @@
 package me.amuxix.categories.automated.currency
-
+import cats.data.NonEmptyList
+import me.amuxix._
 import me.amuxix.actions.Color.{black, darkRed, white}
 import me.amuxix.actions._
-import me.amuxix.categories.automated.AutomatedCategory
+import me.amuxix.categories.AutomatedCategory
 import me.amuxix.database.MapFragments
-import me.amuxix.items.GenItem
-import me.amuxix.{Epic, FilterRarity, Mythic, Rare}
+import me.amuxix.items.Item
 
 import scala.concurrent.Future
 
 object Fragment extends AutomatedCategory {
-  override protected val categoryItems: Future[Seq[GenItem]] = MapFragments.nonScarabs
+  override protected lazy val items: Future[NonEmptyList[Item]] = MapFragments.nonScarabs
 
-  override protected def actionForRarity(rarity: FilterRarity): Action = rarity match {
+  override protected def action: Priced => Action = {
     case Mythic =>
       Action(
         borderColor = darkRed,

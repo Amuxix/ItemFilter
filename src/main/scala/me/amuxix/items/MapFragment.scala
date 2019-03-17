@@ -2,12 +2,8 @@ package me.amuxix.items
 
 import me.amuxix.conditions.Condition
 
-class MapFragment(name: String, val fragmentType: String) extends Item(name, 1, 1, "Currency") {
-  override val condition: Condition = Condition(base = name)
-}
+import scala.concurrent.Future
 
-object MapFragment {
-  def apply(name: String, fragmentType: String): MapFragment = new MapFragment(name, fragmentType)
-
-  def unapply(arg: MapFragment): Option[(String, String)] = Some((arg.name, arg.fragmentType))
+case class MapFragment(_name: String, fragmentType: String, _dropEnabled: Boolean) extends Item(_name, 1, 1, "Currency", _dropEnabled) {
+  override lazy val condition: Future[Condition] = Future.successful(Condition(base = _name))
 }

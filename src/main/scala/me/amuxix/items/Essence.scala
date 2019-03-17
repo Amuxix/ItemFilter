@@ -1,20 +1,22 @@
 package me.amuxix.items
 
+import cats.data.OptionT
+import cats.implicits._
+import me.amuxix.ItemFilter.ec
 import me.amuxix.conditions.Condition
+import me.amuxix.database.Essences
+
+import scala.concurrent.Future
 
 /**
   * Like [[Currency]] this currency can enhance items but they themselves can also be upgraded.
   */
-class Essence(name: String, val upgradesTo: Option[Essence]) extends Item(name, 1, 1, "Currency") with PriceFallback {
-  override lazy val condition: Condition = Condition(`class` = "Currency", base = name)
-  override def fallback: Double = (for {
-    essence <- upgradesTo
-    value <- essence.chaosValuePerSlot
-  } yield value / 3).getOrElse(0)
-}
-
-object Essence {
-  def apply(name: String, upgradesTo: Option[Essence]): Essence = new Essence(name, upgradesTo)
-
-  def unapply(arg: Essence): Option[(String, Option[Essence])] = Some((arg.name, arg.upgradesTo))
+case class Essence(_name: String, upgradesTo: Option[String], _dropEnabled: Boolean) extends Item(_name, 1, 1, "Currency", _dropEnabled) with PriceFallback {
+  override lazy val condition: Future[Condition] = Future.successful(Condition(`class` = "Currency", base = _name))
+  override def fallback: OptionT[Future, Double] =
+    for {
+      upgrade <- OptionT.fromOption[Future](upgradesTo)
+      essence <- Essences.getByName(upgrade)
+      value <- essence.chaosValuePerSlot
+    } yield value / 3
 }

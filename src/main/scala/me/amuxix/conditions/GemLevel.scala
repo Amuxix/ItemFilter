@@ -1,6 +1,5 @@
 package me.amuxix.conditions
 
-
 object GemLevel {
   def apply(level: Int): GemLevel = new GemLevel(level)
 }

@@ -1,18 +1,21 @@
 package me.amuxix.database
 
+import cats.data.{NonEmptyList, OptionT}
 import me.amuxix.ItemFilter
+import me.amuxix.ItemFilter.ec
 import me.amuxix.database.PostgresProfile.api._
 import slick.lifted.Tag
 
 import scala.concurrent.Future
 
-abstract class BasicOperations[Element, T <: Table[Element] with NamedTable[Element]](cons: Tag => T) extends TableQuery(cons) {
+abstract class BasicOperations[Element, T <: Table[Element] with CommonColumns[Element]](cons: Tag => T) extends TableQuery(cons) {
   val db: Database = ItemFilter.db
-  implicit val ec = ItemFilter.ec
 
-  def getByName(name: String): Future[Element] =
-    db.run(filter(_.name === name).result.headOption).map(_.get)
+  def getByName(name: String): OptionT[Future, Element] =
+    OptionT(db.run(filter(_.name === name).result.headOption))
 
-  def all: Future[Seq[Element]] =
-    db.run(this.result)
+  lazy val all: Future[NonEmptyList[Element]] =
+    db.run(this.result).map {
+      case Seq(head, tail @ _*) => NonEmptyList(head, tail.toList)
+    }
 }

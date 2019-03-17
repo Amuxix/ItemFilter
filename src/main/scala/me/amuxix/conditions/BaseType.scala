@@ -19,5 +19,5 @@ case class BaseType(bases: String*) extends Writable with Mergeable[BaseType] {
   override def canMerge(other: BaseType): Boolean = true //This only depends on item class
   override def merge(other: BaseType): BaseType =
     //noinspection ScalaUnnecessaryParentheses
-    BaseType((bases ++ other.bases).distinct:_*)
+    BaseType((bases ++ other.bases).distinct: _*)
 }
