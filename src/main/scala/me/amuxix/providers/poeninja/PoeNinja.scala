@@ -10,7 +10,6 @@ import play.api.libs.json.Reads
 import play.api.libs.ws.StandaloneWSClient
 
 import scala.concurrent.{ExecutionContext, Future}
-import scala.language.postfixOps
 
 object PoeNinja {
   val baseURL = "https://poe.ninja/api/data"
@@ -31,6 +30,7 @@ class PoeNinja(wsClient: StandaloneWSClient)(implicit ec: ExecutionContext) exte
       ("Resonator", s"$baseURL/itemoverview", readItemLines),
       ("Scarab", s"$baseURL/itemoverview", readItemLines),
       ("Map", s"$baseURL/itemoverview", readItemLines),
+      ("Prophecy", s"$baseURL/itemoverview", readItemLines),
       //Uniques
       /*("UniqueMap", s"$baseURL/itemoverview", readItemLines),
       ("UniqueJewel", s"$baseURL/itemoverview", readItemLines),
