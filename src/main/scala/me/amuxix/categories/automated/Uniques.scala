@@ -13,17 +13,20 @@ import me.amuxix.items.UniqueItem
 import scala.concurrent.Future
 
 object Uniques extends AutomatedCategory {
+
   override protected lazy val items: Future[NonEmptyList[UniqueItem]] =
-    database.Uniques.all.flatMap( _.groupBy(_.baseName)
-      .mapValues { uniques =>
-        uniques
-          .traverse(unique => unique.rarity.map(unique -> _))
-          .map(_.toList.maxBy(_._2)._1)
-      }
-      .values
-      .toList
-      .sequence
-      .map(NonEmptyList.fromListUnsafe)
+    database.Uniques.all.flatMap( items =>
+      items
+        .groupBy(_.baseName)
+        .mapValues { uniques =>
+          uniques
+            .traverse(unique => unique.rarity.map(unique -> _))
+            .map(_.toList.maxBy(_._2)._1)
+        }
+        .values
+        .toList
+        .sequence
+        .map(NonEmptyList.fromListUnsafe)
   )
 
   override protected def action: Priced => Action = {

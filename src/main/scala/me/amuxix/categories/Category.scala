@@ -9,17 +9,15 @@ import scala.concurrent.Future
 trait Category extends ImplicitConversions with Named {
   protected def categoryBlocks: FilterLevel => Future[NonEmptyList[Block]]
 
-  def blocks(filterLevel: FilterLevel): Future[List[Block]] =
-    categoryBlocks(filterLevel).map { blocks =>
-      Mergeable.merge(blocks).filterNot(_.rarity == Leveling && filterLevel != Racing)
-    }
+  def blocks(filterLevel: FilterLevel): Future[NonEmptyList[Block]] =
+    categoryBlocks(filterLevel).map(Mergeable.merge(_))
 
   protected def writeBlockWithSeparator(blocks: List[Block], filterLevel: FilterLevel): String =
     if (blocks.isEmpty) ""
     else separator + blocks.sortBy(_.rarity)(implicitly[Ordering[FilterRarity]].reverse).map(_.write(filterLevel)).mkString("", "\n", "\n")
 
   def partitionHiddenAndShown(filterLevel: FilterLevel, conceal: Boolean): Future[(String, String)] = blocks(filterLevel).map { blocks =>
-    val (shown, hidden) = blocks.map(_.concealed(conceal, filterLevel)).partition(_.show(filterLevel))
+    val (shown, hidden) = blocks.map(_.concealed(conceal, filterLevel)).toList.partition(_.show(filterLevel))
     (writeBlockWithSeparator(shown, filterLevel), writeBlockWithSeparator(hidden, filterLevel))
   }
 

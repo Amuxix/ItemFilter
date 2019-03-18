@@ -143,7 +143,7 @@ object ItemFilter {
       filterFile = new PrintWriter(new File(poeFolder + s"$filterName.filter"))
     } yield {
       println(s"Generating $filterName")
-      filterFile.write((shown ++ hidden ++ lastCall).mkString)
+      filterFile.write((shown ++ hidden ++ lastCall.toList).mkString)
       filterFile.close()
     }
   }

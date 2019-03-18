@@ -7,6 +7,7 @@ import me.amuxix.{Mergeable, Writable}
 case class Condition(
     `class`: Option[ItemClass] = None,
     base: Option[BaseType] = None,
+    prophecy: Option[Prophecy] = None,
     dropLevel: Option[DropLevel] = None,
     itemLevel: Option[ItemLevel] = None,
     quality: Option[Quality] = None,
@@ -32,6 +33,7 @@ case class Condition(
   val conditions: Seq[Writable] = Seq(
     `class`,
     base,
+    prophecy,
     dropLevel,
     itemLevel,
     quality,
@@ -80,6 +82,7 @@ case class Condition(
   override def canMerge(o: Condition): Boolean =
     canMergeOptions(`class`, o.`class`) &&
       canMergeOptions(base, o.base) &&
+      canMergeOptions(prophecy, o.prophecy) &&
       canMergeOptions(dropLevel, o.dropLevel) &&
       itemLevel == o.itemLevel &&
       canMergeOptions(quality, o.quality) &&
@@ -106,6 +109,7 @@ case class Condition(
     Condition(
       `class` = mergeOptions(`class`, o.`class`),
       base = mergeOptions(base, o.base),
+      prophecy = mergeOptions(prophecy, o.prophecy),
       dropLevel = mergeOptions(dropLevel, o.dropLevel),
       itemLevel = itemLevel,
       quality = mergeOptions(quality, o.quality),
@@ -133,6 +137,7 @@ case class Condition(
     Condition(
       `class` = `class`.orElse(o.`class`),
       base = base.orElse(o.base),
+      prophecy = prophecy.orElse(o.prophecy),
       dropLevel = dropLevel.orElse(o.dropLevel),
       itemLevel = itemLevel.orElse(o.itemLevel),
       quality = quality.orElse(o.quality),
