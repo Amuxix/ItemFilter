@@ -20,6 +20,8 @@ trait ImplicitConversions {
 
   implicit def string2OptionBaseType(string: String): Option[BaseType] = Some(BaseType(string))
   implicit def string2OptionBaseType2(string: Seq[String]): Option[BaseType] = Some(BaseType(string: _*))
+  implicit def string2OptionProphecy(string: String): Option[Prophecy] = Some(Prophecy(string))
+  implicit def string2OptionProphecy2(string: Seq[String]): Option[Prophecy] = Some(Prophecy(string: _*))
   implicit def String2OptionItemClass(string: String): Option[ItemClass] = Some(ItemClass(string))
   implicit def String2OptionItemClass2(string: Seq[String]): Option[ItemClass] = Some(ItemClass(string: _*))
   implicit def tuple22OptionDropLevel(tuple: (Int, Int)): Option[DropLevel] = Some(DropLevel(tuple._1, tuple._2))

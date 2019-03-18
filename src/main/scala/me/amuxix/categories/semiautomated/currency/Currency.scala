@@ -10,7 +10,7 @@ import me.amuxix.actions.Sound.{armourKit, chaos, epic, myths}
 import me.amuxix.categories.SemiAutomatedCategory
 import me.amuxix.conditions.{Condition, StackSize}
 import me.amuxix.database.{Currencies, CurrencyFragments}
-import me.amuxix.items.{Currency, GenItem}
+import me.amuxix.items.{GenItem, Currency => CurrencyItem}
 
 import scala.concurrent.Future
 
@@ -26,7 +26,7 @@ object Currency extends SemiAutomatedCategory {
                              val increasedStackSizes = rarities.collect {
                                case rarity if rarity.threshold > chaosValue && rarity.threshold / chaosValue <= currency.stackSize =>
                                  val stack = math.ceil(rarity.threshold / chaosValue).toInt
-                                 new Currency("", currency.stackSize, "Currency", currency.dropEnabled) {
+                                 new CurrencyItem("", currency.stackSize, "Currency", currency.dropEnabled) {
                                    override lazy val chaosValuePerSlot: OptionT[Future, Double] = OptionT.pure(chaosValue * stack)
                                    override lazy val condition: Future[Condition] = currency.condition.map(_.copy(stackSize = Some(StackSize(stack, currency.stackSize))))
                                  }
