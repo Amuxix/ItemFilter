@@ -7,7 +7,6 @@ import me.amuxix.WSClient.getActorSystemAndWsClient
 import me.amuxix.categories._
 import me.amuxix.categories.automated._
 import me.amuxix.categories.automated.currency._
-import me.amuxix.categories.manual._
 import me.amuxix.categories.manual.leagues._
 import me.amuxix.categories.manual.recipes._
 import me.amuxix.categories.semiautomated._
@@ -25,7 +24,7 @@ import slick.jdbc.hikaricp.HikariCPJdbcDataSource
 
 import java.io.{File, PrintWriter}
 import scala.concurrent.{ExecutionContext, Future}
-import scala.util.{Failure, Success}
+import scala.util.Failure
 
 object ItemFilter {
   val league: League = Synthesis
@@ -66,12 +65,12 @@ object ItemFilter {
     runMigrations()
     val poeFolder = FileSystemView.getFileSystemView.getDefaultDirectory.getPath + File.separatorChar + "My Games" + File.separatorChar + "Path of Exile" + File.separatorChar
     //val poeFolder = new java.io.File(".").getCanonicalPath
-    provider.itemPrices.foreach { items =>
+    /*provider.itemPrices.foreach { items =>
       val prices = items.toSeq.sortBy(_._2).map {
         case (name, price) => s"${name.capitalize} -> $price"
       }.mkString("\n")
       println(prices)
-    }
+    }*/
 
 
     //TODO show items with white sockets
@@ -117,23 +116,17 @@ object ItemFilter {
       Legacy,
     ))
 
-    val f = List(Reduced, Diminished, Normal, Racing)
+    List(Reduced, Diminished, Normal, Racing)
       .traverse { level =>
         createFilterFile(poeFolder, level, NonEmptyList(categories.head, categories.tail), legacyCategories)
       //createFilterFile(poeFolder, level, categories, legacyCategories, conceal = true)
-      }
-
-      f andThen {
+      } andThen {
         case _ =>
           client.close()
           system.terminate()
       } andThen {
-        case Failure(ex) =>
-          throw ex
-        case Success(_) =>
-          println("Finished")
+        case Failure(ex) => throw ex
       }
-
   }
 
   def createFilterFile(poeFolder: String, filterLevel: FilterLevel, categories: NonEmptyList[Category], legacyCategories: NonEmptyList[Category], conceal: Boolean = false): Future[Unit] = {
@@ -150,7 +143,7 @@ object ItemFilter {
       filterFile = new PrintWriter(new File(poeFolder + s"$filterName.filter"))
     } yield {
       println(s"Generating $filterName")
-      filterFile.write((shown ++ hidden ++ lastCall.toList).mkString)
+      filterFile.write((shown ++ hidden ++ lastCall).mkString)
       filterFile.close()
     }
   }

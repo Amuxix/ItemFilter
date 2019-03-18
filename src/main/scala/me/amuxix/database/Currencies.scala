@@ -36,7 +36,4 @@ object Currencies extends BasicOperations[Currency, CurrenciesTable](new Currenc
 
   lazy val vials: Future[NonEmptyList[Currency]] =
     getByCurrencyType("Vial")
-
-  lazy val prophecies: Future[NonEmptyList[Currency]] =
-    getByCurrencyType("Prophecy")
 }

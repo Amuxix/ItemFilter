@@ -16,7 +16,7 @@ case class Essence(_name: String, upgradesTo: Option[String], _dropEnabled: Bool
   override def fallback: OptionT[Future, Double] =
     for {
       upgrade <- OptionT.fromOption[Future](upgradesTo)
-      essence <- Essences.getByName(upgrade)
+      essence <- OptionT(Essences.all.map(_.find(_.name == upgrade)))
       value <- essence.chaosValuePerSlot
     } yield value / 3
 }

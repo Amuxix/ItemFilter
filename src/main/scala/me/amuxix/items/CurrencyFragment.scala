@@ -16,7 +16,8 @@ import scala.concurrent.Future
 case class CurrencyFragment(_name: String, fragmentOf: String, stackSize: Int, _dropEnabled: Boolean) extends Item(_name, 1, 1, "Currency", _dropEnabled) with StackSize with PriceFallback {
   override def fallback: OptionT[Future, Double] =
     for {
-      currency <- CurrencyFragments.getByName(fragmentOf)
+      currency <- OptionT(CurrencyFragments.all.map(_.find(_.name == fragmentOf)))
+
       value <- currency.chaosValuePerSlot
     } yield value / stackSize
 }

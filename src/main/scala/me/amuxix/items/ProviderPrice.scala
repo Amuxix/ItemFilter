@@ -8,11 +8,14 @@ import me.amuxix.providers.Provider
 import scala.concurrent.Future
 
 trait ProviderPrice { this: GenItem =>
-  val area: Int
+  def area: OptionT[Future, Int]
 
   /**
     * This is the worth of the currency in chaos per slot the item has.
     */
   lazy val chaosValuePerSlot: OptionT[Future, Double] =
-    Provider.getChaosEquivalentFor(this).map(_ / area)
+    for {
+      value <- Provider.getChaosEquivalentFor(this)
+      area <- area
+    } yield value / area
 }

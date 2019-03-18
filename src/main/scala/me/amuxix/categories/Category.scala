@@ -19,7 +19,7 @@ trait Category extends ImplicitConversions with Named {
     else separator + blocks.sortBy(_.rarity)(implicitly[Ordering[FilterRarity]].reverse).map(_.write(filterLevel)).mkString("", "\n", "\n")
 
   def partitionHiddenAndShown(filterLevel: FilterLevel, conceal: Boolean): Future[(String, String)] = blocks(filterLevel).map { blocks =>
-    val (shown, hidden) = blocks.map(_.concealed(conceal, filterLevel)).toList.partition(_.show(filterLevel))
+    val (shown, hidden) = blocks.map(_.concealed(conceal, filterLevel)).partition(_.show(filterLevel))
     (writeBlockWithSeparator(shown, filterLevel), writeBlockWithSeparator(hidden, filterLevel))
   }
 
