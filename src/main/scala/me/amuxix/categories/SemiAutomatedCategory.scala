@@ -1,11 +1,11 @@
 package me.amuxix.categories
 
 import cats.data.NonEmptyList
-import cats.implicits._
+import cats.implicits.catsStdInstancesForFuture
+import me.amuxix.{Block, FilterLevel, FilterRarity}
 import me.amuxix.ItemFilter.ec
 import me.amuxix.actions.Action
 import me.amuxix.items.GenItem
-import me.amuxix.{Block, FilterLevel, FilterRarity}
 
 import scala.concurrent.Future
 

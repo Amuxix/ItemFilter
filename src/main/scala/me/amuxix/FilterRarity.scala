@@ -7,12 +7,12 @@ sealed abstract class FilterRarity(private val multiplier: Double) extends Order
 
 sealed trait Priced
 
-case object Undetermined extends FilterRarity(Int.MaxValue)
-case object Leveling extends FilterRarity(0)
-
 case object AlwaysShow extends FilterRarity(Int.MaxValue)
 case object AlwaysHide extends FilterRarity(Int.MinValue)
 
+case object Undetermined extends FilterRarity(Int.MaxValue)
+
+case object Leveling extends FilterRarity(0) with Priced
 case object Common extends FilterRarity(1) with Priced // .04C
 case object Uncommon extends FilterRarity(12.5) with Priced // .5C
 case object Rare extends FilterRarity(25) with Priced // 1C

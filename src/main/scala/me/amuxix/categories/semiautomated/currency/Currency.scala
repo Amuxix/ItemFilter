@@ -31,7 +31,7 @@ object Currency extends SemiAutomatedCategory {
                                    override lazy val condition: Future[Condition] = currency.condition.map(_.copy(stackSize = Some(StackSize(stack, currency.stackSize))))
                                  }
                              }
-                             NonEmptyList.fromListUnsafe(increasedStackSizes :+ currency)
+                             NonEmptyList.ofInitLast(increasedStackSizes, currency)
                            }
                          }
     } yield orbsAndFragments.concatNel(vials)

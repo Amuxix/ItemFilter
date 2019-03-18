@@ -37,30 +37,20 @@ object Bases extends BasicOperations[Base, BasesTable](new BasesTable(_)) {
     getByClass(`class`).map(_.map(_.withBestBaseBlocks(bestModsLevel)))
 
   lazy val flasks: Future[NonEmptyList[Base]] = {
-    val life = getByClass("Life Flasks")
-    val mana = getByClass("Mana Flasks")
-    val hybrid = getByClass("Hybrid Flasks")
     for {
-      lifeFlasks <- life
-      manaFlasks <- mana
-      hybridFlasks <- hybrid
+      lifeFlasks <- getByClass("Life Flasks")
+      manaFlasks <- getByClass("Mana Flasks")
+      hybridFlasks <- getByClass("Hybrid Flasks")
     } yield lifeFlasks.concatNel(manaFlasks).concatNel(hybridFlasks)
   }
 
   lazy val rings: Future[NonEmptyList[Base with BestBaseBlocks]] = getByClassWithBestBases("Ring")
-
   lazy val amulets: Future[NonEmptyList[Base with BestBaseBlocks]] = getByClassWithBestBases("Amulet")
-
   lazy val belts: Future[NonEmptyList[Base with BestBaseBlocks]] = getByClassWithBestBases("Belt")
-
   lazy val bodyArmours: Future[NonEmptyList[Base with BestBaseBlocks]] = getByClassWithBestBases("Body Armour")
-
   lazy val helmets: Future[NonEmptyList[Base with BestBaseBlocks]] = getByClassWithBestBases("Helmet")
-
   lazy val gloves: Future[NonEmptyList[Base with BestBaseBlocks]] = getByClassWithBestBases("Gloves")
-
   lazy val boots: Future[NonEmptyList[Base with BestBaseBlocks]] = getByClassWithBestBases("Boots")
-
   lazy val oneHandedAxes: Future[NonEmptyList[Base with BestBaseBlocks]] = getByClassWithBestBases("One Handed Axe", 83)
   lazy val twoHandedAxes: Future[NonEmptyList[Base with BestBaseBlocks]] = getByClassWithBestBases("Two Handed Axe", 83)
   lazy val bows: Future[NonEmptyList[Base with BestBaseBlocks]] = getByClassWithBestBases("Bow", 83)

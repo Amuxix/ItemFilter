@@ -1,0 +1,1 @@
+ALTER TABLE uniques DROP CONSTRAINT uniques_name_key

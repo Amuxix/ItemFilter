@@ -7,8 +7,8 @@ import me.amuxix.ItemFilter.ec
 import me.amuxix.items.{GenItem, PriceFallback}
 import me.amuxix.providers.Provider.ParsableWSResponse
 import play.api.libs.json.{JsValue, Reads}
-import play.api.libs.ws.JsonBodyReadables._
 import play.api.libs.ws.{StandaloneWSClient, StandaloneWSResponse}
+import play.api.libs.ws.JsonBodyReadables._
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -40,7 +40,7 @@ object Provider {
           println(s"${item.name} drop is disabled")
           OptionT.none
         case other =>
-          println(s"No Price for ${other.name}")
+          println(s"No price for ${other.name}")
           OptionT.none
       })
 }

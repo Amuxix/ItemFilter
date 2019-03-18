@@ -27,6 +27,6 @@ object LastCall extends SemiAutomatedCategory {
     case AlwaysHide =>
       Action(size = 18, backgroundColor = black.halfTransparent, borderColor = black, textColor = white.halfTransparent)
     case _ =>
-      Action(textColor = white, backgroundColor = white, borderColor = white)
+      Action(textColor = white.darken, backgroundColor = white, borderColor = white)
   }
 }
