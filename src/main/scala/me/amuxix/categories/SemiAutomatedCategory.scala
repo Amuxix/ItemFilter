@@ -5,12 +5,12 @@ import cats.implicits.catsStdInstancesForFuture
 import me.amuxix.{Block, FilterLevel, FilterRarity}
 import me.amuxix.ItemFilter.ec
 import me.amuxix.actions.Action
-import me.amuxix.items.GenItem
+import me.amuxix.items.GenericItem
 
 import scala.concurrent.Future
 
 trait SemiAutomatedCategory extends Category {
-  protected val categoryItems: Future[NonEmptyList[GenItem]]
+  protected val categoryItems: Future[NonEmptyList[GenericItem]]
   protected def actionForRarity: FilterRarity => Action
   /*
   rarity match {

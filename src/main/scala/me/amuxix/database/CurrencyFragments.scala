@@ -1,7 +1,7 @@
 package me.amuxix.database
 
 import me.amuxix.database.PostgresProfile.api._
-import me.amuxix.items.CurrencyFragment
+import me.amuxix.items.currency.CurrencyFragment
 
 class CurrencyFragmentsTable(tag: Tag) extends Table[CurrencyFragment](tag, "currency_fragments") with CommonColumns[CurrencyFragment] {
   def fragmentOf = column[String]("fragment_of")
@@ -9,8 +9,8 @@ class CurrencyFragmentsTable(tag: Tag) extends Table[CurrencyFragment](tag, "cur
 
   override def * = (
     name,
-    fragmentOf,
     stackSize,
+    fragmentOf,
     dropEnabled,
   ).mapTo[CurrencyFragment]
 }

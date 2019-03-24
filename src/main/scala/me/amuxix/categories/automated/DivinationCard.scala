@@ -1,9 +1,9 @@
 package me.amuxix.categories.automated
 import cats.data.NonEmptyList
 import me.amuxix._
+import me.amuxix.actions._
 import me.amuxix.actions.Color.{black, divinationBlue}
 import me.amuxix.actions.Sound.{probablyShit, topDivCards}
-import me.amuxix.actions._
 import me.amuxix.categories.AutomatedCategory
 import me.amuxix.database.DivinationCards
 import me.amuxix.items.Item
@@ -25,6 +25,7 @@ object DivinationCard extends AutomatedCategory {
         backgroundColor = black,
         textColor = divinationBlue.darken,
         borderColor = divinationBlue.darken,
+        minimapIcon = (Blue, Triangle),
         beam = (Blue, true),
       )
     case Rare =>

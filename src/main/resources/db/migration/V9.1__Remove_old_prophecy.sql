@@ -1,1 +1,0 @@
-DELETE FROM currency WHERE name = 'Prophecy'

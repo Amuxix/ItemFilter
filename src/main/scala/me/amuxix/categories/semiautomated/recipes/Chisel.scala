@@ -8,13 +8,13 @@ import me.amuxix.actions.Action
 import me.amuxix.categories.SemiAutomatedCategory
 import me.amuxix.conditions._
 import me.amuxix.database.Currencies
-import me.amuxix.items.GenItem
+import me.amuxix.items.{GenericItem, Value}
 
 import scala.concurrent.Future
 
 object Chisel extends SemiAutomatedCategory {
   private val hammers = Seq("Gavel", "Rock Breaker", "Stone Hammer")
-  override protected val categoryItems: Future[NonEmptyList[GenItem]] =
+  override protected val categoryItems: Future[NonEmptyList[GenericItem]] =
     (for {
       chisel <- Currencies.getByName("Cartographer's Chisel")
       whetstone <- Currencies.getByName("Blacksmith's Whetstone")
@@ -28,7 +28,7 @@ object Chisel extends SemiAutomatedCategory {
           case _     => (0, 20 - 5 * whetstonesRequired)
         }
         val cond: Condition = Condition(base = hammers, rarity = Some(Rarity(gameRarity)), quality = quality)
-        new GenItem {
+        new GenericItem with Value {
           override lazy val chaosValuePerSlot: OptionT[Future, Double] = for {
             chisel <- hammerValuePerSlot
             whetstone <- whetstoneValue
@@ -40,8 +40,8 @@ object Chisel extends SemiAutomatedCategory {
       val whites = (1 to 4).map(generateGenericItem(_, Normal))
       val blues = (1 to 10).map(generateGenericItem(_, Magic))
 
-      whites ++ blues :+ new GenItem {
-        override def chaosValuePerSlot: OptionT[Future, Double] = hammerValuePerSlot
+      whites ++ blues :+ new GenericItem with Value {
+        override lazy val chaosValuePerSlot: OptionT[Future, Double] = hammerValuePerSlot
         override lazy val condition: Future[Condition] = Future.successful(Condition(base = hammers, quality = 20))
       }
     }).value.map(hammers => NonEmptyList.fromListUnsafe(hammers.toList.flatten))

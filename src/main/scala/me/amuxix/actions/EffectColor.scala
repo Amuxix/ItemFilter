@@ -7,7 +7,7 @@ object EffectColor {
 }
 
 sealed abstract class EffectColor(r: Int, g: Int, b: Int) extends Colored(r, g, b, 255) with Named {
-  def print: String = name
+  def print: String = className
 }
 case object Red extends EffectColor(255, 0, 0)
 case object Green extends EffectColor(0, 255, 0)

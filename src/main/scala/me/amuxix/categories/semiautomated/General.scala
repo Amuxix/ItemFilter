@@ -8,26 +8,41 @@ import me.amuxix.actions.{Action, Green, Sound}
 import me.amuxix.actions.Color.{darkRed, goodYellow, red, white}
 import me.amuxix.categories.SemiAutomatedCategory
 import me.amuxix.conditions.{Condition, Magic, Normal, Rare => GameRare}
-import me.amuxix.database.Currencies
-import me.amuxix.items.{Base, CategoryItem, GenItem}
+import me.amuxix.database.{Bases, Currencies}
+import me.amuxix.items.{GenericItem, Value}
 
 import scala.concurrent.Future
 
 object General extends SemiAutomatedCategory {
   private val itemClasses = config.accessoriesClasses ++ config.armourClasses ++ config.weaponClasses ++ config.shieldClasses
 
-  override protected lazy val categoryItems: Future[NonEmptyList[GenItem]] =
+  override protected lazy val categoryItems: Future[NonEmptyList[GenericItem]] =
     for {
-      bestItems <- Base.bestItems
-      allEquipment <- Base.allEquipment
+      bestItems <- Bases.bestItems
+      allEquipment <- Bases.allEquipment
     } yield {
-      val general = NonEmptyList.fromListUnsafe(List(
-        new CategoryItem(AlwaysShow) { override lazy val condition: Future[Condition] = Future.successful(Condition(`class` = Seq("Quest Items", "Labyrinth Item", "Pantheon Soul", "Labyrinth Trinket"))) },
-        new CategoryItem(Mythic) { override lazy val condition: Future[Condition] = Future.successful(Condition(base = "Albino Rhoa Feather")) },
-        new CategoryItem(Mythic) { override lazy val condition: Future[Condition] = Future.successful(Condition(`class` = "Fishing Rod")) },
-        new CategoryItem(Mythic) { override lazy val condition: Future[Condition] = Future.successful(Condition(linkedSockets = 6)) },
-        new CategoryItem(Epic) { override lazy val condition: Future[Condition] = Future.successful(Condition(linkedSockets = 5)) },
-        new GenItem {
+      val general = NonEmptyList.of(
+        new GenericItem {
+          override lazy val rarity: Future[FilterRarity] = Future.successful(AlwaysShow)
+          override lazy val condition: Future[Condition] = Future.successful(Condition(`class` = Seq("Quest Items", "Labyrinth Item", "Pantheon Soul", "Labyrinth Trinket")))
+        },
+        new GenericItem {
+          override lazy val rarity: Future[FilterRarity] = Future.successful(Mythic)
+          override lazy val condition: Future[Condition] = Future.successful(Condition(base = "Albino Rhoa Feather"))
+        },
+        new GenericItem {
+          override lazy val rarity: Future[FilterRarity] = Future.successful(Mythic)
+          override lazy val condition: Future[Condition] = Future.successful(Condition(`class` = "Fishing Rod"))
+        },
+        new GenericItem {
+          override lazy val rarity: Future[FilterRarity] = Future.successful(Mythic)
+          override lazy val condition: Future[Condition] = Future.successful(Condition(linkedSockets = 6))
+        },
+        new GenericItem {
+          override lazy val rarity: Future[FilterRarity] = Future.successful(Epic)
+          override lazy val condition: Future[Condition] = Future.successful(Condition(linkedSockets = 5))
+        },
+        new GenericItem with Value {
           override def chaosValuePerSlot: OptionT[Future, Double] =
             for {
               jew <- Currencies.getByName("Jeweller's Orb")
@@ -35,29 +50,65 @@ object General extends SemiAutomatedCategory {
             } yield sixSocketValue
           override lazy val condition: Future[Condition] = Future.successful(Condition(sockets = 6))
         },
-        new CategoryItem(Leveling) { override lazy val condition: Future[Condition] = Future.successful(Condition(itemLevel = (1, cutoffs.normalItems), linkedSockets = 3)) },
-        new CategoryItem(Leveling) { override lazy val condition: Future[Condition] = Future.successful(Condition(itemLevel = (1, cutoffs.magicItems), linkedSockets = 4)) },
-        new CategoryItem(Leveling) { override lazy val condition: Future[Condition] = Future.successful(Condition(itemLevel = (1, cutoffs.fourLinkRare), linkedSockets = 4, rarity = GameRare)) },
-        new CategoryItem(Leveling) { override lazy val condition: Future[Condition] = Future.successful(Condition(`class` = "Belt", itemLevel = (1, cutoffs.normalItems))) },
-        new CategoryItem(Leveling) { override lazy val condition: Future[Condition] = Future.successful(Condition(`class` = itemClasses, itemLevel = (1, cutoffs.normalItems), rarity = Normal)) },
-        new CategoryItem(Leveling) { override lazy val condition: Future[Condition] = Future.successful(Condition(`class` = itemClasses, itemLevel = (1, cutoffs.magicItems), rarity = Magic)) },
-        new CategoryItem(Leveling) { override lazy val condition: Future[Condition] = Future.successful(Condition(`class` = config.accessoriesClasses, rarity = GameRare, itemLevel = (1, 60))) },
-      ))
+        new GenericItem {
+          override lazy val rarity: Future[FilterRarity] = Future.successful(Leveling)
+          override lazy val condition: Future[Condition] = Future.successful(Condition(itemLevel = (1, cutoffs.normalItems), linkedSockets = 3))
+        },
+        new GenericItem {
+          override lazy val rarity: Future[FilterRarity] = Future.successful(Leveling)
+          override lazy val condition: Future[Condition] = Future.successful(Condition(itemLevel = (1, cutoffs.magicItems), linkedSockets = 4))
+        },
+        new GenericItem {
+          override lazy val rarity: Future[FilterRarity] = Future.successful(Leveling)
+          override lazy val condition: Future[Condition] = Future.successful(Condition(itemLevel = (1, cutoffs.fourLinkRare), linkedSockets = 4, rarity = GameRare))
+        },
+        new GenericItem {
+          override lazy val rarity: Future[FilterRarity] = Future.successful(Leveling)
+          override lazy val condition: Future[Condition] = Future.successful(Condition(`class` = "Belt", itemLevel = (1, cutoffs.normalItems)))
+        },
+        new GenericItem {
+          override lazy val rarity: Future[FilterRarity] = Future.successful(Leveling)
+          override lazy val condition: Future[Condition] = Future.successful(Condition(`class` = itemClasses, itemLevel = (1, cutoffs.normalItems), rarity = Normal))
+        },
+        new GenericItem {
+          override lazy val rarity: Future[FilterRarity] = Future.successful(Leveling)
+          override lazy val condition: Future[Condition] = Future.successful(Condition(`class` = itemClasses, itemLevel = (1, cutoffs.magicItems), rarity = Magic))
+        },
+        new GenericItem {
+          override lazy val rarity: Future[FilterRarity] = Future.successful(Leveling)
+          override lazy val condition: Future[Condition] = Future.successful(Condition(`class` = config.accessoriesClasses, rarity = GameRare, itemLevel = (1, 60)))
+        },
+      )
       val best = bestItems.flatMap { i =>
-        NonEmptyList.fromListUnsafe(List(
-          new CategoryItem { override lazy val condition: Future[Condition] = i.rare },
-          new CategoryItem(AlwaysHide) { override lazy val condition: Future[Condition] = i.crafting }
-          ))
+        NonEmptyList.of(
+          new GenericItem {
+            override lazy val rarity: Future[FilterRarity] = Future.successful(Undetermined)
+            override lazy val condition: Future[Condition] = i.rare
+          },
+          new GenericItem {
+            override lazy val rarity: Future[FilterRarity] = Future.successful(AlwaysHide)
+            override lazy val condition: Future[Condition] = i.crafting
+          }
+        )
       }
       val all = allEquipment.flatMap { i =>
-        NonEmptyList.fromListUnsafe(List(
-          new CategoryItem(Leveling) { override lazy val condition: Future[Condition] = i.conditionsOfBestRaresForZoneLevel },
-          new CategoryItem(Leveling) { override lazy val condition: Future[Condition] = i.conditionsOfGoodRaresForZoneLevel },
-          new CategoryItem(AlwaysHide) { override lazy val condition: Future[Condition] = i.conditionsOfBestWhitesForZoneLevel },
-        ))
+        NonEmptyList.of(
+          new GenericItem {
+            override lazy val condition: Future[Condition] = i.conditionsOfBestRaresForZoneLevel
+            override lazy val rarity: Future[FilterRarity] = Future.successful(Leveling)
+          },
+            new GenericItem {
+            override lazy val condition: Future[Condition] = i.conditionsOfGoodRaresForZoneLevel
+            override lazy val rarity: Future[FilterRarity] = Future.successful(Leveling)
+          },
+            new GenericItem {
+            override lazy val condition: Future[Condition] = i.conditionsOfBestWhitesForZoneLevel
+            override lazy val rarity: Future[FilterRarity] = Future.successful(AlwaysHide)
+          },
+        )
       }
 
-      general.concatNel(best).concatNel(all)
+      general concatNel best concatNel all
     }
 
   override protected def actionForRarity: FilterRarity => Action = {

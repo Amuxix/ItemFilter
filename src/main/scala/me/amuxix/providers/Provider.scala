@@ -1,10 +1,6 @@
 package me.amuxix.providers
 
 import cats.data.{EitherT, OptionT}
-import cats.implicits._
-import me.amuxix.ItemFilter
-import me.amuxix.ItemFilter.ec
-import me.amuxix.items.{GenItem, PriceFallback}
 import me.amuxix.providers.Provider.ParsableWSResponse
 import play.api.libs.json.{JsValue, Reads}
 import play.api.libs.ws.{StandaloneWSClient, StandaloneWSResponse}
@@ -29,20 +25,6 @@ object Provider {
           Left(RequestError(url, response, s"Response returned a failed status code: ${response.status}"))
       }
   }
-
-  def getChaosEquivalentFor(item: GenItem): OptionT[Future, Double] =
-    OptionT(ItemFilter.provider.itemPrices.map(_.get(item.name.toLowerCase)))
-      .orElse(item match {
-        case fallback: PriceFallback =>
-          println(s"Using fallback price for ${fallback.name}")
-          fallback.fallback
-        case item if item.dropEnabled == false =>
-          println(s"${item.name} drop is disabled")
-          OptionT.none
-        case other =>
-          println(s"No price for ${other.name}")
-          OptionT.none
-      })
 }
 
 abstract class Provider(wsClient: StandaloneWSClient)(implicit ec: ExecutionContext) {

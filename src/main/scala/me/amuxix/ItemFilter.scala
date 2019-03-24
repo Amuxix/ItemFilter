@@ -58,23 +58,23 @@ object ItemFilter {
   }
 
   /*def main(args: Array[String]): Unit = {
-    //runMigrations()
+    Bases.bestItems.map(_.map(println))
+  }*/
+
+  //val poeFolder = new java.io.File(".").getCanonicalPath
+  /*provider.itemPrices.foreach { items =>
+    val prices = items.toSeq.sortBy(_._2).map {
+      case (name, price) => s"${name.capitalize} -> $price"
+    }.mkString("\n")
+    println(prices)
   }*/
 
   def main(args: Array[String]): Unit = {
     runMigrations()
     val poeFolder = FileSystemView.getFileSystemView.getDefaultDirectory.getPath + File.separatorChar + "My Games" + File.separatorChar + "Path of Exile" + File.separatorChar
-    //val poeFolder = new java.io.File(".").getCanonicalPath
-    /*provider.itemPrices.foreach { items =>
-      val prices = items.toSeq.sortBy(_._2).map {
-        case (name, price) => s"${name.capitalize} -> $price"
-      }.mkString("\n")
-      println(prices)
-    }*/
-
 
     //TODO show items with white sockets
-    val categories = NonEmptyList.fromListUnsafe(List(
+    val categories = NonEmptyList.of(
       General,
       Essence,
       Fossil,
@@ -109,12 +109,12 @@ object ItemFilter {
       Flasks,
       Maps,
       Prophecies,
-    ))
+    )
 
-    val legacyCategories = NonEmptyList.fromListUnsafe(List(
+    val legacyCategories = NonEmptyList.of(
       Net,
       Legacy,
-    ))
+    )
 
     List(Reduced, Diminished, Normal, Racing)
       .traverse { level =>

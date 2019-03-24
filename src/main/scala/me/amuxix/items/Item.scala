@@ -1,19 +1,19 @@
 package me.amuxix.items
 
-import cats.data.OptionT
-import cats.implicits._
-import me.amuxix.ItemFilter.ec
-import me.amuxix.conditions.{Condition, ItemClass}
+import me.amuxix._
+import me.amuxix.conditions.Condition
 
 import scala.concurrent.Future
 
-abstract class Item(name: String, val height: Int, val width: Int, val `class`: String, dropEnabled: Boolean) extends GenItem(name, dropEnabled) with ProviderPrice {
-  lazy val itemClass: ItemClass = ItemClass(`class`)
+abstract class Item extends GenericItem with Named with ImplicitConversions {
+  val name: String
+  val dropLevel: Int
+  val dropEnabled: Boolean
 
-  lazy val area: OptionT[Future, Int] = OptionT.some[Future](height * width)
+  lazy val `class`: String = className
 
-  override lazy val condition: Future[Condition] = Future.successful(Condition(
-    `class` = Some(itemClass),
+  override def condition: Future[Condition] = Future.successful(Condition(
+    `class` = `class`,
     base = name,
   ))
 }

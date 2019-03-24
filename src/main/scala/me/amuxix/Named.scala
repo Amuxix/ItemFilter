@@ -4,7 +4,7 @@ package me.amuxix
   * Created by Amuxix on 03/03/2017.
   */
 trait Named {
-  def name: String = {
+  def className: String = {
     val spaced = getClass.getSimpleName
       .split("\\$")
       .last
