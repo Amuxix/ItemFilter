@@ -1,10 +1,10 @@
 package me.amuxix.categories.automated.currency
 import cats.data.NonEmptyList
+import me.amuxix.{Epic, Mythic, Priced}
 import me.amuxix.actions.{Action, Color}
 import me.amuxix.categories.AutomatedCategory
 import me.amuxix.database.Essences
 import me.amuxix.items.Item
-import me.amuxix.{Epic, Mythic, Priced}
 
 import scala.concurrent.Future
 

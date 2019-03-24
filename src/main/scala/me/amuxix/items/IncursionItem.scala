@@ -1,3 +1,13 @@
 package me.amuxix.items
+import me.amuxix.{AlwaysShow, FilterRarity}
 
-case class IncursionItem(_name: String, _dropEnabled: Boolean) extends Item(_name, 1, 1, "Incursion Item", _dropEnabled)
+import scala.concurrent.Future
+
+case class IncursionItem (
+  name: String,
+  dropEnabled: Boolean,
+) extends Item {
+  override val dropLevel: Int = 1
+
+  override def rarity: Future[FilterRarity] = Future.successful(AlwaysShow)
+}

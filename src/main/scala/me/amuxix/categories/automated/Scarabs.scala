@@ -1,9 +1,9 @@
 package me.amuxix.categories.automated
 import cats.data.NonEmptyList
 import me.amuxix._
+import me.amuxix.actions.{Action, Blue, Circle}
 import me.amuxix.actions.Color.{delveOrange, scarabBlue}
 import me.amuxix.actions.Sound.{epic, myths}
-import me.amuxix.actions.{Action, Blue, Circle}
 import me.amuxix.categories.AutomatedCategory
 import me.amuxix.database.MapFragments
 import me.amuxix.items.Item

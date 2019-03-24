@@ -18,16 +18,16 @@ object Uniques extends AutomatedCategory {
     database.Uniques.all.flatMap( items =>
       items
         .groupBy(_.baseName)
-        .mapValues { uniques =>
-          uniques
-            .traverse(unique => unique.rarity.map(unique -> _))
-            .map(_.toList.maxBy(_._2)._1)
-        }
         .values
+        .map { uniques =>
+          uniques
+            .traverse(unique => unique.rarity.map(unique -> _)) //For each unique get its rarity
+            .map(_.toList.maxBy(_._2)._1) //Keep only the rarest
+        }
         .toList
         .sequence
         .map(NonEmptyList.fromListUnsafe)
-  )
+    )
 
   override protected def action: Priced => Action = {
     case Mythic =>

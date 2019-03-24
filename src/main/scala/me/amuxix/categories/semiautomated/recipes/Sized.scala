@@ -7,7 +7,7 @@ import me.amuxix.ItemFilter.ec
 import me.amuxix.actions.Action
 import me.amuxix.categories.SemiAutomatedCategory
 import me.amuxix.conditions.Condition
-import me.amuxix.items.GenItem
+import me.amuxix.items.{GenericItem, Value}
 
 import scala.concurrent.Future
 
@@ -15,15 +15,15 @@ abstract class Sized extends SemiAutomatedCategory { outer =>
   def condition: Condition
   def chaosValue: OptionT[Future, Double]
 
-  def generateGenericItem(height: Int, width: Int): Future[GenItem] =
+  def generateGenericItem(height: Int, width: Int): Future[GenericItem] =
     Future.successful {
-      new GenItem {
+      new GenericItem with Value {
         override lazy val chaosValuePerSlot: OptionT[Future, Double] = chaosValue.map(_ / (width * height))
         override lazy val condition: Future[Condition] = Future.successful(outer.condition.copy(height = height, width = width))
       }
     }
 
-  override protected val categoryItems: Future[NonEmptyList[GenItem]] =
+  override protected val categoryItems: Future[NonEmptyList[GenericItem]] =
     NonEmptyList.fromListUnsafe(
       (for {
         height <- 2 to 4

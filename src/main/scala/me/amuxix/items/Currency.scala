@@ -1,3 +1,7 @@
 package me.amuxix.items
 
-case class Currency(_name: String, stackSize: Int, currencyType: String, _dropEnabled: Boolean) extends Item(_name, 1, 1, "Currency", _dropEnabled) with StackSize
+abstract class Currency extends Item with Dimensions with Stackable with ProviderPrice {
+  override val height: Int = 1
+  override val width: Int = 1
+  val stackSize: Int
+}

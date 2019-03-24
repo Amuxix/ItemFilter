@@ -22,7 +22,7 @@ trait Category extends ImplicitConversions with Named {
   }
 
   def separator: String = {
-    val asterisks = "*" * (59 - name.length / 2)
-    s"#$asterisks $name $asterisks\n"
+    val asterisks = "*" * (59 - className.length / 2)
+    s"#$asterisks $className $asterisks\n"
   }
 }

@@ -31,8 +31,8 @@ class PoeNinja(wsClient: StandaloneWSClient)(implicit ec: ExecutionContext) exte
       ("Scarab", s"$baseURL/itemoverview", readItemLines),
       ("Map", s"$baseURL/itemoverview", readItemLines),
       ("Prophecy", s"$baseURL/itemoverview", readItemLines),
-      /*("UniqueMap", s"$baseURL/itemoverview", readItemLines),
-      ("UniqueJewel", s"$baseURL/itemoverview", readItemLines),*/
+      //("UniqueMap", s"$baseURL/itemoverview", readItemLines),
+      ("UniqueJewel", s"$baseURL/itemoverview", readItemLines),
       ("UniqueFlask", s"$baseURL/itemoverview", readItemLines),
       ("UniqueWeapon", s"$baseURL/itemoverview", readItemLines),
       ("UniqueArmour", s"$baseURL/itemoverview", readItemLines),

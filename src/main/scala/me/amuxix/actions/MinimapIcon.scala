@@ -27,5 +27,5 @@ object MinimapIcon {
 }
 
 case class MinimapIcon(color: EffectColor, shape: Shape, size: IconSize = Small) extends Writable {
-  override protected def print: String = s"MinimapIcon $size ${color.name} $shape"
+  override protected def print: String = s"MinimapIcon $size ${color.className} $shape"
 }

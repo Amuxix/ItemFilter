@@ -8,22 +8,22 @@ import me.amuxix.actions.Action
 import me.amuxix.categories.SemiAutomatedCategory
 import me.amuxix.conditions.Condition
 import me.amuxix.database.Currencies
-import me.amuxix.items.GenItem
+import me.amuxix.items.{GenericItem, Value}
 
 import scala.concurrent.Future
 
 object Bauble extends SemiAutomatedCategory {
-  override protected val categoryItems: Future[NonEmptyList[GenItem]] =
+  override protected val categoryItems: Future[NonEmptyList[GenericItem]] =
     Currencies
       .getByName("Glassblower's Bauble")
       .map { glassblowersBauble =>
-        def generateGenericItem(quality: Int): GenItem =
-          new GenItem {
+        def generateGenericItem(quality: Int): GenericItem =
+          new GenericItem with Value {
             override lazy val chaosValuePerSlot: OptionT[Future, Double] = glassblowersBauble.chaosValuePerSlot.map(value => (value / 2) / (40 / quality))
             override lazy val condition: Future[Condition] = Future.successful(Condition(`class` = "Flask", quality = quality))
           }
         (1 to 19).map(generateGenericItem) :+
-          new GenItem {
+          new GenericItem with Value {
             override lazy val chaosValuePerSlot: OptionT[Future, Double] = glassblowersBauble.chaosValuePerSlot.map(_ / 2)
             override lazy val condition: Future[Condition] = Future.successful(Condition(`class` = "Flask", quality = 20))
           }
