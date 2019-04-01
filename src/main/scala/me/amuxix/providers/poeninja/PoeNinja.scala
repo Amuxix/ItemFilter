@@ -3,6 +3,7 @@ package me.amuxix.providers.poeninja
 import cats.data.OptionT
 import cats.implicits._
 import me.amuxix.ItemFilter
+import me.amuxix.items.CraftableBase
 import me.amuxix.providers.{Price, Provider}
 import me.amuxix.providers.poeninja.PoeNinja._
 import me.amuxix.providers.poeninja.PoeNinjaResponse._
@@ -19,7 +20,6 @@ class PoeNinja(wsClient: StandaloneWSClient)(implicit ec: ExecutionContext) exte
   protected def getAllItemsPrices: OptionT[Future, List[Price]] = {
     val parameters: Seq[(String, String)] = Seq(
       "league" -> ItemFilter.league.toString
-      //"date" -> date
     )
     val routes = List(
       ("Currency", s"$baseURL/currencyoverview", readCurrencyLines),
@@ -49,4 +49,23 @@ class PoeNinja(wsClient: StandaloneWSClient)(implicit ec: ExecutionContext) exte
     }
     prices.toOption
   }
+
+  protected def getBasePrices: OptionT[Future, Map[CraftableBase, Price]] = ???/*{
+    val parameters: Seq[(String, String)] = Seq(
+      "league" -> ItemFilter.league.toString
+    )
+    val routes = List(
+      ("BaseType", s"$baseURL/itemoverview", readItemLines),
+    )
+    val prices = routes.flatTraverse {
+      case (t, url, priceReader) =>
+        implicit val reads: Reads[Price] = priceReader
+        get[PoeNinjaResponse](url, parameters :+ "type" -> t: _*).map {
+          _.lines.map {
+            case Price(name, value) => Price(name.toLowerCase.trim, value)
+          }
+        }
+    }
+    prices.toOption
+  }*/
 }

@@ -10,7 +10,7 @@ abstract class Item extends GenericItem with Named with ImplicitConversions {
   val dropLevel: Int
   val dropEnabled: Boolean
 
-  lazy val `class`: String = className
+  val `class`: String
 
   override def condition: Future[Condition] = Future.successful(Condition(
     `class` = `class`,

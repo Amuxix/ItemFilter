@@ -1,5 +1,6 @@
 package me.amuxix.items.bases.weapons
 import me.amuxix.items.bases.Weapon
+import me.amuxix.items.Variant.Variation
 
 case class OneHandSword(
   name: String,
@@ -16,4 +17,5 @@ case class OneHandSword(
   sockets: Option[Int] = None,
   links: Option[Int] = None,
   socketGroup: Option[String] = None,
+  variant: Option[Variation] = None,
 ) extends Weapon

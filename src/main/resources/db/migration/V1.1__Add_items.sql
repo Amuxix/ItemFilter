@@ -944,8 +944,7 @@ VALUES
   ('Lair of the Hydra Map', 16),
   ('Maze of the Minotaur Map', 16),
   ('Forge of the Phoenix Map', 16),
-  ('Vaal Temple Map', 16),
-  ('The Shaper''s Realm Map', 17);
+  ('Vaal Temple Map', 16);
 
 INSERT INTO essences (name, upgrades_to)
 VALUES

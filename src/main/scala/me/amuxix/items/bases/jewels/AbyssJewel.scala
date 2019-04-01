@@ -9,6 +9,5 @@ case class AbyssJewel(
   corrupted: Boolean = false,
   implicits: List[String] = List.empty,
   prefixes: List[String] = List.empty,
-  suffixes: List[String] = List.empty,
-) extends BaseJewel {
-  }
+  suffixes: List[String] = List.empty
+) extends BaseJewel

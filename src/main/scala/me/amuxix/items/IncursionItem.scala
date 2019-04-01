@@ -8,6 +8,6 @@ case class IncursionItem (
   dropEnabled: Boolean,
 ) extends Item {
   override val dropLevel: Int = 1
-
+  override val `class`: String = "Incursion Item"
   override def rarity: Future[FilterRarity] = Future.successful(AlwaysShow)
 }
