@@ -143,6 +143,6 @@ object Bases extends BasicOperations[Base, BasesTable](new BasesTable(_)) {
   val bestItems: Future[NonEmptyList[CraftableBase with Corruptible]] =
     NonEmptyList.of(bestEquipment, accessories).nonEmptyFlatSequence
 
-  val allEquipment: Future[NonEmptyList[CraftableBase with Corruptible with Quality with Sockets]] =
-    NonEmptyList.of(weapons, armours).nonEmptyFlatSequence
+  val allEquipment: Future[NonEmptyList[CraftableBase with Corruptible]] =
+    NonEmptyList.of(weapons, armours, accessories).nonEmptyFlatSequence
 }

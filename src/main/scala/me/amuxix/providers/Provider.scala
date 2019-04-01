@@ -28,7 +28,7 @@ object Provider {
 }
 
 abstract class Provider(wsClient: StandaloneWSClient)(implicit ec: ExecutionContext) {
-  protected def get[Response: Reads](url: String, parameters: (String, String)*): EitherT[Future, ProviderError, Response] = {
+  protected def get[Response : Reads](url: String, parameters: (String, String)*): EitherT[Future, ProviderError, Response] = {
     val request = wsClient
       .url(url)
       .withQueryStringParameters(parameters.toSeq: _*)

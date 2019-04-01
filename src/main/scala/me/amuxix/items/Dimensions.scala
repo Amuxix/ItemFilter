@@ -9,5 +9,5 @@ import scala.concurrent.Future
 trait Dimensions extends Area {
   val height: Int
   val width: Int
-  override val area: OptionT[Future, Int] = OptionT.pure(height * width)
+  override lazy val area: OptionT[Future, Int] = OptionT.pure(height * width)
 }

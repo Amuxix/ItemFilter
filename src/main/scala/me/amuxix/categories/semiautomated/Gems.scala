@@ -31,7 +31,7 @@ object Gems extends SemiAutomatedCategory {
         override lazy val condition: Future[Condition] = Future.successful(Condition(
           base = Seq(
             "Empower",
-            "GenericItem Quantity",
+            "Item Quantity",
             "Block Chance Reduction",
             "Enhance",
             "Portal",

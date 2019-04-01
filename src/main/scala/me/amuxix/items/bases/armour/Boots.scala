@@ -1,5 +1,6 @@
 package me.amuxix.items.bases.armour
 import me.amuxix.items.bases.Armour
+import me.amuxix.items.Variant.Variation
 
 case class Boots(
   name: String,
@@ -14,6 +15,7 @@ case class Boots(
   sockets: Option[Int] = None,
   links: Option[Int] = None,
   socketGroup: Option[String] = None,
+  variant: Option[Variation] = None,
 ) extends Armour {
   override val height: Int = 2
   override val width: Int = 2

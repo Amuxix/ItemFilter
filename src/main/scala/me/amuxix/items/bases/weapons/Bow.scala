@@ -1,5 +1,6 @@
 package me.amuxix.items.bases.weapons
 import me.amuxix.items.bases.Weapon
+import me.amuxix.items.Variant.Variation
 
 case class Bow(
   name: String,
@@ -14,6 +15,7 @@ case class Bow(
   sockets: Option[Int] = None,
   links: Option[Int] = None,
   socketGroup: Option[String] = None,
+  variant: Option[Variation] = None,
 ) extends Weapon {
   override val height: Int = 4
   override val width: Int = 2
