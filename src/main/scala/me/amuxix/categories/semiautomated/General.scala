@@ -3,7 +3,7 @@ package me.amuxix.categories.semiautomated
 import cats.data.{NonEmptyList, OptionT}
 import cats.implicits._
 import me.amuxix._
-import me.amuxix.ItemFilter.{ec, _}
+import me.amuxix.ItemFilter._
 import me.amuxix.actions.{Action, Green, Sound}
 import me.amuxix.actions.Color.{darkRed, goodYellow, red, white}
 import me.amuxix.categories.SemiAutomatedCategory
