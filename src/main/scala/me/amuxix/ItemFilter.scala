@@ -91,10 +91,8 @@ object ItemFilter {
       BreachRings, //TODO: Add to base types, merge with accessories
       Abyss, //TODO: Add to base types, merge with accessories/jewels
       Talisman,
-      Shaper,
-      Elder,
-      Fractured,
-      Synthesised,
+      Synthesized,
+      Rares,
       Enchanted,
       Atlas,
       //TODO: Add corrupted items
