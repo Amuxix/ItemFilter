@@ -8,11 +8,12 @@ import me.amuxix.Priced
 import scala.concurrent.Future
 
 object Bases extends AutomatedCategory {
+
   trait BasePrice extends Value {
     override def chaosValuePerSlot: OptionT[Future, Double] = ???
   }
 
-override protected def items: Future[NonEmptyList[Item]] = ???
+  override protected def items: Future[NonEmptyList[Item]] = ???
   /*DatabaseBases.allEquipment.map { items =>
     for {
       item <- items
@@ -25,6 +26,5 @@ override protected def items: Future[NonEmptyList[Item]] = ???
     )
   }*/
 
-
-override protected def action: Priced => Action = ???
+  override protected def action: Priced => Action = ???
 }

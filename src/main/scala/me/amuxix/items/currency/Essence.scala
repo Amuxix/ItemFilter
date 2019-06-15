@@ -8,11 +8,7 @@ import me.amuxix.items.{Currency, PriceFallback}
 
 import scala.concurrent.Future
 
-case class Essence(
-  name: String,
-  upgradesTo: Option[String],
-  dropEnabled: Boolean,
-) extends Currency with PriceFallback {
+case class Essence(name: String, upgradesTo: Option[String], dropEnabled: Boolean) extends Currency with PriceFallback {
   override val stackSize: Int = 1
   override val dropLevel: Int = 1
 

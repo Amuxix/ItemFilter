@@ -1,6 +1,6 @@
 package me.amuxix.categories.automated
 
-import cats.data.NonEmptyList
+import cats.data.{NonEmptyList, OptionT}
 import cats.implicits._
 import me.amuxix._
 import me.amuxix.ItemFilter.ec
@@ -8,25 +8,59 @@ import me.amuxix.actions._
 import me.amuxix.actions.Color.{black, unique, white}
 import me.amuxix.actions.Sound.{epic, myths, pileOfShit}
 import me.amuxix.categories.AutomatedCategory
-import me.amuxix.items.UniqueItem
+import me.amuxix.conditions.{Condition, Unique}
+import me.amuxix.items.{Item, Value}
 
 import scala.concurrent.Future
 
 object Uniques extends AutomatedCategory {
 
-  override protected lazy val items: Future[NonEmptyList[UniqueItem]] =
-    database.Uniques.all.flatMap( items =>
-      items
-        .groupBy(_.baseName)
-        .values
-        .map { uniques =>
-          uniques
-            .traverse(unique => unique.rarity.map(unique -> _)) //For each unique get its rarity
-            .map(_.toList.maxBy(_._2)._1) //Keep only the rarest
-        }
-        .toList
-        .sequence
-        .map(NonEmptyList.fromListUnsafe)
+  override protected lazy val items: Future[NonEmptyList[Item]] =
+    database.Uniques.all.flatMap(
+      items =>
+        items
+          .groupBy(_.baseName)
+          .values
+          .map { uniques =>
+            val enabledUniques = uniques.filter(_.dropEnabled)
+            val itemWithWeightedValue =
+              enabledUniques.traverse(_.chaosValuePerSlot).map { uniqueValues =>
+                val uniqueWeights =
+                  uniqueValues.map(value => 1 / math.pow(value, 1 / 3d))
+                val totalWeight = uniqueWeights.sum
+                val value = (uniqueValues zip uniqueWeights).foldLeft(0d) {
+                  case (acc, (value, weight)) =>
+                    val weightedDropChance = weight / totalWeight
+                    acc + weightedDropChance * value
+
+                }
+                new Item with Value {
+                  override val dropLevel: Int =
+                    enabledUniques.map(_.dropLevel).min
+                  override val dropEnabled: Boolean = true
+                  override val name: String = ""
+                  override val `class`: String = ""
+
+                  override def condition: Future[Condition] =
+                    Future.successful(
+                      Condition(
+                        base = enabledUniques.head.baseName,
+                        rarity = Unique,
+                      )
+                    )
+                  override def chaosValuePerSlot: OptionT[Future, Double] =
+                    OptionT.pure(value)
+                }
+              }
+            itemWithWeightedValue.getOrElseF(
+              uniques
+                .traverse(unique => unique.rarity.map(unique -> _)) //For each unique get its rarity
+                .map(_.toList.maxBy(_._2)._1)                       //Keep only the rarest
+            )
+          }
+          .toList
+          .sequence
+          .map(NonEmptyList.fromListUnsafe)
     )
 
   override protected def action: Priced => Action = {

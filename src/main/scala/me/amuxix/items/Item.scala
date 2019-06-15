@@ -12,8 +12,11 @@ abstract class Item extends GenericItem with Named with ImplicitConversions {
 
   val `class`: String
 
-  override def condition: Future[Condition] = Future.successful(Condition(
-    `class` = `class`,
-    base = name,
-  ))
+  override def condition: Future[Condition] =
+    Future.successful(
+      Condition(
+        `class` = `class`,
+        base = name,
+      )
+    )
 }

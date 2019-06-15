@@ -13,19 +13,22 @@ import me.amuxix.items.GenericItem
 import scala.concurrent.Future
 
 object Maps extends SemiAutomatedCategory {
-  override protected val categoryItems: Future[NonEmptyList[GenericItem]] = database.Maps.all.map(_.flatMap { map =>
-    NonEmptyList.of(
-      new GenericItem {
-        override lazy val rarity: Future[FilterRarity] = Future.successful(Epic)
-        override lazy val condition: Future[Condition] = map.sameTierOrUpgrade
-      },
-      new GenericItem {
-        override lazy val rarity: Future[FilterRarity] = Future.successful(Rare)
-        override lazy val condition: Future[Condition] = map.good
-      },
-      map,
-    )
-  })
+  override protected val categoryItems: Future[NonEmptyList[GenericItem]] =
+    database.Maps.all.map(_.flatMap { map =>
+      NonEmptyList.of(
+        new GenericItem {
+          override lazy val rarity: Future[FilterRarity] =
+            Future.successful(Epic)
+          override lazy val condition: Future[Condition] = map.sameTierOrUpgrade
+        },
+        new GenericItem {
+          override lazy val rarity: Future[FilterRarity] =
+            Future.successful(Rare)
+          override lazy val condition: Future[Condition] = map.good
+        },
+        map,
+      )
+    })
 
   override protected def actionForRarity: FilterRarity => Action = {
     case Mythic =>

@@ -7,12 +7,13 @@ class CurrencyFragmentsTable(tag: Tag) extends Table[CurrencyFragment](tag, "cur
   def fragmentOf = column[String]("fragment_of")
   def stackSize = column[Int]("stack_size")
 
-  override def * = (
-    name,
-    stackSize,
-    fragmentOf,
-    dropEnabled,
-  ).mapTo[CurrencyFragment]
+  override def * =
+    (
+      name,
+      stackSize,
+      fragmentOf,
+      dropEnabled,
+    ).mapTo[CurrencyFragment]
 }
 
 object CurrencyFragments extends BasicOperations[CurrencyFragment, CurrencyFragmentsTable](new CurrencyFragmentsTable(_))

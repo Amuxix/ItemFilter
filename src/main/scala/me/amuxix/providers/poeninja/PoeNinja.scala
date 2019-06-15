@@ -37,6 +37,7 @@ class PoeNinja(wsClient: StandaloneWSClient)(implicit ec: ExecutionContext) exte
       ("UniqueWeapon", s"$baseURL/itemoverview", readItemLines),
       ("UniqueArmour", s"$baseURL/itemoverview", readItemLines),
       ("UniqueAccessory", s"$baseURL/itemoverview", readItemLines),
+      ("Incubator", s"$baseURL/itemoverview", readItemLines),
     )
     val prices = routes.flatTraverse {
       case (t, url, priceReader) =>
@@ -50,7 +51,8 @@ class PoeNinja(wsClient: StandaloneWSClient)(implicit ec: ExecutionContext) exte
     prices.toOption
   }
 
-  protected def getBasePrices: OptionT[Future, Map[CraftableBase, Price]] = ???/*{
+  protected def getBasePrices: OptionT[Future, Map[CraftableBase, Price]] =
+    ??? /*{
     val parameters: Seq[(String, String)] = Seq(
       "league" -> ItemFilter.league.toString
     )

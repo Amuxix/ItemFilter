@@ -8,7 +8,12 @@ object Colored {
     (x - y) * (x - y)
 }
 
-abstract class Colored(val _r: Int, val _g: Int, val _b: Int, val _a: Int) {
+abstract class Colored(
+  val _r: Int,
+  val _g: Int,
+  val _b: Int,
+  val _a: Int
+) {
   def this(r: Int, g: Int, b: Int) = this(r, g, b, 255)
 
   Seq(_r, _g, _b, _a).foreach { p =>

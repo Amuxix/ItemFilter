@@ -11,6 +11,4 @@ case class HybridFlask(
   suffixes: List[String] = List.empty,
   quality: Option[Int] = None,
   variant: Option[Variation] = None,
-) extends Flask {
-
-}
+) extends Flask {}

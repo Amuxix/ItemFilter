@@ -4,11 +4,10 @@ import me.amuxix.providers.Price
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 
-case class PoeNinjaResponse(
-    lines: List[Price],
-)
+case class PoeNinjaResponse(lines: List[Price])
 
 object PoeNinjaResponse {
+
   val readCurrencyLines: Reads[Price] = (
     (JsPath \ "currencyTypeName").read[String] and
       (JsPath \ "chaosEquivalent").read[Double]

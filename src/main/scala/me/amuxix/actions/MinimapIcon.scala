@@ -22,10 +22,13 @@ case object Small extends IconSize {
 }
 
 object MinimapIcon {
-  implicit def tuple22MinimapIcon(tuple: (EffectColor, Shape)): MinimapIcon = MinimapIcon(tuple._1, tuple._2)
-  implicit def tuple32MinimapIcon(tuple: (EffectColor, Shape, IconSize)): MinimapIcon = MinimapIcon(tuple._1, tuple._2, tuple._3)
+  implicit def tuple22MinimapIcon(tuple: (EffectColor, Shape)): MinimapIcon =
+    MinimapIcon(tuple._1, tuple._2)
+  implicit def tuple32MinimapIcon(tuple: (EffectColor, Shape, IconSize)): MinimapIcon =
+    MinimapIcon(tuple._1, tuple._2, tuple._3)
 }
 
 case class MinimapIcon(color: EffectColor, shape: Shape, size: IconSize = Small) extends Writable {
-  override protected def print: String = s"MinimapIcon $size ${color.className} $shape"
+  override protected def print: String =
+    s"MinimapIcon $size ${color.className} $shape"
 }

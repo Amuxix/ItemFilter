@@ -9,4 +9,5 @@ object MapFragment extends Enumeration {
   val Sacrifice = Value("Sacrifice")
   val Scarab = Value("Scarab")
   val Shaper = Value("Shaper")
+  val Emblem = Value("Emblem")
 }

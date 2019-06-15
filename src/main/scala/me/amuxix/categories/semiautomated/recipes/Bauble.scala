@@ -19,13 +19,17 @@ object Bauble extends SemiAutomatedCategory {
       .map { glassblowersBauble =>
         def generateGenericItem(quality: Int): GenericItem =
           new GenericItem with Value {
-            override lazy val chaosValuePerSlot: OptionT[Future, Double] = glassblowersBauble.chaosValuePerSlot.map(value => (value / 2) / (40 / quality))
-            override lazy val condition: Future[Condition] = Future.successful(Condition(`class` = "Flask", quality = quality))
+            override lazy val chaosValuePerSlot: OptionT[Future, Double] =
+              glassblowersBauble.chaosValuePerSlot.map(value => (value / 2) / (40 / quality))
+            override lazy val condition: Future[Condition] =
+              Future.successful(Condition(`class` = "Flask", quality = quality))
           }
         (1 to 19).map(generateGenericItem) :+
           new GenericItem with Value {
-            override lazy val chaosValuePerSlot: OptionT[Future, Double] = glassblowersBauble.chaosValuePerSlot.map(_ / 2)
-            override lazy val condition: Future[Condition] = Future.successful(Condition(`class` = "Flask", quality = 20))
+            override lazy val chaosValuePerSlot: OptionT[Future, Double] =
+              glassblowersBauble.chaosValuePerSlot.map(_ / 2)
+            override lazy val condition: Future[Condition] =
+              Future.successful(Condition(`class` = "Flask", quality = 20))
           }
       }
       .value

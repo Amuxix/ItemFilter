@@ -6,6 +6,7 @@ import scala.annotation.tailrec
 import scala.language.higherKinds
 
 object Mergeable {
+
   /*private def mergeOption[T <: Mergeable[T]](a: T, b: T): (T, Option[T]) =
     if (a canMerge b) {
       (a merge b, None)
@@ -43,7 +44,7 @@ object Mergeable {
         val newlyMerged = merged :+ mergedItem
         unmergeable match {
           case h :: t => merge(NonEmptyList(h, t), newlyMerged)
-          case _ =>      NonEmptyList(newlyMerged.head, newlyMerged.tail)
+          case _      => NonEmptyList(newlyMerged.head, newlyMerged.tail)
         }
     }
 }

@@ -6,5 +6,6 @@ object Quality {
 case class Quality(start: Int, end: Int) extends OperatorWritable[Quality](30, "Quality") {
   def this(value: Int) = this(value, value)
 
-  override def merge(other: Quality): Quality = Quality(start min other.start, end max other.end)
+  override def merge(other: Quality): Quality =
+    Quality(start min other.start, end max other.end)
 }

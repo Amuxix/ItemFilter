@@ -10,5 +10,4 @@ case class Jewel(
   implicits: List[String] = List.empty,
   prefixes: List[String] = List.empty,
   suffixes: List[String] = List.empty,
-) extends BaseJewel {
-  }
+) extends BaseJewel {}

@@ -6,7 +6,8 @@ abstract class OperatorWritable[T <: OperatorWritable[T]](max: Int, conditionNam
   val end: Int
   val min: Int = 0
 
-  private def containsOrIsAdjacent(elem: Int): Boolean = start - 1 <= elem && elem <= end + 1
+  private def containsOrIsAdjacent(elem: Int): Boolean =
+    start - 1 <= elem && elem <= end + 1
 
   override def canMerge(other: T): Boolean =
     (this containsOrIsAdjacent other.start) || (this containsOrIsAdjacent other.end) ||

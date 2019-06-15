@@ -10,7 +10,8 @@ import me.amuxix.items.Item
 import scala.concurrent.Future
 
 object AlchemicalResonators extends AutomatedCategory {
-  override protected lazy val items: Future[NonEmptyList[Item]] = Resonators.alchemical
+  override protected lazy val items: Future[NonEmptyList[Item]] =
+    Resonators.alchemical
   override protected def action: Priced => Action = {
     case Common =>
       Action(

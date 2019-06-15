@@ -3,7 +3,8 @@ package me.amuxix.conditions
 import me.amuxix.Writable
 
 object Corrupted {
-  implicit def boolean2Corrupted(boolean: Boolean): Corrupted = Corrupted(boolean)
+  implicit def boolean2Corrupted(boolean: Boolean): Corrupted =
+    Corrupted(boolean)
 }
 
 case class Corrupted(corrupted: Boolean) extends Writable {

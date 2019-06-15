@@ -10,7 +10,8 @@ import me.amuxix.items.Item
 import scala.concurrent.Future
 
 object Fossil extends AutomatedCategory {
-  override protected lazy val items: Future[NonEmptyList[Item]] = Currencies.fossils
+  override protected lazy val items: Future[NonEmptyList[Item]] =
+    Currencies.fossils
   override protected def action: Priced => Action = { _ =>
     Action(
       size = 40,

@@ -18,18 +18,21 @@ abstract class Sized extends SemiAutomatedCategory { outer =>
   def generateGenericItem(height: Int, width: Int): Future[GenericItem] =
     Future.successful {
       new GenericItem with Value {
-        override lazy val chaosValuePerSlot: OptionT[Future, Double] = chaosValue.map(_ / (width * height))
+        override lazy val chaosValuePerSlot: OptionT[Future, Double] =
+          chaosValue.map(_ / (width * height))
         override lazy val condition: Future[Condition] = Future.successful(outer.condition.copy(height = height, width = width))
       }
     }
 
   override protected val categoryItems: Future[NonEmptyList[GenericItem]] =
-    NonEmptyList.fromListUnsafe(
-      (for {
-        height <- 2 to 4
-        width <- 1 to 2
-      } yield generateGenericItem(height, width)).toList
-    ).sequence
+    NonEmptyList
+      .fromListUnsafe(
+        (for {
+          height <- 2 to 4
+          width <- 1 to 2
+        } yield generateGenericItem(height, width)).toList
+      )
+      .sequence
 
   override protected def actionForRarity: FilterRarity => Action = { _ =>
     Action()
