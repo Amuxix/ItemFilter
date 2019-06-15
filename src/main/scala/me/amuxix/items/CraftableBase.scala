@@ -17,13 +17,14 @@ abstract class CraftableBase extends Base {
 
   def baseType: BaseType = BaseType(name.replaceAll("([a-z])([A-Z])", "$1 $2"))
 
-  def closeToZoneLevel(howClose: ItemLevel, rarity: Option[Rarity] = Rare): Future[Condition] = Bases.bestEquipment.map { bestEquipment =>
-    Condition(
-      base = Some(this.baseType),
-      itemLevel = if (bestEquipment.toList contains this) None else Some(howClose),
-      rarity = rarity
-    )
-  }
+  def closeToZoneLevel(howClose: ItemLevel, rarity: Option[Rarity] = Rare): Future[Condition] =
+    Bases.bestEquipment.map { bestEquipment =>
+      Condition(
+        base = Some(this.baseType),
+        itemLevel = if (bestEquipment.toList contains this) None else Some(howClose),
+        rarity = rarity
+      )
+    }
 
   def conditionsOfBestRaresForZoneLevel: Future[Condition] =
     closeToZoneLevel(ItemLevel(1, this.dropLevel + minDropBuffer max this.dropLevel / 10))
@@ -38,6 +39,4 @@ abstract class CraftableBase extends Base {
   lazy val crafting: Future[Condition] = Future.successful(Condition(base = Some(baseType), itemLevel = (itemLevelToUnlockTopModTiers, 100), rarity = (Normal, Magic)))
 }
 
-object CraftableBase {
-
-}
+object CraftableBase {}

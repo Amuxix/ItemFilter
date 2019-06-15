@@ -10,5 +10,6 @@ import scala.concurrent.Future
 
 object Chromatic extends Sized {
   override lazy val condition: Condition = Condition(socketGroup = "RGB")
-  override lazy val chaosValue: OptionT[Future, Double] = Currencies.getByName("Chromatic Orb").flatMap(_.chaosValuePerSlot)
+  override lazy val chaosValue: OptionT[Future, Double] =
+    Currencies.getByName("Chromatic Orb").flatMap(_.chaosValuePerSlot)
 }

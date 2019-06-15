@@ -7,5 +7,6 @@ case class StackSize(start: Int, end: Int, max: Int) extends OperatorWritable[St
   def this(start: Int, max: Int) = this(start, max, max)
 
   override val min: Int = 1
-  override def merge(other: StackSize): StackSize = StackSize(start min other.start, end max other.end, max max other.max)
+  override def merge(other: StackSize): StackSize =
+    StackSize(start min other.start, end max other.end, max max other.max)
 }

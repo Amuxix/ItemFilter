@@ -11,5 +11,6 @@ import scala.concurrent.Future
 
 object Scrap extends Sized {
   override lazy val condition: Condition = Condition(`class` = ItemFilter.config.armourClasses ++ ItemFilter.config.shieldClasses, quality = 20)
-  override lazy val chaosValue: OptionT[Future, Double] = Currencies.getByName("Armourer's Scrap").flatMap(_.chaosValuePerSlot)
+  override lazy val chaosValue: OptionT[Future, Double] =
+    Currencies.getByName("Armourer's Scrap").flatMap(_.chaosValuePerSlot)
 }

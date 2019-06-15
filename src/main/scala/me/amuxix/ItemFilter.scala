@@ -7,6 +7,7 @@ import me.amuxix.WSClient.getActorSystemAndWsClient
 import me.amuxix.categories._
 import me.amuxix.categories.automated._
 import me.amuxix.categories.automated.currency._
+import me.amuxix.categories.automated.mapfragments.{Emblems, Scarabs}
 import me.amuxix.categories.manual.leagues._
 import me.amuxix.categories.manual.recipes._
 import me.amuxix.categories.semiautomated._
@@ -27,7 +28,9 @@ import scala.concurrent.{ExecutionContext, Future}
 import scala.util.Failure
 
 object ItemFilter {
-  val league: League = Synthesis
+  //TODO Keep price history
+  //TODO Fallback price from parent league
+  val league: League = Legion
   implicit val ec = ExecutionContext.global
   val config = pureconfig.loadConfigOrThrow[FilterConfiguration]("filter")
   val cutoffs = config.levelCutoffs
@@ -38,20 +41,17 @@ object ItemFilter {
     password = dbgConfig.password,
     driver = dbgConfig.driver,
   )
-  val (system, client) = getActorSystemAndWsClient
-  val provider: Provider = new PoeNinja(client)
+  val (system, wsClient) = getActorSystemAndWsClient
+  val provider: Provider = new PoeNinja(wsClient)
 
   def runMigrations() = {
     val ds = db.source match {
       case d: DataSourceJdbcDataSource => d.ds
       case d: HikariCPJdbcDataSource   => d.ds
-      case other                       => throw new IllegalStateException("Unknown DataSource type: " + other)
+      case other =>
+        throw new IllegalStateException("Unknown DataSource type: " + other)
     }
-    val flyway = Flyway
-      .configure()
-      .dataSource(ds)
-      .baselineOnMigrate(true)
-      .load()
+    val flyway = Flyway.configure().dataSource(ds).baselineOnMigrate(true).load()
 
     val migrations = flyway.migrate()
     println(s"Ran $migrations migrations.")
@@ -81,7 +81,7 @@ object ItemFilter {
       ChaoticResonators,
       AlchemicalResonators,
       Scarabs,
-      Fragment,
+      MapFragments,
       Currency,
       Gems,
       Incursion,
@@ -89,7 +89,7 @@ object ItemFilter {
       Uniques,
       VeiledItems,
       BreachRings, //TODO: Add to base types, merge with accessories
-      Abyss, //TODO: Add to base types, merge with accessories/jewels
+      Abyss,       //TODO: Add to base types, merge with accessories/jewels
       Talisman,
       Synthesized,
       Rares,
@@ -107,6 +107,9 @@ object ItemFilter {
       Flasks,
       Maps,
       Prophecies,
+      Incubators,
+      Emblems,
+      LevelingCategory,
     )
 
     val legacyCategories = NonEmptyList.of(
@@ -114,20 +117,25 @@ object ItemFilter {
       Legacy,
     )
 
-    List(Reduced, Diminished, Normal, Racing)
-      .traverse { level =>
-        createFilterFile(poeFolder, level, NonEmptyList(categories.head, categories.tail), legacyCategories)
-      //createFilterFile(poeFolder, level, categories, legacyCategories, conceal = true)
-      } andThen {
-        case _ =>
-          client.close()
-          system.terminate()
-      } andThen {
-        case Failure(ex) => throw ex
-      }
+    List(Reduced, Diminished, Normal, Racing).traverse { level =>
+      createFilterFile(poeFolder, level, NonEmptyList(categories.head, categories.tail), legacyCategories)
+    //createFilterFile(poeFolder, level, categories, legacyCategories, conceal = true)
+    } andThen {
+      case _ =>
+        wsClient.close()
+        system.terminate()
+    } andThen {
+      case Failure(ex) => throw ex
+    }
   }
 
-  def createFilterFile(poeFolder: String, filterLevel: FilterLevel, categories: NonEmptyList[Category], legacyCategories: NonEmptyList[Category], conceal: Boolean = false): Future[Unit] = {
+  def createFilterFile(
+    poeFolder: String,
+    filterLevel: FilterLevel,
+    categories: NonEmptyList[Category],
+    legacyCategories: NonEmptyList[Category],
+    conceal: Boolean = false
+  ): Future[Unit] = {
     val allCategories = if (league == Standard || league == Hardcore) {
       categories.concatNel(legacyCategories)
     } else {

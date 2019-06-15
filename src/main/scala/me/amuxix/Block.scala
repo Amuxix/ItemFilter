@@ -4,11 +4,15 @@ import me.amuxix.actions._
 import me.amuxix.conditions.Condition
 
 object Block {
-  def apply(condition: Condition, action: Action): Block = new Block(condition, action)
+
+  def apply(condition: Condition, action: Action): Block =
+    new Block(condition, action)
 }
 
 case class Block(condition: Condition, action: Action, rarity: FilterRarity = Undetermined) extends Mergeable[Block] {
-  def show(filterLevel: FilterLevel): Boolean = rarity >= filterLevel.cutoffRarity
+
+  def show(filterLevel: FilterLevel): Boolean =
+    rarity >= filterLevel.cutoffRarity
 
   def write(filterLevel: FilterLevel): String = {
     val showText = if (show(filterLevel)) "Show" else "Hide"
@@ -28,11 +32,12 @@ case class Block(condition: Condition, action: Action, rarity: FilterRarity = Un
 
   private def averageColor: Color =
     (action.backgroundColor.map(_.color), action.textColor.map(_.color), action.borderColor.map(_.color)) match {
-      case (None, None, None)                         => Color.white
-      case (Some(background), _, _)                   => background
-      case (None, Some(textColor), Some(borderColor)) => Color.average(Seq(textColor, borderColor))
-      case (None, Some(textColor), None)              => textColor
-      case (None, None, Some(borderColor))            => borderColor
+      case (None, None, None)       => Color.white
+      case (Some(background), _, _) => background
+      case (None, Some(textColor), Some(borderColor)) =>
+        Color.average(Seq(textColor, borderColor))
+      case (None, Some(textColor), None)   => textColor
+      case (None, None, Some(borderColor)) => borderColor
     }
 
   def concealed(conceal: Boolean, filterLevel: FilterLevel): Block = {
@@ -56,5 +61,6 @@ case class Block(condition: Condition, action: Action, rarity: FilterRarity = Un
   override def canMerge(other: Block): Boolean =
     action == other.action && rarity == other.rarity && (condition canMerge other.condition)
 
-  override def merge(other: Block) = Block(condition merge other.condition, action, rarity)
+  override def merge(other: Block) =
+    Block(condition merge other.condition, action, rarity)
 }

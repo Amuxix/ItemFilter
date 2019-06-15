@@ -7,5 +7,6 @@ case class Sockets(start: Int, end: Int) extends OperatorWritable[Sockets](6, "S
   def this(value: Int) = this(value, value)
 
   override val min: Int = 1
-  override def merge(other: Sockets): Sockets = Sockets(start min other.start, end max other.end)
+  override def merge(other: Sockets): Sockets =
+    Sockets(start min other.start, end max other.end)
 }

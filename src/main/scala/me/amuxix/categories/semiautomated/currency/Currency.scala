@@ -22,22 +22,24 @@ object Currency extends SemiAutomatedCategory {
       fragments <- CurrencyFragments.all
       vials <- Currencies.vials
       orbsAndFragments <- orbs.concatNel(fragments).flatTraverse { currency =>
-                           currency.chaosValuePerSlot.fold(NonEmptyList.one[Currency](currency)) { chaosValue =>
-                             val increasedStackSizes = rarities.collect {
-                               case rarity if rarity.threshold > chaosValue && rarity.threshold / chaosValue <= currency.stackSize =>
-                                 val stack = math.ceil(rarity.threshold / chaosValue).toInt
-                                 new Currency {
-                                   override val stackSize: Int = currency.stackSize
-                                   override val name: String = currency.name
-                                   override val dropLevel: Int = currency.dropLevel
-                                   override val dropEnabled: Boolean = currency.dropEnabled
-                                   override lazy val chaosValuePerSlot: OptionT[Future, Double] = OptionT.pure(chaosValue * stack)
-                                   override lazy val condition: Future[Condition] = currency.condition.map(_.copy(stackSize = Some(StackSize(stack, currency.stackSize))))
-                                 }
-                             }
-                             NonEmptyList.ofInitLast(increasedStackSizes, currency)
-                           }
-                         }
+        currency.chaosValuePerSlot.fold(NonEmptyList.one[Currency](currency)) { chaosValue =>
+          val increasedStackSizes = rarities.collect {
+            case rarity if rarity.threshold > chaosValue && rarity.threshold / chaosValue <= currency.stackSize =>
+              val stack = math.ceil(rarity.threshold / chaosValue).toInt
+              new Currency {
+                override val stackSize: Int = currency.stackSize
+                override val name: String = currency.name
+                override val dropLevel: Int = currency.dropLevel
+                override val dropEnabled: Boolean = currency.dropEnabled
+                override lazy val chaosValuePerSlot: OptionT[Future, Double] =
+                  OptionT.pure(chaosValue * stack)
+                override lazy val condition: Future[Condition] =
+                  currency.condition.map(_.copy(stackSize = Some(StackSize(stack, currency.stackSize))))
+              }
+          }
+          NonEmptyList.ofInitLast(increasedStackSizes, currency)
+        }
+      }
     } yield orbsAndFragments concatNel vials
 
   override protected def actionForRarity: FilterRarity => Action = {

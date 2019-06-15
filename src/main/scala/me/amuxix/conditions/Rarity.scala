@@ -10,6 +10,7 @@ sealed class GameRarity(val value: Int) extends Named with Ordered[GameRarity] {
 }
 
 object GameRarity {
+
   def fromValue(value: Int): GameRarity = value match {
     case Normal.value => Normal
     case Magic.value  => Magic
@@ -35,13 +36,15 @@ case class Rarity(from: GameRarity, to: GameRarity) extends Writable with Mergea
   val max: Int = 3
   val conditionName: String = "Rarity"
 
-  private def containsOrIsAdjacent(elem: Int): Boolean = start - 1 <= elem && elem <= end + 1
+  private def containsOrIsAdjacent(elem: Int): Boolean =
+    start - 1 <= elem && elem <= end + 1
 
   override def canMerge(other: Rarity): Boolean =
     (this containsOrIsAdjacent other.start) || (this containsOrIsAdjacent other.end) ||
       (other containsOrIsAdjacent this.start) || (other containsOrIsAdjacent this.end)
 
-  override def merge(other: Rarity): Rarity = Rarity(GameRarity.fromValue(start min other.start), GameRarity.fromValue(end max other.end))
+  override def merge(other: Rarity): Rarity =
+    Rarity(GameRarity.fromValue(start min other.start), GameRarity.fromValue(end max other.end))
 
   override def print: String = {
     val startRarity = GameRarity.fromValue(start)
@@ -50,7 +53,8 @@ case class Rarity(from: GameRarity, to: GameRarity) extends Writable with Mergea
       case `end`           => s"$conditionName $startRarity"
       case 0               => s"$conditionName <= $endRarity"
       case _ if end == max => s"$conditionName >= $startRarity"
-      case _               => s"$conditionName >= $startRarity\n  $conditionName <= $endRarity"
+      case _ =>
+        s"$conditionName >= $startRarity\n  $conditionName <= $endRarity"
     }
   }
 }

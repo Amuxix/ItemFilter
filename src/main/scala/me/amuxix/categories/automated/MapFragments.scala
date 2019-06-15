@@ -1,4 +1,5 @@
-package me.amuxix.categories.automated.currency
+package me.amuxix.categories.automated
+
 import cats.data.NonEmptyList
 import cats.implicits.{catsStdInstancesForFuture, toNonEmptyTraverseOps}
 import me.amuxix._
@@ -6,14 +7,15 @@ import me.amuxix.ItemFilter.ec
 import me.amuxix.actions._
 import me.amuxix.actions.Color.{black, darkRed, white}
 import me.amuxix.categories.AutomatedCategory
+import me.amuxix.database.MapFragmentFragments.breachSplinters
 import me.amuxix.database.MapFragments._
 import me.amuxix.items.Item
 
 import scala.concurrent.Future
 
-object Fragment extends AutomatedCategory {
+object MapFragments extends AutomatedCategory {
   override protected lazy val items: Future[NonEmptyList[Item]] =
-    NonEmptyList.of(breachstones, miscsFragments, mortalFragments, prophecyFragments, sacrificeFragments,shaperFragments).nonEmptyFlatSequence
+    NonEmptyList.of(breachstones, miscsFragments, mortalFragments, prophecyFragments, sacrificeFragments, shaperFragments, breachSplinters).nonEmptyFlatSequence
 
   override protected def action: Priced => Action = {
     case Mythic =>

@@ -1,4 +1,5 @@
 package me.amuxix.categories.automated.currency
+
 import cats.data.NonEmptyList
 import me.amuxix.{Common, Priced, Uncommon}
 import me.amuxix.actions.{Action, Blue, Circle, Triangle}

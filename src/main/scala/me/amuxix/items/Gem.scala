@@ -9,7 +9,8 @@ case class Gem(
   level: Int,
   dropEnabled: Boolean,
   quality: Option[Int] = None,
-) extends Item with Quality {
+) extends Item
+    with Quality {
   override val rarity: Future[FilterRarity] = Future.successful(Leveling)
   lazy val `class`: String = "Gem"
 }

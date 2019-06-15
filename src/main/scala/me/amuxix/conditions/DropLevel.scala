@@ -10,5 +10,6 @@ case class DropLevel(start: Int, end: Int) extends OperatorWritable[DropLevel](1
   def this(value: Int) = this(value, value)
 
   override val min: Int = 1
-  override def merge(other: DropLevel): DropLevel = DropLevel(start min other.start, end max other.end)
+  override def merge(other: DropLevel): DropLevel =
+    DropLevel(start min other.start, end max other.end)
 }

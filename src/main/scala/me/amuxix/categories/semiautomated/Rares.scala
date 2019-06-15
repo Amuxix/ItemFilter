@@ -13,57 +13,76 @@ import me.amuxix.items.GenericItem
 import scala.concurrent.Future
 
 object Rares extends SemiAutomatedCategory {
-  override protected val categoryItems: Future[NonEmptyList[GenericItem]] = for {
-    bestItems <- Bases.bestItems
-    allEquipment <- Bases.allEquipment
-  } yield {
-    val best = bestItems.flatMap { i =>
-      NonEmptyList.of(
-        new GenericItem {
-          override lazy val rarity: Future[FilterRarity] = Future.successful(Undetermined)
-          override lazy val condition: Future[Condition] = i.rare.map(_.copy(fracturedItem = true))
-        },
-        new GenericItem {
-          override lazy val rarity: Future[FilterRarity] = Future.successful(Undetermined)
-          override lazy val condition: Future[Condition] = i.rare.map(_.copy(shaperItem = true))
-        },
-        new GenericItem {
-          override lazy val rarity: Future[FilterRarity] = Future.successful(Undetermined)
-          override lazy val condition: Future[Condition] = i.rare.map(_.copy(elderItem = true))
-        },
-      )
-    }
-    val all = allEquipment.flatMap { i =>
-      NonEmptyList.of(
-        new GenericItem {
-          override lazy val rarity: Future[FilterRarity] = Future.successful(Leveling)
-          override lazy val condition: Future[Condition] = i.conditionsOfBestRaresForZoneLevel.map(_.copy(fracturedItem = true))
-        },
-        new GenericItem {
-          override lazy val rarity: Future[FilterRarity] = Future.successful(Leveling)
-          override lazy val condition: Future[Condition] = i.conditionsOfGoodRaresForZoneLevel.map(_.copy(fracturedItem = true))
-        },
-        new GenericItem {
-          override lazy val rarity: Future[FilterRarity] = Future.successful(Leveling)
-          override lazy val condition: Future[Condition] = i.conditionsOfBestRaresForZoneLevel.map(_.copy(shaperItem = true))
-        },
-        new GenericItem {
-          override lazy val rarity: Future[FilterRarity] = Future.successful(Leveling)
-          override lazy val condition: Future[Condition] = i.conditionsOfGoodRaresForZoneLevel.map(_.copy(shaperItem = true))
-        },
-        new GenericItem {
-          override lazy val rarity: Future[FilterRarity] = Future.successful(Leveling)
-          override lazy val condition: Future[Condition] = i.conditionsOfBestRaresForZoneLevel.map(_.copy(elderItem = true))
-        },
-        new GenericItem {
-          override lazy val rarity: Future[FilterRarity] = Future.successful(Leveling)
-          override lazy val condition: Future[Condition] = i.conditionsOfGoodRaresForZoneLevel.map(_.copy(elderItem = true))
-        },
-      )
-    }
+  override protected val categoryItems: Future[NonEmptyList[GenericItem]] =
+    for {
+      bestItems <- Bases.bestItems
+      allEquipment <- Bases.allEquipment
+    } yield {
+      val best = bestItems.flatMap { i =>
+        NonEmptyList.of(
+          new GenericItem {
+            override lazy val rarity: Future[FilterRarity] =
+              Future.successful(Undetermined)
+            override lazy val condition: Future[Condition] =
+              i.rare.map(_.copy(fracturedItem = true))
+          },
+          new GenericItem {
+            override lazy val rarity: Future[FilterRarity] =
+              Future.successful(Undetermined)
+            override lazy val condition: Future[Condition] =
+              i.rare.map(_.copy(shaperItem = true))
+          },
+          new GenericItem {
+            override lazy val rarity: Future[FilterRarity] =
+              Future.successful(Undetermined)
+            override lazy val condition: Future[Condition] =
+              i.rare.map(_.copy(elderItem = true))
+          },
+        )
+      }
+      val all = allEquipment.flatMap { i =>
+        NonEmptyList.of(
+          new GenericItem {
+            override lazy val rarity: Future[FilterRarity] =
+              Future.successful(Leveling)
+            override lazy val condition: Future[Condition] =
+              i.conditionsOfBestRaresForZoneLevel.map(_.copy(fracturedItem = true))
+          },
+          new GenericItem {
+            override lazy val rarity: Future[FilterRarity] =
+              Future.successful(Leveling)
+            override lazy val condition: Future[Condition] =
+              i.conditionsOfGoodRaresForZoneLevel.map(_.copy(fracturedItem = true))
+          },
+          new GenericItem {
+            override lazy val rarity: Future[FilterRarity] =
+              Future.successful(Leveling)
+            override lazy val condition: Future[Condition] =
+              i.conditionsOfBestRaresForZoneLevel.map(_.copy(shaperItem = true))
+          },
+          new GenericItem {
+            override lazy val rarity: Future[FilterRarity] =
+              Future.successful(Leveling)
+            override lazy val condition: Future[Condition] =
+              i.conditionsOfGoodRaresForZoneLevel.map(_.copy(shaperItem = true))
+          },
+          new GenericItem {
+            override lazy val rarity: Future[FilterRarity] =
+              Future.successful(Leveling)
+            override lazy val condition: Future[Condition] =
+              i.conditionsOfBestRaresForZoneLevel.map(_.copy(elderItem = true))
+          },
+          new GenericItem {
+            override lazy val rarity: Future[FilterRarity] =
+              Future.successful(Leveling)
+            override lazy val condition: Future[Condition] =
+              i.conditionsOfGoodRaresForZoneLevel.map(_.copy(elderItem = true))
+          },
+        )
+      }
 
-    best concatNel all
-  }
+      best concatNel all
+    }
 
   override protected def actionForRarity: FilterRarity => Action = {
     case Undetermined =>

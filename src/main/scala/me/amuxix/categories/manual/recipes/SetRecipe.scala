@@ -12,7 +12,12 @@ import scala.concurrent.Future
 
 abstract class SetRecipe(minItemLevel: Int, color: Color) extends Category {
   private val equipmentAction = Action(size = 34, textColor = color, borderColor = color, backgroundColor = black)
-  private def partialCondition(`class`: Option[ItemClass], width: Option[Width] = None, height: Option[Height] = None, dropLevel: Option[Int] = None) =
+  private def partialCondition(
+    `class`: Option[ItemClass],
+    width: Option[Width] = None,
+    height: Option[Height] = None,
+    dropLevel: Option[Int] = None
+  ) =
     Condition(
       `class` = `class`,
       width = width,
@@ -23,9 +28,11 @@ abstract class SetRecipe(minItemLevel: Int, color: Color) extends Category {
       dropLevel = dropLevel.map(i => DropLevel(1, i))
     )
 
-  private val weapons = Block(partialCondition(None, 1, 3, dropLevel = Some((cutoffs.setArmourDropLevel * 1.5).toInt)), equipmentAction)
-  private val smallBows = Block(partialCondition(Seq("Bows"), 2, 3), equipmentAction)
-  private val armor = Block(partialCondition(config.armourClasses, dropLevel = Some(cutoffs.setArmourDropLevel)), equipmentAction)
+  private val weapons =
+    Block(partialCondition(None, 1, 3, dropLevel = Some(cutoffs.setArmourDropLevel)), equipmentAction)
+  private val smallBows =
+    Block(partialCondition(Seq("Bows"), 2, 3), equipmentAction)
+  private val armor = Block(partialCondition(config.armourClasses, dropLevel = Some((cutoffs.setArmourDropLevel * 1.2).toInt)), equipmentAction)
   private val accessories = Block(
     partialCondition(config.accessoriesClasses),
     Action(
@@ -37,7 +44,9 @@ abstract class SetRecipe(minItemLevel: Int, color: Color) extends Category {
   )
 
   override def categoryBlocks: FilterLevel => Future[NonEmptyList[Block]] = {
-    case Reduced => Future.successful(NonEmptyList(accessories, List(weapons.hidden, smallBows.hidden, armor.hidden)))
-    case _       => Future.successful(NonEmptyList(accessories, List(weapons, smallBows, armor)))
+    case Reduced =>
+      Future.successful(NonEmptyList(accessories, List(weapons.hidden, smallBows.hidden, armor.hidden)))
+    case _ =>
+      Future.successful(NonEmptyList(accessories, List(weapons, smallBows, armor)))
   }
 }
