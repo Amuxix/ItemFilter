@@ -37,4 +37,5 @@ libraryDependencies ++= Seq(
   "org.flywaydb"          % "flyway-core"              % "5.2.0",
   "org.typelevel"         %% "cats-core"               % "1.6.0",
   "com.github.pureconfig" %% "pureconfig"              % "0.10.1",
+  "com.typesafe.akka"     %% "akka-stream"             % "2.5.23",
 )
