@@ -1,7 +1,7 @@
 package me.amuxix.categories.semiautomated
 
 import cats.data.NonEmptyList
-import me.amuxix.{AlwaysHide, Common, FilterRarity, Leveling}
+import me.amuxix.{AlwaysHide, FilterRarity, Leveling}
 import me.amuxix.ItemFilter._
 import me.amuxix.actions.Action
 import me.amuxix.categories.SemiAutomatedCategory
@@ -19,7 +19,7 @@ object LevelingCategory extends SemiAutomatedCategory {
         NonEmptyList.of(
           new GenericItem {
             override lazy val condition: Future[Condition] = i.conditionsOfBestRaresForZoneLevel
-            override lazy val rarity: Future[FilterRarity] = Future.successful(Common)
+            override lazy val rarity: Future[FilterRarity] = Future.successful(Leveling)
           },
           new GenericItem {
             override lazy val condition: Future[Condition] = i.conditionsOfGoodRaresForZoneLevel

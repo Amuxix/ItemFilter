@@ -14,11 +14,15 @@ object Provider {
     def parse[Response : Reads](url: String): Either[ProviderError, Response] =
       response match {
         case _ if response.body.isEmpty =>
-          Left(RequestError(url, response, "Response is empty."))
+          val empty = "Response is empty."
+          println(empty)
+          Left(RequestError(url, response, empty))
         case _ if response.status >= 200 && response.status < 300 =>
           response.body[JsValue].validate[Response].asEither.left.map(errors => ParsingError(errors.toString))
         case _ =>
-          Left(RequestError(url, response, s"Response returned a failed status code: ${response.status}"))
+          val message = s"Response returned a failed status code: ${response.status}"
+          println(message)
+          Left(RequestError(url, response, message))
       }
   }
 }
