@@ -2,7 +2,7 @@ package me.amuxix.database
 
 import cats.data.NonEmptyList
 import me.amuxix.ItemFilter.ec
-import me.amuxix.database.PostgresProfile.api._
+import me.amuxix.database.PostgresProfile.API._
 import me.amuxix.database.types.MapFragment
 import me.amuxix.database.types.MapFragment.MapFragmentType
 import me.amuxix.items.MapFragmentFragment

@@ -1,6 +1,6 @@
 package me.amuxix.database
 
-import me.amuxix.database.PostgresProfile.api._
+import me.amuxix.database.PostgresProfile.API._
 import me.amuxix.items.IncursionItem
 
 class IncursionItemsTable(tag: Tag) extends Table[IncursionItem](tag, "incursion_items") with CommonColumns[IncursionItem] {

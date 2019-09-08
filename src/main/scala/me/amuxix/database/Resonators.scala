@@ -2,7 +2,7 @@ package me.amuxix.database
 
 import cats.data.NonEmptyList
 import me.amuxix.ItemFilter.ec
-import me.amuxix.database.PostgresProfile.api._
+import me.amuxix.database.PostgresProfile.API._
 import me.amuxix.items.currency.Resonator
 
 import scala.concurrent.Future

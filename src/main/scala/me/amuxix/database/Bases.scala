@@ -4,7 +4,7 @@ import cats.data.NonEmptyList
 import cats.implicits.{catsStdInstancesForFuture, toNonEmptyTraverseOps}
 import me.amuxix.ItemFilter.{cutoffs, ec}
 import me.amuxix.database.types.Item.ItemType
-import me.amuxix.database.PostgresProfile.api._
+import me.amuxix.database.PostgresProfile.API._
 import me.amuxix.database.types.Item
 import me.amuxix.items._
 import me.amuxix.items.bases.{Jewel => _, _}
@@ -28,49 +28,40 @@ class BasesTable(tag: Tag) extends Table[Base](tag, "bases") with CommonColumns[
     dropEnabled: Boolean,
     itemType: ItemType,
     height: Option[Int],
-    width: Option[Int]
-  ): Base = itemType match {
-    case Item.Amulet       => Amulet(name, dropLevel, dropEnabled)
-    case Item.Belt         => Belt(name, dropLevel, dropEnabled)
-    case Item.Quiver       => Quiver(name, dropLevel, dropEnabled)
-    case Item.Ring         => Ring(name, dropLevel, dropEnabled)
-    case Item.Talisman     => Talisman(name, dropLevel, dropEnabled)
-    case Item.BodyArmour   => BodyArmour(name, dropLevel, dropEnabled)
-    case Item.Boots        => Boots(name, dropLevel, dropEnabled)
-    case Item.Gloves       => Gloves(name, dropLevel, dropEnabled)
-    case Item.Helmet       => Helmet(name, dropLevel, dropEnabled)
-    case Item.LargeShield  => LargeShield(name, dropLevel, dropEnabled)
+    width: Option[Int]): Base = itemType match {
+    case Item.Amulet => Amulet(name, dropLevel, dropEnabled)
+    case Item.Belt => Belt(name, dropLevel, dropEnabled)
+    case Item.Quiver => Quiver(name, dropLevel, dropEnabled)
+    case Item.Ring => Ring(name, dropLevel, dropEnabled)
+    case Item.Talisman => Talisman(name, dropLevel, dropEnabled)
+    case Item.BodyArmour => BodyArmour(name, dropLevel, dropEnabled)
+    case Item.Boots => Boots(name, dropLevel, dropEnabled)
+    case Item.Gloves => Gloves(name, dropLevel, dropEnabled)
+    case Item.Helmet => Helmet(name, dropLevel, dropEnabled)
+    case Item.LargeShield => LargeShield(name, dropLevel, dropEnabled)
     case Item.MediumShield => MediumShield(name, dropLevel, dropEnabled)
-    case Item.SmallShield  => SmallShield(name, dropLevel, dropEnabled)
-    case Item.HybridFlask  => HybridFlask(name, dropLevel, dropEnabled)
-    case Item.LifeFlask    => LifeFlask(name, dropLevel, dropEnabled)
-    case Item.ManaFlask    => ManaFlask(name, dropLevel, dropEnabled)
+    case Item.SmallShield => SmallShield(name, dropLevel, dropEnabled)
+    case Item.HybridFlask => HybridFlask(name, dropLevel, dropEnabled)
+    case Item.LifeFlask => LifeFlask(name, dropLevel, dropEnabled)
+    case Item.ManaFlask => ManaFlask(name, dropLevel, dropEnabled)
     case Item.UtilityFlask => UtilityFlask(name, dropLevel, dropEnabled)
-    case Item.Jewel        => Jewel(name, dropEnabled)
-    case Item.AbyssJewel   => AbyssJewel(name, dropEnabled)
-    case Item.Bow          => Bow(name, dropLevel, dropEnabled)
-    case Item.Claw         => Claw(name, height.get, width.get, dropLevel, dropEnabled)
-    case Item.Dagger =>
-      Dagger(name, height.get, width.get, dropLevel, dropEnabled)
-    case Item.OneHandAxe =>
-      OneHandAxe(name, height.get, width.get, dropLevel, dropEnabled)
-    case Item.OneHandMace =>
-      OneHandMace(name, height.get, width.get, dropLevel, dropEnabled)
-    case Item.OneHandSword =>
-      OneHandSword(name, height.get, width.get, dropLevel, dropEnabled)
-    case Item.Sceptre =>
-      Sceptre(name, height.get, width.get, dropLevel, dropEnabled)
-    case Item.Staff =>
-      Staff(name, height.get, width.get, dropLevel, dropEnabled)
-    case Item.ThrustingOneHandSword =>
-      ThrustingOneHandSword(name, height.get, width.get, dropLevel, dropEnabled)
-    case Item.TwoHandAxe =>
-      TwoHandAxe(name, height.get, width.get, dropLevel, dropEnabled)
-    case Item.TwoHandMace =>
-      TwoHandMace(name, height.get, width.get, dropLevel, dropEnabled)
-    case Item.TwoHandSword =>
-      TwoHandSword(name, height.get, width.get, dropLevel, dropEnabled)
-    case Item.Wand  => Wand(name, height.get, width.get, dropLevel, dropEnabled)
+    case Item.Jewel => Jewel(name, dropEnabled)
+    case Item.AbyssJewel => AbyssJewel(name, dropEnabled)
+    case Item.Bow => Bow(name, dropLevel, dropEnabled)
+    case Item.Claw => Claw(name, height.get, width.get, dropLevel, dropEnabled)
+    case Item.Dagger => Dagger(name, height.get, width.get, dropLevel, dropEnabled)
+    case Item.RuneDagger => RuneDagger(name, height.get, width.get, dropLevel, dropEnabled)
+    case Item.OneHandAxe => OneHandAxe(name, height.get, width.get, dropLevel, dropEnabled)
+    case Item.OneHandMace => OneHandMace(name, height.get, width.get, dropLevel, dropEnabled)
+    case Item.OneHandSword => OneHandSword(name, height.get, width.get, dropLevel, dropEnabled)
+    case Item.Sceptre => Sceptre(name, height.get, width.get, dropLevel, dropEnabled)
+    case Item.Staff => Staff(name, height.get, width.get, dropLevel, dropEnabled)
+    case Item.Warstaff => Warstaff(name, height.get, width.get, dropLevel, dropEnabled)
+    case Item.ThrustingOneHandSword => ThrustingOneHandSword(name, height.get, width.get, dropLevel, dropEnabled)
+    case Item.TwoHandAxe => TwoHandAxe(name, height.get, width.get, dropLevel, dropEnabled)
+    case Item.TwoHandMace => TwoHandMace(name, height.get, width.get, dropLevel, dropEnabled)
+    case Item.TwoHandSword => TwoHandSword(name, height.get, width.get, dropLevel, dropEnabled)
+    case Item.Wand => Wand(name, height.get, width.get, dropLevel, dropEnabled)
     case Item.Piece => Piece(name, dropEnabled)
   }
 
@@ -120,9 +111,11 @@ object Bases extends BasicOperations[Base, BasesTable](new BasesTable(_)) {
   lazy val bows: Future[NonEmptyList[Bow]] = getByItemType(Item.Bow)
   lazy val claws: Future[NonEmptyList[Claw]] = getByItemType(Item.Claw)
   lazy val daggers: Future[NonEmptyList[Dagger]] = getByItemType(Item.Dagger)
+  lazy val runeDaggers: Future[NonEmptyList[RuneDagger]] = getByItemType(Item.RuneDagger)
   lazy val oneHandMaces: Future[NonEmptyList[OneHandMace]] = getByItemType(Item.OneHandMace)
   lazy val sceptres: Future[NonEmptyList[Sceptre]] = getByItemType(Item.Sceptre)
   lazy val staffs: Future[NonEmptyList[Staff]] = getByItemType(Item.Staff)
+  lazy val warstaffs: Future[NonEmptyList[Warstaff]] = getByItemType(Item.Warstaff)
   lazy val oneHandSwords: Future[NonEmptyList[OneHandSword]] = getByItemType(Item.OneHandSword)
   lazy val twoHandSwords: Future[NonEmptyList[TwoHandSword]] = getByItemType(Item.TwoHandSword)
   lazy val thrustingOneHandSwords: Future[NonEmptyList[ThrustingOneHandSword]] =
@@ -130,7 +123,7 @@ object Bases extends BasicOperations[Base, BasesTable](new BasesTable(_)) {
   lazy val wands: Future[NonEmptyList[Wand]] = getByItemType(Item.Wand)
 
   val weapons: Future[NonEmptyList[Weapon]] =
-    NonEmptyList.of(oneHandAxes, twoHandAxes, bows, claws, daggers, oneHandMaces, sceptres, staffs, oneHandSwords, twoHandSwords, thrustingOneHandSwords, wands).nonEmptyFlatSequence
+    NonEmptyList.of(oneHandAxes, twoHandAxes, bows, claws, daggers, runeDaggers, oneHandMaces, sceptres, staffs, warstaffs, oneHandSwords, twoHandSwords, thrustingOneHandSwords, wands).nonEmptyFlatSequence
 
   val armours: Future[NonEmptyList[Armour]] =
     NonEmptyList.of(bodyArmours, boots, gloves, helmets).nonEmptyFlatSequence

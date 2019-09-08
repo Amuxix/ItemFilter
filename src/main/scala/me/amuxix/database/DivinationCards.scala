@@ -1,6 +1,6 @@
 package me.amuxix.database
 
-import me.amuxix.database.PostgresProfile.api._
+import me.amuxix.database.PostgresProfile.API._
 import me.amuxix.items.DivinationCard
 
 class DivinationCardsTable(tag: Tag) extends Table[DivinationCard](tag, "divination_cards") with CommonColumns[DivinationCard] {

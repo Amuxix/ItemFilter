@@ -3,7 +3,7 @@ package me.amuxix.database
 import cats.data.NonEmptyList
 import me.amuxix.ItemFilter.ec
 import me.amuxix.database.types.Currency.CurrencyType
-import me.amuxix.database.PostgresProfile.api._
+import me.amuxix.database.PostgresProfile.API._
 import me.amuxix.database.types.Currency
 import me.amuxix.items.Currency
 import me.amuxix.items.currency._
@@ -25,6 +25,7 @@ class CurrenciesTable(tag: Tag) extends Table[Currency](tag, "currency") with Co
       case Currency.Orb    => Orb(name, stackSize, dropEnabled)
       case Currency.Vial   => Vial(name, dropEnabled)
       case Currency.Fossil => Fossil(name, dropEnabled)
+      case Currency.Oil    => Oil(name, dropEnabled)
     }
 
   def unapply(currency: Currency): Option[(String, Int, CurrencyType, Boolean)] = ???
@@ -56,4 +57,7 @@ object Currencies extends BasicOperations[Currency, CurrenciesTable](new Currenc
 
   lazy val fossils: Future[NonEmptyList[Fossil]] =
     getByCurrencyType(Currency.Fossil)
+
+  lazy val oils: Future[NonEmptyList[Oil]] =
+    getByCurrencyType(Currency.Oil)
 }

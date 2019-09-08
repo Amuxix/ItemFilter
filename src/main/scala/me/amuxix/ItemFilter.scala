@@ -30,7 +30,7 @@ import scala.util.Failure
 object ItemFilter {
   //TODO Keep price history
   //TODO Fallback price from parent league
-  val league: League = Legion
+  val league: League = Blight
   implicit val ec = ExecutionContext.global
   val config = pureconfig.loadConfigOrThrow[FilterConfiguration]("filter")
   val cutoffs = config.levelCutoffs
@@ -78,6 +78,7 @@ object ItemFilter {
       General,
       Essence,
       Fossil,
+      Oil,
       ChaoticResonators,
       AlchemicalResonators,
       Scarabs,

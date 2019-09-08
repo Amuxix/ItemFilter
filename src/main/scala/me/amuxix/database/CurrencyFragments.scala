@@ -1,6 +1,6 @@
 package me.amuxix.database
 
-import me.amuxix.database.PostgresProfile.api._
+import me.amuxix.database.PostgresProfile.API._
 import me.amuxix.items.currency.CurrencyFragment
 
 class CurrencyFragmentsTable(tag: Tag) extends Table[CurrencyFragment](tag, "currency_fragments") with CommonColumns[CurrencyFragment] {
