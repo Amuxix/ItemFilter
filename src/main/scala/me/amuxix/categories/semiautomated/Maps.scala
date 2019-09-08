@@ -1,31 +1,24 @@
 package me.amuxix.categories.semiautomated
 
 import cats.data.NonEmptyList
-import me.amuxix._
-import me.amuxix.ItemFilter.ec
-import me.amuxix.actions._
-import me.amuxix.actions.Color._
-import me.amuxix.actions.Sound._
+import cats.effect.IO
+import me.amuxix.actions.EffectColor.{Red, White, Yellow}
+import me.amuxix.actions.Shape.Square
+import me.amuxix.FilterRarity
+import me.amuxix.actions.Color.{goodYellow, red, white}
+import me.amuxix.actions.Sound.{betterMaps, maps}
 import me.amuxix.categories.SemiAutomatedCategory
-import me.amuxix.conditions.Condition
+import me.amuxix.database.Maps.all
 import me.amuxix.items.GenericItem
-
-import scala.concurrent.Future
+import me.amuxix.FilterRarity.Priced.{Epic, Mythic, Rare}
+import me.amuxix.actions.Action
 
 object Maps extends SemiAutomatedCategory {
-  override protected val categoryItems: Future[NonEmptyList[GenericItem]] =
-    database.Maps.all.map(_.flatMap { map =>
+  override protected val categoryItems: IO[NonEmptyList[GenericItem]] =
+    all.map(_.flatMap { map =>
       NonEmptyList.of(
-        new GenericItem {
-          override lazy val rarity: Future[FilterRarity] =
-            Future.successful(Epic)
-          override lazy val condition: Future[Condition] = map.sameTierOrUpgrade
-        },
-        new GenericItem {
-          override lazy val rarity: Future[FilterRarity] =
-            Future.successful(Rare)
-          override lazy val condition: Future[Condition] = map.good
-        },
+        GenericItem(Epic, map.sameTierOrUpgrade),
+        GenericItem(Rare, map.good),
         map,
       )
     })

@@ -1,14 +1,13 @@
 package me.amuxix.categories.manual.recipes
 
 import cats.data.NonEmptyList
+import cats.effect.IO
 import me.amuxix.{Block, FilterLevel, Reduced}
-import me.amuxix.ItemFilter._
+import me.amuxix.ItemFilter.config
 import me.amuxix.actions.{Action, Color}
 import me.amuxix.actions.Color.black
 import me.amuxix.categories.Category
 import me.amuxix.conditions._
-
-import scala.concurrent.Future
 
 abstract class SetRecipe(minItemLevel: Int, color: Color) extends Category {
   private val equipmentAction = Action(size = 34, textColor = color, borderColor = color, backgroundColor = black)
@@ -43,10 +42,10 @@ abstract class SetRecipe(minItemLevel: Int, color: Color) extends Category {
     )
   )
 
-  override def categoryBlocks: FilterLevel => Future[NonEmptyList[Block]] = {
+  override def categoryBlocks(prices: Map[String, Double], parentLeaguePrices: Map[String, Double]): FilterLevel => IO[NonEmptyList[Block]] = {
     case Reduced =>
-      Future.successful(NonEmptyList(accessories, List(weapons.hidden, smallBows.hidden, armor.hidden)))
+      IO.pure(NonEmptyList(accessories, List(weapons.hidden, smallBows.hidden, armor.hidden)))
     case _ =>
-      Future.successful(NonEmptyList(accessories, List(weapons, smallBows, armor)))
+      IO.pure(NonEmptyList(accessories, List(weapons, smallBows, armor)))
   }
 }

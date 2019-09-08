@@ -1,9 +1,8 @@
 package me.amuxix.items
 
+import cats.effect.IO
 import me.amuxix._
 import me.amuxix.conditions.Condition
-
-import scala.concurrent.Future
 
 abstract class Item extends GenericItem with Named with ImplicitConversions {
   val name: String
@@ -12,8 +11,8 @@ abstract class Item extends GenericItem with Named with ImplicitConversions {
 
   val `class`: String
 
-  override def condition: Future[Condition] =
-    Future.successful(
+  override def condition: IO[Condition] =
+    IO.pure(
       Condition(
         `class` = `class`,
         base = name,

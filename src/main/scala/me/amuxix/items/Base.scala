@@ -1,10 +1,8 @@
 package me.amuxix.items
-import me.amuxix.{FilterRarity, Undetermined}
+import me.amuxix.FilterRarity
+import me.amuxix.FilterRarity.Undetermined
 
-import scala.concurrent.Future
-
-abstract class Base extends Item with Dimensions with Uniques {
-  override lazy val rarity: Future[FilterRarity] =
-    Future.successful(Undetermined)
+abstract class Base extends Item with Dimensions with Uniques with PureRarity {
+  override val rarity: FilterRarity = Undetermined
   override lazy val `class`: String = className
 }

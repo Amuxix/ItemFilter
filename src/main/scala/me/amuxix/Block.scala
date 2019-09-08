@@ -2,6 +2,8 @@ package me.amuxix
 
 import me.amuxix.actions._
 import me.amuxix.conditions.Condition
+import me.amuxix.FilterRarity.{AlwaysHide, Undetermined}
+import me.amuxix.actions.Shape.Circle
 
 object Block {
 

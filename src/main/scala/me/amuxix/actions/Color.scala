@@ -1,8 +1,9 @@
 package me.amuxix.actions
 
-import me.amuxix.actions.EffectColor.effectColors
-//import Ordering.Double.TotalOrdering
 import me.amuxix.actions.Color.{darknessFactor, lightenFactor}
+import me.amuxix.actions.EffectColor.effectColors
+
+import scala.Ordering.Double.TotalOrdering
 
 /**
   * Created by Amuxix on 03/03/2017.

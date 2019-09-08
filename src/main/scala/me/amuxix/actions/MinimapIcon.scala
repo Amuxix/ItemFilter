@@ -1,24 +1,32 @@
 package me.amuxix.actions
 
 import me.amuxix.Writable
+import me.amuxix.actions.IconSize.Small
 
 sealed trait Shape
-case object Star extends Shape
-case object Hexagon extends Shape
-case object Diamond extends Shape
-case object Square extends Shape
-case object Triangle extends Shape
-case object Circle extends Shape
+
+object Shape {
+  case object Star extends Shape
+  case object Hexagon extends Shape
+  case object Diamond extends Shape
+  case object Square extends Shape
+  case object Triangle extends Shape
+  case object Circle extends Shape
+}
+
 
 sealed trait IconSize
-case object Large extends IconSize {
-  override def toString: String = "0"
-}
-case object Medium extends IconSize {
-  override def toString: String = "1"
-}
-case object Small extends IconSize {
-  override def toString: String = "2"
+
+object IconSize {
+  case object Large extends IconSize {
+    override def toString: String = "0"
+  }
+  case object Medium extends IconSize {
+    override def toString: String = "1"
+  }
+  case object Small extends IconSize {
+    override def toString: String = "2"
+  }
 }
 
 object MinimapIcon {

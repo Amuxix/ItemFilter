@@ -1,87 +1,42 @@
 package me.amuxix.categories.semiautomated
 
 import cats.data.NonEmptyList
+import cats.effect.IO
 import me.amuxix._
-import me.amuxix.actions.{Action, White}
+import me.amuxix.actions.Action
 import me.amuxix.actions.Color.{black, darkRed, teal}
 import me.amuxix.actions.Sound.gems
 import me.amuxix.categories.SemiAutomatedCategory
 import me.amuxix.conditions.Condition
 import me.amuxix.items.GenericItem
-
-import scala.concurrent.Future
+import me.amuxix.FilterRarity.Priced._
+import me.amuxix.actions.EffectColor.White
 
 object Gems extends SemiAutomatedCategory {
-  override protected val categoryItems: Future[NonEmptyList[GenericItem]] =
-    Future.successful(
+  override protected val categoryItems: IO[NonEmptyList[GenericItem]] =
+    IO.pure(
       NonEmptyList.of(
-        new GenericItem {
-          override lazy val rarity: Future[FilterRarity] =
-            Future.successful(Epic)
-          override lazy val condition: Future[Condition] =
-            Future.successful(Condition(`class` = "Gem", gemLevel = (20, 21)))
-        },
-        new GenericItem {
-          override lazy val rarity: Future[FilterRarity] =
-            Future.successful(Rare)
-          override lazy val condition: Future[Condition] =
-            Future.successful(Condition(`class` = "Gem", gemLevel = (17, 21)))
-        },
-        new GenericItem {
-          override lazy val rarity: Future[FilterRarity] =
-            Future.successful(Epic)
-          override lazy val condition: Future[Condition] =
-            Future.successful(Condition(base = "Enlighten", `class` = "Gem"))
-        },
-        new GenericItem {
-          override lazy val rarity: Future[FilterRarity] =
-            Future.successful(Uncommon)
-          override lazy val condition: Future[Condition] = Future.successful(
-            Condition(
-              base = Seq(
-                "Empower",
-                "Item Quantity",
-                "Block Chance Reduction",
-                "Enhance",
-                "Portal",
-                "Vaal Breach",
-                "Vaal Haste",
-                "Vaal Discipline"
-              ),
-              `class` = "Gem"
-            )
-          )
-        },
-        new GenericItem {
-          override lazy val rarity: Future[FilterRarity] =
-            Future.successful(Epic)
-          override lazy val condition: Future[Condition] =
-            Future.successful(Condition(`class` = "Gem", quality = (20, 30)))
-        },
-        new GenericItem {
-          override lazy val rarity: Future[FilterRarity] =
-            Future.successful(Rare)
-          override lazy val condition: Future[Condition] =
-            Future.successful(Condition(`class` = "Gem", quality = (16, 30)))
-        },
-        new GenericItem {
-          override lazy val rarity: Future[FilterRarity] =
-            Future.successful(Uncommon)
-          override lazy val condition: Future[Condition] =
-            Future.successful(Condition(`class` = "Gem", quality = (1, 30)))
-        },
-        new GenericItem {
-          override lazy val rarity: Future[FilterRarity] =
-            Future.successful(Common)
-          override lazy val condition: Future[Condition] =
-            Future.successful(Condition(base = "Vaal", `class` = "Gem"))
-        },
-        new GenericItem {
-          override lazy val rarity: Future[FilterRarity] =
-            Future.successful(Leveling)
-          override lazy val condition: Future[Condition] =
-            Future.successful(Condition(`class` = "Gem"))
-        },
+        GenericItem(Epic, Condition(`class` = "Gem", gemLevel = (20, 21))),
+        GenericItem(Rare, Condition(`class` = "Gem", gemLevel = (17, 21))),
+        GenericItem(Epic, Condition(base = "Enlighten", `class` = "Gem")),
+        GenericItem(Uncommon, Condition(
+          base = Seq(
+            "Empower",
+            "Item Quantity",
+            "Block Chance Reduction",
+            "Enhance",
+            "Portal",
+            "Vaal Breach",
+            "Vaal Haste",
+            "Vaal Discipline"
+          ),
+          `class` = "Gem"
+        )),
+        GenericItem(Epic, Condition(`class` = "Gem", quality = (20, 30))),
+        GenericItem(Rare, Condition(`class` = "Gem", quality = (16, 30))),
+        GenericItem(Uncommon, Condition(`class` = "Gem", quality = (1, 30))),
+        GenericItem(Common, Condition(base = "Vaal", `class` = "Gem")),
+        GenericItem(Leveling, Condition(`class` = "Gem")),
       )
     )
   override protected def actionForRarity: FilterRarity => Action = {

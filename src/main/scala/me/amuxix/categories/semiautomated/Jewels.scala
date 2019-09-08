@@ -1,30 +1,19 @@
 package me.amuxix.categories.semiautomated
 
 import cats.data.NonEmptyList
-import me.amuxix.{FilterRarity, Leveling, Uncommon}
+import cats.effect.IO
 import me.amuxix.actions.Action
 import me.amuxix.categories.SemiAutomatedCategory
 import me.amuxix.conditions.{Condition, Rare => GameRare}
 import me.amuxix.items.GenericItem
-
-import scala.concurrent.Future
+import me.amuxix.FilterRarity.Priced.{Leveling, Uncommon}
 
 object Jewels extends SemiAutomatedCategory {
-  override protected val categoryItems: Future[NonEmptyList[GenericItem]] =
-    Future.successful(
+  override protected val categoryItems: IO[NonEmptyList[GenericItem]] =
+    IO.pure(
       NonEmptyList.of(
-        new GenericItem {
-          override lazy val rarity: Future[FilterRarity] =
-            Future.successful(Uncommon)
-          override lazy val condition: Future[Condition] =
-            Future.successful(Condition(`class` = "Jewel", rarity = GameRare))
-        },
-        new GenericItem {
-          override lazy val rarity: Future[FilterRarity] =
-            Future.successful(Leveling)
-          override lazy val condition: Future[Condition] =
-            Future.successful(Condition(`class` = "Jewel"))
-        },
+        GenericItem(Uncommon, Condition(`class` = "Jewel", rarity = GameRare)),
+        GenericItem(Leveling, Condition(`class` = "Jewel")),
       )
     )
   override protected def actionForRarity = {

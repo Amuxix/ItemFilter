@@ -1,20 +1,21 @@
 package me.amuxix.categories.automated
 
 import cats.data.NonEmptyList
-import cats.implicits.{catsStdInstancesForFuture, toNonEmptyTraverseOps}
-import me.amuxix._
-import me.amuxix.ItemFilter.ec
-import me.amuxix.actions._
+import cats.effect.IO
+import cats.implicits.toNonEmptyTraverseOps
+import me.amuxix.actions.Action
 import me.amuxix.actions.Color.{black, darkRed, white}
 import me.amuxix.categories.AutomatedCategory
 import me.amuxix.database.MapFragmentFragments.breachSplinters
 import me.amuxix.database.MapFragments._
 import me.amuxix.items.Item
-
-import scala.concurrent.Future
+import me.amuxix.FilterRarity.Priced
+import me.amuxix.FilterRarity.Priced.{Epic, Mythic, Rare}
+import me.amuxix.actions.EffectColor.{Red, White, Yellow}
+import me.amuxix.actions.Shape.Triangle
 
 object MapFragments extends AutomatedCategory {
-  override protected lazy val items: Future[NonEmptyList[Item]] =
+  override protected lazy val items: IO[NonEmptyList[Item]] =
     NonEmptyList.of(breachstones, miscsFragments, mortalFragments, prophecyFragments, sacrificeFragments, shaperFragments, breachSplinters).nonEmptyFlatSequence
 
   override protected def action: Priced => Action = {
