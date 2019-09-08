@@ -1,16 +1,16 @@
 package me.amuxix.categories.automated
 import cats.data.NonEmptyList
-import me.amuxix._
-import me.amuxix.actions._
+import cats.effect.IO
+import me.amuxix.actions.Action
 import me.amuxix.actions.Color.{black, prophecyPink}
 import me.amuxix.categories.AutomatedCategory
+import me.amuxix.database.Prophecies.all
 import me.amuxix.items.Item
-
-import scala.concurrent.Future
+import me.amuxix.FilterRarity.Priced
+import me.amuxix.FilterRarity.Priced.{Common, Epic, Rare, Uncommon}
 
 object Prophecies extends AutomatedCategory {
-  override protected lazy val items: Future[NonEmptyList[Item]] =
-    database.Prophecies.all
+  override protected lazy val items: IO[NonEmptyList[Item]] = all
   override protected def action: Priced => Action = {
     case Common =>
       Action(

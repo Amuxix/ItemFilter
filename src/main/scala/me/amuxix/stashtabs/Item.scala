@@ -1,7 +1,5 @@
 package me.amuxix.stashtabs
 
-import play.api.libs.json.{Json, OFormat}
-
 case class Item (
   verified: Boolean,
   //w: Int,
@@ -31,7 +29,3 @@ case class Item (
   //flavourText: Option[Seq[String]],
   //socketedItems: Option[Seq[SocketedItems]]
 )
-
-object Item {
-  implicit val format: OFormat[Item] = Json.format[Item]
-}

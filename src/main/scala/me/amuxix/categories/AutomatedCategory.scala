@@ -1,15 +1,16 @@
 package me.amuxix.categories
 import cats.data.NonEmptyList
+import cats.effect.IO
 import me.amuxix._
-import me.amuxix.ItemFilter.ec
 import me.amuxix.actions._
 import me.amuxix.actions.Color.black
 import me.amuxix.items.{GenericItem, Item}
-
-import scala.concurrent.Future
+import me.amuxix.FilterRarity.{Priced, Undetermined}
+import me.amuxix.FilterRarity.Priced._
+import me.amuxix.actions.Shape.{Diamond, Hexagon, Star, Triangle}
 
 trait AutomatedCategory extends SemiAutomatedCategory {
-  protected def items: Future[NonEmptyList[Item]]
+  protected def items: IO[NonEmptyList[Item]]
   protected def action: Priced => Action
   /*
   rarity match {
@@ -21,7 +22,7 @@ trait AutomatedCategory extends SemiAutomatedCategory {
   }
    */
 
-  override protected val categoryItems: Future[NonEmptyList[GenericItem]] =
+  override protected val categoryItems: IO[NonEmptyList[GenericItem]] =
     items.map(items => NonEmptyList.fromListUnsafe(items.filter(_.dropEnabled)))
   override protected def actionForRarity: FilterRarity => Action = {
     case priced: Priced => action(priced)

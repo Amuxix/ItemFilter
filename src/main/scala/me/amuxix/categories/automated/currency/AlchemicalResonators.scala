@@ -1,16 +1,18 @@
 package me.amuxix.categories.automated.currency
 import cats.data.NonEmptyList
-import me.amuxix.{Common, Priced, Uncommon}
-import me.amuxix.actions.{Action, Blue, Circle, Triangle}
+import cats.effect.IO
+import me.amuxix.actions.Action
 import me.amuxix.actions.Color.{delveBlue, legacyBlue}
 import me.amuxix.categories.AutomatedCategory
 import me.amuxix.database.Resonators
 import me.amuxix.items.Item
-
-import scala.concurrent.Future
+import me.amuxix.FilterRarity.Priced
+import me.amuxix.FilterRarity.Priced.{Common, Uncommon}
+import me.amuxix.actions.EffectColor.Blue
+import me.amuxix.actions.Shape.{Circle, Triangle}
 
 object AlchemicalResonators extends AutomatedCategory {
-  override protected lazy val items: Future[NonEmptyList[Item]] =
+  override protected lazy val items: IO[NonEmptyList[Item]] =
     Resonators.alchemical
   override protected def action: Priced => Action = {
     case Common =>

@@ -1,24 +1,22 @@
 package me.amuxix.categories
 
 import cats.data.NonEmptyList
+import cats.effect.IO
 import me.amuxix._
-import me.amuxix.ItemFilter.ec
-
-import scala.concurrent.Future
 
 trait Category extends ImplicitConversions with Named {
-  protected def categoryBlocks: FilterLevel => Future[NonEmptyList[Block]]
+  protected def categoryBlocks(prices: Map[String, Double], parentLeaguePrices: Map[String, Double]): FilterLevel => IO[NonEmptyList[Block]]
 
-  def blocks(filterLevel: FilterLevel): Future[NonEmptyList[Block]] =
-    categoryBlocks(filterLevel).map(Mergeable.merge(_))
+  def blocks(filterLevel: FilterLevel, prices: Map[String, Double], parentLeaguePrices: Map[String, Double]): IO[NonEmptyList[Block]] =
+    categoryBlocks(prices, parentLeaguePrices)(filterLevel).map(Mergeable.merge(_))
 
   protected def writeBlockWithSeparator(blocks: List[Block], filterLevel: FilterLevel): String =
     if (blocks.isEmpty) ""
     else
       separator + blocks.sortBy(_.rarity)(implicitly[Ordering[FilterRarity]].reverse).map(_.write(filterLevel)).mkString("", "\n", "\n")
 
-  def partitionHiddenAndShown(filterLevel: FilterLevel, conceal: Boolean): Future[(String, String)] =
-    blocks(filterLevel).map { blocks =>
+  def partitionHiddenAndShown(filterLevel: FilterLevel, conceal: Boolean, prices: Map[String, Double], parentLeaguePrices: Map[String, Double]): IO[(String, String)] =
+    blocks(filterLevel, prices, parentLeaguePrices).map { blocks =>
       val (shown, hidden) = blocks.map(_.concealed(conceal, filterLevel)).toList.partition(_.show(filterLevel))
       (writeBlockWithSeparator(shown, filterLevel), writeBlockWithSeparator(hidden, filterLevel))
     }

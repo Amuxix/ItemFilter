@@ -1,65 +1,36 @@
 package me.amuxix.categories.semiautomated
 
 import cats.data.NonEmptyList
-import me.amuxix.{AlwaysHide, FilterRarity, Leveling}
-import me.amuxix.ItemFilter._
+import cats.effect.IO
+import me.amuxix.FilterRarity
+import me.amuxix.ItemFilter.{config, cutoffs}
 import me.amuxix.actions.Action
 import me.amuxix.categories.SemiAutomatedCategory
 import me.amuxix.conditions.{Condition, Magic, Normal, Rare => GameRare}
 import me.amuxix.database.Bases
 import me.amuxix.items.GenericItem
-
-import scala.concurrent.Future
+import me.amuxix.FilterRarity.AlwaysHide
+import me.amuxix.FilterRarity.Priced.Leveling
 
 object LevelingCategory extends SemiAutomatedCategory {
   private val itemClasses = config.accessoriesClasses ++ config.armourClasses ++ config.weaponClasses ++ config.shieldClasses
-  override protected val categoryItems: Future[NonEmptyList[GenericItem]] =
+  override protected val categoryItems: IO[NonEmptyList[GenericItem]] =
     Bases.allEquipment.map { allEquipment =>
       val closeToZone = allEquipment.flatMap { i =>
         NonEmptyList.of(
-          new GenericItem {
-            override lazy val condition: Future[Condition] = i.conditionsOfBestRaresForZoneLevel
-            override lazy val rarity: Future[FilterRarity] = Future.successful(Leveling)
-          },
-          new GenericItem {
-            override lazy val condition: Future[Condition] = i.conditionsOfGoodRaresForZoneLevel
-            override lazy val rarity: Future[FilterRarity] = Future.successful(Leveling)
-          },
-          new GenericItem {
-            override lazy val condition: Future[Condition] = i.conditionsOfBestWhitesForZoneLevel
-            override lazy val rarity: Future[FilterRarity] = Future.successful(AlwaysHide)
-          },
+          GenericItem(Leveling, i.conditionsOfBestRaresForZoneLevel),
+          GenericItem(Leveling, i.conditionsOfGoodRaresForZoneLevel),
+          GenericItem(AlwaysHide, i.conditionsOfBestWhitesForZoneLevel),
         )
       }
       val leveling = NonEmptyList.of(
-        new GenericItem {
-          override lazy val rarity: Future[FilterRarity] = Future.successful(Leveling)
-          override lazy val condition: Future[Condition] = Future.successful(Condition(itemLevel = (1, cutoffs.normalItems), linkedSockets = 3))
-        },
-        new GenericItem {
-          override lazy val rarity: Future[FilterRarity] = Future.successful(Leveling)
-          override lazy val condition: Future[Condition] = Future.successful(Condition(itemLevel = (1, cutoffs.magicItems), linkedSockets = 4))
-        },
-        new GenericItem {
-          override lazy val rarity: Future[FilterRarity] = Future.successful(Leveling)
-          override lazy val condition: Future[Condition] = Future.successful(Condition(itemLevel = (1, cutoffs.fourLinkRare), linkedSockets = 4, rarity = GameRare))
-        },
-        new GenericItem {
-          override lazy val rarity: Future[FilterRarity] = Future.successful(Leveling)
-          override lazy val condition: Future[Condition] = Future.successful(Condition(`class` = "Belt", itemLevel = (1, cutoffs.normalItems)))
-        },
-        new GenericItem {
-          override lazy val rarity: Future[FilterRarity] = Future.successful(Leveling)
-          override lazy val condition: Future[Condition] = Future.successful(Condition(`class` = itemClasses, itemLevel = (1, cutoffs.normalItems), rarity = Normal))
-        },
-        new GenericItem {
-          override lazy val rarity: Future[FilterRarity] = Future.successful(Leveling)
-          override lazy val condition: Future[Condition] = Future.successful(Condition(`class` = itemClasses, itemLevel = (1, cutoffs.magicItems), rarity = Magic))
-        },
-        new GenericItem {
-          override lazy val rarity: Future[FilterRarity] = Future.successful(Leveling)
-          override lazy val condition: Future[Condition] = Future.successful(Condition(`class` = config.accessoriesClasses, rarity = GameRare, itemLevel = (1, 60)))
-        },
+        GenericItem(Leveling, Condition(itemLevel = (1, cutoffs.normalItems), linkedSockets = 3)),
+        GenericItem(Leveling, Condition(itemLevel = (1, cutoffs.magicItems), linkedSockets = 4)),
+        GenericItem(Leveling, Condition(itemLevel = (1, cutoffs.fourLinkRare), linkedSockets = 4, rarity = GameRare)),
+        GenericItem(Leveling, Condition(`class` = "Belt", itemLevel = (1, cutoffs.normalItems))),
+        GenericItem(Leveling, Condition(`class` = itemClasses, itemLevel = (1, cutoffs.normalItems), rarity = Normal)),
+        GenericItem(Leveling, Condition(`class` = itemClasses, itemLevel = (1, cutoffs.magicItems), rarity = Magic)),
+        GenericItem(Leveling, Condition(`class` = config.accessoriesClasses, rarity = GameRare, itemLevel = (1, 60))),
       )
       closeToZone concatNel leveling
     }

@@ -1,61 +1,42 @@
 package me.amuxix.categories.semiautomated
 
 import cats.data.{NonEmptyList, OptionT}
-import cats.implicits._
-import me.amuxix._
-import me.amuxix.ItemFilter._
-import me.amuxix.actions.{Action, Green, Sound}
+import cats.effect.IO
+import me.amuxix.FilterRarity
+import me.amuxix.actions.{Action, Sound}
 import me.amuxix.actions.Color.{darkRed, goodYellow, red, white}
 import me.amuxix.categories.SemiAutomatedCategory
 import me.amuxix.conditions.Condition
 import me.amuxix.database.{Bases, Currencies}
-import me.amuxix.items.{GenericItem, Value}
+import me.amuxix.items.{GenericItem, Price}
+import me.amuxix.FilterRarity.{AlwaysHide, AlwaysShow, Undetermined}
+import me.amuxix.FilterRarity.Priced.{Epic, Mythic}
+import me.amuxix.actions.EffectColor.Green
 
-import scala.concurrent.Future
+import scala.Predef.{Map => ScalaMap}
 
 object General extends SemiAutomatedCategory {
-  override protected lazy val categoryItems: Future[NonEmptyList[GenericItem]] =
+  override protected lazy val categoryItems: IO[NonEmptyList[GenericItem]] =
     Bases.bestItems.map { bestItems =>
       val general = NonEmptyList.of(
-        new GenericItem {
-          override lazy val rarity: Future[FilterRarity] = Future.successful(AlwaysShow)
-          override lazy val condition: Future[Condition] = Future.successful(Condition(`class` = Seq("Quest Items", "Labyrinth Item", "Pantheon Soul", "Labyrinth Trinket")))
-        },
-        new GenericItem {
-          override lazy val rarity: Future[FilterRarity] = Future.successful(Mythic)
-          override lazy val condition: Future[Condition] = Future.successful(Condition(base = "Albino Rhoa Feather"))
-        },
-        new GenericItem {
-          override lazy val rarity: Future[FilterRarity] = Future.successful(Mythic)
-          override lazy val condition: Future[Condition] = Future.successful(Condition(`class` = "Fishing Rod"))
-        },
-        new GenericItem {
-          override lazy val rarity: Future[FilterRarity] = Future.successful(Mythic)
-          override lazy val condition: Future[Condition] = Future.successful(Condition(linkedSockets = 6))
-        },
-        new GenericItem {
-          override lazy val rarity: Future[FilterRarity] = Future.successful(Epic)
-          override lazy val condition: Future[Condition] = Future.successful(Condition(linkedSockets = 5))
-        },
-        new GenericItem with Value {
-          override def chaosValuePerSlot: OptionT[Future, Double] =
+        GenericItem(AlwaysShow, Condition(`class` = Seq("Quest Items", "Labyrinth Item", "Pantheon Soul", "Labyrinth Trinket"))),
+        GenericItem(Mythic, Condition(base = "Albino Rhoa Feather")),
+        GenericItem(Mythic, Condition(`class` = "Fishing Rod")),
+        GenericItem(Mythic, Condition(linkedSockets = 6)),
+        GenericItem(Epic, Condition(linkedSockets = 5)),
+        new GenericItem with Price {
+          override def chaosValuePerSlot(prices: ScalaMap[String, Double], parentLeaguePrices: ScalaMap[String, Double]): OptionT[IO, Double] =
             for {
               jew <- Currencies.getByName("Jeweller's Orb")
-              sixSocketValue <- jew.chaosValuePerSlot.map(_ * 7)
+              sixSocketValue <- jew.chaosValuePerSlot(prices, parentLeaguePrices).map(_ * 7)
             } yield sixSocketValue
-          override lazy val condition: Future[Condition] = Future.successful(Condition(sockets = 6))
+          override lazy val condition: IO[Condition] = IO.pure(Condition(sockets = 6))
         },
       )
       val best = bestItems.flatMap { i =>
         NonEmptyList.of(
-          new GenericItem {
-            override lazy val rarity: Future[FilterRarity] = Future.successful(Undetermined)
-            override lazy val condition: Future[Condition] = i.rare
-          },
-          new GenericItem {
-            override lazy val rarity: Future[FilterRarity] = Future.successful(AlwaysHide)
-            override lazy val condition: Future[Condition] = i.crafting
-          }
+          GenericItem(Undetermined, i.rare),
+          GenericItem(AlwaysHide, i.crafting),
         )
       }
       general concatNel best

@@ -1,39 +1,40 @@
 package me.amuxix.categories.semiautomated.recipes
 
 import cats.data.{NonEmptyList, OptionT}
-import cats.implicits.catsStdInstancesForFuture
+import cats.effect.IO
 import me.amuxix.FilterRarity
-import me.amuxix.ItemFilter.ec
 import me.amuxix.actions.Action
 import me.amuxix.categories.SemiAutomatedCategory
 import me.amuxix.conditions.Condition
 import me.amuxix.database.Currencies
-import me.amuxix.items.{GenericItem, Value}
+import me.amuxix.items.{GenericItem, Price}
 
-import scala.concurrent.Future
+import scala.Predef.{Map => ScalaMap}
 
 object Bauble extends SemiAutomatedCategory {
-  override protected val categoryItems: Future[NonEmptyList[GenericItem]] =
+  override protected val categoryItems: IO[NonEmptyList[GenericItem]] =
     Currencies
       .getByName("Glassblower's Bauble")
-      .map { glassblowersBauble =>
-        def generateGenericItem(quality: Int): GenericItem =
-          new GenericItem with Value {
-            override lazy val chaosValuePerSlot: OptionT[Future, Double] =
-              glassblowersBauble.chaosValuePerSlot.map(value => (value / 2) / (40 / quality))
-            override lazy val condition: Future[Condition] =
-              Future.successful(Condition(`class` = "Flask", quality = quality))
-          }
-        (1 to 19).map(generateGenericItem) :+
-          new GenericItem with Value {
-            override lazy val chaosValuePerSlot: OptionT[Future, Double] =
-              glassblowersBauble.chaosValuePerSlot.map(_ / 2)
-            override lazy val condition: Future[Condition] =
-              Future.successful(Condition(`class` = "Flask", quality = 20))
-          }
-      }
       .value
-      .map(flasks => NonEmptyList.fromListUnsafe(flasks.toList.flatten))
+      .map(_.toList.flatMap { glassblowersBauble =>
+        def generateGenericItem(quality: Int): GenericItem = {
+          new GenericItem with Price {
+            override def chaosValuePerSlot(prices: ScalaMap[String, Double], parentLeaguePrices: ScalaMap[String, Double]): OptionT[IO, Double] =
+              glassblowersBauble.chaosValuePerSlot(prices, parentLeaguePrices).map(value => (value / 2) / (40 / quality))
+            override lazy val condition: IO[Condition] =
+              IO.pure(Condition(`class` = "Flask", quality = quality))
+          }
+        }
+
+        List.range(1, 19).map(generateGenericItem) :+
+          new GenericItem with Price {
+            override def chaosValuePerSlot(prices: ScalaMap[String, Double], parentLeaguePrices: ScalaMap[String, Double]): OptionT[IO, Double] =
+              glassblowersBauble.chaosValuePerSlot(prices, parentLeaguePrices).map(_ / 2)
+            override lazy val condition: IO[Condition] =
+              IO.pure(Condition(`class` = "Flask", quality = 20))
+          }
+      })
+      .map(NonEmptyList.fromListUnsafe)
 
   override protected def actionForRarity: FilterRarity => Action = { _ =>
     Action()

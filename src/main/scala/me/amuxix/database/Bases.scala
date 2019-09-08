@@ -1,8 +1,9 @@
 package me.amuxix.database
 
 import cats.data.NonEmptyList
-import cats.implicits.{catsStdInstancesForFuture, toNonEmptyTraverseOps}
-import me.amuxix.ItemFilter.{cutoffs, ec}
+import cats.effect.IO
+import cats.implicits.toNonEmptyTraverseOps
+import me.amuxix.ItemFilter.cutoffs
 import me.amuxix.database.types.Item.ItemType
 import me.amuxix.database.PostgresProfile.API._
 import me.amuxix.database.types.Item
@@ -13,8 +14,6 @@ import me.amuxix.items.bases.armour._
 import me.amuxix.items.bases.flasks._
 import me.amuxix.items.bases.jewels._
 import me.amuxix.items.bases.weapons._
-
-import scala.concurrent.Future
 
 class BasesTable(tag: Tag) extends Table[Base](tag, "bases") with CommonColumns[Base] {
   def dropLevel = column[Int]("drop_level")
@@ -79,7 +78,7 @@ class BasesTable(tag: Tag) extends Table[Base](tag, "bases") with CommonColumns[
 }
 
 object Bases extends BasicOperations[Base, BasesTable](new BasesTable(_)) {
-  private def getByItemType[Type](itemType: ItemType): Future[NonEmptyList[Type]] =
+  private def getByItemType[Type](itemType: ItemType): IO[NonEmptyList[Type]] =
     all.map(items => items.filter(_.className == itemType.toString).sortBy(_.dropLevel).map(_.asInstanceOf[Type])) map {
       case Nil =>
         println(s"Found 0 bases of $itemType")
@@ -87,7 +86,7 @@ object Bases extends BasicOperations[Base, BasesTable](new BasesTable(_)) {
       case head :: tail => NonEmptyList(head, tail)
     }
 
-  lazy val flasks: Future[NonEmptyList[Flask]] = {
+  lazy val flasks: IO[NonEmptyList[Flask]] = {
     for {
       lifeFlasks <- getByItemType(Item.LifeFlask)
       manaFlasks <- getByItemType(Item.ManaFlask)
@@ -95,43 +94,43 @@ object Bases extends BasicOperations[Base, BasesTable](new BasesTable(_)) {
     } yield lifeFlasks.concatNel(manaFlasks).concatNel(hybridFlasks)
   }
 
-  lazy val abyssJewel: Future[NonEmptyList[AbyssJewel]] = getByItemType(Item.Jewel)
-  lazy val jewel: Future[NonEmptyList[Jewel]] = getByItemType(Item.Jewel)
-  lazy val talismans: Future[NonEmptyList[AbyssJewel]] = getByItemType(Item.Talisman)
+  lazy val abyssJewel: IO[NonEmptyList[AbyssJewel]] = getByItemType(Item.Jewel)
+  lazy val jewel: IO[NonEmptyList[Jewel]] = getByItemType(Item.Jewel)
+  lazy val talismans: IO[NonEmptyList[AbyssJewel]] = getByItemType(Item.Talisman)
 
-  lazy val rings: Future[NonEmptyList[Ring]] = getByItemType(Item.Ring)
-  lazy val amulets: Future[NonEmptyList[Amulet]] = getByItemType(Item.Amulet)
-  lazy val belts: Future[NonEmptyList[Belt]] = getByItemType(Item.Belt)
-  lazy val bodyArmours: Future[NonEmptyList[BodyArmour]] = getByItemType(Item.BodyArmour)
-  lazy val helmets: Future[NonEmptyList[Helmet]] = getByItemType(Item.Helmet)
-  lazy val gloves: Future[NonEmptyList[Gloves]] = getByItemType(Item.Gloves)
-  lazy val boots: Future[NonEmptyList[Boots]] = getByItemType(Item.Boots)
-  lazy val oneHandAxes: Future[NonEmptyList[OneHandAxe]] = getByItemType(Item.OneHandAxe)
-  lazy val twoHandAxes: Future[NonEmptyList[TwoHandAxe]] = getByItemType(Item.TwoHandAxe)
-  lazy val bows: Future[NonEmptyList[Bow]] = getByItemType(Item.Bow)
-  lazy val claws: Future[NonEmptyList[Claw]] = getByItemType(Item.Claw)
-  lazy val daggers: Future[NonEmptyList[Dagger]] = getByItemType(Item.Dagger)
-  lazy val runeDaggers: Future[NonEmptyList[RuneDagger]] = getByItemType(Item.RuneDagger)
-  lazy val oneHandMaces: Future[NonEmptyList[OneHandMace]] = getByItemType(Item.OneHandMace)
-  lazy val sceptres: Future[NonEmptyList[Sceptre]] = getByItemType(Item.Sceptre)
-  lazy val staffs: Future[NonEmptyList[Staff]] = getByItemType(Item.Staff)
-  lazy val warstaffs: Future[NonEmptyList[Warstaff]] = getByItemType(Item.Warstaff)
-  lazy val oneHandSwords: Future[NonEmptyList[OneHandSword]] = getByItemType(Item.OneHandSword)
-  lazy val twoHandSwords: Future[NonEmptyList[TwoHandSword]] = getByItemType(Item.TwoHandSword)
-  lazy val thrustingOneHandSwords: Future[NonEmptyList[ThrustingOneHandSword]] =
+  lazy val rings: IO[NonEmptyList[Ring]] = getByItemType(Item.Ring)
+  lazy val amulets: IO[NonEmptyList[Amulet]] = getByItemType(Item.Amulet)
+  lazy val belts: IO[NonEmptyList[Belt]] = getByItemType(Item.Belt)
+  lazy val bodyArmours: IO[NonEmptyList[BodyArmour]] = getByItemType(Item.BodyArmour)
+  lazy val helmets: IO[NonEmptyList[Helmet]] = getByItemType(Item.Helmet)
+  lazy val gloves: IO[NonEmptyList[Gloves]] = getByItemType(Item.Gloves)
+  lazy val boots: IO[NonEmptyList[Boots]] = getByItemType(Item.Boots)
+  lazy val oneHandAxes: IO[NonEmptyList[OneHandAxe]] = getByItemType(Item.OneHandAxe)
+  lazy val twoHandAxes: IO[NonEmptyList[TwoHandAxe]] = getByItemType(Item.TwoHandAxe)
+  lazy val bows: IO[NonEmptyList[Bow]] = getByItemType(Item.Bow)
+  lazy val claws: IO[NonEmptyList[Claw]] = getByItemType(Item.Claw)
+  lazy val daggers: IO[NonEmptyList[Dagger]] = getByItemType(Item.Dagger)
+  lazy val runeDaggers: IO[NonEmptyList[RuneDagger]] = getByItemType(Item.RuneDagger)
+  lazy val oneHandMaces: IO[NonEmptyList[OneHandMace]] = getByItemType(Item.OneHandMace)
+  lazy val sceptres: IO[NonEmptyList[Sceptre]] = getByItemType(Item.Sceptre)
+  lazy val staffs: IO[NonEmptyList[Staff]] = getByItemType(Item.Staff)
+  lazy val warstaffs: IO[NonEmptyList[Warstaff]] = getByItemType(Item.Warstaff)
+  lazy val oneHandSwords: IO[NonEmptyList[OneHandSword]] = getByItemType(Item.OneHandSword)
+  lazy val twoHandSwords: IO[NonEmptyList[TwoHandSword]] = getByItemType(Item.TwoHandSword)
+  lazy val thrustingOneHandSwords: IO[NonEmptyList[ThrustingOneHandSword]] =
     getByItemType(Item.ThrustingOneHandSword)
-  lazy val wands: Future[NonEmptyList[Wand]] = getByItemType(Item.Wand)
+  lazy val wands: IO[NonEmptyList[Wand]] = getByItemType(Item.Wand)
 
-  val weapons: Future[NonEmptyList[Weapon]] =
+  val weapons: IO[NonEmptyList[Weapon]] =
     NonEmptyList.of(oneHandAxes, twoHandAxes, bows, claws, daggers, runeDaggers, oneHandMaces, sceptres, staffs, warstaffs, oneHandSwords, twoHandSwords, thrustingOneHandSwords, wands).nonEmptyFlatSequence
 
-  val armours: Future[NonEmptyList[Armour]] =
+  val armours: IO[NonEmptyList[Armour]] =
     NonEmptyList.of(bodyArmours, boots, gloves, helmets).nonEmptyFlatSequence
 
-  val accessories: Future[NonEmptyList[Accessory]] =
+  val accessories: IO[NonEmptyList[Accessory]] =
     NonEmptyList.of(rings, belts, amulets).nonEmptyFlatSequence
 
-  val bestEquipment: Future[NonEmptyList[CraftableBase with Corruptible with Quality with Sockets]] =
+  val bestEquipment: IO[NonEmptyList[CraftableBase with Corruptible with Quality with Sockets]] =
     NonEmptyList.of(weapons, armours).nonEmptyFlatTraverse { futureItems =>
       futureItems.map { items =>
         NonEmptyList.fromListUnsafe(
@@ -140,9 +139,9 @@ object Bases extends BasicOperations[Base, BasesTable](new BasesTable(_)) {
       }
     }
 
-  val bestItems: Future[NonEmptyList[CraftableBase with Corruptible]] =
+  val bestItems: IO[NonEmptyList[CraftableBase with Corruptible]] =
     NonEmptyList.of(bestEquipment, accessories).nonEmptyFlatSequence
 
-  val allEquipment: Future[NonEmptyList[CraftableBase with Corruptible]] =
+  val allEquipment: IO[NonEmptyList[CraftableBase with Corruptible]] =
     NonEmptyList.of(weapons, armours, accessories).nonEmptyFlatSequence
 }

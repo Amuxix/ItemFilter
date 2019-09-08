@@ -3,7 +3,6 @@ package me.amuxix
 import cats.data.NonEmptyList
 
 import scala.annotation.tailrec
-import scala.language.higherKinds
 
 object Mergeable {
 

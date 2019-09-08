@@ -1,12 +1,9 @@
 package me.amuxix.items.currency
 
 import cats.data.OptionT
-import cats.implicits.catsStdInstancesForFuture
-import me.amuxix.ItemFilter.ec
+import cats.effect.IO
 import me.amuxix.database.Currencies
 import me.amuxix.items.{Currency, PriceFallback}
-
-import scala.concurrent.Future
 
 case class CurrencyFragment(
   name: String,
@@ -17,9 +14,9 @@ case class CurrencyFragment(
     with PriceFallback {
   override val dropLevel: Int = 1
 
-  override def fallback: OptionT[Future, Double] =
+  override def calculateFallbackPrice(prices: Map[String, Double], parentLeaguePrices: Map[String, Double]): OptionT[IO, Double] =
     for {
       currency <- OptionT(Currencies.all.map(_.find(_.name == fragmentOf)))
-      value <- currency.chaosValuePerSlot
+      value <- currency.chaosValuePerSlot(prices, parentLeaguePrices)
     } yield value / stackSize
 }

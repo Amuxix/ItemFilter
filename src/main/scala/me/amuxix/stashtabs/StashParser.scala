@@ -1,6 +1,6 @@
 package me.amuxix.stashtabs
 
-import akka.{Done, NotUsed}
+/*import akka.{Done, NotUsed}
 import akka.actor.ActorSystem
 import akka.stream.scaladsl.{Flow, Keep, Sink, Source}
 import akka.stream.ActorMaterializer
@@ -12,10 +12,10 @@ import play.api.libs.ws.ahc.StandaloneAhcWSClient
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.language.postfixOps
-import scala.util.Failure
+import scala.util.Failure*/
 
 object StashParser {
-  implicit val system = ActorSystem()
+  /*implicit val system = ActorSystem()
   system.registerOnTermination {
     System.exit(0)
   }
@@ -23,7 +23,7 @@ object StashParser {
   val wsClient = StandaloneAhcWSClient(httpCache = None)
   implicit val ec = ExecutionContext.global
 
-  def requestStashTab(id: String): EitherT[Future, ProviderError, StashPayload] = {
+  def requestStashTab(id: String): EitherT[IO, ProviderError, StashPayload] = {
     val url = "http://www.pathofexile.com/api/public-stash-tabs"
     EitherT(
       wsClient.url(url)
@@ -36,9 +36,9 @@ object StashParser {
   def main(args: Array[String]): Unit = {
     val source = Source(10 to 20)
 
-    val sumSink: Sink[Int, Future[Int]] = Sink.fold(0)(_ + _)
-    val printSink: Sink[Int, Future[Done]] = Sink.foreach(println)
-    val complexSink: Sink[Int, Future[Int]] =
+    val sumSink: Sink[Int, IO[Int]] = Sink.fold(0)(_ + _)
+    val printSink: Sink[Int, IO[Done]] = Sink.foreach(println)
+    val complexSink: Sink[Int, IO[Int]] =
       Flow[Int]
         .map(i => i * i)
         .toMat(Sink.last)(Keep.right)
@@ -49,17 +49,17 @@ object StashParser {
         .alsoToMat(printSink)(Keep.left)
         .toMat(complexSink)(Keep.both)
 
-    val (sumFuture, lastFuture) = source.runWith(composedSink)
-    sumFuture.flatMap { sum =>
-      lastFuture.map { last =>
+    val (sumIO, lastIO) = source.runWith(composedSink)
+    sumIO.flatMap { sum =>
+      lastIO.map { last =>
         println(sum)
         println(last)
       }
     }
 
     for {
-      sum <- sumFuture
-      last <- lastFuture
+      sum <- sumIO
+      last <- lastIO
     } yield {
       println(sum)
       println(last)
@@ -99,5 +99,5 @@ object StashParser {
       .andThen {
         case Failure(ex) => throw ex
       }
-  }
+  }*/
 }

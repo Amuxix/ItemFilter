@@ -1,9 +1,8 @@
 package me.amuxix.items
 
 import cats.data.OptionT
-
-import scala.concurrent.Future
+import cats.effect.IO
 
 trait Area {
-  val area: OptionT[Future, Int]
+  val area: OptionT[IO, Int]
 }

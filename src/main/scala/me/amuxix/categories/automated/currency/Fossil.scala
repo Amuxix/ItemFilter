@@ -1,16 +1,17 @@
 package me.amuxix.categories.automated.currency
 import cats.data.NonEmptyList
-import me.amuxix.Priced
-import me.amuxix.actions.{Action, Brown, Circle}
+import cats.effect.IO
+import me.amuxix.actions.Action
 import me.amuxix.actions.Color.delveOrange
+import me.amuxix.actions.EffectColor.Brown
+import me.amuxix.actions.Shape.Circle
 import me.amuxix.categories.AutomatedCategory
 import me.amuxix.database.Currencies
 import me.amuxix.items.Item
-
-import scala.concurrent.Future
+import me.amuxix.FilterRarity.Priced
 
 object Fossil extends AutomatedCategory {
-  override protected lazy val items: Future[NonEmptyList[Item]] =
+  override protected lazy val items: IO[NonEmptyList[Item]] =
     Currencies.fossils
   override protected def action: Priced => Action = { _ =>
     Action(

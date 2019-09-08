@@ -1,14 +1,12 @@
 package me.amuxix.database
 
 import cats.data.NonEmptyList
-import me.amuxix.ItemFilter.ec
+import cats.effect.IO
 import me.amuxix.database.types.Currency.CurrencyType
 import me.amuxix.database.PostgresProfile.API._
 import me.amuxix.database.types.Currency
 import me.amuxix.items.Currency
 import me.amuxix.items.currency._
-
-import scala.concurrent.Future
 
 class CurrenciesTable(tag: Tag) extends Table[Currency](tag, "currency") with CommonColumns[Currency] {
   def stackSize = column[Int]("stack_size")
@@ -40,24 +38,24 @@ class CurrenciesTable(tag: Tag) extends Table[Currency](tag, "currency") with Co
 }
 
 object Currencies extends BasicOperations[Currency, CurrenciesTable](new CurrenciesTable(_)) {
-  private def getByCurrencyType[Type](currencyType: CurrencyType): Future[NonEmptyList[Type]] =
+  private def getByCurrencyType[Type](currencyType: CurrencyType): IO[NonEmptyList[Type]] =
     all.map(items => items.filter(_.className == currencyType.toString).sortBy(_.dropLevel).map(_.asInstanceOf[Type])) map {
       case Nil          => throw new MatchError(s"Found 0 currencies of $currencyType")
       case head :: tail => NonEmptyList(head, tail)
     }
 
-  lazy val nets: Future[NonEmptyList[Net]] =
+  lazy val nets: IO[NonEmptyList[Net]] =
     getByCurrencyType(Currency.Net)
 
-  lazy val orbs: Future[NonEmptyList[Orb]] =
+  lazy val orbs: IO[NonEmptyList[Orb]] =
     getByCurrencyType(Currency.Orb)
 
-  lazy val vials: Future[NonEmptyList[Vial]] =
+  lazy val vials: IO[NonEmptyList[Vial]] =
     getByCurrencyType(Currency.Vial)
 
-  lazy val fossils: Future[NonEmptyList[Fossil]] =
+  lazy val fossils: IO[NonEmptyList[Fossil]] =
     getByCurrencyType(Currency.Fossil)
 
-  lazy val oils: Future[NonEmptyList[Oil]] =
+  lazy val oils: IO[NonEmptyList[Oil]] =
     getByCurrencyType(Currency.Oil)
 }
