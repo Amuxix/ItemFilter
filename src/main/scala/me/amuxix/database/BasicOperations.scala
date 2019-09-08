@@ -3,7 +3,7 @@ package me.amuxix.database
 import cats.data.{NonEmptyList, OptionT}
 import me.amuxix.ItemFilter
 import me.amuxix.ItemFilter.ec
-import me.amuxix.database.PostgresProfile.api._
+import me.amuxix.database.PostgresProfile.API._
 import slick.lifted.Tag
 
 import scala.concurrent.Future

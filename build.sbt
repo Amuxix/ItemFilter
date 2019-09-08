@@ -3,8 +3,9 @@ version := "2.0"
 
 scalaVersion := "2.12.8"
 scalacOptions ++= Seq(
-  "-deprecation",                  //Emit warning and location for usages of deprecated APIs.
-  "-encoding", "UTF-8",
+  "-deprecation", //Emit warning and location for usages of deprecated APIs.
+  "-encoding",
+  "UTF-8",
   "-feature",                      //Emit warning and location for usages of features that should be imported explicitly.
   "-language:implicitConversions", //Explicitly enables the implicit conversions feature
   "-unchecked",                    //Enable detailed unchecked (erasure) warnings
@@ -12,9 +13,9 @@ scalacOptions ++= Seq(
   "-Xmigration:2.13.0",            // Warn about constructs whose behavior may have changed since version.
   //"-Ybackend-parallelism",  "12",// Maximum worker threads for backend
   //"-Xfatal-warnings",            //Fail the compilation if there are any warnings.
-  "-Xlint",                        //Enable recommended additional warnings.
-  "-Ywarn-dead-code",              // Warn when dead code is identified.
-  "-Ywarn-extra-implicit",         // Warn when more than one implicit parameter section is defined.
+  "-Xlint",                //Enable recommended additional warnings.
+  "-Ywarn-dead-code",      // Warn when dead code is identified.
+  "-Ywarn-extra-implicit", // Warn when more than one implicit parameter section is defined.
   //"-Ywarn-unused:imports",       // Warn if an import selector is not referenced.
   //"-Ywarn-unused:privates",      // Warn if a private member is unused.
   //"-Ywarn-unused:locals",        // Warn if a local definition is unused.
@@ -32,6 +33,7 @@ libraryDependencies ++= Seq(
   "com.typesafe.play"     %% "play-ws-standalone-json" % "2.0.0-RC2",
   "org.slf4j"             % "slf4j-nop"                % "1.8.0-beta2",
   "com.github.tminglei"   %% "slick-pg"                % "0.16.2",
+  "com.github.tminglei"   %% "slick-pg_jts"            % "0.16.2",
   "com.typesafe.slick"    %% "slick-hikaricp"          % "3.2.0",
   "org.postgresql"        % "postgresql"               % "42.2.5",
   "org.flywaydb"          % "flyway-core"              % "5.2.0",

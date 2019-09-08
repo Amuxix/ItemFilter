@@ -42,6 +42,8 @@ object Color {
   val scarabBlue = Color(0, 50, 130)
   val incubatorOrange = Color(255, 201, 7)
   val emblemTeal = Color(7, 255, 172)
+  val blightOrange = Color(249, 150, 25)
+  val blightBlue = Color(10, 0, 76)
 
   private val darknessFactor = .15f
   private val lightenFactor = .3f

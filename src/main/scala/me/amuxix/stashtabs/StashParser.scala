@@ -1,11 +1,11 @@
 package me.amuxix.stashtabs
 
+import akka.{Done, NotUsed}
 import akka.actor.ActorSystem
-import akka.stream.scaladsl.{Flow, Sink, Source}
+import akka.stream.scaladsl.{Flow, Keep, Sink, Source}
 import akka.stream.ActorMaterializer
-import akka.NotUsed
 import cats.data.EitherT
-import cats.implicits.catsStdInstancesForFuture
+import cats.implicits._
 import me.amuxix.providers.Provider.ParsableWSResponse
 import me.amuxix.providers.ProviderError
 import play.api.libs.ws.ahc.StandaloneAhcWSClient
@@ -34,6 +34,37 @@ object StashParser {
   }
 
   def main(args: Array[String]): Unit = {
+    val source = Source(10 to 20)
+
+    val sumSink: Sink[Int, Future[Int]] = Sink.fold(0)(_ + _)
+    val printSink: Sink[Int, Future[Done]] = Sink.foreach(println)
+    val complexSink: Sink[Int, Future[Int]] =
+      Flow[Int]
+        .map(i => i * i)
+        .toMat(Sink.last)(Keep.right)
+
+    val composedSink =
+      Flow[Int]
+        .alsoToMat(sumSink)(Keep.right)
+        .alsoToMat(printSink)(Keep.left)
+        .toMat(complexSink)(Keep.both)
+
+    val (sumFuture, lastFuture) = source.runWith(composedSink)
+    sumFuture.flatMap { sum =>
+      lastFuture.map { last =>
+        println(sum)
+        println(last)
+      }
+    }
+
+    for {
+      sum <- sumFuture
+      last <- lastFuture
+    } yield {
+      println(sum)
+      println(last)
+    }
+
     val itemNames = List("Lion's Roar")
 
     val stashes = Source.unfoldAsync("409471039-425037495-400311602-459859008-435733915") { id =>

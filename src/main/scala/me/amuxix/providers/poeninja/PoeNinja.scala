@@ -38,6 +38,7 @@ class PoeNinja(wsClient: StandaloneWSClient)(implicit ec: ExecutionContext) exte
       ("UniqueArmour", s"$baseURL/itemoverview", readItemLines),
       ("UniqueAccessory", s"$baseURL/itemoverview", readItemLines),
       ("Incubator", s"$baseURL/itemoverview", readItemLines),
+      ("Oil", s"$baseURL/itemoverview", readItemLines),
     )
     val prices = routes.flatTraverse {
       case (t, url, priceReader) =>

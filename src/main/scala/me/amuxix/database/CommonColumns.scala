@@ -1,6 +1,6 @@
 package me.amuxix.database
 
-import me.amuxix.database.PostgresProfile.api._
+import me.amuxix.database.PostgresProfile.API._
 
 import java.sql.Timestamp
 
