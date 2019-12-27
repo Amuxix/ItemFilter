@@ -2,6 +2,7 @@ package me.amuxix
 
 import me.amuxix.actions._
 import me.amuxix.conditions._
+import me.amuxix.conditions.Influences.Influence
 
 trait ImplicitConversions {
   implicit def int2OptionSize(size: Int): Option[Size] = Some(Size(size))
@@ -77,11 +78,8 @@ trait ImplicitConversions {
     Some(Corrupted(boolean))
   implicit def boolean2OptionShapedMap(boolean: Boolean): Option[ShapedMap] =
     Some(ShapedMap(boolean))
-  implicit def boolean2OptionShaperItem(boolean: Boolean): Option[ShaperItem] =
-    Some(ShaperItem(boolean))
-  implicit def boolean2OptionElderItem(boolean: Boolean): Option[ElderItem] =
-    Some(ElderItem(boolean))
   implicit def boolean2OptionFracturedItem(boolean: Boolean): Option[FracturedItem] = Some(FracturedItem(boolean))
+  implicit def influence2OptionHasInfluence(influence: Influence): Option[HasInfluence] = Some(HasInfluence(influence))
   implicit def boolean2OptionSynthesisedItem(boolean: Boolean): Option[SynthesisedItem] =
     Some(SynthesisedItem(boolean))
   implicit def boolean2OptionAnyEnchantment(boolean: Boolean): Option[AnyEnchantment] = Some(AnyEnchantment(boolean))

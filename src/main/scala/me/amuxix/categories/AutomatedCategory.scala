@@ -25,11 +25,8 @@ trait AutomatedCategory extends SemiAutomatedCategory {
     items.map(items => NonEmptyList.fromListUnsafe(items.filter(_.dropEnabled)))
   override protected def actionForRarity: FilterRarity => Action = {
     case priced: Priced => action(priced)
-    case `Undetermined` =>
-      println("Assuming mythic rarity for item without price.")
-      action(Mythic)
-    case rarity =>
-      throw new MatchError(s"Found $rarity but Automated Categories can only have Priced rarities")
+    case `Undetermined` => action(Mythic) //Assume mythic since we don't have price for this
+    case rarity         => throw new MatchError(s"Found $rarity but Automated Categories can only have Priced rarities")
   }
 }
 

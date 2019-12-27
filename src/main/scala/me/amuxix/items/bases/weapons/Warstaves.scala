@@ -3,7 +3,7 @@ package me.amuxix.items.bases.weapons
 import me.amuxix.items.bases.Weapon
 import me.amuxix.items.Variant.Variation
 
-case class Warstaff(
+case class Warstaves(
   name: String,
   height: Int,
   width: Int,

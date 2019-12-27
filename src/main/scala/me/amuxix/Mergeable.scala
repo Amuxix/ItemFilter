@@ -34,19 +34,34 @@ object Mergeable {
   }*/
   @tailrec def merge[T <: Mergeable[T]](items: NonEmptyList[T], merged: List[T] = List.empty): NonEmptyList[T] =
     items match {
-      case NonEmptyList(h, t) =>
-        val (mergedItem, unmergeable) = t.foldLeft((h, List.empty[T])) {
+      case NonEmptyList(first, rest) =>
+        val (mergedItem, unmergeable) = rest.par.foldLeft((first, List.empty[T])) {
           case ((mergedItem, unmergeable), item) if mergedItem canMerge item =>
             (mergedItem merge item, unmergeable)
           case ((mergedItem, unmergeable), item) =>
             (mergedItem, unmergeable :+ item)
         }
+        println(s"Missing ${unmergeable.size}")
         val newlyMerged = merged :+ mergedItem
         unmergeable match {
           case h :: t => merge(NonEmptyList(h, t), newlyMerged)
-          case _      => NonEmptyList(newlyMerged.head, newlyMerged.tail)
+          case _      => NonEmptyList.fromListUnsafe(newlyMerged)
         }
     }
+
+  def parMerge[T <: Mergeable[T]](items: NonEmptyList[T]): NonEmptyList[T] = {
+    @tailrec def groupByMergeables(remainingItems: NonEmptyList[T], groups: List[NonEmptyList[T]] = List.empty): List[NonEmptyList[T]] = remainingItems match {
+      case NonEmptyList(first, rest) =>
+        rest.partition(first.canMerge) match {
+          case (mergeables, List()) => groups :+ NonEmptyList.of(first, mergeables: _*)
+          case (mergeables, List(unmergeable)) => groups :+ NonEmptyList.of(first, mergeables: _*) :+ NonEmptyList.one(unmergeable)
+          case (mergeables, unmergeables) => groupByMergeables(NonEmptyList.fromListUnsafe(unmergeables), groups :+ NonEmptyList.of(first, mergeables: _*))
+        }
+    }
+    def merge(items: NonEmptyList[T]): T = items.tail.fold(items.head)(_ merge _)
+
+    NonEmptyList.fromListUnsafe(groupByMergeables(items).par.map(merge).seq.toList)
+  }
 }
 
 trait Mergeable[T] {

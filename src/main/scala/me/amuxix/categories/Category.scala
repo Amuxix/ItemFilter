@@ -10,12 +10,17 @@ trait Category extends ImplicitConversions with Named {
   protected def categoryBlocks: FilterLevel => Future[NonEmptyList[Block]]
 
   def blocks(filterLevel: FilterLevel): Future[NonEmptyList[Block]] =
-    categoryBlocks(filterLevel).map(Mergeable.merge(_))
+    categoryBlocks(filterLevel)
+      .flatMap { items =>
+        Future(Mergeable.parMerge(items))
+      }
 
   protected def writeBlockWithSeparator(blocks: List[Block], filterLevel: FilterLevel): String =
-    if (blocks.isEmpty) ""
-    else
+    if (blocks.isEmpty) {
+      ""
+    } else {
       separator + blocks.sortBy(_.rarity)(implicitly[Ordering[FilterRarity]].reverse).map(_.write(filterLevel)).mkString("", "\n", "\n")
+    }
 
   def partitionHiddenAndShown(filterLevel: FilterLevel, conceal: Boolean): Future[(String, String)] =
     blocks(filterLevel).map { blocks =>
