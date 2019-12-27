@@ -50,13 +50,13 @@ class BasesTable(tag: Tag) extends Table[Base](tag, "bases") with CommonColumns[
     case Item.Bow => Bow(name, dropLevel, dropEnabled)
     case Item.Claw => Claw(name, height.get, width.get, dropLevel, dropEnabled)
     case Item.Dagger => Dagger(name, height.get, width.get, dropLevel, dropEnabled)
-    case Item.RuneDagger => RuneDagger(name, height.get, width.get, dropLevel, dropEnabled)
+    case Item.RuneDaggers => RuneDaggers(name, height.get, width.get, dropLevel, dropEnabled)
     case Item.OneHandAxe => OneHandAxe(name, height.get, width.get, dropLevel, dropEnabled)
     case Item.OneHandMace => OneHandMace(name, height.get, width.get, dropLevel, dropEnabled)
     case Item.OneHandSword => OneHandSword(name, height.get, width.get, dropLevel, dropEnabled)
     case Item.Sceptre => Sceptre(name, height.get, width.get, dropLevel, dropEnabled)
     case Item.Staff => Staff(name, height.get, width.get, dropLevel, dropEnabled)
-    case Item.Warstaff => Warstaff(name, height.get, width.get, dropLevel, dropEnabled)
+    case Item.Warstaves => Warstaves(name, height.get, width.get, dropLevel, dropEnabled)
     case Item.ThrustingOneHandSword => ThrustingOneHandSword(name, height.get, width.get, dropLevel, dropEnabled)
     case Item.TwoHandAxe => TwoHandAxe(name, height.get, width.get, dropLevel, dropEnabled)
     case Item.TwoHandMace => TwoHandMace(name, height.get, width.get, dropLevel, dropEnabled)
@@ -80,7 +80,7 @@ class BasesTable(tag: Tag) extends Table[Base](tag, "bases") with CommonColumns[
 
 object Bases extends BasicOperations[Base, BasesTable](new BasesTable(_)) {
   private def getByItemType[Type](itemType: ItemType): Future[NonEmptyList[Type]] =
-    all.map(items => items.filter(_.className == itemType.toString).sortBy(_.dropLevel).map(_.asInstanceOf[Type])) map {
+    all.map(_.filter(_.className == itemType.toString).sortBy(_.dropLevel).map(_.asInstanceOf[Type])) map {
       case Nil =>
         println(s"Found 0 bases of $itemType")
         throw new MatchError(s"Found 0 bases of $itemType")
@@ -111,11 +111,11 @@ object Bases extends BasicOperations[Base, BasesTable](new BasesTable(_)) {
   lazy val bows: Future[NonEmptyList[Bow]] = getByItemType(Item.Bow)
   lazy val claws: Future[NonEmptyList[Claw]] = getByItemType(Item.Claw)
   lazy val daggers: Future[NonEmptyList[Dagger]] = getByItemType(Item.Dagger)
-  lazy val runeDaggers: Future[NonEmptyList[RuneDagger]] = getByItemType(Item.RuneDagger)
+  lazy val runeDaggers: Future[NonEmptyList[RuneDaggers]] = getByItemType(Item.RuneDaggers)
   lazy val oneHandMaces: Future[NonEmptyList[OneHandMace]] = getByItemType(Item.OneHandMace)
   lazy val sceptres: Future[NonEmptyList[Sceptre]] = getByItemType(Item.Sceptre)
   lazy val staffs: Future[NonEmptyList[Staff]] = getByItemType(Item.Staff)
-  lazy val warstaffs: Future[NonEmptyList[Warstaff]] = getByItemType(Item.Warstaff)
+  lazy val warstaves: Future[NonEmptyList[Warstaves]] = getByItemType(Item.Warstaves)
   lazy val oneHandSwords: Future[NonEmptyList[OneHandSword]] = getByItemType(Item.OneHandSword)
   lazy val twoHandSwords: Future[NonEmptyList[TwoHandSword]] = getByItemType(Item.TwoHandSword)
   lazy val thrustingOneHandSwords: Future[NonEmptyList[ThrustingOneHandSword]] =
@@ -123,7 +123,7 @@ object Bases extends BasicOperations[Base, BasesTable](new BasesTable(_)) {
   lazy val wands: Future[NonEmptyList[Wand]] = getByItemType(Item.Wand)
 
   val weapons: Future[NonEmptyList[Weapon]] =
-    NonEmptyList.of(oneHandAxes, twoHandAxes, bows, claws, daggers, runeDaggers, oneHandMaces, sceptres, staffs, warstaffs, oneHandSwords, twoHandSwords, thrustingOneHandSwords, wands).nonEmptyFlatSequence
+    NonEmptyList.of(oneHandAxes, twoHandAxes, bows, claws, daggers, runeDaggers, oneHandMaces, sceptres, staffs, warstaves, oneHandSwords, twoHandSwords, thrustingOneHandSwords, wands).nonEmptyFlatSequence
 
   val armours: Future[NonEmptyList[Armour]] =
     NonEmptyList.of(bodyArmours, boots, gloves, helmets).nonEmptyFlatSequence

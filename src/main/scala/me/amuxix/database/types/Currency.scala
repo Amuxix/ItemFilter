@@ -7,4 +7,5 @@ object Currency extends Enumeration {
   val Vial = Value("Vial")
   val Fossil = Value("Fossil")
   val Oil = Value("Oil")
+  val Catalyst = Value("Catalyst")
 }

@@ -23,6 +23,7 @@ class MapFragmentsTable(tag: Tag) extends Table[MapFragment](tag, "map_fragments
       case MapFragment.Scarab      => Scarab(name, dropEnabled)
       case MapFragment.Shaper      => Shaper(name, dropEnabled)
       case MapFragment.Emblem      => Emblem(name, dropEnabled)
+      case MapFragment.Metamorph   => Metamorph(name, dropEnabled)
     }
 
   def unapply(mapFragment: MapFragment): Option[(String, MapFragmentType, Boolean)] =
@@ -56,4 +57,5 @@ object MapFragments extends BasicOperations[MapFragment, MapFragmentsTable](new 
   lazy val shaperFragments: Future[NonEmptyList[Shaper]] =
     getByMapFragmentsType(MapFragment.Shaper)
   lazy val emblems: Future[NonEmptyList[Emblem]] = getByMapFragmentsType(MapFragment.Emblem)
+  lazy val metamorph: Future[NonEmptyList[Metamorph]] = getByMapFragmentsType(MapFragment.Metamorph)
 }

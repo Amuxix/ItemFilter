@@ -1,6 +1,7 @@
 package me.amuxix
 
 import cats.data.NonEmptyList
+import cats.effect.{ExitCode, IO, IOApp, Resource}
 import cats.implicits._
 import javax.swing.filechooser.FileSystemView
 import me.amuxix.WSClient.getActorSystemAndWsClient
@@ -24,13 +25,12 @@ import slick.jdbc.DataSourceJdbcDataSource
 import slick.jdbc.hikaricp.HikariCPJdbcDataSource
 
 import java.io.{File, PrintWriter}
-import scala.concurrent.{ExecutionContext, Future}
-import scala.util.Failure
+import scala.concurrent.ExecutionContext
 
-object ItemFilter {
+object ItemFilter extends IOApp {
   //TODO Keep price history
   //TODO Fallback price from parent league
-  val league: League = Blight
+  val league: League = Metamorph
   implicit val ec = ExecutionContext.global
   val config = pureconfig.loadConfigOrThrow[FilterConfiguration]("filter")
   val cutoffs = config.levelCutoffs
@@ -44,7 +44,7 @@ object ItemFilter {
   val (system, wsClient) = getActorSystemAndWsClient
   val provider: Provider = new PoeNinja(wsClient)
 
-  def runMigrations() = {
+  def runMigrations(): Unit = {
     val ds = db.source match {
       case d: DataSourceJdbcDataSource => d.ds
       case d: HikariCPJdbcDataSource   => d.ds
@@ -57,19 +57,7 @@ object ItemFilter {
     println(s"Ran $migrations migrations.")
   }
 
-  /*def main(args: Array[String]): Unit = {
-    Bases.bestItems.map(_.map(println))
-  }*/
-
-  //val poeFolder = new java.io.File(".").getCanonicalPath
-  /*provider.itemPrices.foreach { items =>
-    val prices = items.toSeq.sortBy(_._2).map {
-      case (name, price) => s"${name.capitalize} -> $price"
-    }.mkString("\n")
-    println(prices)
-  }*/
-
-  def main(args: Array[String]): Unit = {
+  override def run(args: List[String]): IO[ExitCode] = {
     runMigrations()
     val poeFolder = FileSystemView.getFileSystemView.getDefaultDirectory.getPath + File.separatorChar + "My Games" + File.separatorChar + "Path of Exile" + File.separatorChar
 
@@ -117,41 +105,51 @@ object ItemFilter {
       Net,
       Legacy,
     )
-
-    List(Reduced, Diminished, Normal, Racing).traverse { level =>
-      createFilterFile(poeFolder, level, NonEmptyList(categories.head, categories.tail), legacyCategories)
-    //createFilterFile(poeFolder, level, categories, legacyCategories, conceal = true)
-    } andThen {
-      case _ =>
+    List(Reduced, Diminished, Normal, Racing)
+      .traverse_ { level =>
+        createFilter(league, level, categories, legacyCategories)
+          .flatMap {
+            case (filterName, filterText) => writeFilterFile(poeFolder, filterName, filterText)
+          }
+      }
+      .map { _ =>
         wsClient.close()
         system.terminate()
-    } andThen {
-      case Failure(ex) => throw ex
-    }
+        ExitCode.Success
+      }
   }
 
-  def createFilterFile(
-    poeFolder: String,
+  private def createFilter(
+    league: League,
     filterLevel: FilterLevel,
     categories: NonEmptyList[Category],
     legacyCategories: NonEmptyList[Category],
     conceal: Boolean = false
-  ): Future[Unit] = {
+  ): IO[(String, String)] = {
     val allCategories = if (league == Standard || league == Hardcore) {
       categories.concatNel(legacyCategories)
     } else {
       categories
     }
+
     for {
-      (shown, hidden) <- allCategories.traverse(_.partitionHiddenAndShown(filterLevel, conceal)).map(_.toList.unzip)
-      lastCallBlocks <- LastCall.blocks(filterLevel)
+      (shown, hidden) <- allCategories.parTraverse { category =>
+        IO.fromFuture(IO(category.partitionHiddenAndShown(filterLevel, conceal)))
+      }.map(_.toList.unzip)
+      lastCallBlocks <- IO.fromFuture(IO(LastCall.blocks(filterLevel)))
       lastCall = lastCallBlocks.map(_.write(filterLevel))
       filterName = s"${if (conceal) "Concealed " else ""}Amuxix's${filterLevel.suffix} filter"
-      filterFile = new PrintWriter(new File(poeFolder + s"$filterName.filter"))
     } yield {
       println(s"Generating $filterName")
-      filterFile.write((shown ++ hidden ++ lastCall.toList).mkString)
-      filterFile.close()
+      (filterName, (shown ++ hidden ++ lastCall.toList).mkString)
     }
   }
+
+  private def writer(poeFolder: String, filterName: String): Resource[IO, PrintWriter] =
+    Resource.fromAutoCloseable(IO {
+      new PrintWriter(new File(poeFolder + s"$filterName.filter"))
+    })
+
+  private def writeFilterFile(poeFolder: String, filterName: String, filterText: String): IO[Unit] =
+    writer(poeFolder, filterName).use(writer => IO(writer.write(filterText)))
 }

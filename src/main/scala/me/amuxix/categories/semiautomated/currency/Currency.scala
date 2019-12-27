@@ -21,6 +21,7 @@ object Currency extends SemiAutomatedCategory {
       orbs <- Currencies.orbs
       fragments <- CurrencyFragments.all
       vials <- Currencies.vials
+      catalysts <- Currencies.catalysts
       orbsAndFragments <- orbs.concatNel(fragments).flatTraverse { currency =>
         currency.chaosValuePerSlot.fold(NonEmptyList.one[Currency](currency)) { chaosValue =>
           val increasedStackSizes = rarities.collect {
@@ -40,7 +41,7 @@ object Currency extends SemiAutomatedCategory {
           NonEmptyList.ofInitLast(increasedStackSizes, currency)
         }
       }
-    } yield orbsAndFragments concatNel vials
+    } yield orbsAndFragments concatNel vials concatNel catalysts
 
   override protected def actionForRarity: FilterRarity => Action = {
     case Mythic =>

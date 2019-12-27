@@ -21,11 +21,12 @@ class CurrenciesTable(tag: Tag) extends Table[Currency](tag, "currency") with Co
     dropEnabled: Boolean
   ): Currency =
     currencyType match {
-      case Currency.Net    => Net(name, dropEnabled)
-      case Currency.Orb    => Orb(name, stackSize, dropEnabled)
-      case Currency.Vial   => Vial(name, dropEnabled)
-      case Currency.Fossil => Fossil(name, dropEnabled)
-      case Currency.Oil    => Oil(name, dropEnabled)
+      case Currency.Net      => Net(name, dropEnabled)
+      case Currency.Orb      => Orb(name, stackSize, dropEnabled)
+      case Currency.Vial     => Vial(name, dropEnabled)
+      case Currency.Fossil   => Fossil(name, dropEnabled)
+      case Currency.Oil      => Oil(name, dropEnabled)
+      case Currency.Catalyst => Catalyst(name, dropEnabled)
     }
 
   def unapply(currency: Currency): Option[(String, Int, CurrencyType, Boolean)] = ???
@@ -60,4 +61,7 @@ object Currencies extends BasicOperations[Currency, CurrenciesTable](new Currenc
 
   lazy val oils: Future[NonEmptyList[Oil]] =
     getByCurrencyType(Currency.Oil)
+
+  lazy val catalysts: Future[NonEmptyList[Catalyst]] =
+    getByCurrencyType(Currency.Catalyst)
 }

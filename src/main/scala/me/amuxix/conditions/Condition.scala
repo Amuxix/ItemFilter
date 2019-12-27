@@ -23,8 +23,7 @@ case class Condition(
   shapedMap: Option[ShapedMap] = None,
   identified: Option[Identified] = None,
   corrupted: Option[Corrupted] = None,
-  shaperItem: Option[ShaperItem] = None,
-  elderItem: Option[ElderItem] = None,
+  influence: Option[HasInfluence] = None,
   fracturedItem: Option[FracturedItem] = None,
   synthesisedItem: Option[SynthesisedItem] = None,
   anyEnchantment: Option[AnyEnchantment] = None,
@@ -50,8 +49,7 @@ case class Condition(
     shapedMap,
     identified,
     corrupted,
-    shaperItem,
-    elderItem,
+    influence,
     fracturedItem,
     synthesisedItem,
     anyEnchantment,
@@ -99,8 +97,7 @@ case class Condition(
       shapedMap.size == o.shapedMap.size &&
       identified.size == o.identified.size &&
       corrupted.size == o.corrupted.size &&
-      shaperItem.size == o.shaperItem.size &&
-      elderItem.size == o.elderItem.size &&
+      canMergeOptions(influence, o.influence) &&
       fracturedItem == o.fracturedItem &&
       synthesisedItem == o.synthesisedItem &&
       anyEnchantment == o.anyEnchantment &&
@@ -126,8 +123,7 @@ case class Condition(
       shapedMap = mergeBooleanOption(shapedMap, o.shapedMap),
       identified = mergeBooleanOption(identified, o.identified),
       corrupted = mergeBooleanOption(corrupted, o.corrupted),
-      shaperItem = mergeBooleanOption(shaperItem, o.shaperItem),
-      elderItem = mergeBooleanOption(elderItem, o.elderItem),
+      influence = mergeOptions(influence, o.influence),
       fracturedItem = mergeBooleanOption(fracturedItem, o.fracturedItem),
       synthesisedItem = mergeBooleanOption(synthesisedItem, o.synthesisedItem),
       anyEnchantment = mergeBooleanOption(anyEnchantment, o.anyEnchantment),
@@ -154,8 +150,7 @@ case class Condition(
       shapedMap = shapedMap.orElse(o.shapedMap),
       identified = identified.orElse(o.identified),
       corrupted = corrupted.orElse(o.corrupted),
-      shaperItem = shaperItem.orElse(o.shaperItem),
-      elderItem = elderItem.orElse(o.elderItem),
+      influence = influence.orElse(o.influence),
       fracturedItem = fracturedItem.orElse(o.fracturedItem),
       synthesisedItem = synthesisedItem.orElse(o.synthesisedItem),
       anyEnchantment = anyEnchantment.orElse(o.anyEnchantment),

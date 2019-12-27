@@ -28,6 +28,8 @@ scalacOptions ++= Seq(
 
 //scalafmtOnCompile := true
 
+addCompilerPlugin("com.olegpy" %% "better-monadic-for" % "0.3.1")
+
 libraryDependencies ++= Seq(
   "com.typesafe.play"     %% "play-ahc-ws-standalone"  % "2.0.0-RC2",
   "com.typesafe.play"     %% "play-ws-standalone-json" % "2.0.0-RC2",
@@ -37,7 +39,8 @@ libraryDependencies ++= Seq(
   "com.typesafe.slick"    %% "slick-hikaricp"          % "3.2.0",
   "org.postgresql"        % "postgresql"               % "42.2.5",
   "org.flywaydb"          % "flyway-core"              % "5.2.0",
-  "org.typelevel"         %% "cats-core"               % "1.6.0",
+  "org.typelevel"         %% "cats-core"               % "2.1.0",
+  "org.typelevel"         %% "cats-effect"             % "2.0.0",
   "com.github.pureconfig" %% "pureconfig"              % "0.10.1",
   "com.typesafe.akka"     %% "akka-stream"             % "2.5.23",
 )
