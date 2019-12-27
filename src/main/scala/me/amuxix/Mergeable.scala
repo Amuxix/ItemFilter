@@ -3,7 +3,7 @@ package me.amuxix
 import cats.data.NonEmptyList
 
 import scala.annotation.tailrec
-import scala.language.higherKinds
+import scala.collection.parallel.CollectionConverters._
 
 object Mergeable {
 
