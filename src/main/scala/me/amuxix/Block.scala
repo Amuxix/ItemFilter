@@ -30,34 +30,6 @@ case class Block(condition: Condition, action: Action, rarity: FilterRarity = Un
     rarity = AlwaysHide
   )
 
-  private def averageColor: Color =
-    (action.backgroundColor.map(_.color), action.textColor.map(_.color), action.borderColor.map(_.color)) match {
-      case (None, None, None)       => Color.white
-      case (Some(background), _, _) => background
-      case (None, Some(textColor), Some(borderColor)) =>
-        Color.average(Seq(textColor, borderColor))
-      case (None, Some(textColor), None)   => textColor
-      case (None, None, Some(borderColor)) => borderColor
-    }
-
-  def concealed(conceal: Boolean, filterLevel: FilterLevel): Block = {
-    if (conceal == false) return this
-    val concealedAction = if (show(filterLevel)) {
-      action.copy(
-        beam = Some(action.beam.getOrElse(Beam(averageColor.closestEffectColor, isTemp = true))),
-        minimapIcon = Some(action.minimapIcon.getOrElse(MinimapIcon(averageColor.closestEffectColor, Circle)))
-      )
-    } else {
-      action.copy(
-        size = Some(action.size.fold(Size(Size.default))(identity).change(-10)),
-        /*backgroundColor = action.backgroundColor.map(c => c.copy(c.color.halfTransparent)),
-        textColor = action.textColor.map(c => c.copy(c.color.halfTransparent)),
-        borderColor = action.borderColor.map(c => c.copy(c.color.halfTransparent))*/
-      )
-    }
-    Block(condition, concealedAction, AlwaysHide)
-  }
-
   override def canMerge(other: Block): Boolean =
     action == other.action && rarity == other.rarity && (condition canMerge other.condition)
 

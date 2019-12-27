@@ -4,8 +4,7 @@ import cats.data.NonEmptyList
 import cats.effect.{ExitCode, IO, IOApp, Resource}
 import cats.implicits._
 import javax.swing.filechooser.FileSystemView
-import me.amuxix.WSClient.getActorSystemAndWsClient
-import me.amuxix.categories._
+//import me.amuxix.categories._
 import me.amuxix.categories.automated._
 import me.amuxix.categories.automated.currency._
 import me.amuxix.categories.automated.mapfragments.{Emblems, Scarabs}
@@ -17,10 +16,9 @@ import me.amuxix.categories.semiautomated.recipes._
 import me.amuxix.categories.single._
 import me.amuxix.categories.single.legacy._
 import me.amuxix.database.PostgresProfile.api.Database
-import me.amuxix.providers.Provider
-import me.amuxix.providers.poeninja.PoeNinja
+import me.amuxix.providers.{PoeNinja, Provider}
 import org.flywaydb.core.Flyway
-import pureconfig.generic.auto._
+import org.http4s.client.blaze.BlazeClientBuilder
 import slick.jdbc.DataSourceJdbcDataSource
 import slick.jdbc.hikaricp.HikariCPJdbcDataSource
 
@@ -32,17 +30,11 @@ object ItemFilter extends IOApp {
   //TODO Fallback price from parent league
   val league: League = Metamorph
   implicit val ec = ExecutionContext.global
-  val config = pureconfig.loadConfigOrThrow[FilterConfiguration]("filter")
+  val config = FilterSettings.fromConfig()
   val cutoffs = config.levelCutoffs
-  val dbgConfig = pureconfig.loadConfigOrThrow[DatabaseConfiguration]("db")
-  lazy val db = Database.forURL(
-    url = dbgConfig.url,
-    user = dbgConfig.user,
-    password = dbgConfig.password,
-    driver = dbgConfig.driver,
-  )
-  val (system, wsClient) = getActorSystemAndWsClient
-  val provider: Provider = new PoeNinja(wsClient)
+  lazy val db = Database.forConfig("db")
+
+  var provider: Provider = _
 
   def runMigrations(): Unit = {
     val ds = db.source match {
@@ -59,10 +51,10 @@ object ItemFilter extends IOApp {
 
   override def run(args: List[String]): IO[ExitCode] = {
     runMigrations()
-    val poeFolder = FileSystemView.getFileSystemView.getDefaultDirectory.getPath + File.separatorChar + "My Games" + File.separatorChar + "Path of Exile" + File.separatorChar
+    lazy val poeFolder = FileSystemView.getFileSystemView.getDefaultDirectory.getPath + File.separatorChar + "My Games" + File.separatorChar + "Path of Exile" + File.separatorChar
 
     //TODO show items with white sockets
-    val categories = NonEmptyList.of(
+    lazy val categories = NonEmptyList.of(
       General,
       Essence,
       Fossil,
@@ -100,49 +92,19 @@ object ItemFilter extends IOApp {
       Emblems,
       LevelingCategory,
     )
-
-    val legacyCategories = NonEmptyList.of(
+    lazy val legacyCategories = NonEmptyList.of(
       Net,
       Legacy,
     )
-    List(Reduced, Diminished, Normal, Racing)
-      .traverse_ { level =>
-        createFilter(league, level, categories, legacyCategories)
-          .flatMap {
-            case (filterName, filterText) => writeFilterFile(poeFolder, filterName, filterText)
-          }
-      }
-      .map { _ =>
-        wsClient.close()
-        system.terminate()
-        ExitCode.Success
-      }
-  }
-
-  private def createFilter(
-    league: League,
-    filterLevel: FilterLevel,
-    categories: NonEmptyList[Category],
-    legacyCategories: NonEmptyList[Category],
-    conceal: Boolean = false
-  ): IO[(String, String)] = {
-    val allCategories = if (league == Standard || league == Hardcore) {
-      categories.concatNel(legacyCategories)
-    } else {
-      categories
-    }
 
     for {
-      (shown, hidden) <- allCategories.parTraverse { category =>
-        IO.fromFuture(IO(category.partitionHiddenAndShown(filterLevel, conceal)))
-      }.map(_.toList.unzip)
-      lastCallBlocks <- IO.fromFuture(IO(LastCall.blocks(filterLevel)))
-      lastCall = lastCallBlocks.map(_.write(filterLevel))
-      filterName = s"${if (conceal) "Concealed " else ""}Amuxix's${filterLevel.suffix} filter"
-    } yield {
-      println(s"Generating $filterName")
-      (filterName, (shown ++ hidden ++ lastCall.toList).mkString)
-    }
+      (client, finalizer) <- BlazeClientBuilder[IO](ec).resource.allocated
+      _ = provider = new PoeNinja(client, league)
+      factory = new FilterFactory(league, categories, legacyCategories)
+      filters <- List(Reduced, Diminished, Normal, Racing).traverse(factory.create)
+      _ <- filters.traverse_(writeFilterFile(poeFolder, _))
+      _ <- finalizer
+    } yield ExitCode.Success
   }
 
   private def writer(poeFolder: String, filterName: String): Resource[IO, PrintWriter] =
@@ -150,6 +112,6 @@ object ItemFilter extends IOApp {
       new PrintWriter(new File(poeFolder + s"$filterName.filter"))
     })
 
-  private def writeFilterFile(poeFolder: String, filterName: String, filterText: String): IO[Unit] =
-    writer(poeFolder, filterName).use(writer => IO(writer.write(filterText)))
+  private def writeFilterFile(poeFolder: String, filter: FilterFactory#Filter): IO[Unit] =
+    writer(poeFolder, filter.name).use(writer => IO(writer.write(filter.body)))
 }
