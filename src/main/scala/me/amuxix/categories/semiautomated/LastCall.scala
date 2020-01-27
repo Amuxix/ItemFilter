@@ -20,7 +20,7 @@ object LastCall extends SemiAutomatedCategory {
             Future.successful(AlwaysHide)
           override lazy val condition: Future[Condition] = Future.successful(
             Condition(
-              `class` = config.accessoriesClasses ++ config.armourClasses ++ config.weaponClasses ++ config.shieldClasses ++ config.flaskClasses,
+              `class` = settings.accessoriesClasses ++ settings.armourClasses ++ settings.weaponClasses ++ settings.shieldClasses ++ settings.flaskClasses,
               rarity = (Normal, Rare),
             )
           )

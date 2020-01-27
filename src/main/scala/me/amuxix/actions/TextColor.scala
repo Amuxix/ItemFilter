@@ -12,5 +12,5 @@ object TextColor {
 }
 
 case class TextColor(color: Color) extends Writable {
-  override def print: String = "SetTextColor " + color.toString
+  override def print: String = s"SetTextColor $color"
 }

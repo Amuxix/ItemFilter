@@ -1,12 +1,10 @@
 package me.amuxix.conditions
 
-import me.amuxix.Writable
-
 object Identified {
   implicit def boolean2Identified(boolean: Boolean): Identified =
     Identified(boolean)
 }
 
-case class Identified(identified: Boolean) extends Writable {
-  override protected def print = s"Identified $identified"
+case class Identified(is: Boolean) extends ItemType[Identified](is) {
+  override def merge(other: Identified): Identified = this
 }

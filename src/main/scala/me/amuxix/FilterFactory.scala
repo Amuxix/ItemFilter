@@ -16,6 +16,7 @@ class FilterFactory(
   case class Filter(
     name: String,
     body: String,
+    level: FilterLevel,
   )
 
   private val allCategories = if (league == Standard || league == Hardcore) {
@@ -34,10 +35,10 @@ class FilterFactory(
         IO.fromFuture(IO(category.partitionHiddenAndShown(filterLevel)))
       }.map(_.toList.unzip)
       lastCall <- lastCallBlock(filterLevel)
-      filterName = s"Amuxix's${filterLevel.suffix} filter"
+      filterName = s"Amuxix${filterLevel.suffix}"
     } yield {
       println(s"Generating $filterName")
-      Filter(filterName, (shown ++ hidden ++ lastCall.toList).mkString)
+      Filter(filterName, (shown ++ hidden ++ lastCall.toList).mkString, filterLevel)
     }
   }
 }

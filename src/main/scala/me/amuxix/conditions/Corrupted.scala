@@ -1,12 +1,10 @@
 package me.amuxix.conditions
 
-import me.amuxix.Writable
-
 object Corrupted {
   implicit def boolean2Corrupted(boolean: Boolean): Corrupted =
     Corrupted(boolean)
 }
 
-case class Corrupted(corrupted: Boolean) extends Writable {
-  override protected def print = s"Corrupted $corrupted"
+case class Corrupted(is: Boolean) extends ItemType[Corrupted](is) {
+  override def merge(other: Corrupted): Corrupted = this
 }

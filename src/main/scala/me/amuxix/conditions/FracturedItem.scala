@@ -5,4 +5,6 @@ object FracturedItem {
     FracturedItem(boolean)
 }
 
-case class FracturedItem(is: Boolean) extends ItemType(is)
+case class FracturedItem(is: Boolean) extends ItemType[FracturedItem](is) {
+  override def merge(other: FracturedItem): FracturedItem = this
+}

@@ -11,7 +11,7 @@ import scala.concurrent.Future
 
 object Whetstone extends Sized {
   override lazy val condition: Condition =
-    Condition(`class` = ItemFilter.config.weaponClasses, quality = 20)
+    Condition(`class` = ItemFilter.settings.weaponClasses, quality = 20)
   override lazy val chaosValue: OptionT[Future, Double] =
     Currencies.getByName("Blacksmith's Whetstone").flatMap(_.chaosValuePerSlot)
 }

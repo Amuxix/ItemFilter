@@ -1,7 +1,8 @@
 package me.amuxix.conditions
-import me.amuxix.Writable
+import me.amuxix.{Mergeable, Writable}
 
-abstract class ItemType(is: Boolean) extends Writable {
-  override protected def print = s"${getClass.getSimpleName} $is"
+abstract class ItemType[T <: ItemType[T]](val _is: Boolean) extends Writable with Mergeable[T] {
+  override protected def print = s"${getClass.getSimpleName} ${_is}"
 
+  override def canMerge(other: T): Boolean = this._is == other._is
 }

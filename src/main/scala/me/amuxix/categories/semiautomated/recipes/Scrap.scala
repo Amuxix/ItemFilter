@@ -10,7 +10,7 @@ import me.amuxix.database.Currencies
 import scala.concurrent.Future
 
 object Scrap extends Sized {
-  override lazy val condition: Condition = Condition(`class` = ItemFilter.config.armourClasses ++ ItemFilter.config.shieldClasses, quality = 20)
+  override lazy val condition: Condition = Condition(`class` = ItemFilter.settings.armourClasses ++ ItemFilter.settings.shieldClasses, quality = 20)
   override lazy val chaosValue: OptionT[Future, Double] =
     Currencies.getByName("Armourer's Scrap").flatMap(_.chaosValuePerSlot)
 }

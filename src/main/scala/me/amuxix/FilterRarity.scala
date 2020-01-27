@@ -1,7 +1,7 @@
 package me.amuxix
 
 sealed abstract class FilterRarity(private val multiplier: Double) extends Ordered[FilterRarity] {
-  lazy val threshold: Double = multiplier * ItemFilter.config.threshold
+  lazy val threshold: Double = multiplier * ItemFilter.settings.threshold
   override def compare(that: FilterRarity): Int =
     multiplier compare that.multiplier
 }
