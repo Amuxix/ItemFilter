@@ -1,12 +1,12 @@
 package me.amuxix.categories.manual.recipes
 
 import cats.data.NonEmptyList
-import me.amuxix.{Block, FilterLevel, Reduced}
-import me.amuxix.ItemFilter._
+import me.amuxix._
+import me.amuxix.ItemFilter.settings
 import me.amuxix.actions.{Action, Color}
 import me.amuxix.actions.Color.black
 import me.amuxix.categories.Category
-import me.amuxix.conditions._
+import me.amuxix.conditions.{Normal => _, Rare => _, _}
 
 import scala.concurrent.Future
 
@@ -18,7 +18,7 @@ abstract class SetRecipe(minItemLevel: Int, color: Color) extends Category {
     height: Option[Height] = None,
     dropLevel: Option[Int] = None
   ) =
-    Condition(
+    conditions.Condition(
       `class` = `class`,
       width = width,
       height = height,
@@ -32,9 +32,9 @@ abstract class SetRecipe(minItemLevel: Int, color: Color) extends Category {
     Block(partialCondition(None, 1, 3), equipmentAction)
   private val smallBows =
     Block(partialCondition(Seq("Bows"), 2, 3), equipmentAction)
-  private val armor = Block(partialCondition(config.armourClasses), equipmentAction)
+  private val armor = Block(partialCondition(settings.armourClasses), equipmentAction)
   private val accessories = Block(
-    partialCondition(config.accessoriesClasses),
+    partialCondition(settings.accessoriesClasses),
     Action(
       size = 37,
       textColor = color.lighten,
@@ -44,9 +44,11 @@ abstract class SetRecipe(minItemLevel: Int, color: Color) extends Category {
   )
 
   override def categoryBlocks: FilterLevel => Future[NonEmptyList[Block]] = {
-    case Reduced =>
-      Future.successful(NonEmptyList(accessories, List(weapons.hidden, smallBows.hidden, armor.hidden)))
+    case Normal =>
+      Future.successful(NonEmptyList.of(accessories, weapons.hidden, smallBows.hidden, armor.hidden))
+    case Racing =>
+      Future.successful(NonEmptyList.of(accessories, weapons, smallBows, armor))
     case _ =>
-      Future.successful(NonEmptyList(accessories, List(weapons, smallBows, armor)))
+      Future.successful(NonEmptyList.of(accessories.hidden, weapons.hidden, smallBows.hidden, armor.hidden))
   }
 }

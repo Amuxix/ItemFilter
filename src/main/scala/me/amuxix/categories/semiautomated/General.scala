@@ -50,7 +50,7 @@ object General extends SemiAutomatedCategory {
         NonEmptyList.of(
           new GenericItem {
             override lazy val rarity: Future[FilterRarity] = Future.successful(Undetermined)
-            override lazy val condition: Future[Condition] = i.rare
+            override lazy val condition: Future[Condition] = i.topRare
           },
           new GenericItem {
             override lazy val rarity: Future[FilterRarity] = Future.successful(AlwaysHide)

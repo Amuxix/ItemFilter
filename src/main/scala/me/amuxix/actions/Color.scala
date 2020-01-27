@@ -38,7 +38,7 @@ object Color {
   val incursionGreen = Color(95, 170, 120)
   val incursionRed = Color(173, 54, 42)
   val delveBlue = Color(21, 22, 96)
-  val delveOrange = Color(255, 166, 50)
+  val delveOrange = Color(150, 85, 0)
   val scarabBlue = Color(0, 50, 130)
   val incubatorOrange = Color(255, 201, 7)
   val emblemTeal = Color(7, 255, 172)

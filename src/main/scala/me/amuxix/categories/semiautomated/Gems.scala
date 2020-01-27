@@ -46,7 +46,8 @@ object Gems extends SemiAutomatedCategory {
                 "Portal",
                 "Vaal Breach",
                 "Vaal Haste",
-                "Vaal Discipline"
+                "Vaal Discipline",
+                "Awakened",
               ),
               `class` = "Gem"
             )

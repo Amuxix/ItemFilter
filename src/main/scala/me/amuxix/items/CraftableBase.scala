@@ -27,15 +27,16 @@ abstract class CraftableBase extends Base {
     }
 
   def conditionsOfBestRaresForZoneLevel: Future[Condition] =
-    closeToZoneLevel(ItemLevel(1, this.dropLevel + minDropBuffer max this.dropLevel / 10))
+    closeToZoneLevel(ItemLevel(1, this.dropLevel + minDropBuffer max (this.dropLevel / 10)))
 
   def conditionsOfGoodRaresForZoneLevel: Future[Condition] =
     closeToZoneLevel(ItemLevel(1, this.dropLevel + 20))
 
   def conditionsOfBestWhitesForZoneLevel: Future[Condition] =
-    closeToZoneLevel(ItemLevel(1, this.dropLevel + minDropBuffer max this.dropLevel / 10), Normal).map(_.copy(itemLevel = (itemLevelToUnlockTopModTiers, 100)))
+    closeToZoneLevel(ItemLevel(1, this.dropLevel + minDropBuffer max (this.dropLevel / 10)), Normal).map(_.copy(itemLevel = (itemLevelToUnlockTopModTiers, 100)))
 
-  lazy val rare: Future[Condition] = Future.successful(Condition(base = Some(baseType), itemLevel = (itemLevelToUnlockTopModTiers, 100), rarity = Rare))
+  lazy val topRare: Future[Condition] = Future.successful(Condition(base = Some(baseType), itemLevel = (itemLevelToUnlockTopModTiers, 100), rarity = Rare))
+  lazy val rare: Future[Condition] = Future.successful(Condition(base = Some(baseType), rarity = Rare))
   lazy val crafting: Future[Condition] = Future.successful(Condition(base = Some(baseType), itemLevel = (itemLevelToUnlockTopModTiers, 100), rarity = (Normal, Magic)))
 }
 

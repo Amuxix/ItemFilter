@@ -12,7 +12,7 @@ import me.amuxix.items.GenericItem
 import scala.concurrent.Future
 
 object LevelingCategory extends SemiAutomatedCategory {
-  private val itemClasses = config.accessoriesClasses ++ config.armourClasses ++ config.weaponClasses ++ config.shieldClasses
+  private val itemClasses = settings.accessoriesClasses ++ settings.armourClasses ++ settings.weaponClasses ++ settings.shieldClasses
   override protected val categoryItems: Future[NonEmptyList[GenericItem]] =
     Bases.allEquipment.map { allEquipment =>
       val closeToZone = allEquipment.flatMap { i =>
@@ -58,7 +58,7 @@ object LevelingCategory extends SemiAutomatedCategory {
         },
         new GenericItem {
           override lazy val rarity: Future[FilterRarity] = Future.successful(Leveling)
-          override lazy val condition: Future[Condition] = Future.successful(Condition(`class` = config.accessoriesClasses, rarity = GameRare, itemLevel = (1, 60)))
+          override lazy val condition: Future[Condition] = Future.successful(Condition(`class` = settings.accessoriesClasses, rarity = GameRare, itemLevel = (1, 60)))
         },
       )
       closeToZone concatNel leveling

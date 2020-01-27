@@ -4,6 +4,10 @@ import cats.data.NonEmptyList
 import cats.effect.{ExitCode, IO, IOApp, Resource}
 import cats.implicits._
 import javax.swing.filechooser.FileSystemView
+import org.http4s.client.Client
+import org.http4s.headers.Cookie
+
+import scala.util.matching.Regex
 //import me.amuxix.categories._
 import me.amuxix.categories.automated._
 import me.amuxix.categories.automated.currency._
@@ -22,6 +26,19 @@ import org.http4s.client.blaze.BlazeClientBuilder
 import slick.jdbc.DataSourceJdbcDataSource
 import slick.jdbc.hikaricp.HikariCPJdbcDataSource
 
+/*import cats.effect._
+import org.http4s._
+import org.http4s.dsl.io._
+import org.http4s.implicits._
+import org.http4s.client.dsl.io._
+import org.http4s.headers._
+import org.http4s.MediaType
+import org.http4s.Method._*/
+import org.http4s._
+import org.http4s.client.dsl.io._
+import org.http4s.dsl.io._
+import org.http4s.multipart._
+
 import java.io.{File, PrintWriter}
 import scala.concurrent.ExecutionContext
 
@@ -30,8 +47,8 @@ object ItemFilter extends IOApp {
   //TODO Fallback price from parent league
   val league: League = Metamorph
   implicit val ec = ExecutionContext.global
-  val config = FilterSettings.fromConfig()
-  val cutoffs = config.levelCutoffs
+  val settings = FilterSettings.fromConfig()
+  val cutoffs = settings.levelCutoffs
   lazy val db = Database.forConfig("db")
 
   var provider: Provider = _
@@ -69,11 +86,14 @@ object ItemFilter extends IOApp {
       DivinationCard,
       Uniques,
       VeiledItems,
-      BreachRings, //TODO: Add to base types, merge with accessories
-      Abyss,       //TODO: Add to base types, merge with accessories/jewels
+      BreachRings,
+      Abyss,
       Talisman,
       Synthesized,
+      MetamorphSample,
+      Influenced,
       Rares,
+      //TODO Add all fractured and influenced items maybe?
       Enchanted,
       Atlas,
       //TODO: Add corrupted items
@@ -89,8 +109,9 @@ object ItemFilter extends IOApp {
       Maps,
       Prophecies,
       Incubators,
-      Emblems,
+      Emblems, //TODO: Extract metamorph samples into its own category
       LevelingCategory,
+      Watchstone,
     )
     lazy val legacyCategories = NonEmptyList.of(
       Net,
@@ -102,9 +123,58 @@ object ItemFilter extends IOApp {
       _ = provider = new PoeNinja(client, league)
       factory = new FilterFactory(league, categories, legacyCategories)
       filters <- List(Reduced, Diminished, Normal, Racing).traverse(factory.create)
+      //_ <- filters.traverse_(uploadToGGG(client, _))
       _ <- filters.traverse_(writeFilterFile(poeFolder, _))
       _ <- finalizer
     } yield ExitCode.Success
+  }
+
+  private def getSecurityHash(client: Client[IO], uri: Uri): IO[String] = {
+    val hashRegex: Regex = ".+<input type=\"hidden\" name=\"hash\" value=\"([0-9a-z-]+)\">.+".r
+    for {
+      request <- GET(uri)
+      requestWithHeader = request.withHeaders(Cookie(NonEmptyList.one(RequestCookie("cookie", settings.ggg.cookie))))
+      response <- client.fetch[String](request) {
+        case response if response.status.isSuccess =>
+          println(response)
+          response.as[String]
+      }
+    } yield response match {
+      case hashRegex(hash) =>
+        println(hash)
+        hash
+      case other =>
+        println(other)
+        other
+    }
+  }
+
+  private def uploadToGGG(client: Client[IO], filter: FilterFactory#Filter): IO[Unit] = {
+    val uri = settings.ggg.uri / filter.level.id
+    for {
+      hash <- getSecurityHash(client, uri)
+      multipart = Multipart[IO](
+        Vector(
+          Part.formData("filter_name", filter.name),
+          Part.formData("platform", "pc"),
+          Part.formData("public", "1"),
+          Part.formData("description", ""),
+          Part.formData("should_validate", "1"),
+          Part.formData("filter", filter.body),
+          Part.formData("copied_from", ""),
+          Part.formData("hash", hash),
+          Part.formData("submit", "Submit"),
+        )
+      )
+      request <- POST(
+        multipart,
+        uri
+      )
+      requestWithHeader = request.withHeaders(multipart.headers.toList :+ Cookie(NonEmptyList.one(RequestCookie("cookie", settings.ggg.cookie))): _*)
+      response <- client.fetch[String](requestWithHeader) {
+        case response if response.status.isSuccess => response.as[String]
+      }
+    } yield ()//println(response)
   }
 
   private def writer(poeFolder: String, filterName: String): Resource[IO, PrintWriter] =

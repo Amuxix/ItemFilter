@@ -33,6 +33,6 @@ case class Block(condition: Condition, action: Action, rarity: FilterRarity = Un
   override def canMerge(other: Block): Boolean =
     action == other.action && rarity == other.rarity && (condition canMerge other.condition)
 
-  override def merge(other: Block) =
+  override def merge(other: Block): Block =
     Block(condition merge other.condition, action, rarity)
 }

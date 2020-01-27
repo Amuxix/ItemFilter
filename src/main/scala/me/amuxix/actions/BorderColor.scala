@@ -12,5 +12,5 @@ object BorderColor {
 }
 
 case class BorderColor(color: Color) extends Writable {
-  override def print: String = "SetBorderColor " + color.toString
+  override def print: String = s"SetBorderColor $color"
 }

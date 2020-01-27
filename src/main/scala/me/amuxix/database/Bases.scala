@@ -102,8 +102,12 @@ object Bases extends BasicOperations[Base, BasesTable](new BasesTable(_)) {
   lazy val rings: Future[NonEmptyList[Ring]] = getByItemType(Item.Ring)
   lazy val amulets: Future[NonEmptyList[Amulet]] = getByItemType(Item.Amulet)
   lazy val belts: Future[NonEmptyList[Belt]] = getByItemType(Item.Belt)
+  lazy val quivers: Future[NonEmptyList[Quiver]] = getByItemType(Item.Quiver)
   lazy val bodyArmours: Future[NonEmptyList[BodyArmour]] = getByItemType(Item.BodyArmour)
   lazy val helmets: Future[NonEmptyList[Helmet]] = getByItemType(Item.Helmet)
+  lazy val smallShields: Future[NonEmptyList[SmallShield]] = getByItemType(Item.SmallShield)
+  lazy val mediumShields: Future[NonEmptyList[MediumShield]] = getByItemType(Item.MediumShield)
+  lazy val largeShields: Future[NonEmptyList[LargeShield]] = getByItemType(Item.LargeShield)
   lazy val gloves: Future[NonEmptyList[Gloves]] = getByItemType(Item.Gloves)
   lazy val boots: Future[NonEmptyList[Boots]] = getByItemType(Item.Boots)
   lazy val oneHandAxes: Future[NonEmptyList[OneHandAxe]] = getByItemType(Item.OneHandAxe)
@@ -122,27 +126,25 @@ object Bases extends BasicOperations[Base, BasesTable](new BasesTable(_)) {
     getByItemType(Item.ThrustingOneHandSword)
   lazy val wands: Future[NonEmptyList[Wand]] = getByItemType(Item.Wand)
 
+  val shields: Future[NonEmptyList[Armour]] = NonEmptyList.of(smallShields, mediumShields, largeShields).nonEmptyFlatSequence
+
   val weapons: Future[NonEmptyList[Weapon]] =
     NonEmptyList.of(oneHandAxes, twoHandAxes, bows, claws, daggers, runeDaggers, oneHandMaces, sceptres, staffs, warstaves, oneHandSwords, twoHandSwords, thrustingOneHandSwords, wands).nonEmptyFlatSequence
 
   val armours: Future[NonEmptyList[Armour]] =
-    NonEmptyList.of(bodyArmours, boots, gloves, helmets).nonEmptyFlatSequence
+    NonEmptyList.of(bodyArmours, boots, gloves, helmets, shields).nonEmptyFlatSequence
 
   val accessories: Future[NonEmptyList[Accessory]] =
     NonEmptyList.of(rings, belts, amulets).nonEmptyFlatSequence
 
   val bestEquipment: Future[NonEmptyList[CraftableBase with Corruptible with Quality with Sockets]] =
-    NonEmptyList.of(weapons, armours).nonEmptyFlatTraverse { futureItems =>
-      futureItems.map { items =>
-        NonEmptyList.fromListUnsafe(
-          items.filter(_.dropLevel >= cutoffs.bestBaseMinDropLevel)
-        )
-      }
-    }
+    NonEmptyList.of(weapons, armours).nonEmptyFlatTraverse(_.map { items =>
+      NonEmptyList.fromListUnsafe(items.filter(_.dropLevel >= cutoffs.bestBaseMinDropLevel))
+    })
 
   val bestItems: Future[NonEmptyList[CraftableBase with Corruptible]] =
     NonEmptyList.of(bestEquipment, accessories).nonEmptyFlatSequence
 
   val allEquipment: Future[NonEmptyList[CraftableBase with Corruptible]] =
-    NonEmptyList.of(weapons, armours, accessories).nonEmptyFlatSequence
+    NonEmptyList.of(weapons, armours, accessories, quivers).nonEmptyFlatSequence
 }
