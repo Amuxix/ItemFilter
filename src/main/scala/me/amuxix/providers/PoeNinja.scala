@@ -3,7 +3,6 @@ package me.amuxix.providers
 import cats.effect.IO
 import cats.implicits.{catsStdInstancesForFuture, catsStdInstancesForList, toTraverseOps}
 import io.circe.{Decoder, HCursor}
-import io.circe.Decoder.Result
 import io.circe.generic.semiauto.deriveDecoder
 import me.amuxix.League
 import me.amuxix.providers.PoeNinja._
@@ -17,13 +16,11 @@ import scala.concurrent.{ExecutionContext, Future}
 object PoeNinja {
   val baseURI: Uri = uri"https://poe.ninja/api/data" //TODO: Extract this to config
 
-  private def readLines(currencyFieldName: String, priceFieldName: String): Decoder[Price] = new Decoder[Price] {
-    override def apply(c: HCursor): Result[Price] =
-      for {
-        name <- c.downField(currencyFieldName).as[String]
-        price <- c.downField(priceFieldName).as[Double]
-      } yield Price(name.toLowerCase.trim, price)
-  }
+  private def readLines(currencyFieldName: String, priceFieldName: String): Decoder[Price] = (c: HCursor) =>
+    for {
+      name <- c.downField(currencyFieldName).as[String]
+      price <- c.downField(priceFieldName).as[Double]
+    } yield Price(name.toLowerCase.trim, price)
 
   val currencyLinesDecoder: Decoder[Price] = readLines("currencyTypeName", "chaosEquivalent")
   val itemLinesDecoder: Decoder[Price] = readLines("name", "chaosValue")
@@ -58,6 +55,8 @@ class PoeNinja(
       ("UniqueAccessory", baseURI / "itemoverview", itemLinesDecoder),
       ("Incubator", baseURI / "itemoverview", itemLinesDecoder),
       ("Oil", baseURI / "itemoverview", itemLinesDecoder),
+      ("Vial", baseURI / "itemoverview", itemLinesDecoder),
+      ("Watchstone", baseURI / "itemoverview", itemLinesDecoder),
     )
       .flatTraverse {
         case (t, uri, decoder) =>

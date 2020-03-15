@@ -45,7 +45,7 @@ import scala.concurrent.ExecutionContext
 object ItemFilter extends IOApp {
   //TODO Keep price history
   //TODO Fallback price from parent league
-  val league: League = Metamorph
+  val league: League = Delirium
   implicit val ec = ExecutionContext.global
   val settings = FilterSettings.fromConfig()
   val cutoffs = settings.levelCutoffs
@@ -60,9 +60,13 @@ object ItemFilter extends IOApp {
       case other =>
         throw new IllegalStateException("Unknown DataSource type: " + other)
     }
-    val flyway = Flyway.configure().dataSource(ds).baselineOnMigrate(true).load()
+    val migrations = Flyway
+      .configure()
+      .dataSource(ds)
+      .baselineOnMigrate(true)
+      .load()
+      .migrate()
 
-    val migrations = flyway.migrate()
     println(s"Ran $migrations migrations.")
   }
 
@@ -74,6 +78,7 @@ object ItemFilter extends IOApp {
     lazy val categories = NonEmptyList.of(
       General,
       Essence,
+      DeliriumOrb,
       Fossil,
       Oil,
       ChaoticResonators,
@@ -87,6 +92,7 @@ object ItemFilter extends IOApp {
       Uniques,
       VeiledItems,
       BreachRings,
+      ClusterJewels,
       Abyss,
       Talisman,
       Synthesized,

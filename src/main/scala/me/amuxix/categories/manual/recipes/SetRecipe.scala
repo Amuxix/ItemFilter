@@ -1,12 +1,12 @@
 package me.amuxix.categories.manual.recipes
 
 import cats.data.NonEmptyList
-import me.amuxix._
+import me.amuxix.{Rare => _, _}
 import me.amuxix.ItemFilter.settings
 import me.amuxix.actions.{Action, Color}
 import me.amuxix.actions.Color.black
 import me.amuxix.categories.Category
-import me.amuxix.conditions.{Normal => _, Rare => _, _}
+import me.amuxix.conditions.{Rare, Normal => _, _}
 
 import scala.concurrent.Future
 
@@ -18,12 +18,12 @@ abstract class SetRecipe(minItemLevel: Int, color: Color) extends Category {
     height: Option[Height] = None,
     dropLevel: Option[Int] = None
   ) =
-    conditions.Condition(
+    Condition(
       `class` = `class`,
       width = width,
       height = height,
       itemLevel = (minItemLevel, 100),
-      rarity = Rare,
+      rarity = Some(Rarity(Rare)),
       identified = false,
       dropLevel = dropLevel.map(i => DropLevel(1, i))
     )

@@ -35,4 +35,6 @@ object MapFragmentFragments extends BasicOperations[MapFragmentFragment, MapFrag
     getByMapFragmentsType(MapFragment.Breachstone)
   lazy val emblemFragments: Future[NonEmptyList[MapFragmentFragment]] =
     getByMapFragmentsType(MapFragment.Emblem)
+  lazy val simulacrumFragments: Future[NonEmptyList[MapFragmentFragment]] =
+    getByMapFragmentsType(MapFragment.Simulacrum)
 }

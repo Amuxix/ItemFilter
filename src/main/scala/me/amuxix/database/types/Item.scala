@@ -36,4 +36,5 @@ object Item extends Enumeration {
   val TwoHandSword = Value("Two Hand Sword")
   val Wand = Value("Wand")
   val Piece = Value("Piece")
+  val ClusterJewel = Value("Cluster Jewel")
 }

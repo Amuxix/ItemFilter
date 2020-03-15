@@ -27,6 +27,7 @@ class CurrenciesTable(tag: Tag) extends Table[Currency](tag, "currency") with Co
       case Currency.Fossil   => Fossil(name, dropEnabled)
       case Currency.Oil      => Oil(name, dropEnabled)
       case Currency.Catalyst => Catalyst(name, dropEnabled)
+      case Currency.DeliriumOrb => DeliriumOrb(name, stackSize, dropEnabled)
     }
 
   def unapply(currency: Currency): Option[(String, Int, CurrencyType, Boolean)] = ???
@@ -64,4 +65,7 @@ object Currencies extends BasicOperations[Currency, CurrenciesTable](new Currenc
 
   lazy val catalysts: Future[NonEmptyList[Catalyst]] =
     getByCurrencyType(Currency.Catalyst)
+
+  lazy val deliriumOrbs: Future[NonEmptyList[DeliriumOrb]] =
+    getByCurrencyType(Currency.DeliriumOrb)
 }
