@@ -11,4 +11,5 @@ object MapFragment extends Enumeration {
   val Shaper = Value("Shaper")
   val Emblem = Value("Emblem")
   val Metamorph = Value("Metamorph")
+  val Simulacrum = Value("Simulacrum")
 }

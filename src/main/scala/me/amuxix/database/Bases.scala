@@ -63,6 +63,7 @@ class BasesTable(tag: Tag) extends Table[Base](tag, "bases") with CommonColumns[
     case Item.TwoHandSword => TwoHandSword(name, height.get, width.get, dropLevel, dropEnabled)
     case Item.Wand => Wand(name, height.get, width.get, dropLevel, dropEnabled)
     case Item.Piece => Piece(name, dropEnabled)
+    case Item.ClusterJewel => ClusterJewel(name, dropEnabled)
   }
 
   def unapply(arg: Base): Option[(String, Int, Boolean, ItemType, Option[Int], Option[Int])] = ???
