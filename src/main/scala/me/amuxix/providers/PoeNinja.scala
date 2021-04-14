@@ -38,26 +38,32 @@ class PoeNinja(
 ) extends Provider {
   protected def getAllItemsPrices: Future[List[Price]] =
     List(
+      //General
       ("Currency", baseURI / "currencyoverview", currencyLinesDecoder),
       ("Fragment", baseURI / "currencyoverview", currencyLinesDecoder),
-      ("Essence", baseURI / "itemoverview", itemLinesDecoder),
       ("DivinationCard", baseURI / "itemoverview", itemLinesDecoder),
-      ("Fossil", baseURI / "itemoverview", itemLinesDecoder),
-      ("Resonator", baseURI / "itemoverview", itemLinesDecoder),
-      ("Scarab", baseURI / "itemoverview", itemLinesDecoder),
-      ("Map", baseURI / "itemoverview", itemLinesDecoder),
+      ("Oil", baseURI / "itemoverview", itemLinesDecoder),
+      ("Incubator", baseURI / "itemoverview", itemLinesDecoder),
       ("Prophecy", baseURI / "itemoverview", itemLinesDecoder),
-      //("UniqueMap", s"$baseURL/itemoverview", itemLinesDecoder),
-      ("UniqueJewel", baseURI / "itemoverview", itemLinesDecoder),
-      ("UniqueFlask", baseURI / "itemoverview", itemLinesDecoder),
+      //Equipment and Gems
       ("UniqueWeapon", baseURI / "itemoverview", itemLinesDecoder),
       ("UniqueArmour", baseURI / "itemoverview", itemLinesDecoder),
       ("UniqueAccessory", baseURI / "itemoverview", itemLinesDecoder),
-      ("Incubator", baseURI / "itemoverview", itemLinesDecoder),
-      ("Oil", baseURI / "itemoverview", itemLinesDecoder),
-      ("Vial", baseURI / "itemoverview", itemLinesDecoder),
-      ("Watchstone", baseURI / "itemoverview", itemLinesDecoder),
+      ("UniqueFlask", baseURI / "itemoverview", itemLinesDecoder),
+      ("UniqueJewel", baseURI / "itemoverview", itemLinesDecoder),
+      //Atlas
+      ("Map", baseURI / "itemoverview", itemLinesDecoder),
+      //Blighted Maps
+      //("UniqueMap", s"$baseURL/itemoverview", itemLinesDecoder),
       ("DeliriumOrb", baseURI / "itemoverview", itemLinesDecoder),
+      //Invitations
+      ("Scarab", baseURI / "itemoverview", itemLinesDecoder),
+      ("Watchstone", baseURI / "itemoverview", itemLinesDecoder),
+      //Crafting
+      ("Fossil", baseURI / "itemoverview", itemLinesDecoder),
+      ("Resonator", baseURI / "itemoverview", itemLinesDecoder),
+      ("Essence", baseURI / "itemoverview", itemLinesDecoder),
+      ("Vial", baseURI / "itemoverview", itemLinesDecoder),
     )
       .flatTraverse {
         case (t, uri, decoder) =>
