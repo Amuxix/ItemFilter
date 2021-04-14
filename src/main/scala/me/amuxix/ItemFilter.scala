@@ -4,11 +4,6 @@ import cats.data.NonEmptyList
 import cats.effect.{ExitCode, IO, IOApp, Resource}
 import cats.implicits._
 import javax.swing.filechooser.FileSystemView
-import org.http4s.client.Client
-import org.http4s.headers.Cookie
-
-import scala.util.matching.Regex
-//import me.amuxix.categories._
 import me.amuxix.categories.automated._
 import me.amuxix.categories.automated.currency._
 import me.amuxix.categories.automated.mapfragments.{Emblems, Scarabs}
@@ -22,30 +17,24 @@ import me.amuxix.categories.single.legacy._
 import me.amuxix.database.PostgresProfile.api.Database
 import me.amuxix.providers.{PoeNinja, Provider}
 import org.flywaydb.core.Flyway
+import org.http4s._
+import org.http4s.client.Client
 import org.http4s.client.blaze.BlazeClientBuilder
+import org.http4s.client.dsl.io._
+import org.http4s.dsl.io._
+import org.http4s.headers.Cookie
+import org.http4s.multipart._
 import slick.jdbc.DataSourceJdbcDataSource
 import slick.jdbc.hikaricp.HikariCPJdbcDataSource
 
-/*import cats.effect._
-import org.http4s._
-import org.http4s.dsl.io._
-import org.http4s.implicits._
-import org.http4s.client.dsl.io._
-import org.http4s.headers._
-import org.http4s.MediaType
-import org.http4s.Method._*/
-import org.http4s._
-import org.http4s.client.dsl.io._
-import org.http4s.dsl.io._
-import org.http4s.multipart._
-
 import java.io.{File, PrintWriter}
 import scala.concurrent.ExecutionContext
+import scala.util.matching.Regex
 
 object ItemFilter extends IOApp {
   //TODO Keep price history
   //TODO Fallback price from parent league
-  val league: League = Delirium
+  val league: League = Standard
   implicit val ec = ExecutionContext.global
   val settings = FilterSettings.fromConfig()
   val cutoffs = settings.levelCutoffs
@@ -53,25 +42,17 @@ object ItemFilter extends IOApp {
 
   var provider: Provider = _
 
-  def runMigrations(): Unit = {
+  def runMigrations: IO[Unit] = {
     val ds = db.source match {
       case d: DataSourceJdbcDataSource => d.ds
       case d: HikariCPJdbcDataSource   => d.ds
-      case other =>
-        throw new IllegalStateException("Unknown DataSource type: " + other)
+      case other                       => throw new IllegalStateException(s"Unknown DataSource type: $other")
     }
-    val migrations = Flyway
-      .configure()
-      .dataSource(ds)
-      .baselineOnMigrate(true)
-      .load()
-      .migrate()
-
-    println(s"Ran $migrations migrations.")
+    val flyway = Flyway.configure.dataSource(ds).baselineOnMigrate(true).load
+    IO(flyway.migrate()).flatMap(migrations => IO(println(s"Ran $migrations migrations.")))
   }
 
   override def run(args: List[String]): IO[ExitCode] = {
-    runMigrations()
     lazy val poeFolder = FileSystemView.getFileSystemView.getDefaultDirectory.getPath + File.separatorChar + "My Games" + File.separatorChar + "Path of Exile" + File.separatorChar
 
     //TODO show items with white sockets
@@ -119,12 +100,10 @@ object ItemFilter extends IOApp {
       LevelingCategory,
       Watchstone,
     )
-    lazy val legacyCategories = NonEmptyList.of(
-      Net,
-      Legacy,
-    )
+    lazy val legacyCategories = NonEmptyList.of(Net, Legacy)
 
     for {
+      _ <- runMigrations
       (client, finalizer) <- BlazeClientBuilder[IO](ec).resource.allocated
       _ = provider = new PoeNinja(client, league)
       factory = new FilterFactory(league, categories, legacyCategories)
@@ -159,35 +138,24 @@ object ItemFilter extends IOApp {
     val uri = settings.ggg.uri / filter.level.id
     for {
       hash <- getSecurityHash(client, uri)
-      multipart = Multipart[IO](
-        Vector(
-          Part.formData("filter_name", filter.name),
-          Part.formData("platform", "pc"),
-          Part.formData("public", "1"),
-          Part.formData("description", ""),
-          Part.formData("should_validate", "1"),
-          Part.formData("filter", filter.body),
-          Part.formData("copied_from", ""),
-          Part.formData("hash", hash),
-          Part.formData("submit", "Submit"),
-        )
-      )
-      request <- POST(
-        multipart,
-        uri
-      )
+      multipart = Multipart[IO](Vector(
+        Part.formData("filter_name", filter.name),
+        Part.formData("platform", "pc"),
+        Part.formData("public", "1"),
+        Part.formData("description", ""),
+        Part.formData("should_validate", "1"),
+        Part.formData("filter", filter.body),
+        Part.formData("copied_from", ""),
+        Part.formData("hash", hash),
+        Part.formData("submit", "Submit"),
+      ))
+      request <- POST(multipart, uri)
       requestWithHeader = request.withHeaders(multipart.headers.toList :+ Cookie(NonEmptyList.one(RequestCookie("cookie", settings.ggg.cookie))): _*)
-      response <- client.fetch[String](requestWithHeader) {
-        case response if response.status.isSuccess => response.as[String]
-      }
-    } yield ()//println(response)
+      response <- client.fetch[String](requestWithHeader) { case response if response.status.isSuccess => response.as[String] }
+    } yield () //println(response)
   }
 
-  private def writer(poeFolder: String, filterName: String): Resource[IO, PrintWriter] =
-    Resource.fromAutoCloseable(IO {
-      new PrintWriter(new File(poeFolder + s"$filterName.filter"))
-    })
+  private def writer(poeFolder: String, filterName: String): Resource[IO, PrintWriter] = Resource.fromAutoCloseable(IO(new PrintWriter(new File(poeFolder + s"$filterName.filter"))))
 
-  private def writeFilterFile(poeFolder: String, filter: FilterFactory#Filter): IO[Unit] =
-    writer(poeFolder, filter.name).use(writer => IO(writer.write(filter.body)))
+  private def writeFilterFile(poeFolder: String, filter: FilterFactory#Filter): IO[Unit] = writer(poeFolder, filter.name).use(writer => IO(writer.write(filter.body)))
 }

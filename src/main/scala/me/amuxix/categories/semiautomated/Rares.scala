@@ -68,6 +68,6 @@ object Rares extends SemiAutomatedCategory {
     case Common =>
       Action()
     case Leveling =>
-      Action(size = 45, borderColor = white)
+      Action(size = 40, borderColor = white)
   }
 }

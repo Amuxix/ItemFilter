@@ -33,7 +33,7 @@ scalacOptions ++= Seq(
 
 addCompilerPlugin("com.olegpy" %% "better-monadic-for" % "0.3.1")
 
-val http4sVersion = "0.21.0-M6"
+val http4sVersion = "0.21.8"
 val circeVersion = "0.12.3"
 val slickVersion = "0.18.1"
 libraryDependencies ++= Seq(

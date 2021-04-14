@@ -1,0 +1,1 @@
+UPDATE map_fragment_fragments SET stack_size = 300 WHERE name = 'Simulacrum Splinter';
