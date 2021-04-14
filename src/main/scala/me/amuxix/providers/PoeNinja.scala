@@ -57,6 +57,7 @@ class PoeNinja(
       ("Oil", baseURI / "itemoverview", itemLinesDecoder),
       ("Vial", baseURI / "itemoverview", itemLinesDecoder),
       ("Watchstone", baseURI / "itemoverview", itemLinesDecoder),
+      ("DeliriumOrb", baseURI / "itemoverview", itemLinesDecoder),
     )
       .flatTraverse {
         case (t, uri, decoder) =>

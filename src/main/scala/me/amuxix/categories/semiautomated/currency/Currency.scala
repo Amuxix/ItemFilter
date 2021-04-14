@@ -85,7 +85,7 @@ object Currency extends SemiAutomatedCategory {
     case _ =>
       Action(
         size = 40,
-        textColor = goodYellow.lighten
+        textColor = goodYellow.lighten,
       )
   }
 }

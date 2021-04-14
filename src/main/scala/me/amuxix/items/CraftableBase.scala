@@ -30,7 +30,7 @@ abstract class CraftableBase extends Base {
     closeToZoneLevel(ItemLevel(1, this.dropLevel + minDropBuffer max (this.dropLevel / 10)))
 
   def conditionsOfGoodRaresForZoneLevel: Future[Condition] =
-    closeToZoneLevel(ItemLevel(1, this.dropLevel + 20))
+    closeToZoneLevel(ItemLevel(1, this.dropLevel + 15))
 
   def conditionsOfBestWhitesForZoneLevel: Future[Condition] =
     closeToZoneLevel(ItemLevel(1, this.dropLevel + minDropBuffer max (this.dropLevel / 10)), Normal).map(_.copy(itemLevel = (itemLevelToUnlockTopModTiers, 100)))

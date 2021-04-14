@@ -17,26 +17,27 @@ object Uniques extends AutomatedCategory {
 
   override protected lazy val items: Future[NonEmptyList[Item]] =
     database.Uniques.all.flatMap(
-      items =>
-        items
-          .groupBy(_.baseName)
-          .values
-          .map { uniques =>
-            val enabledUniques = uniques.filter(_.dropEnabled)
-            val itemWithWeightedValue =
-              enabledUniques.traverse(_.chaosValuePerSlot).map { uniqueValues =>
-                val uniqueWeights =
-                  uniqueValues.map(value => 1 / math.pow(value, 1 / 3d))
+      _.groupBy(_.baseName)
+        .values
+        .map { uniques =>
+          val enabledUniques = uniques.filter(_.dropEnabled)
+          val itemWithWeightedValue =
+            enabledUniques
+              .traverse(unique => unique.chaosValuePerSlot.map(_ -> unique.league))
+              .map { uniqueValues =>
+                val uniqueWeights = uniqueValues.map {
+                  case (value, league) =>
+                    val v = league.fold(value)(_ => value * 2) //Increase value of league specific to reduce their weight
+                    1 / math.pow(v, 1 / 3d)
+                }
                 val totalWeight = uniqueWeights.sum
-                val value = (uniqueValues zip uniqueWeights).foldLeft(0d) {
+                val value = (uniqueValues.map(_._1) zip uniqueWeights).foldLeft(0d) {
                   case (acc, (value, weight)) =>
                     val weightedDropChance = weight / totalWeight
                     acc + weightedDropChance * value
-
                 }
                 new Item with Value {
-                  override val dropLevel: Int =
-                    enabledUniques.map(_.dropLevel).min
+                  override val dropLevel: Int = enabledUniques.map(_.dropLevel).min
                   override val dropEnabled: Boolean = true
                   override val name: String = ""
                   override val `class`: String = ""
@@ -52,15 +53,15 @@ object Uniques extends AutomatedCategory {
                     OptionT.pure(value)
                 }
               }
-            itemWithWeightedValue.getOrElseF(
-              uniques
-                .traverse(unique => unique.rarity.map(unique -> _)) //For each unique get its rarity
-                .map(_.toList.maxBy(_._2)._1)                       //Keep only the rarest
-            )
-          }
-          .toList
-          .sequence
-          .map(NonEmptyList.fromListUnsafe)
+          itemWithWeightedValue.getOrElseF(
+            uniques
+              .traverse(unique => unique.rarity.map(unique -> _)) //For each unique get its rarity
+              .map(_.toList.maxBy(_._2)._1)                       //Keep only the rarest
+          )
+        }
+        .toList
+        .sequence
+        .map(NonEmptyList.fromListUnsafe)
     )
 
   override protected def action: Priced => Action = {

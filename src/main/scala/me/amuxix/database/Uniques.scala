@@ -5,12 +5,14 @@ import me.amuxix.items.UniqueItem
 
 class UniquesTable(tag: Tag) extends Table[UniqueItem](tag, "uniques") with CommonColumns[UniqueItem] {
   def base = column[String]("base")
+  def league = column[String]("league")
 
   override def * =
     (
       name,
       base,
       dropEnabled,
+      league.?,
     ).mapTo[UniqueItem]
 }
 

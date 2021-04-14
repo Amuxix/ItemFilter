@@ -1,0 +1,2 @@
+UPDATE uniques SET drop_enabled = false WHERE name IN ('Sudden Ignition', 'Pitch Darkness', 'Collateral Damage', 'Apparitions', 'Violent Dead');
+UPDATE currency SET drop_enabled = false WHERE name = 'Unshaping Orb';

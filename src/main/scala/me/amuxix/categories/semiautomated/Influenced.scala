@@ -6,7 +6,7 @@ import me.amuxix.actions.Action
 import me.amuxix.categories.SemiAutomatedCategory
 import me.amuxix.conditions.{Condition, Influences}
 import me.amuxix.ItemFilter.ec
-import me.amuxix.actions.Color.{darkRed, goodYellow, white}
+import me.amuxix.actions.Color.{darkRed, goodYellow}
 import me.amuxix.database.Bases
 import me.amuxix.items.GenericItem
 
@@ -32,9 +32,5 @@ object Influenced extends SemiAutomatedCategory {
   override protected def actionForRarity: FilterRarity => Action = {
     case Undetermined =>
       Action(textColor = goodYellow, backgroundColor = darkRed, borderColor = goodYellow)
-    case Common =>
-      Action()
-    case Leveling =>
-      Action(size = 45, borderColor = white)
   }
 }

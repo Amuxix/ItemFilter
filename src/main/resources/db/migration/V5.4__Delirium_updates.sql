@@ -1,0 +1,1 @@
+DELETE FROM currency WHERE currency.name = 'Delirium Orb';
