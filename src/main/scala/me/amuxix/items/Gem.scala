@@ -1,7 +1,7 @@
 package me.amuxix.items
-import me.amuxix.{FilterRarity, Leveling}
 
-import scala.concurrent.Future
+import me.amuxix.{FilterRarity, Leveling}
+import me.amuxix.providers.Provider
 
 case class Gem(
   name: String,
@@ -11,6 +11,6 @@ case class Gem(
   quality: Option[Int] = None,
 ) extends Item
     with Quality {
-  override val rarity: Future[FilterRarity] = Future.successful(Leveling)
+  def rarity(provider: Provider): FilterRarity = Leveling
   lazy val `class`: String = "Gem"
 }

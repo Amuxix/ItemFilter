@@ -1,19 +1,18 @@
 package me.amuxix.categories.automated
-import cats.data.{NonEmptyList, OptionT}
+import cats.data.NonEmptyList
 import me.amuxix.actions.Action
 import me.amuxix.categories.AutomatedCategory
 import me.amuxix.items.{Item, Value}
 import me.amuxix.Priced
-
-import scala.concurrent.Future
+import me.amuxix.providers.Provider
 
 object Bases extends AutomatedCategory {
 
   trait BasePrice extends Value {
-    override def chaosValuePerSlot: OptionT[Future, Double] = ???
+    override def chaosValuePerSlot(provider: Provider): Option[Double] = ???
   }
 
-  override protected def items: Future[NonEmptyList[Item]] = ???
+  override protected def items(provider: Provider): NonEmptyList[Item] = ???
   /*DatabaseBases.allEquipment.map { items =>
     for {
       item <- items

@@ -1,12 +1,12 @@
 package me.amuxix.items
-import me.amuxix.{FilterRarity, Mythic}
 
-import scala.concurrent.Future
+import me.amuxix.{FilterRarity, Mythic}
+import me.amuxix.providers.Provider
 
 case class Watchstone(name: String, dropEnabled: Boolean) extends Item {
   override val dropLevel: Int = 1
 
-  override val rarity: Future[FilterRarity] = Future.successful(Mythic)
+  override def rarity(provider: Provider): FilterRarity = Mythic
 
   override val `class`: String = "Atlas Region Upgrade Item"
 }

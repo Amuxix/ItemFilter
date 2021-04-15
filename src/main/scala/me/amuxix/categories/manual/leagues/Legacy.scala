@@ -5,13 +5,10 @@ import me.amuxix.{Block, FilterLevel}
 import me.amuxix.actions.{Action, Color}
 import me.amuxix.categories.Category
 import me.amuxix.conditions.Condition
-
-import scala.concurrent.Future
+import me.amuxix.providers.Provider
 
 object Legacy extends Category {
-  val leaguestones = Block(Condition(`class` = "Leaguestone"), Action(size = 45, textColor = Color.black, backgroundColor = Color.legacyBlue))
+  private val leaguestones = Block(Condition(`class` = "Leaguestone"), Action(size = 45, textColor = Color.black, backgroundColor = Color.legacyBlue))
 
-  override def categoryBlocks: FilterLevel => Future[NonEmptyList[Block]] = { _ =>
-    Future.successful(NonEmptyList.one(leaguestones))
-  }
+  override def categoryBlocks(provider: Provider): FilterLevel => NonEmptyList[Block] = _ => NonEmptyList.one(leaguestones)
 }

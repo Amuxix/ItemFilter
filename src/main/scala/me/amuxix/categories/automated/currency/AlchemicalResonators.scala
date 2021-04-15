@@ -4,14 +4,13 @@ import me.amuxix.{Common, Priced, Uncommon}
 import me.amuxix.actions.{Action, Blue, Circle, Triangle}
 import me.amuxix.actions.Color.{delveBlue, legacyBlue}
 import me.amuxix.categories.AutomatedCategory
-import me.amuxix.database.Resonators
 import me.amuxix.items.Item
-
-import scala.concurrent.Future
+import me.amuxix.providers.Provider
 
 object AlchemicalResonators extends AutomatedCategory {
-  override protected lazy val items: Future[NonEmptyList[Item]] =
-    Resonators.alchemical
+
+  override protected def items(provider: Provider): NonEmptyList[Item] = provider.resonators.alchemical
+
   override protected def action: Priced => Action = {
     case Common =>
       Action(

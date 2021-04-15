@@ -11,8 +11,7 @@ object Block {
 
 case class Block(condition: Condition, action: Action, rarity: FilterRarity = Undetermined) extends Mergeable[Block] {
 
-  def show(filterLevel: FilterLevel): Boolean =
-    rarity >= filterLevel.cutoffRarity
+  def show(filterLevel: FilterLevel): Boolean = rarity >= filterLevel.cutoffRarity
 
   def write(filterLevel: FilterLevel): String = {
     val showText = if (show(filterLevel)) "Show" else "Hide"
@@ -20,7 +19,7 @@ case class Block(condition: Condition, action: Action, rarity: FilterRarity = Un
     showText + actionsAndConditions
   }
 
-  def hidden: Block = Block(
+  lazy val hidden: Block = Block(
     condition,
     action.copy(
       sound = None,
@@ -30,9 +29,7 @@ case class Block(condition: Condition, action: Action, rarity: FilterRarity = Un
     rarity = AlwaysHide
   )
 
-  override def canMerge(other: Block): Boolean =
-    action == other.action && rarity == other.rarity && (condition canMerge other.condition)
+  override def canMerge(other: Block): Boolean = action == other.action && rarity == other.rarity && (condition canMerge other.condition)
 
-  override def merge(other: Block): Block =
-    Block(condition merge other.condition, action, rarity)
+  override def merge(other: Block): Block = Block(condition merge other.condition, action, rarity)
 }

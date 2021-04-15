@@ -1,16 +1,13 @@
 package me.amuxix.categories
 
 import cats.data.NonEmptyList
-import cats.implicits.catsStdInstancesForFuture
 import me.amuxix.{Block, FilterLevel, FilterRarity}
-import me.amuxix.ItemFilter.ec
 import me.amuxix.actions.Action
 import me.amuxix.items.GenericItem
-
-import scala.concurrent.Future
+import me.amuxix.providers.Provider
 
 trait SemiAutomatedCategory extends Category {
-  protected val categoryItems: Future[NonEmptyList[GenericItem]]
+  protected def categoryItems(provider: Provider): NonEmptyList[GenericItem]
   protected def actionForRarity: FilterRarity => Action
   /*
   rarity match {
@@ -26,7 +23,5 @@ trait SemiAutomatedCategory extends Category {
   }
    */
 
-  override protected def categoryBlocks: FilterLevel => Future[NonEmptyList[Block]] = { _ =>
-    categoryItems.flatMap(_.traverse(_.block(actionForRarity)))
-  }
+  override protected def categoryBlocks(provider: Provider): FilterLevel => NonEmptyList[Block] = _ => categoryItems(provider).map(_.block(provider, actionForRarity))
 }
