@@ -1,23 +1,28 @@
 package me.amuxix.providers
 
-import cats.data.OptionT
 import me.amuxix.items.Item
+import me.amuxix.providers.items._
+import me.amuxix.providers.prices.PriceProvider
 
-import scala.concurrent.{ExecutionContext, Future}
+class Provider(
+  prices: PriceProvider,
+  items: ItemProvider,
+) {
+  def getPriceOf(item: Item): Option[Double] = prices.getPriceOf(item)
 
-abstract class Provider(implicit ec: ExecutionContext) {
-
-  private val itemPrices: Future[Map[String, Double]] = getAllItemsPrices.map { prices =>
-    println("Got prices successfully")
-    (("chaos orb", 1d) +: prices.map {
-      case Price(name, chaosEquivalent) => name -> chaosEquivalent
-    }).toMap
-  }
-
-  def getPriceOf(item: Item): OptionT[Future, Double] = OptionT(itemPrices.map(_.get(item.name.toLowerCase)))
-
-  /**
-    * This should update price for all items so they are accessible on itemPrices map
-    */
-  protected def getAllItemsPrices: Future[List[Price]]
+  lazy val bases: BasesProvider = items.bases
+  lazy val currencies: CurrenciesProvider = items.currencies
+  lazy val currencyFragments: CurrencyFragmentsProvider = items.currencyFragments
+  lazy val divinationCards: DivinationCardsProvider = items.divinationCards
+  lazy val essences: EssencesProvider = items.essences
+  lazy val incubators: IncubatorsProvider = items.incubators
+  lazy val incursionItems: IncursionItemsProvider = items.incursionItems
+  lazy val mapFragmentFragments: MapFragmentFragmentsProvider = items.mapFragmentFragments
+  lazy val mapFragments: MapFragmentsProvider = items.mapFragments
+  lazy val maps: MapsProvider = items.maps
+  lazy val metamorphSamples: MetamorphSamplesProvider = items.metamorphSamples
+  lazy val prophecies: PropheciesProvider = items.prophecies
+  lazy val resonators: ResonatorsProvider = items.resonators
+  lazy val uniques: UniquesProvider = items.uniques
+  lazy val watchstones: WatchstonesProvider = items.watchstones
 }

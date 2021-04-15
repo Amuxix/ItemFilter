@@ -1,16 +1,13 @@
 package me.amuxix.items
-import cats.data.OptionT
-import cats.implicits._
-import me.amuxix._
-import me.amuxix.ItemFilter.ec
 
-import scala.concurrent.Future
+import me.amuxix._
+import me.amuxix.providers.Provider
 
 trait Value {
-  def chaosValuePerSlot: OptionT[Future, Double]
+  def chaosValuePerSlot(provider: Provider): Option[Double]
 
-  lazy val rarity: Future[FilterRarity] =
-    chaosValuePerSlot.fold[FilterRarity](Undetermined) { chaosValuePerSlot =>
+  def rarity(provider: Provider): FilterRarity =
+    chaosValuePerSlot(provider).fold[FilterRarity](Undetermined) { chaosValuePerSlot =>
       if (chaosValuePerSlot >= Mythic.threshold) Mythic
       else if (chaosValuePerSlot >= Epic.threshold) Epic
       else if (chaosValuePerSlot >= Rare.threshold) Rare

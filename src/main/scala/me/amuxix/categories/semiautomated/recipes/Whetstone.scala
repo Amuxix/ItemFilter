@@ -1,17 +1,11 @@
 package me.amuxix.categories.semiautomated.recipes
 
-import cats.data.OptionT
-import cats.implicits._
 import me.amuxix.ItemFilter
-import me.amuxix.ItemFilter.ec
 import me.amuxix.conditions.Condition
-import me.amuxix.database.Currencies
-
-import scala.concurrent.Future
+import me.amuxix.providers.Provider
 
 object Whetstone extends Sized {
   override lazy val condition: Condition =
     Condition(`class` = ItemFilter.settings.weaponClasses, quality = 20)
-  override lazy val chaosValue: OptionT[Future, Double] =
-    Currencies.getByName("Blacksmith's Whetstone").flatMap(_.chaosValuePerSlot)
+  override def chaosValue(provider: Provider): Option[Double] = provider.currencies.getByName("Blacksmith's Whetstone").flatMap(_.chaosValuePerSlot(provider))
 }

@@ -1,7 +1,7 @@
 package me.amuxix
 
 import cats.data.NonEmptyList
-import cats.effect.{ExitCode, IO, IOApp, Resource}
+import cats.effect.{IO, IOApp, Resource}
 import cats.implicits._
 import javax.swing.filechooser.FileSystemView
 import me.amuxix.categories.automated._
@@ -15,32 +15,23 @@ import me.amuxix.categories.semiautomated.recipes._
 import me.amuxix.categories.single._
 import me.amuxix.categories.single.legacy._
 import me.amuxix.database.PostgresProfile.api.Database
-import me.amuxix.providers.{PoeNinja, Provider}
+import me.amuxix.providers.items.ItemProvider
+import me.amuxix.providers.prices.{PoeNinja, PriceProvider}
+import me.amuxix.providers.Provider
 import org.flywaydb.core.Flyway
-import org.http4s._
-import org.http4s.client.Client
 import org.http4s.client.blaze.BlazeClientBuilder
-import org.http4s.client.dsl.io._
-import org.http4s.dsl.io._
-import org.http4s.headers.Cookie
-import org.http4s.multipart._
 import slick.jdbc.DataSourceJdbcDataSource
 import slick.jdbc.hikaricp.HikariCPJdbcDataSource
 
 import java.io.{File, PrintWriter}
-import scala.concurrent.ExecutionContext
-import scala.util.matching.Regex
 
-object ItemFilter extends IOApp {
+object ItemFilter extends IOApp.Simple {
   //TODO Keep price history
   //TODO Fallback price from parent league
   val league: League = Standard
-  implicit val ec = ExecutionContext.global
   val settings = FilterSettings.fromConfig()
   val cutoffs = settings.levelCutoffs
   lazy val db = Database.forConfig("db")
-
-  var provider: Provider = _
 
   def runMigrations: IO[Unit] = {
     val ds = db.source match {
@@ -49,10 +40,10 @@ object ItemFilter extends IOApp {
       case other                       => throw new IllegalStateException(s"Unknown DataSource type: $other")
     }
     val flyway = Flyway.configure.dataSource(ds).baselineOnMigrate(true).load
-    IO(flyway.migrate()).flatMap(migrations => IO(println(s"Ran $migrations migrations.")))
+    IO(flyway.migrate()).flatMap(migrations => IO.println(s"Ran ${migrations.migrationsExecuted} migrations."))
   }
 
-  override def run(args: List[String]): IO[ExitCode] = {
+  override def run: IO[Unit] = {
     lazy val poeFolder = FileSystemView.getFileSystemView.getDefaultDirectory.getPath + File.separatorChar + "My Games" + File.separatorChar + "Path of Exile" + File.separatorChar
 
     //TODO show items with white sockets
@@ -104,22 +95,24 @@ object ItemFilter extends IOApp {
 
     for {
       _ <- runMigrations
+      ec <- IO.executionContext
       (client, finalizer) <- BlazeClientBuilder[IO](ec).resource.allocated
-      _ = provider = new PoeNinja(client, league)
-      factory = new FilterFactory(league, categories, legacyCategories)
+      priceProvider <- PriceProvider.fromProvider(new PoeNinja(client, league))
+      itemProvider <- ItemProvider.fromDB
+      provider = new Provider(priceProvider, itemProvider)
+      factory = new FilterFactory(league, categories, legacyCategories, provider)
       filters <- List(Reduced, Diminished, Normal, Racing).traverse(factory.create)
       //_ <- filters.traverse_(uploadToGGG(client, _))
       _ <- filters.traverse_(writeFilterFile(poeFolder, _))
       _ <- finalizer
-    } yield ExitCode.Success
+    } yield ()
   }
 
-  private def getSecurityHash(client: Client[IO], uri: Uri): IO[String] = {
+  /*private def getSecurityHash(client: Client[IO], uri: Uri): IO[String] = {
     val hashRegex: Regex = ".+<input type=\"hidden\" name=\"hash\" value=\"([0-9a-z-]+)\">.+".r
     for {
-      request <- GET(uri)
-      requestWithHeader = request.withHeaders(Cookie(NonEmptyList.one(RequestCookie("cookie", settings.ggg.cookie))))
-      response <- client.fetch[String](request) {
+      //requestWithHeader = request.withHeaders(Cookie(NonEmptyList.one(RequestCookie("cookie", settings.ggg.cookie))))
+      response <- client.run(GET.apply(uri)).use {
         case response if response.status.isSuccess =>
           println(response)
           response.as[String]
@@ -149,11 +142,11 @@ object ItemFilter extends IOApp {
         Part.formData("hash", hash),
         Part.formData("submit", "Submit"),
       ))
-      request <- POST(multipart, uri)
+      request = POST(multipart, uri)
       requestWithHeader = request.withHeaders(multipart.headers.toList :+ Cookie(NonEmptyList.one(RequestCookie("cookie", settings.ggg.cookie))): _*)
-      response <- client.fetch[String](requestWithHeader) { case response if response.status.isSuccess => response.as[String] }
+      response <- client.run(requestWithHeader).use { case response if response.status.isSuccess => response.as[String] }
     } yield () //println(response)
-  }
+  }*/
 
   private def writer(poeFolder: String, filterName: String): Resource[IO, PrintWriter] = Resource.fromAutoCloseable(IO(new PrintWriter(new File(poeFolder + s"$filterName.filter"))))
 

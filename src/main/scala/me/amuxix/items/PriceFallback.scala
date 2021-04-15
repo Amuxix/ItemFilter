@@ -1,8 +1,7 @@
 package me.amuxix.items
-import cats.data.OptionT
 
-import scala.concurrent.Future
+import me.amuxix.providers.Provider
 
 trait PriceFallback { item: ProviderPrice =>
-  def fallback: OptionT[Future, Double]
+  def fallback(provider: Provider): Option[Double]
 }

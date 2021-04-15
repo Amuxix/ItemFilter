@@ -1,17 +1,17 @@
 package me.amuxix
 
 import cats.data.NonEmptyList
-import cats.effect.{ContextShift, IO}
+import cats.effect.IO
 import cats.implicits._
 import me.amuxix.categories.Category
 import me.amuxix.categories.semiautomated.LastCall
+import me.amuxix.providers.Provider
 
 class FilterFactory(
   league: League,
   categories: NonEmptyList[Category],
   legacyCategories: NonEmptyList[Category],
-)(
-  implicit cs: ContextShift[IO],
+  provider: Provider,
 ) {
   case class Filter(
     name: String,
@@ -26,19 +26,16 @@ class FilterFactory(
   }
 
   private def lastCallBlock(filterLevel: FilterLevel) =
-    IO.fromFuture(IO(LastCall.blocks(filterLevel)))
-      .map(_.map(_.write(filterLevel)))
+    LastCall.blocks(filterLevel, provider).map(_.write(filterLevel))
 
   def create(filterLevel: FilterLevel): IO[Filter] = {
     for {
       (shown, hidden) <- allCategories.parTraverse { category =>
-        IO.fromFuture(IO(category.partitionHiddenAndShown(filterLevel)))
+        IO(category.partitionHiddenAndShown(filterLevel, provider))
       }.map(_.toList.unzip)
-      lastCall <- lastCallBlock(filterLevel)
+      lastCall = lastCallBlock(filterLevel)
       filterName = s"Amuxix${filterLevel.suffix}"
-    } yield {
-      println(s"Generating $filterName")
-      Filter(filterName, (shown ++ hidden ++ lastCall.toList).mkString, filterLevel)
-    }
+      _ <- IO.println(s"Generating $filterName")
+    } yield Filter(filterName, (shown ++ hidden ++ lastCall.toList).mkString, filterLevel)
   }
 }

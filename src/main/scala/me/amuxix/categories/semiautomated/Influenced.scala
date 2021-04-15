@@ -3,34 +3,28 @@ package me.amuxix.categories.semiautomated
 import cats.data.NonEmptyList
 import me.amuxix._
 import me.amuxix.actions.Action
+import me.amuxix.actions.Color.{darkRed, goodYellow}
 import me.amuxix.categories.SemiAutomatedCategory
 import me.amuxix.conditions.{Condition, Influences}
-import me.amuxix.ItemFilter.ec
-import me.amuxix.actions.Color.{darkRed, goodYellow}
-import me.amuxix.database.Bases
 import me.amuxix.items.GenericItem
-
-import scala.concurrent.Future
+import me.amuxix.providers.Provider
 
 object Influenced extends SemiAutomatedCategory {
-  override protected val categoryItems: Future[NonEmptyList[GenericItem]] =
-    Bases.allEquipment.map(_.flatMap { i =>
-      val fractured: GenericItem = new GenericItem {
-        override lazy val rarity: Future[FilterRarity] = Future.successful(Undetermined)
-        override lazy val condition: Future[Condition] = i.rare.map(_.copy(fracturedItem = true))
-      }
 
-      val withInfluence = NonEmptyList.fromListUnsafe(Influences.values.toList).map { influence =>
-        new GenericItem {
-          override lazy val rarity: Future[FilterRarity] = Future.successful(Undetermined)
-          override lazy val condition: Future[Condition] = i.rare.map(_.copy(influence = influence))
-        }
-      }
-      withInfluence :+ fractured
-    })
+  protected def categoryItems(provider: Provider): NonEmptyList[GenericItem] = provider.bases.allEquipment.flatMap { i =>
+    val fractured: GenericItem = new GenericItem {
+      override def rarity(provider: Provider): FilterRarity = Undetermined
+      override lazy val condition: Condition = i.rare.copy(fracturedItem = true)
+    }
 
-  override protected def actionForRarity: FilterRarity => Action = {
-    case Undetermined =>
-      Action(textColor = goodYellow, backgroundColor = darkRed, borderColor = goodYellow)
+    val withInfluence = NonEmptyList.fromListUnsafe(Influences.values.toList).map { influence =>
+      new GenericItem {
+        override def rarity(provider: Provider): FilterRarity = Undetermined
+        override lazy val condition: Condition = i.rare.copy(influence = influence)
+      }
+    }
+    withInfluence :+ fractured
   }
+
+  override protected def actionForRarity: FilterRarity => Action = { case Undetermined => Action(textColor = goodYellow, backgroundColor = darkRed, borderColor = goodYellow) }
 }

@@ -1,9 +1,7 @@
 package me.amuxix.items
 
-import cats.data.OptionT
-
-import scala.concurrent.Future
+import me.amuxix.providers.Provider
 
 trait Area {
-  val area: OptionT[Future, Int]
+  def area(provider: Provider): Option[Int]
 }

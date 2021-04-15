@@ -1,17 +1,16 @@
-package me.amuxix.providers
+package me.amuxix.providers.prices
 
 import cats.effect.IO
-import cats.implicits.{catsStdInstancesForFuture, catsStdInstancesForList, toTraverseOps}
+import cats.instances.list._
+import cats.syntax.traverse._
 import io.circe.{Decoder, HCursor}
 import io.circe.generic.semiauto.deriveDecoder
 import me.amuxix.League
-import me.amuxix.providers.PoeNinja._
+import me.amuxix.providers.prices.PoeNinja._
 import org.http4s.client.Client
 import org.http4s.Uri
 import org.http4s.circe.CirceEntityDecoder.circeEntityDecoder
 import org.http4s.implicits._
-
-import scala.concurrent.{ExecutionContext, Future}
 
 object PoeNinja {
   val baseURI: Uri = uri"https://poe.ninja/api/data" //TODO: Extract this to config
@@ -22,8 +21,8 @@ object PoeNinja {
       price <- c.downField(priceFieldName).as[Double]
     } yield Price(name.toLowerCase.trim, price)
 
-  val currencyLinesDecoder: Decoder[Price] = readLines("currencyTypeName", "chaosEquivalent")
-  val itemLinesDecoder: Decoder[Price] = readLines("name", "chaosValue")
+  private val currencyLinesDecoder: Decoder[Price] = readLines("currencyTypeName", "chaosEquivalent")
+  private val itemLinesDecoder: Decoder[Price] = readLines("name", "chaosValue")
 
   case class PoENinjaResponse(lines: List[Price])
 
@@ -33,10 +32,8 @@ object PoeNinja {
 class PoeNinja(
   client: Client[IO],
   league: League,
-)(
-  implicit ec: ExecutionContext
 ) extends Provider {
-  protected def getAllItemsPrices: Future[List[Price]] =
+  override def prices: IO[List[Price]] =
     List(
       //General
       ("Currency", baseURI / "currencyoverview", currencyLinesDecoder),
@@ -72,6 +69,6 @@ class PoeNinja(
             .withQueryParam("type", t)
             .withQueryParam("league", league)
 
-          client.expect[PoENinjaResponse](uriWithQueryParams).map(_.lines).unsafeToFuture()
+          client.expect[PoENinjaResponse](uriWithQueryParams).map(_.lines)
       }
 }

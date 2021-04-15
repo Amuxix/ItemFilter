@@ -1,64 +1,55 @@
 package me.amuxix.categories.semiautomated
 
-import cats.data.{NonEmptyList, OptionT}
-import cats.implicits._
+import cats.data.NonEmptyList
 import me.amuxix._
-import me.amuxix.ItemFilter._
 import me.amuxix.actions.{Action, Green, Sound}
 import me.amuxix.actions.Color.{darkRed, goodYellow, red, white}
 import me.amuxix.categories.SemiAutomatedCategory
 import me.amuxix.conditions.Condition
-import me.amuxix.database.{Bases, Currencies}
 import me.amuxix.items.{GenericItem, Value}
-
-import scala.concurrent.Future
+import me.amuxix.providers.Provider
 
 object General extends SemiAutomatedCategory {
-  override protected lazy val categoryItems: Future[NonEmptyList[GenericItem]] =
-    Bases.bestItems.map { bestItems =>
+  protected def categoryItems(provider: Provider): NonEmptyList[GenericItem] = {
       val general = NonEmptyList.of(
         new GenericItem {
-          override lazy val rarity: Future[FilterRarity] = Future.successful(AlwaysShow)
-          override lazy val condition: Future[Condition] = Future.successful(Condition(`class` = Seq("Quest Items", "Labyrinth Item", "Pantheon Soul", "Labyrinth Trinket")))
+          override def rarity(provider: Provider): FilterRarity = AlwaysShow
+          override lazy val condition: Condition = Condition(`class` = Seq("Quest Items", "Labyrinth Item", "Pantheon Soul", "Labyrinth Trinket"))
         },
         new GenericItem {
-          override lazy val rarity: Future[FilterRarity] = Future.successful(Mythic)
-          override lazy val condition: Future[Condition] = Future.successful(Condition(base = "Albino Rhoa Feather"))
+          override def rarity(provider: Provider): FilterRarity = Mythic
+          override lazy val condition: Condition = Condition(base = "Albino Rhoa Feather")
         },
         new GenericItem {
-          override lazy val rarity: Future[FilterRarity] = Future.successful(Mythic)
-          override lazy val condition: Future[Condition] = Future.successful(Condition(`class` = "Fishing Rod"))
+          override def rarity(provider: Provider): FilterRarity = Mythic
+          override lazy val condition: Condition = Condition(`class` = "Fishing Rod")
         },
         new GenericItem {
-          override lazy val rarity: Future[FilterRarity] = Future.successful(Mythic)
-          override lazy val condition: Future[Condition] = Future.successful(Condition(linkedSockets = 6))
+          override def rarity(provider: Provider): FilterRarity = Mythic
+          override lazy val condition: Condition = Condition(linkedSockets = 6)
         },
         new GenericItem {
-          override lazy val rarity: Future[FilterRarity] = Future.successful(Epic)
-          override lazy val condition: Future[Condition] = Future.successful(Condition(linkedSockets = 5))
+          override def rarity(provider: Provider): FilterRarity = Epic
+          override lazy val condition: Condition = Condition(linkedSockets = 5)
         },
         new GenericItem with Value {
-          override def chaosValuePerSlot: OptionT[Future, Double] =
+          override def chaosValuePerSlot(provider: Provider): Option[Double] =
             for {
-              jew <- Currencies.getByName("Jeweller's Orb")
-              sixSocketValue <- jew.chaosValuePerSlot.map(_ * 7)
+              jew <- provider.currencies.getByName("Jeweller's Orb")
+              sixSocketValue <- jew.chaosValuePerSlot(provider).map(_ * 7)
             } yield sixSocketValue
-          override lazy val condition: Future[Condition] = Future.successful(Condition(sockets = 6))
+          override lazy val condition: Condition = Condition(sockets = 6)
         },
       )
-      val best = bestItems.flatMap { i =>
+      val crafting = provider.bases.bestItems.flatMap { i =>
         NonEmptyList.of(
           new GenericItem {
-            override lazy val rarity: Future[FilterRarity] = Future.successful(Undetermined)
-            override lazy val condition: Future[Condition] = i.topRare
-          },
-          new GenericItem {
-            override lazy val rarity: Future[FilterRarity] = Future.successful(AlwaysHide)
-            override lazy val condition: Future[Condition] = i.crafting
+            override def rarity(provider: Provider): FilterRarity = AlwaysHide
+            override lazy val condition: Condition = i.crafting
           }
         )
       }
-      general concatNel best
+      general concatNel crafting
     }
 
   override protected def actionForRarity: FilterRarity => Action = {

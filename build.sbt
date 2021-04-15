@@ -1,7 +1,7 @@
 name := "ItemFilter"
 version := "3.0.0"
 
-scalaVersion := "2.13.1"
+scalaVersion := "2.13.5"
 // format: off
 javacOptions ++= Seq("-Xlint", "-encoding", "UTF-8")
 scalacOptions ++= Seq(
@@ -33,25 +33,25 @@ scalacOptions ++= Seq(
 
 addCompilerPlugin("com.olegpy" %% "better-monadic-for" % "0.3.1")
 
-val http4sVersion = "0.21.8"
-val circeVersion = "0.12.3"
-val slickVersion = "0.18.1"
+val http4sVersion = "1.0.0-M21"
+val circeVersion = "0.14.0-M5"
 libraryDependencies ++= Seq(
-  "org.scala-lang.modules" %% "scala-parallel-collections" % "0.2.0",
-  "org.typelevel"          %% "cats-core"                  % "2.1.0",
-  "org.typelevel"          %% "cats-effect"                % "2.0.0",
+  "org.scala-lang.modules" %% "scala-parallel-collections" % "1.0.2",
+  "org.typelevel"          %% "cats-core"                  % "2.5.0",
+  "org.typelevel"          %% "cats-effect"                % "3.0.2",
   "org.http4s"             %% "http4s-dsl"                 % http4sVersion,
   "org.http4s"             %% "http4s-blaze-client"        % http4sVersion,
   "org.http4s"             %% "http4s-circe"               % http4sVersion,
   "io.circe"               %% "circe-core"                 % circeVersion,
   "io.circe"               %% "circe-generic"              % circeVersion,
   "io.circe"               %% "circe-parser"               % circeVersion,
-  "com.github.pureconfig"  %% "pureconfig"                 % "0.12.2",
-  "org.slf4j"              % "slf4j-nop"                   % "2.0.0-alpha1",
-  "com.github.tminglei"    %% "slick-pg"                   % slickVersion,
-  "com.typesafe.slick"     %% "slick-hikaricp"             % "3.3.2",
-  "org.postgresql"         % "postgresql"                  % "42.2.9",
-  "org.flywaydb"           % "flyway-core"                 % "6.1.3",
+  "com.github.pureconfig"  %% "pureconfig"                 % "0.14.1",
+  "org.slf4j"               % "slf4j-nop"                  % "2.0.0-alpha1",
+  "com.github.tminglei"    %% "slick-pg"                   % "0.19.5",
+  "com.typesafe.slick"     %% "slick-hikaricp"             % "3.3.3",
+  "org.postgresql"          % "postgresql"                 % "42.2.9",
+  "org.flywaydb"            % "flyway-core"                % "7.7.3",
+  "com.beachape"           %% "enumeratum"                 % "1.6.1",
   //"com.github.blemale"     %% "scaffeine"                     % "3.1.0",
   //"org.scalatest"          %% "scalatest"                     % "3.1.0-RC3" % Test,
   //"com.codecommit"         %% "cats-effect-testing-scalatest" % "0.3.0" % Test,
@@ -61,4 +61,4 @@ libraryDependencies ++= Seq(
 enablePlugins(JavaServerAppPackaging)
 maintainer := "amuxix@gmail.com"
 
-logBuffered in Test := false
+Test / logBuffered := false

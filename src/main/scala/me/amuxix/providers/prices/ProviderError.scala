@@ -1,4 +1,4 @@
-package me.amuxix.providers
+package me.amuxix.providers.prices
 
 sealed abstract class ProviderError(val errorMessage: String)
 

@@ -8,35 +8,27 @@ import me.amuxix.actions.Color.{black, white}
 import me.amuxix.categories.SemiAutomatedCategory
 import me.amuxix.conditions.{Condition, Normal, Rare}
 import me.amuxix.items.GenericItem
-
-import scala.concurrent.Future
+import me.amuxix.providers.Provider
 
 object LastCall extends SemiAutomatedCategory {
-  override protected val categoryItems: Future[NonEmptyList[GenericItem]] =
-    Future.successful(
-      NonEmptyList.of(
-        new GenericItem {
-          override lazy val rarity: Future[FilterRarity] =
-            Future.successful(AlwaysHide)
-          override lazy val condition: Future[Condition] = Future.successful(
-            Condition(
-              `class` = settings.accessoriesClasses ++ settings.armourClasses ++ settings.weaponClasses ++ settings.shieldClasses ++ settings.flaskClasses,
-              rarity = (Normal, Rare),
-            )
-          )
-        },
-        new GenericItem {
-          override lazy val rarity: Future[FilterRarity] =
-            Future.successful(AlwaysShow)
-          override lazy val condition: Future[Condition] =
-            Future.successful(Condition())
-        }
+
+  protected def categoryItems(provider: Provider): NonEmptyList[GenericItem] = NonEmptyList.of(
+    new GenericItem {
+      override def rarity(provider: Provider): FilterRarity = AlwaysHide
+
+      override lazy val condition: Condition = Condition(
+        `class` = settings.accessoriesClasses ++ settings.armourClasses ++ settings.weaponClasses ++ settings.shieldClasses ++ settings.flaskClasses,
+        rarity = (Normal, Rare),
       )
-    )
+    },
+    new GenericItem {
+      override def rarity(provider: Provider): FilterRarity = AlwaysShow
+      override lazy val condition: Condition = Condition()
+    }
+  )
+
   override protected def actionForRarity: FilterRarity => Action = {
-    case AlwaysHide =>
-      Action(size = 18, backgroundColor = black.halfTransparent, borderColor = black)
-    case _ =>
-      Action(textColor = white.darken, backgroundColor = white, borderColor = white)
+    case AlwaysHide => Action(size = 18, backgroundColor = black.halfTransparent, borderColor = black)
+    case _          => Action(textColor = white.darken, backgroundColor = white, borderColor = white)
   }
 }

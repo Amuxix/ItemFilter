@@ -6,14 +6,11 @@ import me.amuxix.actions.{Action, Blue, Circle}
 import me.amuxix.actions.Color.{delveOrange, scarabBlue}
 import me.amuxix.actions.Sound.{epic, myths}
 import me.amuxix.categories.AutomatedCategory
-import me.amuxix.database.{MapFragments => DBMapFragments}
 import me.amuxix.items.Item
-
-import scala.concurrent.Future
+import me.amuxix.providers.Provider
 
 object Scarabs extends AutomatedCategory {
-  override protected lazy val items: Future[NonEmptyList[Item]] =
-    DBMapFragments.scarabs
+  override protected def items(provider: Provider): NonEmptyList[Item] = provider.mapFragments.scarabs
   private val baseAction = Action(
     textColor = delveOrange,
     borderColor = scarabBlue,

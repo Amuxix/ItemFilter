@@ -1,12 +1,7 @@
 package me.amuxix.items
 
-import cats.data.OptionT
-import cats.implicits.catsStdInstancesForFuture
-import me.amuxix.ItemFilter.ec
-import me.amuxix.database.MapFragments
 import me.amuxix.database.types.MapFragment.MapFragmentType
-
-import scala.concurrent.Future
+import me.amuxix.providers.Provider
 
 case class MapFragmentFragment(
   name: String,
@@ -18,9 +13,11 @@ case class MapFragmentFragment(
     with PriceFallback {
   override val dropLevel: Int = 1
 
-  override def fallback: OptionT[Future, Double] =
-    for {
-      mapFragment <- OptionT(MapFragments.all.map(_.find(_.name == fragmentOf)))
-      value <- mapFragment.chaosValuePerSlot
-    } yield value / stackSize
+  override def fallback(provider: Provider): Option[Double] =
+  for {
+    mapFragment <- provider.mapFragments.all.find(_.name == fragmentOf)
+    value <- mapFragment.chaosValuePerSlot(provider)
+  } yield value / stackSize
+
+  override val itemType: String = fragmentType.toString
 }

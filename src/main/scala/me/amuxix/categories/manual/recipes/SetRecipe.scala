@@ -6,9 +6,8 @@ import me.amuxix.ItemFilter.settings
 import me.amuxix.actions.{Action, Color}
 import me.amuxix.actions.Color.black
 import me.amuxix.categories.Category
-import me.amuxix.conditions.{Rare, Normal => _, _}
-
-import scala.concurrent.Future
+import me.amuxix.conditions.{Normal => _, _}
+import me.amuxix.providers.Provider
 
 abstract class SetRecipe(minItemLevel: Int, color: Color) extends Category {
   private val equipmentAction = Action(size = 34, textColor = color, borderColor = color, backgroundColor = black)
@@ -43,12 +42,12 @@ abstract class SetRecipe(minItemLevel: Int, color: Color) extends Category {
     )
   )
 
-  override def categoryBlocks: FilterLevel => Future[NonEmptyList[Block]] = {
+  override protected def categoryBlocks(provider: Provider): FilterLevel => NonEmptyList[Block] = {
     case Normal =>
-      Future.successful(NonEmptyList.of(accessories, weapons.hidden, smallBows.hidden, armor.hidden))
+      NonEmptyList.of(accessories, weapons.hidden, smallBows.hidden, armor.hidden)
     case Racing =>
-      Future.successful(NonEmptyList.of(accessories, weapons, smallBows, armor))
+      NonEmptyList.of(accessories, weapons, smallBows, armor)
     case _ =>
-      Future.successful(NonEmptyList.of(accessories.hidden, weapons.hidden, smallBows.hidden, armor.hidden))
+      NonEmptyList.of(accessories.hidden, weapons.hidden, smallBows.hidden, armor.hidden)
   }
 }

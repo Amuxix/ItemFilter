@@ -5,12 +5,10 @@ import me.amuxix.actions._
 import me.amuxix.actions.Color.{black, prophecyPink}
 import me.amuxix.categories.AutomatedCategory
 import me.amuxix.items.Item
-
-import scala.concurrent.Future
+import me.amuxix.providers.Provider
 
 object Prophecies extends AutomatedCategory {
-  override protected lazy val items: Future[NonEmptyList[Item]] =
-    database.Prophecies.all
+  override protected def items(provider: Provider): NonEmptyList[Item] = provider.prophecies.all
   override protected def action: Priced => Action = {
     case Common =>
       Action(

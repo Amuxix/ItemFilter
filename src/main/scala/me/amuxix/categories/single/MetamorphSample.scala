@@ -8,14 +8,5 @@ import me.amuxix.conditions.Condition
 
 object MetamorphSample extends SingleConditionAndActionCategory {
   override protected val condition: Condition = Condition(`class` = "Metamorph Sample")
-  override protected val action: Action =
-    Action(
-      size = 45,
-      sound = epic,
-      backgroundColor = legacyBlue,
-      textColor = black,
-      borderColor = black,
-      minimapIcon = (Green, Star),
-      beam = Green,
-    )
+  override protected val action: Action = Action(size = 45, sound = epic, backgroundColor = legacyBlue, textColor = black, borderColor = black, minimapIcon = (Green, Star), beam = Green)
 }

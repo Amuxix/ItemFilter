@@ -5,15 +5,11 @@ import me.amuxix.{Block, FilterLevel}
 import me.amuxix.actions.{Action, Color}
 import me.amuxix.categories.Category
 import me.amuxix.conditions.Condition
-
-import scala.concurrent.Future
+import me.amuxix.providers.Provider
 
 object Talisman extends Category {
 
-  val talismans =
-    Block(Condition(base = "Talisman"), Action(borderColor = Color.pink))
+  private val talismans = Block(Condition(base = "Talisman"), Action(borderColor = Color.pink))
 
-  override def categoryBlocks: FilterLevel => Future[NonEmptyList[Block]] = { _ =>
-    Future.successful(NonEmptyList.one(talismans))
-  }
+  override def categoryBlocks(provider: Provider): FilterLevel => NonEmptyList[Block] = _ => NonEmptyList.one(talismans)
 }
