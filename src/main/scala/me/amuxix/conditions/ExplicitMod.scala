@@ -2,8 +2,6 @@ package me.amuxix.conditions
 import me.amuxix.{InvalidArgument, Mergeable, Writable}
 
 object ExplicitMod {
-  implicit def string2BaseType(string: String*): ExplicitMod =
-    ExplicitMod(string: _*)
 }
 
 case class ExplicitMod(mods: String*) extends Writable with Mergeable[ExplicitMod] {

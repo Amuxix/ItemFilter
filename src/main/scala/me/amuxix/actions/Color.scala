@@ -8,8 +8,6 @@ import me.amuxix.actions.Color.{darknessFactor, lightenFactor}
   * Created by Amuxix on 03/03/2017.
   */
 object Color {
-  implicit def tuple32Color(tuple3: (Int, Int, Int)): Color = new Color(tuple3._1, tuple3._2, tuple3._3)
-
   def apply(r: Int, g: Int, b: Int): Color = new Color(r, g, b)
 
   val transparent = Color(0, 0, 0, 0)

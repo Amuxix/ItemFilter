@@ -3,8 +3,6 @@ package me.amuxix.conditions
 import me.amuxix.{InvalidArgument, Mergeable, Writable}
 
 object ItemClass {
-  implicit def String2ItemClass(string: String*): ItemClass =
-    ItemClass(string: _*)
 }
 
 case class ItemClass(`class`: String*) extends Writable with Mergeable[ItemClass] {

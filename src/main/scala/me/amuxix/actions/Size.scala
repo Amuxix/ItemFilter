@@ -7,13 +7,12 @@ import me.amuxix.actions.Size._
   * Created by Amuxix on 03/03/2017.
   */
 object Size {
-  val default = 32
-  implicit def int2Size(size: Int): Size = Size(size)
-  val min: Int = 18
-  val max: Int = 45
+  val default: Size = Size(32)
+  private val min: Int = 1
+  private val max: Int = 45
 
-  val reduceAmount = 5
-  val enlargeAmount = 5
+  private val reduceAmount = 5
+  private val enlargeAmount = 5
 }
 case class Size(size: Int) extends Writable {
   if (size < Size.min || size > Size.max) throw new InvalidArgument
