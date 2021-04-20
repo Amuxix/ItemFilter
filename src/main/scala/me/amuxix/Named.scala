@@ -6,7 +6,7 @@ package me.amuxix
 trait Named {
 
   def className: String = {
-    val spaced = getClass.getSimpleName.split("\\$").last.replaceAll("([a-z])([A-Z])", "$1 $2")
+    val spaced = Named.className(this).replaceAll("([a-z])([A-Z])", "$1 $2")
 
     Named.replacements.foldLeft(spaced) {
       case (string, fix) =>
@@ -16,6 +16,7 @@ trait Named {
 }
 
 object Named {
+  def className(obj: Any): String = obj.getClass.getSimpleName.split("\\$").last
 
   val replacements: Seq[String] = Seq(
     "Of",
