@@ -14,6 +14,8 @@ import me.amuxix.categories.semiautomated.currency._
 import me.amuxix.categories.semiautomated.recipes._
 import me.amuxix.categories.single._
 import me.amuxix.categories.single.legacy._
+import me.amuxix.database.PostgresProfile.api.Database
+import me.amuxix.providers.items.ItemProvider
 import me.amuxix.providers.prices.{PoeNinja, PriceProvider}
 import me.amuxix.providers.Provider
 import org.flywaydb.core.Flyway

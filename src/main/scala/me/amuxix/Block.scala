@@ -12,7 +12,7 @@ case class Block(condition: Condition, action: Action, rarity: FilterRarity = Un
 
   def show(filterLevel: FilterLevel): Boolean = rarity >= filterLevel.cutoffRarity
 
-  def write(filterLevel: FilterLevel, useContinue: Boolean = true): String = {
+  def write(filterLevel: FilterLevel, useContinue: Boolean = false): String = {
     val shown = show(filterLevel)
     val showText = if (shown) "Show" else "Hide"
 

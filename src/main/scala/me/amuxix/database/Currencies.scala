@@ -1,7 +1,8 @@
 package me.amuxix.database
 
-import me.amuxix.database.types.Currency
 import me.amuxix.database.types.Currency.CurrencyType
+import me.amuxix.database.PostgresProfile.API._
+import me.amuxix.database.types.Currency
 import me.amuxix.items.Currency
 import me.amuxix.items.currency._
 

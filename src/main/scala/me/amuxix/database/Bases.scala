@@ -1,7 +1,8 @@
 package me.amuxix.database
 
-import me.amuxix.database.types.Item
 import me.amuxix.database.types.Item.ItemType
+import me.amuxix.database.PostgresProfile.API._
+import me.amuxix.database.types.Item
 import me.amuxix.items._
 import me.amuxix.items.bases.{Jewel => _, _}
 import me.amuxix.items.bases.accessories._
