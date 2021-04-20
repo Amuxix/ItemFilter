@@ -5,6 +5,6 @@ object Identified {
     Identified(boolean)
 }
 
-case class Identified(is: Boolean) extends ItemType[Identified](is) {
+case class Identified(is: Boolean) extends ItemType[Identified] {
   override def merge(other: Identified): Identified = this
 }

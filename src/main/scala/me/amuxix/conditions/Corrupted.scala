@@ -5,6 +5,6 @@ object Corrupted {
     Corrupted(boolean)
 }
 
-case class Corrupted(is: Boolean) extends ItemType[Corrupted](is) {
+case class Corrupted(is: Boolean) extends ItemType[Corrupted] {
   override def merge(other: Corrupted): Corrupted = this
 }

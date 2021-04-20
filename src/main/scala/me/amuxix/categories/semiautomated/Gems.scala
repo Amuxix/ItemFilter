@@ -50,6 +50,10 @@ object Gems extends SemiAutomatedCategory {
       override def rarity(provider: Provider): FilterRarity = Leveling
       override lazy val condition: Condition = Condition(`class` = "Gem")
     },
+    new GenericItem {
+      override def rarity(provider: Provider): FilterRarity = AlwaysShow
+      override lazy val condition: Condition = Condition(`class` = "Gem", alternateQuality = true)
+    },
   )
 
   override protected def actionForRarity: FilterRarity => Action = {

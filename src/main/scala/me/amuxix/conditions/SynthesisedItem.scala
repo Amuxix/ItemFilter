@@ -5,6 +5,6 @@ object SynthesisedItem {
     SynthesisedItem(boolean)
 }
 
-case class SynthesisedItem(is: Boolean) extends ItemType[SynthesisedItem](is) {
+case class SynthesisedItem(is: Boolean) extends ItemType[SynthesisedItem] {
   override def merge(other: SynthesisedItem): SynthesisedItem = this
 }

@@ -51,7 +51,6 @@ libraryDependencies ++= Seq(
   "com.typesafe.slick"     %% "slick-hikaricp"             % "3.3.3",
   "org.postgresql"          % "postgresql"                 % "42.2.9",
   "org.flywaydb"            % "flyway-core"                % "7.7.3",
-  "com.beachape"           %% "enumeratum"                 % "1.6.1",
   //"com.github.blemale"     %% "scaffeine"                     % "3.1.0",
   //"org.scalatest"          %% "scalatest"                     % "3.1.0-RC3" % Test,
   //"com.codecommit"         %% "cats-effect-testing-scalatest" % "0.3.0" % Test,

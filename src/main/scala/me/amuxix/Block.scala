@@ -5,29 +5,23 @@ import me.amuxix.conditions.Condition
 
 object Block {
 
-  def apply(condition: Condition, action: Action): Block =
-    new Block(condition, action)
+  def apply(condition: Condition, action: Action): Block = new Block(condition, action)
 }
 
 case class Block(condition: Condition, action: Action, rarity: FilterRarity = Undetermined) extends Mergeable[Block] {
 
   def show(filterLevel: FilterLevel): Boolean = rarity >= filterLevel.cutoffRarity
 
-  def write(filterLevel: FilterLevel): String = {
-    val showText = if (show(filterLevel)) "Show" else "Hide"
-    val actionsAndConditions = ((condition.conditions ++ action.actions).flatMap(_.write) :+ "DisableDropSound").mkString("\n  ", "\n  ", "\n")
+  def write(filterLevel: FilterLevel, useContinue: Boolean = true): String = {
+    val shown = show(filterLevel)
+    val showText = if (shown) "Show" else "Hide"
+
+    val block: Seq[String] = (condition.conditions ++ action.actions).flatMap(_.write)
+    val actionsAndConditions = ((block :+ "DisableDropSound") ++ Option.when(shown && useContinue)("Continue")).mkString("\n  ", "\n  ", "\n")
     showText + actionsAndConditions
   }
 
-  lazy val hidden: Block = Block(
-    condition,
-    action.copy(
-      sound = None,
-      minimapIcon = None,
-      beam = None
-    ),
-    rarity = AlwaysHide
-  )
+  lazy val hidden: Block = Block(condition, action.copy(sound = None, minimapIcon = None, beam = None), rarity = AlwaysHide)
 
   override def canMerge(other: Block): Boolean = action == other.action && rarity == other.rarity && (condition canMerge other.condition)
 

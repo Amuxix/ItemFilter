@@ -25,4 +25,5 @@ class Provider(
   lazy val resonators: ResonatorsProvider = items.resonators
   lazy val uniques: UniquesProvider = items.uniques
   lazy val watchstones: WatchstonesProvider = items.watchstones
+  lazy val heistEquipment: HeistEquipmentProvider = items.heistEquipment
 }
