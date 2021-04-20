@@ -23,7 +23,7 @@ case class Condition(
   shapedMap: Option[ShapedMap] = None,
   identified: Option[Identified] = None,
   corrupted: Option[Corrupted] = None,
-  influence: Option[HasInfluence] = None,
+  influence: HasInfluence = HasInfluence(Influences.None),
   fracturedItem: Option[FracturedItem] = None,
   synthesisedItem: Option[SynthesisedItem] = None,
   anyEnchantment: Option[AnyEnchantment] = None,

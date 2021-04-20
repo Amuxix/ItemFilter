@@ -79,7 +79,7 @@ trait ImplicitConversions {
   implicit def boolean2OptionShapedMap(boolean: Boolean): Option[ShapedMap] =
     Some(ShapedMap(boolean))
   implicit def boolean2OptionFracturedItem(boolean: Boolean): Option[FracturedItem] = Some(FracturedItem(boolean))
-  implicit def influence2OptionHasInfluence(influence: Influence): Option[HasInfluence] = Some(HasInfluence(influence))
+  implicit def influence2HasInfluence(influence: Influence): HasInfluence = HasInfluence(influence)
   implicit def boolean2OptionSynthesisedItem(boolean: Boolean): Option[SynthesisedItem] =
     Some(SynthesisedItem(boolean))
   implicit def boolean2OptionAnyEnchantment(boolean: Boolean): Option[AnyEnchantment] = Some(AnyEnchantment(boolean))
