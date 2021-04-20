@@ -3,6 +3,7 @@ package me.amuxix.database
 import com.github.tminglei.slickpg._
 import me.amuxix.database.types._
 import me.amuxix.database.types.Currency.CurrencyType
+import me.amuxix.database.types.Equipment.EquipmentType
 import me.amuxix.database.types.Item.ItemType
 import me.amuxix.database.types.Job.JobType
 import me.amuxix.database.types.MapFragment.MapFragmentType

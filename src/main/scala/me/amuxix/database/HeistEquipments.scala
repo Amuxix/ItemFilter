@@ -1,5 +1,8 @@
 package me.amuxix.database
 
+import me.amuxix.database.PostgresProfile.API._
+import me.amuxix.database.types.Equipment
+import me.amuxix.database.types.Equipment.EquipmentType
 import me.amuxix.database.types.Job.JobType
 import me.amuxix.items.HeistEquipment
 import me.amuxix.items.heist._
