@@ -17,7 +17,7 @@ object Influenced extends SemiAutomatedCategory {
       override lazy val condition: Condition = i.rare.copy(fracturedItem = true)
     }
 
-    val withInfluence = NonEmptyList.fromListUnsafe(Influences.values.toList).map { influence =>
+    val withInfluence = NonEmptyList.fromListUnsafe(Influences.values.filterNot(_ == Influences.None).toList).map { influence =>
       new GenericItem {
         override def rarity(provider: Provider): FilterRarity = Undetermined
         override lazy val condition: Condition = i.rare.copy(influence = influence)

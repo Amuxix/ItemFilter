@@ -5,6 +5,6 @@ object AnyEnchantment {
     AnyEnchantment(boolean)
 }
 
-case class AnyEnchantment(is: Boolean) extends ItemType[AnyEnchantment](is) {
+case class AnyEnchantment(is: Boolean) extends ItemType[AnyEnchantment] {
   override def merge(other: AnyEnchantment): AnyEnchantment = this
 }

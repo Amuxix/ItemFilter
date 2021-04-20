@@ -14,8 +14,6 @@ import me.amuxix.categories.semiautomated.currency._
 import me.amuxix.categories.semiautomated.recipes._
 import me.amuxix.categories.single._
 import me.amuxix.categories.single.legacy._
-import me.amuxix.database.PostgresProfile.api.Database
-import me.amuxix.providers.items.ItemProvider
 import me.amuxix.providers.prices.{PoeNinja, PriceProvider}
 import me.amuxix.providers.Provider
 import org.flywaydb.core.Flyway
@@ -28,7 +26,7 @@ import java.io.{File, PrintWriter}
 object ItemFilter extends IOApp.Simple {
   //TODO Keep price history
   //TODO Fallback price from parent league
-  val league: League = Standard
+  val league: League = Ultimatum
   val settings = FilterSettings.fromConfig()
   val cutoffs = settings.levelCutoffs
   lazy val db = Database.forConfig("db")
@@ -90,6 +88,7 @@ object ItemFilter extends IOApp.Simple {
       Emblems, //TODO: Extract metamorph samples into its own category
       LevelingCategory,
       Watchstone,
+      Heist,
     )
     lazy val legacyCategories = NonEmptyList.of(Net, Legacy)
 

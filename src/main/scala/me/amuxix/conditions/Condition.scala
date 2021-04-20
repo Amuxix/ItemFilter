@@ -28,6 +28,7 @@ case class Condition(
   synthesisedItem: Option[SynthesisedItem] = None,
   anyEnchantment: Option[AnyEnchantment] = None,
   socketGroup: Option[SocketGroup] = None,
+  alternateQuality: Option[AlternateQuality] = None,
 ) extends Mergeable[Condition] {
 
   implicit class MergeableOption[T <: Mergeable[T]](o1: Option[T]) extends Mergeable[Option[T]] {
@@ -73,6 +74,7 @@ case class Condition(
     synthesisedItem,
     anyEnchantment,
     socketGroup,
+    alternateQuality,
   )
 
   protected val conditionOptions: Seq[Option[Writable with Mergeable[_]]] = operatorConditions ++ otherConditions
@@ -108,7 +110,7 @@ case class Condition(
       synthesisedItem canMerge o.synthesisedItem,
       anyEnchantment canMerge o.anyEnchantment,
       socketGroup canMerge o.socketGroup,
-
+      alternateQuality canMerge o.alternateQuality,
     )
 
   def canCombine(o: Condition): Boolean =
@@ -136,7 +138,8 @@ case class Condition(
       quality == o.quality &&
       sockets == o.sockets &&
       stackSize == o.stackSize &&
-      width == o.width
+      width == o.width &&
+      alternateQuality == o.alternateQuality
 
     val canMergeClassOrBases = this.`class` == o.`class` || (this.base.isEmpty && o.base.isEmpty)
 
@@ -173,6 +176,7 @@ case class Condition(
       sockets canMerge o.sockets,
       stackSize canMerge o.stackSize,
       width canMerge o.width,
+      alternateQuality canMerge o.alternateQuality,
     ).forall(identity)
 
   private def mergeOthers(o: Condition): Condition = {
@@ -198,6 +202,7 @@ case class Condition(
       synthesisedItem = synthesisedItem merge o.synthesisedItem,
       anyEnchantment = anyEnchantment merge o.anyEnchantment,
       socketGroup = socketGroup merge o.socketGroup,
+      alternateQuality = alternateQuality merge o.alternateQuality,
     )
   }
 
@@ -230,6 +235,7 @@ case class Condition(
       synthesisedItem = synthesisedItem merge o.synthesisedItem,
       anyEnchantment = anyEnchantment merge o.anyEnchantment,
       socketGroup = socketGroup merge o.socketGroup,
+      alternateQuality = alternateQuality merge o.alternateQuality,
     )
   }
 
@@ -258,5 +264,6 @@ case class Condition(
       synthesisedItem = synthesisedItem.orElse(o.synthesisedItem),
       anyEnchantment = anyEnchantment.orElse(o.anyEnchantment),
       socketGroup = socketGroup.orElse(o.socketGroup),
+      alternateQuality = alternateQuality.orElse(o.alternateQuality),
     )
 }

@@ -13,4 +13,5 @@ case class CurrenciesProvider(all: NonEmptyList[Currency]) extends BasicProvider
   lazy val oils: NonEmptyList[Oil] = getByType(Currency.Oil)
   lazy val catalysts: NonEmptyList[Catalyst] = getByType(Currency.Catalyst)
   lazy val deliriumOrbs: NonEmptyList[DeliriumOrb] = getByType(Currency.DeliriumOrb)
+  lazy val harbingerScrolls: NonEmptyList[HarbingerScroll] = getByType(Currency.HarbingerScroll)
 }

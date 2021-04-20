@@ -26,7 +26,7 @@ class FilterFactory(
   }
 
   private def lastCallBlock(filterLevel: FilterLevel) =
-    LastCall.blocks(filterLevel, provider).map(_.write(filterLevel))
+    LastCall.blocks(filterLevel, provider).map(_.write(filterLevel, useContinue = false))
 
   def create(filterLevel: FilterLevel): IO[Filter] = {
     for {

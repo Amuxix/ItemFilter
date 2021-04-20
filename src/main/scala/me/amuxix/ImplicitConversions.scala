@@ -83,6 +83,7 @@ trait ImplicitConversions {
   implicit def boolean2OptionSynthesisedItem(boolean: Boolean): Option[SynthesisedItem] =
     Some(SynthesisedItem(boolean))
   implicit def boolean2OptionAnyEnchantment(boolean: Boolean): Option[AnyEnchantment] = Some(AnyEnchantment(boolean))
+  implicit def boolean2OptionAlternateQuality(boolean: Boolean): Option[AlternateQuality] = Some(AlternateQuality(boolean))
   implicit def tuple22OptionGemLevel(tuple: (Int, Int)): Option[GemLevel] =
     Some(GemLevel(tuple._1, tuple._2))
   implicit def int2OptionGemLevel(int: Int): Option[GemLevel] =

@@ -5,6 +5,6 @@ object ShapedMap {
     ShapedMap(boolean)
 }
 
-case class ShapedMap(is: Boolean) extends ItemType[ShapedMap](is) {
+case class ShapedMap(is: Boolean) extends ItemType[ShapedMap] {
   override def merge(other: ShapedMap): ShapedMap = this
 }
