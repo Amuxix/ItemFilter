@@ -1,14 +1,14 @@
 package me.amuxix.conditions
-import me.amuxix.{InvalidArgument, Mergeable, Writable}
+
+import cats.Show
+import me.amuxix.{InvalidArgument, Mergeable}
 
 object ExplicitMod {
+  implicit val show: Show[ExplicitMod] = explicitMod => s"HasExplicitMod ${explicitMod.mods.mkString("\"", "\" \"", "\"")}"
 }
 
-case class ExplicitMod(mods: String*) extends Writable with Mergeable[ExplicitMod] {
+case class ExplicitMod(mods: String*) extends Mergeable[ExplicitMod] {
   if (mods.contains("")) throw new InvalidArgument
-
-  override def print: String =
-    s"HasExplicitMod ${mods.mkString("\"", "\" \"", "\"")}"
 
   override def canMerge(other: ExplicitMod): Boolean =
     true //This only depends on item class

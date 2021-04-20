@@ -1,8 +1,16 @@
 package me.amuxix.actions
 
-import me.amuxix.Writable
+import cats.Show
+import me.amuxix.actions.IconSize.{IconSize, Small}
+import cats.syntax.show._
+import me.amuxix.Named
 
 sealed trait Shape
+
+object Shape {
+  implicit val show: Show[Shape] = Named.className _
+}
+
 case object Star extends Shape
 case object Hexagon extends Shape
 case object Diamond extends Shape
@@ -17,21 +25,17 @@ case object Pentagon extends Shape
 case object UpsideDownHouse extends Shape
 
 
-sealed trait IconSize
-case object Large extends IconSize {
-  override def toString: String = "0"
+object IconSize extends Enumeration {
+  type IconSize = Value
+  val Large = Value(0)
+  val Medium = Value(1)
+  val Small = Value(2)
+
+  implicit val show: Show[IconSize] = Show.show(_.id.toString)
 }
-case object Medium extends IconSize {
-  override def toString: String = "1"
-}
-case object Small extends IconSize {
-  override def toString: String = "2"
-}
+
+case class MinimapIcon(color: EffectColor, shape: Shape, size: IconSize = Small)
 
 object MinimapIcon {
-}
-
-case class MinimapIcon(color: EffectColor, shape: Shape, size: IconSize = Small) extends Writable {
-  override protected def print: String =
-    s"MinimapIcon $size ${color.className} $shape"
+  implicit val show: Show[MinimapIcon] = icon => show"MinimapIcon ${icon.size} ${icon.color} ${icon.shape}"
 }

@@ -1,6 +1,9 @@
 package me.amuxix.conditions
 
-import me.amuxix.{Mergeable, Writable}
+import cats.Show
+import me.amuxix.Mergeable
+import me.amuxix.optionShow
+import me.amuxix.ContravariantShowOps
 
 //TODO Separate into two argument lists, one for properties fixed by base(class, baseType, height and width) and one for the rest.
 //TODO Accept an option of base instead of first argument list
@@ -23,7 +26,7 @@ case class Condition(
   shapedMap: Option[ShapedMap] = None,
   identified: Option[Identified] = None,
   corrupted: Option[Corrupted] = None,
-  influence: HasInfluence = HasInfluence(Influences.None),
+  influence: Option[HasInfluence] = None,
   fracturedItem: Option[FracturedItem] = None,
   synthesisedItem: Option[SynthesisedItem] = None,
   anyEnchantment: Option[AnyEnchantment] = None,
@@ -46,40 +49,6 @@ case class Condition(
         case _                    => throw new Exception("Attempting to merge un-mergeable things.")
       }
   }
-
-  protected val operatorConditions: Seq[Option[OperatorWritable[_] with Mergeable[_]]] = Seq(
-    dropLevel,
-    gemLevel,
-    height,
-    itemLevel,
-    linkedSockets,
-    mapTier,
-    quality,
-    sockets,
-    stackSize,
-    width,
-  )
-
-  protected val otherConditions: Seq[Option[Writable with Mergeable[_]]] = Seq(
-    `class`,
-    base,
-    prophecy,
-    rarity,
-    explicitMod,
-    shapedMap,
-    identified,
-    corrupted,
-    influence,
-    fracturedItem,
-    synthesisedItem,
-    anyEnchantment,
-    socketGroup,
-    alternateQuality,
-  )
-
-  protected val conditionOptions: Seq[Option[Writable with Mergeable[_]]] = operatorConditions ++ otherConditions
-
-  val conditions: Seq[Writable with Mergeable[_]] = conditionOptions.flatten
 
   def operatorConditionsCanMerge(o: Condition): List[Boolean] =
     List(
@@ -116,101 +85,10 @@ case class Condition(
   def canCombine(o: Condition): Boolean =
     otherConditionsCanMerge(o).forall(identity) && operatorConditionsCanMerge(o).count(_ == false) <= 1
 
-  private def canMergeBasesOrClasses(o: Condition): Boolean = {
-    val canMergerOther: Boolean =
-      prophecy == o.prophecy &&
-      rarity == o.rarity &&
-      explicitMod == o.explicitMod &&
-      shapedMap == o.shapedMap &&
-      identified == o.identified &&
-      corrupted == o.corrupted &&
-      influence == o.influence &&
-      fracturedItem == o.fracturedItem &&
-      synthesisedItem == o.synthesisedItem &&
-      anyEnchantment == o.anyEnchantment &&
-      socketGroup == o.socketGroup &&
-      dropLevel == o.dropLevel &&
-      gemLevel == o.gemLevel &&
-      height == o.height &&
-      itemLevel == o.itemLevel &&
-      linkedSockets == o.linkedSockets &&
-      mapTier == o.mapTier &&
-      quality == o.quality &&
-      sockets == o.sockets &&
-      stackSize == o.stackSize &&
-      width == o.width &&
-      alternateQuality == o.alternateQuality
-
-    val canMergeClassOrBases = this.`class` == o.`class` || (this.base.isEmpty && o.base.isEmpty)
-
-    canMergerOther && canMergeClassOrBases
-  }
-
-  private def mergeBasesOrClasses(o: Condition): Condition =
-    if (this.`class` == o.`class`) {
-      this.copy(base = this.base merge o.base)
-    } else {
-      this.copy(`class` = this.`class` merge o.`class`)
-    }
-
-  private def canMergeOthers(o: Condition): Boolean =
-    List(
-      prophecy canMerge o.prophecy,
-      rarity canMerge o.rarity,
-      explicitMod canMerge o.explicitMod,
-      shapedMap canMerge o.shapedMap,
-      identified canMerge o.identified,
-      corrupted canMerge o.corrupted,
-      influence canMerge o.influence,
-      fracturedItem canMerge o.fracturedItem,
-      synthesisedItem canMerge o.synthesisedItem,
-      anyEnchantment canMerge o.anyEnchantment,
-      socketGroup canMerge o.socketGroup,
-      dropLevel canMerge o.dropLevel,
-      gemLevel canMerge o.gemLevel,
-      height canMerge o.height,
-      itemLevel canMerge o.itemLevel,
-      linkedSockets canMerge o.linkedSockets,
-      mapTier canMerge o.mapTier,
-      quality canMerge o.quality,
-      sockets canMerge o.sockets,
-      stackSize canMerge o.stackSize,
-      width canMerge o.width,
-      alternateQuality canMerge o.alternateQuality,
-    ).forall(identity)
-
-  private def mergeOthers(o: Condition): Condition = {
-    this.copy(
-      prophecy = prophecy merge o.prophecy,
-      dropLevel = dropLevel merge o.dropLevel,
-      itemLevel = itemLevel merge o.itemLevel,
-      quality = quality merge o.quality,
-      rarity = rarity merge o.rarity,
-      sockets = sockets merge o.sockets,
-      linkedSockets = linkedSockets merge o.linkedSockets,
-      height = height merge o.height,
-      width = width merge o.width,
-      gemLevel = gemLevel merge o.gemLevel,
-      mapTier = mapTier merge o.mapTier,
-      explicitMod = explicitMod merge o.explicitMod,
-      stackSize = stackSize merge o.stackSize,
-      shapedMap = shapedMap merge o.shapedMap,
-      identified = identified merge o.identified,
-      corrupted = corrupted merge o.corrupted,
-      influence = influence merge o.influence,
-      fracturedItem = fracturedItem merge o.fracturedItem,
-      synthesisedItem = synthesisedItem merge o.synthesisedItem,
-      anyEnchantment = anyEnchantment merge o.anyEnchantment,
-      socketGroup = socketGroup merge o.socketGroup,
-      alternateQuality = alternateQuality merge o.alternateQuality,
-    )
-  }
-
   override def canMerge(o: Condition): Boolean = //canMergeBasesOrClasses(o) || canMergeOthers(o)
     (otherConditionsCanMerge(o) ++ operatorConditionsCanMerge(o)).forall(identity)
 
   override def merge(o: Condition): Condition = {
-    //mergeBasesOrClasses(o)
     Condition(
       `class` = `class` merge o.`class`,
       base = base merge o.base,
@@ -266,4 +144,34 @@ case class Condition(
       socketGroup = socketGroup.orElse(o.socketGroup),
       alternateQuality = alternateQuality.orElse(o.alternateQuality),
     )
+}
+
+object Condition {
+
+  implicit val show: Show[Condition] = condition => Seq(
+    condition.`class`.show,
+    condition.base.show,
+    condition.prophecy.show,
+    condition.dropLevel.show,
+    condition.itemLevel.show,
+    condition.quality.show,
+    condition.rarity.show,
+    condition.sockets.show,
+    condition.linkedSockets.show,
+    condition.height.show,
+    condition.width.show,
+    condition.gemLevel.show,
+    condition.mapTier.show,
+    condition.explicitMod.show,
+    condition.stackSize.show,
+    condition.shapedMap.show,
+    condition.identified.show,
+    condition.corrupted.show,
+    condition.influence.show,
+    condition.fracturedItem.show,
+    condition.synthesisedItem.show,
+    condition.anyEnchantment.show,
+    condition.socketGroup.show,
+    condition.alternateQuality.show,
+  ).filter(_.nonEmpty).mkString("\n  ", "\n  ", "")
 }

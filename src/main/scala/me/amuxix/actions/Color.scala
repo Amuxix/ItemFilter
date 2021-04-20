@@ -1,14 +1,13 @@
 package me.amuxix.actions
 
-import me.amuxix.actions.EffectColor.effectColors
-//import Ordering.Double.TotalOrdering
 import me.amuxix.actions.Color.{darknessFactor, lightenFactor}
+import cats.Show
 
 /**
   * Created by Amuxix on 03/03/2017.
   */
 object Color {
-  def apply(r: Int, g: Int, b: Int): Color = new Color(r, g, b)
+  def apply(r: Int, g: Int, b: Int): Color = new Color(r, g, b, 255)
 
   val transparent = Color(0, 0, 0, 0)
   val nearTransparent = Color(255, 255, 255, 64)
@@ -75,6 +74,8 @@ object Color {
       alphas.sum / alphas.size
     )
   }
+
+  implicit val show: Show[Color] = color => s"${color.r} ${color.g} ${color.b}${if (color.a < 255) " " + color.a else ""}"
 }
 
 case class Color(
@@ -82,17 +83,14 @@ case class Color(
   g: Int,
   b: Int,
   a: Int
-) extends Colored(r, g, b, a) {
-  def this(r: Int, g: Int, b: Int) = this(r, g, b, 255)
+) extends Colored {
 
   private def darken(color: Int): Int = Math.round(color * (1 - darknessFactor))
   private def lighten(color: Int): Int = Math.round(color + ((255 - color) * lightenFactor))
 
-  def darken: Color = Color(darken(_r), darken(_g), darken(_b), _a)
-  def lighten: Color = Color(lighten(_r), lighten(_g), lighten(_b), _a)
+  def darken: Color = Color(darken(r), darken(g), darken(b), a)
+  def lighten: Color = Color(lighten(r), lighten(g), lighten(b), a)
   def halfTransparent: Color = copy(a = a / 2)
 
-  def closestEffectColor: EffectColor = effectColors.minBy(this.distance)
-
-  override def toString: String = s"$r $g $b${if (a < 255) " " + a else ""}"
+  def closestEffectColor: EffectColor = EffectColor.all.minBy(this.distance)
 }

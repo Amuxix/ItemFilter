@@ -1,13 +1,13 @@
 package me.amuxix.actions
 
-import me.amuxix.Writable
+import cats.Show
+import cats.syntax.show._
 
 /**
   * Created by Amuxix on 03/03/2017.
   */
-object BorderColor {
-}
+case class BorderColor(color: Color) extends AnyVal
 
-case class BorderColor(color: Color) extends Writable {
-  override def print: String = s"SetBorderColor $color"
+object BorderColor {
+  implicit def show(implicit colorShow: Show[Color]): Show[BorderColor] = borderColour => show"SetBorderColor ${borderColour.color}"
 }
