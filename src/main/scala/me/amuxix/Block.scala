@@ -2,9 +2,9 @@ package me.amuxix
 
 import me.amuxix.actions._
 import me.amuxix.conditions.Condition
+import cats.syntax.show._
 
 object Block {
-
   def apply(condition: Condition, action: Action): Block = new Block(condition, action)
 }
 
@@ -13,12 +13,10 @@ case class Block(condition: Condition, action: Action, rarity: FilterRarity = Un
   def show(filterLevel: FilterLevel): Boolean = rarity >= filterLevel.cutoffRarity
 
   def write(filterLevel: FilterLevel, useContinue: Boolean = false): String = {
-    val shown = show(filterLevel)
-    val showText = if (shown) "Show" else "Hide"
-
-    val block: Seq[String] = (condition.conditions ++ action.actions).flatMap(_.write)
-    val actionsAndConditions = ((block :+ "DisableDropSound") ++ Option.when(shown && useContinue)("Continue")).mkString("\n  ", "\n  ", "\n")
-    showText + actionsAndConditions
+    val showText = if (show(filterLevel)) "Show" else "Hide"
+    val disableDropSound = "\n  DisableDropSound"
+    val continue = Option.when(useContinue)("\n  Continue")
+    show"$showText$condition$action$disableDropSound$continue\n"
   }
 
   lazy val hidden: Block = Block(condition, action.copy(sound = None, minimapIcon = None, beam = None), rarity = AlwaysHide)

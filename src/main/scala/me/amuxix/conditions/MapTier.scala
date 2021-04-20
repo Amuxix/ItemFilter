@@ -1,10 +1,9 @@
 package me.amuxix.conditions
 
 object MapTier {
-  def apply(level: Int): MapTier = new MapTier(level)
+  def apply(level: Int): MapTier = new MapTier(level, level)
 }
 case class MapTier(start: Int, end: Int) extends OperatorWritable[MapTier](17, "MapTier") {
-  def this(value: Int) = this(value, value)
 
   override val min: Int = 1
   override def merge(other: MapTier): MapTier =

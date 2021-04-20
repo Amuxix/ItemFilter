@@ -1,6 +1,6 @@
 package me.amuxix.actions
 
-import me.amuxix.Writable
+import cats.Show
 
 object Sound {
   val myths = CustomSound("Fog horn")
@@ -17,6 +17,11 @@ object Sound {
 
   val nets = GameSound(2)
   val incursion = GameSound(3)
+
+  implicit val show: Show[Sound] = {
+    case gameSound: GameSound => GameSound.show.show(gameSound)
+    case customSound: CustomSound => CustomSound.show.show(customSound)
+  }
 }
 
-abstract class Sound extends Writable
+abstract class Sound

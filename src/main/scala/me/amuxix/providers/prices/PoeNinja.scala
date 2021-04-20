@@ -13,7 +13,7 @@ import org.http4s.circe.CirceEntityDecoder.circeEntityDecoder
 import org.http4s.implicits._
 
 object PoeNinja {
-  val baseURI: Uri = uri"https://poe.ninja/api/data" //TODO: Extract this to config
+  val baseURI: Uri = uri"https://poe.ninja/api/data"
 
   private def readLines(currencyFieldName: String, priceFieldName: String): Decoder[Price] = (c: HCursor) =>
     for {

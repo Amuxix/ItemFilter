@@ -1,8 +1,10 @@
 package me.amuxix.actions
 
-import me.amuxix.Writable
+import cats.Show
+import cats.syntax.show._
 
-case class Beam(color: EffectColor, isTemp: Boolean = false) extends Writable {
-  override protected def print: String =
-    s"PlayEffect ${color.className} ${if (isTemp) "Temp" else ""}"
+case class Beam(color: EffectColor, isTemp: Boolean = false)
+
+object Beam {
+  implicit val show: Show[Beam] = beam => show"PlayEffect ${beam.color} ${if (beam.isTemp) "Temp" else ""}"
 }
