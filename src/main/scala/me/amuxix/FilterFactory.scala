@@ -25,15 +25,13 @@ class FilterFactory(
     categories
   }
 
-  private def lastCallBlock(filterLevel: FilterLevel) =
-    LastCall.blocks(filterLevel, provider).map(_.write(filterLevel, useContinue = false))
+  private def lastCallBlock(filterLevel: FilterLevel): IO[NonEmptyList[String]] =
+    LastCall.blocks(filterLevel, provider).map(_.map(_.write(filterLevel)))
 
   def create(filterLevel: FilterLevel): IO[Filter] = {
     for {
-      (shown, hidden) <- allCategories.parTraverse { category =>
-        IO(category.partitionHiddenAndShown(filterLevel, provider))
-      }.map(_.toList.unzip)
-      lastCall = lastCallBlock(filterLevel)
+      (shown, hidden) <- allCategories.parTraverse(_.partitionHiddenAndShown(filterLevel, provider)).map(_.toList.unzip)
+      lastCall <- lastCallBlock(filterLevel)
       filterName = s"Amuxix${filterLevel.suffix}"
       _ <- IO.println(s"Generating $filterName")
     } yield Filter(filterName, (shown ++ hidden ++ lastCall.toList).mkString, filterLevel)

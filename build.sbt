@@ -36,7 +36,6 @@ addCompilerPlugin("com.olegpy" %% "better-monadic-for" % "0.3.1")
 val http4sVersion = "1.0.0-M21"
 val circeVersion = "0.14.0-M5"
 libraryDependencies ++= Seq(
-  "org.scala-lang.modules" %% "scala-parallel-collections" % "1.0.2",
   "org.typelevel"          %% "cats-core"                  % "2.5.0",
   "org.typelevel"          %% "cats-effect"                % "3.0.2",
   "org.http4s"             %% "http4s-dsl"                 % http4sVersion,

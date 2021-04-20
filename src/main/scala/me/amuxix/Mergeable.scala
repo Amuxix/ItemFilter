@@ -1,41 +1,16 @@
 package me.amuxix
 
 import cats.data.NonEmptyList
+import cats.effect.IO
+import cats.syntax.parallel._
 
 import scala.annotation.tailrec
-import scala.collection.parallel.CollectionConverters._
 
 object Mergeable {
-
-  /*private def mergeOption[T <: Mergeable[T]](a: T, b: T): (T, Option[T]) =
-    if (a canMerge b) {
-      (a merge b, None)
-    } else {
-      (a, Some(b))
-    }
-
-  def merge[F[_] : Reducible, G[_]: Foldable: Alternative, T <: Mergeable[T]](items: F[T])(implicit reducible: NonEmptyReducible[F, G], monoid: Monoid[G[T]]): F[T] = {
-    @tailrec def innerMerge(items: F[T], merged: G[T]): F[T] = {
-      items.foldLeft((monoid.empty, monoid.empty)) {
-        case ((mergeable, unmergeable), item) => mergeable
-      }
-      reducible.split(items) match {
-        case (head, tail) =>
-          val (mergeable, unmergeable) = tail.partitionEither(element => Either.cond(head.canMerge(element), element, element))
-          val m: G[T] = merged combine Applicative[G].pure(mergeable.foldLeft(head)(_ merge _))
-          if (unmergeable.isEmpty) {
-            m.asInstanceOf[F[T]]
-          } else {
-            innerMerge(unmergeable.asInstanceOf[F[T]], m)
-          }
-      }
-    }
-    innerMerge(items, monoid.empty)
-  }*/
   @tailrec def merge[T <: Mergeable[T]](items: NonEmptyList[T], merged: List[T] = List.empty): NonEmptyList[T] =
     items match {
       case NonEmptyList(first, rest) =>
-        val (mergedItem, unmergeable) = rest.par.foldLeft((first, List.empty[T])) {
+        val (mergedItem, unmergeable) = rest.foldLeft((first, List.empty[T])) {
           case ((mergedItem, unmergeable), item) if mergedItem canMerge item =>
             (mergedItem merge item, unmergeable)
           case ((mergedItem, unmergeable), item) =>
@@ -49,7 +24,7 @@ object Mergeable {
         }
     }
 
-  def parMerge[T <: Mergeable[T]](items: NonEmptyList[T]): NonEmptyList[T] = {
+  def parMerge[T <: Mergeable[T]](items: NonEmptyList[T]): IO[NonEmptyList[T]] = {
     @tailrec def groupByMergeables(remainingItems: NonEmptyList[T], groups: List[NonEmptyList[T]] = List.empty): List[NonEmptyList[T]] = remainingItems match {
       case NonEmptyList(first, rest) =>
         rest.partition(first.canMerge) match {
@@ -58,9 +33,9 @@ object Mergeable {
           case (mergeables, unmergeables) => groupByMergeables(NonEmptyList.fromListUnsafe(unmergeables), groups :+ NonEmptyList.of(first, mergeables: _*))
         }
     }
-    def merge(items: NonEmptyList[T]): T = items.tail.fold(items.head)(_ merge _)
+    def merge(items: NonEmptyList[T]): IO[T] = IO(items.tail.fold(items.head)(_ merge _))
 
-    NonEmptyList.fromListUnsafe(groupByMergeables(items).par.map(merge).seq.toList)
+    groupByMergeables(items).parTraverse(merge).map(NonEmptyList.fromListUnsafe)
   }
 }
 
