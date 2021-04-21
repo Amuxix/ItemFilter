@@ -1,12 +1,10 @@
 package me.amuxix.conditions
 
 import cats.Show
-import me.amuxix.{Mergeable, Named}
+import me.amuxix.Named
 
-abstract class ItemType[T <: ItemType[T]] extends Mergeable[T] {
+abstract class ItemType[T <: ItemType[T]] {
   def is: Boolean
-
-  override def canMerge(other: T): Boolean = this.is == other.is
 }
 
 object ItemType {

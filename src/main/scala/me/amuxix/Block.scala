@@ -3,12 +3,20 @@ package me.amuxix
 import me.amuxix.actions._
 import me.amuxix.conditions.Condition
 import cats.syntax.show._
+import me.amuxix.syntax.mergeable._
+import me.amuxix.instances.option._
 
 object Block {
   def apply(condition: Condition, action: Action): Block = new Block(condition, action)
+
+  implicit val mergeable: Mergeable[Block] = new Mergeable[Block] {
+    override def canMerge(one: Block, other: Block): Boolean = one.action == other.action && one.rarity == other.rarity && (one.condition canMerge other.condition)
+
+    override def merge(one: Block, other: Block): Block = Block(one.condition merge other.condition, one.action, one.rarity)
+  }
 }
 
-case class Block(condition: Condition, action: Action, rarity: FilterRarity = Undetermined) extends Mergeable[Block] {
+case class Block(condition: Condition, action: Action, rarity: FilterRarity = Undetermined) {
 
   def show(filterLevel: FilterLevel): Boolean = rarity >= filterLevel.cutoffRarity
 
@@ -20,8 +28,4 @@ case class Block(condition: Condition, action: Action, rarity: FilterRarity = Un
   }
 
   lazy val hidden: Block = Block(condition, action.copy(sound = None, minimapIcon = None, beam = None), rarity = AlwaysHide)
-
-  override def canMerge(other: Block): Boolean = action == other.action && rarity == other.rarity && (condition canMerge other.condition)
-
-  override def merge(other: Block): Block = Block(condition merge other.condition, action, rarity)
 }

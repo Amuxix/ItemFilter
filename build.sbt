@@ -36,8 +36,6 @@ addCompilerPlugin("com.olegpy" %% "better-monadic-for" % "0.3.1")
 val http4sVersion = "1.0.0-M21"
 val circeVersion = "0.14.0-M5"
 libraryDependencies ++= Seq(
-  "org.typelevel"          %% "cats-core"                  % "2.5.0",
-  "org.typelevel"          %% "cats-effect"                % "3.0.2",
   "org.http4s"             %% "http4s-dsl"                 % http4sVersion,
   "org.http4s"             %% "http4s-blaze-client"        % http4sVersion,
   "org.http4s"             %% "http4s-circe"               % http4sVersion,
@@ -45,15 +43,11 @@ libraryDependencies ++= Seq(
   "io.circe"               %% "circe-generic"              % circeVersion,
   "io.circe"               %% "circe-parser"               % circeVersion,
   "com.github.pureconfig"  %% "pureconfig"                 % "0.14.1",
-  "org.slf4j"               % "slf4j-nop"                  % "2.0.0-alpha1",
   "com.github.tminglei"    %% "slick-pg"                   % "0.19.5",
   "com.typesafe.slick"     %% "slick-hikaricp"             % "3.3.3",
+  "org.slf4j"               % "slf4j-nop"                  % "2.0.0-alpha1",
   "org.postgresql"          % "postgresql"                 % "42.2.9",
   "org.flywaydb"            % "flyway-core"                % "7.7.3",
-  //"com.github.blemale"     %% "scaffeine"                     % "3.1.0",
-  //"org.scalatest"          %% "scalatest"                     % "3.1.0-RC3" % Test,
-  //"com.codecommit"         %% "cats-effect-testing-scalatest" % "0.3.0" % Test,
-  //"com.github.tomakehurst" % "wiremock-jre8"                  % "2.25.1" % Test,
 )
 
 enablePlugins(JavaServerAppPackaging)

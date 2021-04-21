@@ -8,14 +8,10 @@ import me.amuxix.{InvalidArgument, Mergeable}
   */
 object BaseType {
   implicit val show: Show[BaseType] = baseType => s"BaseType ${baseType.bases.mkString("\"", "\" \"", "\"")}"
+
+  implicit val mergeable: Mergeable[BaseType] = Mergeable.join(apply, _.bases)
 }
 
-case class BaseType(bases: String*) extends Mergeable[BaseType] {
+case class BaseType(bases: String*) {
   if (bases.contains("")) throw new InvalidArgument
-
-  override def canMerge(other: BaseType): Boolean = true
-
-  override def merge(other: BaseType): BaseType =
-    //noinspection ScalaUnnecessaryParentheses
-    BaseType((bases ++ other.bases).distinct: _*)
 }
