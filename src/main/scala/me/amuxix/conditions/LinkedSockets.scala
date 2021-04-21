@@ -1,13 +1,13 @@
 package me.amuxix.conditions
 
+import me.amuxix.Mergeable
+
 /**
   * Created by Amuxix on 03/03/2017.
   */
 object LinkedSockets {
   def apply(level: Int): LinkedSockets = new LinkedSockets(level, level)
-}
-case class LinkedSockets(start: Int, end: Int) extends OperatorWritable[LinkedSockets](6, "LinkedSockets") {
 
-  override def merge(other: LinkedSockets): LinkedSockets =
-    LinkedSockets(start min other.start, end max other.end)
+  implicit val mergeable: Mergeable[LinkedSockets] = OperatorWritable.merge(apply)
 }
+case class LinkedSockets(start: Int, end: Int) extends OperatorWritable[LinkedSockets](6, "LinkedSockets")

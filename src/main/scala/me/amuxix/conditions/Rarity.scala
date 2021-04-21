@@ -20,7 +20,7 @@ case object Rare extends GameRarity(2)
 case object Unique extends GameRarity(3)
 
 object Rarity {
-  def apply(rarity: GameRarity): Rarity = new Rarity(rarity)
+  def apply(rarity: GameRarity): Rarity = new Rarity(rarity, rarity)
 
   implicit val show: Show[Rarity] = rarity => {
     rarity.from match {
@@ -30,14 +30,14 @@ object Rarity {
       case _                        => show"Rarity >= ${rarity.from}\n  Rarity <= ${rarity.to}"
     }
   }
+
+  implicit val mergeable: Mergeable[Rarity] = new Mergeable[Rarity] {
+    override def canMerge(one: Rarity, other: Rarity): Boolean = (one containsOrIsAdjacent other.from) || (one containsOrIsAdjacent other.to) || (other containsOrIsAdjacent one.from) || (other containsOrIsAdjacent one.to)
+
+    override def merge(one: Rarity, other: Rarity): Rarity = Rarity(one.from min other.from, one.to max other.to)
+  }
 }
 
-case class Rarity(from: GameRarity, to: GameRarity) extends Mergeable[Rarity] {
-  def this(rarity: GameRarity) = this(rarity, rarity)
-
+case class Rarity(from: GameRarity, to: GameRarity) {
   private def containsOrIsAdjacent(gameRarity: GameRarity): Boolean = from.value - 1 <= gameRarity.value && gameRarity.value <= to.value + 1
-
-  override def canMerge(other: Rarity): Boolean = (this containsOrIsAdjacent other.from) || (this containsOrIsAdjacent other.to) || (other containsOrIsAdjacent this.from) || (other containsOrIsAdjacent this.to)
-
-  override def merge(other: Rarity): Rarity = Rarity(from min other.from, to max other.to)
 }

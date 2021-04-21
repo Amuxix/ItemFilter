@@ -2,8 +2,8 @@ package me.amuxix.actions
 
 import cats.Show
 import me.amuxix.actions.Color.defaultBackground
-import me.amuxix.optionShow
-import cats.syntax.show._
+import me.amuxix.syntax.contravariantShow._
+import me.amuxix.instances.option._
 
 /**
   * Created by Amuxix on 03/03/2017.
